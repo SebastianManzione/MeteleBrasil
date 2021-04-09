@@ -190,6 +190,7 @@ $CantOpinionesCategoria=count($OpinionesCategoria);
 $estrellas=getEstrellasCategoria($idCategoria_servicio);
 
 
+
 ?>
  
        <div class="col-lg-4 col-md-6 col-12 mb-4">
@@ -200,7 +201,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
               
              <!-- EMPIEZA LA INFO AL PASAR EL HOVER -->   
              <div class="info d-md-block d-none">
-             <h3 class="headline text-uppercase semibold"><?=$categorias[$i]['nombre_categoria_servicio']?></h3>
+             <h3 class="headline text-uppercase semibold"><?=$lang[$categorias[$i]['nombre_categoria_servicio']];?></h3>
                <div class="container">
                  <div class="row">
                    <div class="col-md-6">
@@ -208,7 +209,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
                      <p class=" mb-0">
                         <strong style="font-size:30px;"><?=$categorias[$i]['nViajeros']?></strong> 
                      </p>
-                      <p class="mb-0 p">viajeros ya lo han disfrutado</p>
+                      <p class="mb-0 p"><?= $lang["viajeros_ya_lo_han_disfrutado"]?></p>
                    </div>
                    </div>
                     <div class="col-md-6">
@@ -217,7 +218,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
                        <strong style="font-size:30px;"><?=$estrellas?>*****</strong> 
                     </p>
                     <p class="mb-0 p">
-                        <?=$CantOpinionesCategoria;?> opiniones
+                        <?=$CantOpinionesCategoria;?> <?=$lang["opiniones"];?>
                     </p>
                     </div>
                    </div>
@@ -228,7 +229,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
              
            </div>
            
-           <h3 class="title-categoria text-uppercase texto-shadow text-white"><?=$categorias[$i]['nombre_categoria_servicio']?></h3>
+           <h3 class="title-categoria text-uppercase texto-shadow text-white"><?=$lang[$categorias[$i]['nombre_categoria_servicio']];?></h3>
          </a>
 
        </div>
@@ -258,7 +259,7 @@ $categorias=getCategoriasLimit612();
  
 
 for ($i=0; $i < count($categorias); $i++) { 
-	
+
 	$idCategoria_servicio=$categorias[$i]['idCategoria_servicio'];
 
 $OpinionesCategoria=OpinionesCategoria($idCategoria_servicio);
@@ -277,7 +278,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
               
              <!-- EMPIEZA LA INFO AL PASAR EL HOVER -->   
              <div class="info d-md-block d-none">
-             <h3 class="headline text-uppercase semibold"><?=$categorias[$i]['nombre_categoria_servicio']?></h3>
+             <h3 class="headline text-uppercase semibold"><?=$lang[$categorias[$i]['nombre_categoria_servicio']];?></h3>
                <div class="container">
                  <div class="row">
                    <div class="col-md-6">
@@ -285,7 +286,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
                      <p class=" mb-0">
                         <strong style="font-size:30px;"><?=$categorias[$i]['nViajeros']?></strong> 
                      </p>
-                      <p class="mb-0 p">viajeros ya lo han disfrutado</p>
+                      <p class="mb-0 p"><?= $lang["viajeros_ya_lo_han_disfrutado"]?></p>
                    </div>
                    </div>
                     <div class="col-md-6">
@@ -294,7 +295,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
                        <strong style="font-size:30px;"><?=$estrellas?>*****</strong> 
                     </p>
                     <p class="mb-0 p">
-                        <?=$CantOpinionesCategoria;?> opiniones
+                        <?=$CantOpinionesCategoria;?> <?=$lang["opiniones"];?>
                     </p>
                     </div>
                    </div>
@@ -305,7 +306,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
              
            </div>
            
-           <h3 class="title-categoria text-uppercase texto-shadow text-white"><?=$categorias[$i]['nombre_categoria_servicio']?></h3>
+           <h3 class="title-categoria text-uppercase texto-shadow text-white"><?=$lang[$categorias[$i]['nombre_categoria_servicio']];?></h3>
          </a>
 
        </div>
@@ -329,7 +330,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
             <!--BUCLE MAS-->
             <div class="col-lg-12 text-center ">
           <button class="btn  btn-white" type="button" id="alternar-panel-oculto-1" data-toggle="collapse" data-target="#VerMasActividades" aria-expanded="false" aria-controls="VerMasActividades">
-            Ver más
+           <?=$lang["ver_mas"];?>
           </button>
        </div>
     <!--FIN COLUMNA VER MAS-->
@@ -344,7 +345,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
    <div class="container">
      <div class="row mb-4">
        <div class="col-lg-12 ">
-         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0 ">Actividades destacadas</h2>
+         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0 "><?=$lang["actividades_destacadas"]?></h2>
        </div>
      </div>
      <div class="row ">
@@ -442,7 +443,7 @@ $puntuacion=round($acum/$CantOpinionesServicio, 1);
                            <i class="fa fa-star"></i>
                            <i class="fa fa-star"></i>
                            </p>
-                           <p><small class="text--rating-total "><?=count($OpinionesServicio);?> opiniones</small></p>
+                           <p><small class="text--rating-total "><?=count($OpinionesServicio);?> <?=$lang["opiniones"];?></small></p>
                         </div>
                       </div>
                       <p class="p-text" style="margin-top:-5px;"><?=$servicios[$i]["descripcion_corta"];?></b></p>
@@ -466,7 +467,7 @@ $puntuacion=round($acum/$CantOpinionesServicio, 1);
                  <h5 class="text-right precio-card"><?=$precioSugerido;?></h5>
                  </div>
                </div>
-               <p class="mb-0"><?=$estrellasServicio;?>/10 <span class="text-gris"><?=count($OpinionesServicio);?> opiniones</span></p>
+               <p class="mb-0"><?=$estrellasServicio;?>/10 <span class="text-gris"><?=count($OpinionesServicio);?> <?=$lang["opiniones"];?></span></p>
              </div>
            </div>
            <!--FIN CARD POR DEFECTO SIN EL HOVER-->
@@ -561,7 +562,7 @@ $servicios=getServiciosLimit612();
                  <h5 class="text-right precio-card"><?=$precioSugerido;?></h5>
                  </div>
                </div>
-               <p class="mb-0"><?=$estrellasServicio;?>/10 <span class="text-gris"><?=count($OpinionesServicio);?> opiniones</span></p>
+               <p class="mb-0"><?=$estrellasServicio;?>/10 <span class="text-gris"><?=count($OpinionesServicio);?> <?=$lang["opiniones"];?></span></p>
              </div>
            </div>
            <!--FIN CARD POR DEFECTO SIN EL HOVER-->
@@ -585,7 +586,7 @@ $servicios=getServiciosLimit612();
 
        <div class="col-lg-12 text-center py-5">
          <button class="btn  btn-white" type="button" id="alternar-panel-oculto-2" data-toggle="collapse" data-target="#VerMasActividades-d" aria-expanded="false" aria-controls="VerMasActividades-d">
-            Ver más
+            <?=$lang["ver_mas"];?>
           </button>
        </div>
      </div>

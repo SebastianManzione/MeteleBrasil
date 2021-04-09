@@ -218,11 +218,11 @@ $cantidad_servicios_categoria=count($servicios);
           <div class="card-body">
               <div>
                 <form class="form-buscar mb-5 " action="categorias.php" method="get">
-            <label class="sr-only" for="s">¿Que hacemos?</label>
+            <label class="sr-only" for="s"><?= $lang["que_hacemos"]; ?></label>
           <div class="input-group">
-            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="¿Que hacemos?" value="<?=$busqueda?>">
+            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="<?= $lang["que_hacemos"]; ?>" value="<?=$busqueda?>">
             <span class="input-group-append">
-              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit">Buscar <i class="fa fa-arrow-right"></i></button>
+              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
             </span>
           </div>
 </form>

@@ -10,5 +10,16 @@ $lang = array(
 	"atencion_al_cliente_247"=>"Customer Support 24/7",
 	"miles_de_opiniones"=>"Thousands of opinions",
 	"sin_sobreprecios"=>"No surcharges",
-	"principales_actividades"=>"Main activities"
+	"principales_actividades"=>"Main activities",
+	"ver_mas"=>"See More",
+	"opiniones"=>"Opinions",
+	"viajeros_ya_lo_han_disfrutado"=>"travelers have already enjoyed it",
+	"Actividades"=>"Activities",
+	"Paseo de barco"=>"Boat Tour",
+	"Hospedaje"=>"Lodging",
+	"Paquetes turísticos"=>"Tourist packages",
+	"Transporte"=>"Transportation",
+	"Excursiones"=>"Excursions",
+	"Evento nocturno"=>"Night Event",
+	"actividades_destacadas"=>"OUTSTANDING ACTIVITIES"
 );
