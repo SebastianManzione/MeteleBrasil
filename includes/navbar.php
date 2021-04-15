@@ -77,7 +77,10 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <?php
 $version = date('Y-m-d H:i:s');
 
+$carrito=$_SESSION['reserva'];
 
+//print_r($carrito);
+$cantCarrito=count($carrito);
 
 }
 
@@ -528,91 +531,75 @@ setTimeout(location.reload(), 3000);
               <i href="carrito.php" class="fa fa-shopping-cart"></i>
             </a>
             <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink">
-				<?php 
-				if (!isset($_SESSION["carrito"]["actividades"]) && !isset($_SESSION["carrito"]["paquetes"])) {
-				   echo '<p class="vacio" style="text-align:center">Tu Carrito Esta Vacío</p>';
-				}
-				
-				echo '<p class="vacio vacionovo" style="text-align:center; display:none">Tu Carrito Esta Vacío</p>';
-				
-				if(isset($_SESSION["carrito"]["actividades"]) && sizeof($_SESSION["carrito"]["actividades"]) > 0){
-				 $totalReservaActividades = 0;	
-				 foreach ($_SESSION["carrito"]["actividades"]  as $key => $value) {
-				  echo '<div class="col-md-12 col-12" id="carrinhonovoactividades' . $key . '"><div class="row">'; 		 
-				  $id=$value["idServicio"];
-				  $foto = DevuelveFotosServicio($id)[0]; 
-				  if(isset($_SESSION["valorcarrinho"]["actividades"][$key])){
-				   $subTotalReserva = $_SESSION["valorcarrinho"]["actividades"][$key]['valor'];
-				  } else {
-				   $subTotalReserva = 0;
-				  }
-				  $totalReservaActividades += $subTotalReserva;
-				  
-				  echo '<div class="col-md-4 col-4"><img src="sistema/img/uploads/'.$foto.'" class="imgcarrinhonav"></div>';
-				  echo '<div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovoactividades' . $key . '">'.NombreServicio($id).' &nbsp;&nbsp;<i class="fa fa-times excluircarrinhoactividades" data-id="' . $key . '"></i></p></div>';
-				  echo '<div class="col-md-12 col-12"><p class="vacio2" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovoactividades' . $key . '">' . $subTotalReserva . '</p></div>';
-				  echo '</div></div>';
-				 }
-				 
-				 $txtactividade = count($_SESSION["carrito"]["actividades"]) > 1 ? 'Actividades' : 'Actividade'; 
-				 echo '<div class="col-md-12 col-12 divcoractividade" style="background-color:#f3f3f3; color:#000; padding:20px">
-				 <div class="row">
-				  <div class="col-md-10 col-6">
-				   <span style="font-size:20px !important; text-align:left" class="qdtactividade" id="qdtactividade">' . count($_SESSION["carrito"]["actividades"]) . ' ' . $txtactividade . '</span>
-				  </div>
-				  <div class="col-md-2 col-6">
-				   <span style="font-size:20px !important; text-align:right !important" class="totalactividade"><b style="font-size:20px !important; text-align:right !important" id="valoractividades' . $key . '">' . $totalReservaActividades . '</b></span>
-				  </div>
-				 </div>
-				 </div>';
-				}
-			  ?>
-			  <?php 
-				if(isset($_SESSION["carrito"]["paquetes"]) && sizeof($_SESSION["carrito"]["paquetes"]) > 0){
-				 $totalReservaPaquetes = 0;	
-				 foreach ($_SESSION["carrito"]["paquetes"]  as $key => $value) {
-				  echo '<div class="col-md-12 col-12" id="carrinhonovopaquetes' . $key . '"><div class="row">'; 		
-				  $id=$value["idServicio"];	 
-				  $foto = DevuelveFotosServicio($id)[0]; 
-				  if(isset($_SESSION["valorcarrinho"]["paquetes"][$key])){
-				   $subTotalReserva = $_SESSION["valorcarrinho"]["paquetes"][$key]['valor'];
-				  } else {
-				   $subTotalReserva = 0;
-				  }
-				  
-				  $totalReservaPaquetes += $subTotalReserva;
-				  echo '<div class="col-md-4 col-4"><img src="sistema/img/uploads/'.$foto.'" class="imgcarrinhonav"></div>';
-				  echo '<div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovopaquetes' . $key . '">'.NombreServicio($id).' &nbsp;&nbsp;<i class="fa fa-times excluircarrinhopaquetes" data-id="' . $key . '"></i></p></div>';
-				  echo '<div class="col-md-12 col-12"><p class="vacio2" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovopaquetes' . $key . '">' . $subTotalReserva . '</p></div>';
-				  echo '</div></div>';
-				 }
-				 
-				 $txtpaquete = count($_SESSION["carrito"]["paquetes"]) > 1 ? 'Paquetes' : 'Paquete'; 
-				 echo '<div class="col-md-12 col-12 divcorpaquete" style="background-color:#f3f3f3; color:#000; padding:20px; margin-bottom:50px !important">
-				 <div class="row">
-				  <div class="col-md-10 col-6">
-				   <span style="font-size:20px !important; text-align:left" class="qdtpaquete" id="qdtpaquete">' . count($_SESSION["carrito"]["paquetes"]) . ' ' . $txtpaquete . '</span>
-				  </div>
-				  <div class="col-md-2 col-6">
-				   <span style="font-size:20px !important; text-align:right !important" class="totalpaquete"><b style="font-size:20px !important; text-align:right !important" id="valorpaquetes' . $key . '">' . $totalReservaPaquetes . '</b></span>
-				  </div>
-				 </div>
-				 </div>';
-				}
-				 
-			   ?>
+	<?php
+    require("admin/classes/servicio.php");
+  require("admin/classes/fotos_servicio.php");
+    require("admin/classes/tarifas.php");
+      require("admin/classes/salidas.php");
+       require("admin/classes/edades.php");
+         require("admin/classes/comisiones.php");
+           require("admin/classes/cancelaciones.php");
+         require("admin/classes/convierte_monedas.php");
+         ?>
 
-			   <?php 
-if (isset($_SESSION["carrito"]["actividades"])|| isset($_SESSION["carrito"]["paquetes"])) {
-  # code...
 
-         if (count($_SESSION["carrito"]["actividades"])>0 || count($_SESSION["carrito"]["paquetes"])>0){?>
-				<div class="col-md-12 col-12 carrinhovazio" style="margin-top:15px !important; margin-bottom:10px !important">
-				 <div class="custom-control custom-checkbox mr-sm-2">
-				   <center><a href="carrito.php"><button class="btn btn-danger btn-radius btn-sm">Finalizar Reserva</button></a></center>
-				 </div>
-				</div> 
-			   <?php }} ?>
+         <?php
+   if ($cantCarrito=0) { ?>
+     <p class="vacio" style="text-align:center">Tu Carrito Esta Vacío</p> 
+<?php  } 
+
+$precioTotalCarrito=0;
+
+for ($i=0; $i < count($carrito); $i++) { 
+      $reserva=$carrito[$i][0];
+      $idServicio=$reserva[0]['idServicioSeleccionado'];
+            $servicio=getServicio($reserva[0]['idServicioSeleccionado']);
+           $fotos=getFotosServicio($idServicio);
+               $precioReserva=0;
+       $cantidadPasajeros=0;
+             for ($j=0; $j < count($reserva); $j++) { 
+       
+      $servicio=getServicio($reserva[$j]['idServicioSeleccionado']);
+      $idServicioSalidasTarifas=$reserva[$j]['idServicioSalidasTarifas'];
+      $cantidad=$reserva[$j]['cantidad'];
+
+      $cantidadPasajeros+=$reserva[$j]['cantidad']; 
+  
+        $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
+
+          $precioReserva+=$tarifa[0]["valor"];
+ 
+    
+$precioTotalCarrito+=$tarifa[0]["valor"];
+
+      }
+  ?>
+
+  <div class="col-md-12 col-12" id="carrinhonovoactividades' . $key . '"><div class="row">     
+      
+          
+      <div class="col-md-4 col-4"><img src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="imgcarrinhonav"></div>
+          <div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovoactividades' . $key . '"><?=$servicio[0]["nombre_servicio"];?> &nbsp;&nbsp;<i class="fa fa-times excluircarrinhoactividades" data-id="' . $key . '"></i></p></div>
+          <div class="col-md-12 col-12"><p class="vacio2" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovoactividades' . $key . '"><?= $_SESSION['moneda_sel_sym']."".$precioReserva;?></p></div>
+         </div></div>
+
+  <?php
+}   ?>
+		
+  
+  <?php if (count($carrito)>0) { ?>
+
+         <div class="col-md-12 col-12 carrinhovazio" style="margin-top:15px !important; margin-bottom:10px !important">
+         <div class="custom-control custom-checkbox mr-sm-2">
+           <center><a href="carrito.php"><button class="btn btn-danger btn-radius btn-sm">Finalizar Reserva</button></a></center>
+         </div>
+        </div> 
+ <?php } ?>
+			
+	
+
+
+
             </div>
            </li>
           <!-- FIN NAV-ITEM-->
@@ -733,81 +720,25 @@ if (isset($_SESSION["carrito"]["actividades"])|| isset($_SESSION["carrito"]["paq
               <i href="carrito.php" class="fa fa-shopping-cart"></i>
             </a>
             <div class="dropdown-menu menu-civa menumobile" aria-labelledby="navbarDropdownMenuLinkMobile">
+                       <?php
+   if ($cantCarrito=0) { ?>
+     <p class="vacio" style="text-align:center">Tu Carrito Esta Vacío</p>
+<?php  } 
+?>
 				<?php 
-				if (count($_SESSION["carrito"]["actividades"])==0 &&count($_SESSION["carrito"]["paquetes"])==0) {
-				   echo '<p class="vacio" style="text-align:center">Tu Carrito Esta Vacío</p>';
-				}
-				
-				echo '<p class="vacio vacionovo" style="text-align:center; display:none">Tu Carrito Esta Vacío</p>';
-				
-				if(isset($_SESSION["carrito"]["actividades"]) && sizeof($_SESSION["carrito"]["actividades"]) > 0){
-				 $totalReservaActividades = 0;	
-				 foreach ($_SESSION["carrito"]["actividades"]  as $key => $value) {
-				  echo '<div class="col-md-12 col-12" id="carrinhonovoactividades' . $key . '"><div class="row">'; 		 
-				  $id=$value["idServicio"];
-				  $foto = DevuelveFotosServicio($id)[0]; 
-				  if(isset($_SESSION["valorcarrinho"]["actividades"][$key])){
-				   $subTotalReserva = $_SESSION["valorcarrinho"]["actividades"][$key]['valor'];
-				  } else {
-				   $subTotalReserva = 0;
-				  }
-				  $totalReservaActividades += $subTotalReserva;
-				  
-				  echo '<div class="col-md-4 col-4"><img src="sistema/img/uploads/'.$foto.'" class="imgcarrinhonav"></div>';
-				  echo '<div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovoactividades' . $key . '">'.NombreServicio($id).' &nbsp;&nbsp;<i class="fa fa-times excluircarrinhoactividades" data-id="' . $key . '"></i></p></div>';
-				  echo '<div class="col-md-12 col-12"><p class="vacio2 carrinhonovoactividades' . $key . '" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovoactividades' . $key . '">' . $subTotalReserva . '</p></div>';
-				  echo '</div></div>';
-				 }
-				 
-				 $txtactividade = count($_SESSION["carrito"]["actividades"]) > 1 ? 'Actividades' : 'Actividade'; 
-				 echo '<div class="col-md-12 col-12 divcoractividade" style="background-color:#f3f3f3; color:#000; padding:20px">
-				 <div class="row">
-				  <div class="col-md-10 col-10">
-				   <span style="font-size:20px !important; text-align:left" class="qdtactividade" id="qdtactividade">' . count($_SESSION["carrito"]["actividades"]) . ' ' . $txtactividade . '</span>
-				  </div>
-				  <div class="col-md-2 col-2">
-				   <span style="font-size:20px !important; text-align:right !important" class="totalactividade"><b style="font-size:20px !important; text-align:right !important; margin-left:-20px;" id="valoractividades' . $key . '">' . $totalReservaActividades . '</b></span>
-				  </div>
-				 </div>
-				 </div>';
-				}
-			  ?>
-			  <?php 
-				if(isset($_SESSION["carrito"]["paquetes"]) && sizeof($_SESSION["carrito"]["paquetes"]) > 0){
-				 $totalReservaPaquetes = 0;	
-				 foreach ($_SESSION["carrito"]["paquetes"]  as $key => $value) {
-				  echo '<div class="col-md-12 col-12" id="carrinhonovopaquetes' . $key . '"><div class="row">'; 		
-				  $id=$value["idServicio"];	 
-				  $foto = DevuelveFotosServicio($id)[0]; 
-				  if(isset($_SESSION["valorcarrinho"]["paquetes"][$key])){
-				   $subTotalReserva = $_SESSION["valorcarrinho"]["paquetes"][$key]['valor'];
-				  } else {
-				   $subTotalReserva = 0;
-				  }
-				  
-				  $totalReservaPaquetes += $subTotalReserva;
-				  echo '<div class="col-md-4 col-4"><img src="sistema/img/uploads/'.$foto.'" class="imgcarrinhonav"></div>';
-				  echo '<div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovopaquetes' . $key . '">'.NombreServicio($id).' &nbsp;&nbsp;<i class="fa fa-times excluircarrinhopaquetes" data-id="' . $key . '"></i></p></div>';
-				  echo '<div class="col-md-12 col-12"><p class="vacio2 carrinhonovopaquetes' . $key . '" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovopaquetes' . $key . '">' . $subTotalReserva . '</p></div>';
-				  echo '</div></div>';
-				 }
-				 
-				 $txtpaquete = count($_SESSION["carrito"]["paquetes"]) > 1 ? 'Paquetes' : 'Paquete'; 
-				 echo '<div class="col-md-12 col-12 divcorpaquete" style="background-color:#f3f3f3; color:#000; padding:20px; margin-bottom:50px !important">
-				 <div class="row">
-				  <div class="col-md-10 col-6">
-				   <span style="font-size:20px !important; text-align:left" class="qdtpaquete" id="qdtpaquete">' . count($_SESSION["carrito"]["paquetes"]) . ' ' . $txtpaquete . '</span>
-				  </div>
-				  <div class="col-md-2 col-6">
-				   <span style="font-size:20px !important; text-align:right !important" class="totalpaquete"><b style="font-size:20px !important; text-align:right !important" id="valorpaquetes' . $key . '">' . $totalReservaPaquetes . '</b></span>
-				  </div>
-				 </div>
-				 </div>';
-				}
-				 
-			   ?>
+$precioTotalCarrito=0;
+				for ($i=0; $i < count($carrito); $i++) { 
+         ?>
+<div class="col-md-12 col-12" id="carrinhonovoactividades' . $key . '"><div class="row">
+<div class="col-md-4 col-4"><img  src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="imgcarrinhonav"></div>
+<div class="col-md-8 col-8"><p class="vacio2" id="carrinhonovoactividades' . $key . '"> 
+ &nbsp;&nbsp;<i class="fa fa-times excluircarrinhoactividades" data-id="' . $key . '"></i><?=$servicio[0]["nombre_servicio"];?></p></div>
+<div class="col-md-12 col-12"><p class="vacio2 carrinhonovoactividades' . $key . '" style="text-align:right; font-weight:bold; font-size:20px;" id="carrinhonovoactividades' . $key . '"><?= $_SESSION['moneda_sel_sym']."".$precioReserva;?></p></div>
+</div></div>
+   
+		<?php } ?>
 
-			   <?php if (count($_SESSION["carrito"]["actividades"])>0 || count($_SESSION["carrito"]["paquetes"])>0){?>
+			   <?php if (count($carrito)>0 ){?>
 				<div class="col-md-12 col-12 carrinhovazio" style="margin-top:15px !important; margin-bottom:10px !important">
 				 <div class="custom-control custom-checkbox mr-sm-2">
 				   <center><a href="carrito.php"><button class="btn btn-danger btn-radius btn-sm">Finalizar Reserva</button></a></center>

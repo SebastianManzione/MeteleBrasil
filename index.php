@@ -5,17 +5,13 @@
 
 include("includes/navbar.php"); 
 require("admin/classes/opiniones_categoria.php");
-require("admin/classes/servicio.php");
-require("admin/classes/salidas.php");
-require("admin/classes/edades.php");
-require("admin/classes/comisiones.php");
-require("admin/classes/cancelaciones.php");
+
+require_once("admin/classes/salidas.php");
+
 require("admin/classes/categoria.php");
 require("admin/classes/servicio_opiniones.php");
 require("admin/classes/texto_miniaturas.php"); 
-require("admin/classes/fotos_servicio.php");
-   require("admin/classes/tarifas.php");
-    require("admin/classes/convierte_monedas.php");
+
   
 
 /*

@@ -1,19 +1,13 @@
 <?php
 
  include('includes/navbar.php'); 
-  include('admin/classes/servicio.php'); 
-  require("admin/classes/salidas.php");
-  require("admin/classes/edades.php");
-  require("admin/classes/comisiones.php");
-  require("admin/classes/cancelaciones.php");
+
  include('admin/classes/categoria.php'); 
   include('admin/classes/fotos_categoria.php'); 
-    include('admin/classes/fotos_servicio.php');
+
  include('admin/classes/opiniones_categoria.php'); 
  include('admin/classes/servicio_opiniones.php');
-    require("admin/classes/convierte_monedas.php");
-       require("admin/classes/tarifas.php");
-
+    
 
 /*
 
