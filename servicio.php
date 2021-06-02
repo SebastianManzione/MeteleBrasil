@@ -1,5 +1,6 @@
  <?php
 
+
 include("includes/navbar.php");
 
 
@@ -58,20 +59,28 @@ include('servicioHead.php');
           <p><?=$servicio["descripcion_corta"];?></p>
           <!--FIN TEXTO DESTACADO-->
 
-          <!--SLIDER-->
+                   <!--SLIDER-->
 
-           <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <div id="carrouseldivPc" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-              <div class="carousel-inner">
-                <!--CARGA DE IMAGENES-->
+              
+                    
+                                <!--CARGA DE IMAGENES-->
                                      <?php //********************arranca fotos*******************************************
       # code...  
                                     
-
+for ($i=0; $i < count($fotos); $i++) { 
+    $active='';
+  if ($i==0) {
+   $active='class="active"';
+  }?>
+  <li data-target="#carrouseldivPc" data-slide-to="<?=$i;?>" <?= $active;?>></li>
+  <?php
+}
+?>
+    </ol>
+              <div class="carousel-inner">
+<?php
     for ($i=0; $i < count($fotos) ; $i++) { 
       if ($i==0) {
         $classe="carousel-item active";
@@ -93,26 +102,24 @@ include('servicioHead.php');
     //********************fin fotos*******************************************?>
             
                 <!--FIN CARGA DE IMAGENES-->
-              
-               
+         
               </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Anterior</span>
+                  <span class="sr-only">Previous</span>
                 </a>
                 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="sr-only"> Próxima </span>
+                  <span class="sr-only">Next</span>
                 </a>
            </div>
         <!--FIN SLIDER-->
-
         <!--TEXTO VISITA-->
 
 
         <h2 class="py-4 text-primary" name="desc"> ¿Qué se visita? </h2>
 
-      
+   
 
        
 
@@ -272,22 +279,24 @@ include('servicioHead.php');
 
 <script>
 	var codCupon;
+  const empty = {};
 function cupon(texto){
 
-	$.post('ctrlCupon.php', {
-    data:{    'datos' : JSON.stringify(texto) }
+	$.post('admin/ctrl/ctrlCupon.php', {
+    data:{    'cupon' : JSON.stringify(texto) }
   }, function(response) {
 
-    responser=JSON.parse(response);   
-     
-  	if (responser[0]==1) { 
+   
+  
+  	if (response.length>10) { 
+          responser=JSON.parse(response);
   		codCupon=texto;
       $("#cuponOk").removeClass("text-danger");
       $("#cuponOkMovil").removeClass("text-danger");
 
-  		$("#cuponOk").text("Cupón aceptado, Tu anfitrion es "+responser[1]+" y brinda un descuento del "+responser[2]+"%");
+  		$("#cuponOk").text("Cupón aceptado, Tu anfitrion es "+responser['anfitrion']+" y brinda un descuento del "+responser['descuentoPorcentual']+"%");
 		  $("#cuponOk").addClass("text-success");
-  		$("#cuponOkMovil").text("Cupón aceptado,Tu anfitrion es "+responser[1]+" y brinda un descuento del "+responser[2]+"%");
+  		$("#cuponOkMovil").text("Cupón aceptado,Tu anfitrion es "+responser['anfitrion']+" y brinda un descuento del "+responser['descuentoPorcentual']+"%");
       $("#cuponOkMovil").addClass("text-success");
 
   	}
@@ -364,6 +373,37 @@ function cupon(texto){
                     </div>
             
             
+
+
+      <!--ACORDEON HORA-->
+             <div class="accordion mb-2" id="Seleccionar_descuento">
+                 <div class="card card-accordion">
+                    <div class="" id="headingOne">   
+                      <h5 class="mb-0">
+                     <a class="btn btn-accordion btn-calendar text-white" data-toggle="collapse" data-target="#seleccionar_descuentoDiv" aria-expanded="false" aria-controls="collapseOne">
+                         <i class="fa fa-clock"></i> Cupon de descuento <i class="fa fa-sort-down float-right"></i>
+                     </a>
+                      </h5>   
+                    </div>
+
+                    <div id="seleccionar_descuentoDiv" class="collapse" aria-labelledby="headingOne" data-parent="#seleccionar_descuentoDiv">
+                      <div class="form-group">
+                        <label for="">
+                          Ingrese un cupon de descuento
+                        </label>
+                        <input type="text" onkeyup="cupon(this.value)" name="" id="txtCuponDescuento" class="form-control" value="">
+                      </div>
+                      <div id="cuponOk"></div>
+                            <!--Aca el js trae los horarios al clickear en el calendario-->
+                    </div>
+                  </div>
+
+              </div>
+             
+              <!--FIN ACORDEON HORA-->
+
+
+
              <!--ACORDEON PERSONA-->
              <div class="accordion mb-2" id="Seleccionar_personas">
                  <div class="card card-accordion">
@@ -387,6 +427,12 @@ function cupon(texto){
               </div>
               <!--FIN ACORDEON PERSONA-->
               
+
+
+
+
+
+
                <!--ACORDEON TOURS-->
 
 
@@ -418,32 +464,6 @@ function cupon(texto){
               </div>
               <!--ACORDEON TOURS-->
 
-      <!--ACORDEON HORA-->
-             <div class="accordion mb-2" id="Seleccionar_descuento">
-                 <div class="card card-accordion">
-                    <div class="" id="headingOne">
-                      <h5 class="mb-0">
-                        <a class="btn btn-accordion btn-calendar text-white" data-toggle="collapse" data-target="#seleccionar_descuento" aria-expanded="false" aria-controls="collapseOne">
-                         <i class="fa fa-clock"></i> Cupon de descuento <i class="fa fa-sort-down float-right"></i>
-                        </a>
-                      </h5>
-                    </div>
-
-                    <div id="seleccionar_descuento" class="collapse" aria-labelledby="headingOne" data-parent="#seleccionar_descuento">
-                      <div class="form-group">
-                        <label for="">
-                          Ingrese un cupon de descuento
-                        </label>
-                        <input type="text" onkeyup="cupon(this.value)" name="" id="txtCuponDescuento" class="form-control" value="">
-                      </div>
-                      <div id="cuponOk"></div>
-                            <!--Aca el js trae los horarios al clickear en el calendario-->
-                    </div>
-                  </div>
-
-              </div>
-             
-              <!--FIN ACORDEON HORA-->
 
 
    <button class="btn btn-primary btn-reservar-calendar btn-lg h-100" onclick="enviar()"> Reservar </button>
@@ -504,8 +524,8 @@ function cupon(texto){
            <!--FIN CONTENEDOR CANCELACION-->
 
 <?php 
-
-if (count($OpinionesServicio)>0) {
+$CantOpinionesServicio=count($OpinionesServicio);
+if ($CantOpinionesServicio>0) {
 ?>
 
      <div class="mb-5" id="opiniones" >
@@ -529,7 +549,7 @@ for ($i=0; $i < 1; $i++) {
           
               <div class="row no-gutters">
                 <div class="col-lg-12">
-                  <p class="mb-4">Mostrando 1 de <?= count($OpinionesServicio); ?> opiniones</p>
+                  <p class="mb-4">Mostrando 1 de <?= $CantOpinionesServicio; ?> opiniones</p>
                  <!-- CARGA BUCLE OPINIONES-->
 
  <div class="card card-opiniones mb-5">
@@ -559,15 +579,19 @@ for ($i=0; $i < 1; $i++) {
                     </div>
                   </div>
 
-
-
-
-
-
+<?php if ($CantOpinionesServicio>1) {
+  # code...
+?>
 
 
    <!-- FIN CARGA BUCLE OPINIONES-->
-                 
+                      <div class="row text-center">
+                <div class="col-md-12">
+                    <a class="btn btn-white-destinos"  id="alternar-panel-oculto-1" data-toggle="collapse" data-target="#Ver-mas-opinones" aria-expanded="false" aria-controls="Ver-mas-opinones">
+                      Ver todas las opiniones
+                    </a>
+                </div>
+              </div>
 
 
 
@@ -575,14 +599,13 @@ for ($i=0; $i < 1; $i++) {
               </div>
 
 <?php
-} ?>
+}}  ?>
             <!-- CONTENEDOR OPINIONES-->
      
   
       <?php
 
-
-for ($i=1; $i < count($OpinionesServicio); $i++) { 
+for ($i=1; $i < $CantOpinionesServicio; $i++) { 
   $fecha_comentario=date("d-m-Y", strtotime($OpinionesServicio[$i]["fechaAlta"]));
   $estrellas=intval($OpinionesServicio[$i]["estrellas"]);   
   $texto_viajeros=getTextoViajeros($OpinionesServicio[$i]["selPasajeros"])[0];
@@ -590,7 +613,7 @@ for ($i=1; $i < count($OpinionesServicio); $i++) {
               <!--Mas opiniones-->
               <div class="row collapse" id="Ver-mas-opinones">
                  <div class="col-lg-12">
-                  <p class="mb-4">Mostrando 2 de <?= count($OpinionesServicio);?> opiniones</p>
+                  <p class="mb-4">Mostrando <?=($i+1)?> de <?= count($OpinionesServicio);?> opiniones</p>
                  <!-- CARGA BUCLE OPINIONES-->
 
 
@@ -627,22 +650,10 @@ for ($i=1; $i < count($OpinionesServicio); $i++) {
               
                    <!-- FIN CARGA BUCLE OPINIONES-->
                  <?php
-} ?>
-                </div>
-              </div>
-<?php if (count($OpinionesServicio)>1) {
-?>
-      <!--Mas opiniones-->
-              <div class="row text-center">
-                <div class="col-md-12">
-                    <a class="btn btn-white-destinos"  id="alternar-panel-oculto-1" data-toggle="collapse" data-target="#Ver-mas-opinones" aria-expanded="false" aria-controls="Ver-mas-opinones">
-                      Ver todas las opiniones
-                    </a>
+} } ?>
                 </div>
               </div>
 
-<?php
-} }  ?>
         
         
           </div>
@@ -715,8 +726,7 @@ for ($i=0; $i < 3; $i++) {
               </div>
             </div>
 
-            <p class="text-center"><a href="categorias?idCategoria=<?=$idCategoria_servicio; ?>" class="btn btn-white-destinos">Ver mas <?=  $categoria_servicio[0]["nombre_categoria_servicio"]; ?> </a></p>
-
+       
             <!--FIN CARDS DE INTERES-->
 
 
@@ -987,7 +997,7 @@ traigoDiaPorClase.style.borderRadius = "50%";
 
  <!--ACORDEON PERSONA-->
             
-             <div class="accordion mb-2">
+             <div class="accordion mb-2" id="Seleccionar_adicionales_b_celular">
                  <div class="card card-accordion">
                     <div class="" id="headingOne">
                       <h5 class="mb-0">

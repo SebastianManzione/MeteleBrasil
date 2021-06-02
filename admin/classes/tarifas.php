@@ -79,10 +79,13 @@ function getComisionTarifa($idServicioSalidasTarifas){
 
     function calculaTarifa($idServicioSalidasTarifas,
 $cantidad){
+ 
+        if (isset($_SESSION["cupon_descuento"]["descuentoPorcentual"]) ) {
+         $descuentoCupon=$_SESSION["cupon_descuento"]["descuentoPorcentual"]/100;  
+         
+     }
 
-    $idServicioSalidasTarifas=$idServicioSalidasTarifas;
-            $cantidad=$cantidad;
-        
+        $totalDescuentos=0;
             $tarifas= getTarifa($idServicioSalidasTarifas);
     
             $salida=getSalida($tarifas[0]['idServicioSalidas']);
@@ -97,7 +100,20 @@ $cantidad){
                 $retorno[$i]['edadFrom']=getEdad($tarifas[$i]['idFromEdad'])[0]["valor"];
             $retorno[$i]['edadTo']=getEdad($tarifas[$i]['idToEdad'])[0]["valor"];
             $retorno[$i]['idTipoTarifa']=$tarifas[$i]['idTipoTarifa'];
-            $tarifas[$i]['valor']=$tarifas[$i]['valor']*$cantidad;
+        
+         
+      $descuentoTarifa=0;
+            $tarifas[$i]['valor']=$tarifas[$i]['valor']*$cantidad; 
+                 if (isset($_SESSION["cupon_descuento"]["descuentoPorcentual"]) ) {
+         $descuentoCupon=$_SESSION["cupon_descuento"]["descuentoPorcentual"]/100;  
+       
+            $descuentoTarifa=$tarifas[$i]['valor']* $descuentoCupon;
+            $tarifas[$i]['valor']=$tarifas[$i]['valor']-$descuentoTarifa;
+     }
+
+
+
+             $totalDescuentos+=$descuentoTarifa;
             $retorno[$i]['valor']=convierteMoneda( $salida[0]["idMoneda"],$_SESSION['moneda_sel'],$tarifas[$i]['valor']);
             if ($tarifas[$i]['comisiona']==1) {
                $comisionVendedor=getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,1);
@@ -123,6 +139,7 @@ $cantidad){
             $retorno[$i]['minimo']=$tarifas[$i]['minimo'];
             $retorno[$i]['idCancelaciones']=$tarifas[$i]['idCancelaciones'];
             $retorno[$i]['cancelaciones']=getTipoCancelaciones($tarifas[$i]['idCancelaciones'])[0];
+             $retorno[$i]['totalDescuentos']=$totalDescuentos;
             }
             
     return $retorno;

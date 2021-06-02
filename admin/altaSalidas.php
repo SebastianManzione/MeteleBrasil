@@ -100,8 +100,8 @@ if ($insert) {
     $prestador=$_POST["selPrestador"];
     
     $nombre_periodo=$_POST["nombre_periodo"];
-
-  $idServicioSalidas=  altaSalida($nombre_periodo,$idServicio, $fechaSalida,$hSalida,$horaCheckIn,$horasAnticipacion,$duracionMinima,$duracionMaxima,$cantLugares,$accesibilidad,$prestador, $idPackSalidas, $idMoneda);
+	$nota_salida=$_POST["nota_salida"];
+  	$idServicioSalidas=  altaSalida($nombre_periodo,$idServicio, $fechaSalida,$hSalida,$horaCheckIn,$horasAnticipacion,$duracionMinima,$duracionMaxima,$cantLugares,$accesibilidad,$prestador, $idPackSalidas, $idMoneda, $nota_salida);
    $idiomas=$_POST["idiomas"];
 
   for ($k=0; $k < count($idiomas); $k++) { 
@@ -340,8 +340,8 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
                                 </div>
                               <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="label-default ">Observaciones</label>
-                                        <textarea name="observaciones" class="form-control select2bs4" style="width: 100%;" placeholder="">Escriba DETALLES y TÓPICOS a tener en cuenta de esta salida</textarea>
+                                        <label class="label-default ">Nota de salida</label>
+                                        <textarea name="nota_salida" class="form-control select2bs4" style="width: 100%;" placeholder="">Escriba DETALLES y TÓPICOS a tener en cuenta de esta salida</textarea>
                                     </div>
                                 </div>
 

@@ -222,7 +222,7 @@ $cantidad_servicios_categoria=count($servicios);
 </form>
         </div>
               <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
-            <div class="accordion" id="Disponibilidad">
+            <div class="accordion" id="Disponibilidad" style="display: none;">
                  <div class="card card-accordion">
                     <div class="" id="headingOne">
                       <h5 class="mb-0">
@@ -251,12 +251,12 @@ $btnManana="btn btn-primary-selected btn-size";
 
 
                            ?>
-                          <form action="categorias.php">
-                            <input type="hidden" name="hoy"></input>
+                          <form action="categorias.php" style="display: none;">
+                            <input type="hidden" name="hoy">
                           <button type="submit" class="<?=$btnHoy;?>">Hoy</button>
                         </form>
-                         <form action="categorias.php">
-                          <input type="hidden" name="manana"></input>
+                         <form action="categorias.php" style="display: none;">
+                          <input type="hidden" name="manana">
                           <button type="submit" class="<?= $btnManana;?>">Mañana</button>
                             </form>
                        
@@ -327,7 +327,7 @@ $type="";
                   </div>
               </div>-->
               <br>
-               <div class="accordion" id="accordionExample">
+               <div class="accordion" id="accordionExample" style="display: none;">
                  <div class="card card-accordion">
                     <div class="" id="headingOne">
                       <h5 class="mb-0">
@@ -360,7 +360,7 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
                            ?>                      
 
- <form action="categorias.php">
+ <form action="categorias.php" style="display: none;">
                             <input type="hidden" name="priceMin"></input>
                           <button type="submit" class="<?=$btnMenorPrecio;?>">Menor precio</button>
                         </form>
@@ -405,25 +405,28 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
          <!--CARD ULTIMAS OPINIONES-->
 
         <div class="card card-ultimas-o d-md-block d-none">
-<?php if (isset($CantOpinionesCategoria)) {
-      for ($i=0; $i < $CantOpinionesCategoria ; $i++) { 
-        echo '
+<?php 
+      for ($b=0; $b < count($opiniones_categoria) ; $b++) { 
+        if ($b <=2) {
+          # code...
+        
+  ?>
               <div class="card-body">
-      <p class="text-primary">'.$OpinionesCategoria[$i][1].'</p>
+      <p class="text-primary"><?=$opiniones_categoria[$b]['opinion']?></p>
             <p>
             <i class="fa fa-star text-primary"></i>
             <i class="fa fa-star text-primary"></i>
             <i class="fa fa-star text-primary"></i>
             <i class="fa fa-star text-primary"></i>
             <i class="fa fa-star text-primary"></i>
-             '.$OpinionesCategoria[$i][0].'</p>
+             <?=$opiniones_categoria[$b]['nombre']?></p>
             <hr>
           
          
  </div>
-        ';
-      }
-}
+      <?php
+      }}
+
   
 
  ?>
@@ -452,8 +455,8 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
           <div class="card-body">
               
               <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
-            <div class="accordion" id="Disponibilidad">
-                 <div class="card card-accordion">
+            <div class="accordion" id="Disponibilidad" style="display: none;" >
+                 <div class="card card-accordion" style="display: none;">
                     <div class="" id="headingOne">
                       <h5 class="mb-0">
                         <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -750,21 +753,53 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
       
         
         <br>
+
+
+        <div class="card card-ultimas-o d-md-block">
+<?php 
+      for ($b=0; $b < count($opiniones_categoria) ; $b++) { 
+        if ($b <= 2) { // para maximo 2 resultados
+          # code...
+       
+  ?>
+              <div class="card-body">
+      <p class="text-primary"><?=$opiniones_categoria[$b]['opinion']?></p>
+            <p>
+            <i class="fa fa-star text-primary"></i>
+            <i class="fa fa-star text-primary"></i>
+            <i class="fa fa-star text-primary"></i>
+            <i class="fa fa-star text-primary"></i>
+            <i class="fa fa-star text-primary"></i>
+             <?=$opiniones_categoria[$b]['nombre']?></p>
+            <hr>
+          
+         
+ </div>
+      <?php
+      }
+ }
+  
+
+ ?>
+         
+        </div>
+
          <!--CARD GUIA MOVIL -->
         <div class="card card-ultimas-o d-md-none">
           <div class="card-body">
             <form action="guias.php" method="post">
               <input type="hidden" name="idCategoria" value="<?= $id;?>">
-  
-       <h4><i class="fa fa-map"></i> Conoce nuestra guia de <?= NombreCategoria($id); ?></h4>
+
+       <h4><i class="fa fa-map"></i> Conoce nuestra guia de <?= $nombre_categoria; ?></h4>
             <a href="#" class="text-white">
 
-              <img src="admin/img/categoria_servicio/<?php echo DevuelveFotosCategoria($id)[0]; ?>" class="img-fluid img-guia mx-auto d-block">
-              <h4 class="text-guia2"><?= NombreCategoria($id); ?></h4>
+              <img src="admin/img/categoria_servicio/<?= $fotos; ?>" class="img-fluid img-guia mx-auto d-block">
+              <h4 class="text-guia2"><?= $nombre_categoria; ?></h4>
             </a>
-             <button class="submit btn btn-primary"><?= NombreCategoria($id); ?></button>
+             <button class="submit btn btn-primary"><?= $nombre_categoria; ?></button>
+           </form>
           </div>
-        </div></form>
+        </div>
          <!--FIN CARD GUIA MOVIL -->
          <div class="container_r clearfix">
            
@@ -832,7 +867,7 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
                   </div>
               </div> 
               <br>
-               <div class="accordion" id="accordionExample">
+             <!--  <div class="accordion" id="accordionExample">
                  <div class="card card-accordion">
                     <div class="" id="headingOne">
                       <h5 class="mb-0">
@@ -846,8 +881,8 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
                       <div class="card-body">
  <?php 
 
-$cant=count(DevuelveCategorias());
-$devuelveCat=DevuelveCategorias();
+//$cant=count(DevuelveCategorias());
+//$devuelveCat=DevuelveCategorias();
 
                         for ($i=0; $i < $cant; $i++) {
                         $checked="";
@@ -856,13 +891,13 @@ $devuelveCat=DevuelveCategorias();
                            $checked="checked";
                            $type="radio";
                           }
-                         echo '    
+  /*                       echo '    
 <a href="categorias.php?id='.DevuelveCategorias()[$i][0].'">
                <div class="custom-control custom-checkbox mb-2" >
                       
     <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
    <label class="custom-control-label" for="">'.DevuelveCategorias()[$i][1].'</label>
-                    </div> </a>   ';
+                    </div> </a>   ';*/
                         }
                       ?>
                     
@@ -872,7 +907,7 @@ $devuelveCat=DevuelveCategorias();
                       </div>
                     </div>
                   </div>
-              </div>
+              </div>-->
               <br>
               <!-- <div class="accordion" id="accordionExample">
                  <div class="card card-accordion">
@@ -1014,7 +1049,8 @@ $devuelveCat=DevuelveCategorias();
 <!-- FIN MODAL BUSCAR MOVIL-->
 
  <!-- Footer -->
- <?php include "footer.php"; ?>
+ <?php include "footer.php"; 
+?>
  <!--- Fin del footer --->
 
  

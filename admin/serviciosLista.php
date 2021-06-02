@@ -14,7 +14,15 @@ require("classes/edades.php");
 //print_r($_POST); 
  require("classes/servicio.php"); 
  require("classes/fotos_servicio.php"); 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["desHabilitarServicio"]) ) {
+desHabilitarServicio($_POST["desHabilitarServicio"]);
 
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["habilitarServicio"]) ) {
+
+habilitarServicio($_POST["habilitarServicio"]);
+
+}
 
  ?>
  <!-- Content Wrapper. Contains page content -->
@@ -72,12 +80,13 @@ require("classes/edades.php");
                       <th>Nombre</th>
                       <th>Fecha Alta</th>
                       <th>Foto</th>
+                           <?php  if($_SESSION["login"]["rol"]==1){ ?> <th scope="col">habilitado</th>       <?php  } ?>
                       <th>Acciones</th>
                        <!-- /.Descripcion corta -->
                   </tr>
                   </thead>
                   <tbody>
-                    <?php $servicios=getServicios();
+                    <?php $servicios=getAllServicios();
                     for ($i=0; $i < count($servicios); $i++) { 
                       $idServicio=$servicios[$i]["idServicio"];
                       $fotos=getFotosServicio($idServicio);
@@ -88,8 +97,20 @@ require("classes/edades.php");
                     <td><?=$idServicio?></td>
                     <td><?=$servicios[$i]["nombre_servicio"]?></td>
                      <td><?=date("d-m-Y", strtotime($fechaAlta))?></td>
+                      
             <td><img style="width: 100px;"src="classes/imgServicio/<?=$fotos[0]['ruta']?>"></td>
+            <?php  if($_SESSION["login"]["rol"]==1){ ?>
+   <td><form method="post"><?php 
+                                if($servicios[$i]["habilitado"]==0){ ?>
+                                <button class="btn btn-sm btn-success" name="habilitarServicio" value="<?=$idServicio?>">Habilitar</button>
+                                <?php }
+                                else{
+                                  ?><button class="btn btn-sm btn-warning" name="desHabilitarServicio" 
+                                   value="<?=$idServicio;?>">Deshabilitar</button>
+                               <?php }?>    </form></td>
+<?php  } ?>
                     <td><a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-success">Ver</a></td> 
+
                   
                   </tr>
                     <?php

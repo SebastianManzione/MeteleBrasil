@@ -60,20 +60,28 @@
           <p><?=$servicio["descripcion_corta"];?>.</p>
           <!--FIN TEXTO DESTACADO-->
 
-          <!--SLIDER-->
+ <!--SLIDER-->
 
-          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+          <div id="carrouselDivCelular" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
-              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-            </ol>
-              <div class="carousel-inner">
+              
+                    
                                 <!--CARGA DE IMAGENES-->
                                      <?php //********************arranca fotos*******************************************
       # code...  
                                     
-
+for ($i=0; $i < count($fotos); $i++) { 
+     $active='';
+  if ($i==0) {
+   $active='class="active"';
+  }?>
+  <li data-target="#carrouselDivCelular" data-slide-to="<?=$i;?>" <?= $active;?>></li>
+  <?php
+}
+?>
+    </ol>
+              <div class="carousel-inner">
+<?php
     for ($i=0; $i < count($fotos) ; $i++) { 
       if ($i==0) {
         $classe="carousel-item active";

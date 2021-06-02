@@ -7,14 +7,75 @@ include("includes/sidebar.php");
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
+
+
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
- if($prestador>1){
-alertar("Prestador guardado con exito", "success");
- }
+if(isset($_POST['actDes']) && is_numeric($_POST["idUsuario"])){
+  $idUsuario=$_POST['idUsuario'];
+  if ($idUsuario==1) {
+     alertar("El usuario admin no se puede desabilitar", "warning");
+  }
+  else{
+  $habilitado=$_POST['actDes'];
+
+
+$habilitar=habilitarUsuario($idUsuario, $habilitado);
+if ($habilitar==1) {
+  alertar("Cambio en el estado de usuario exitoso", "success");
+}
+  
+  }
 
 
 }
+
+
+if(isset($_POST['cobrador']) && is_numeric($_POST["idUsuario"])){
+$habilitado=$_POST['cobrador'];
+$idUsuario=$_POST['idUsuario'];
+$habilitar=habilitarCobrador($idUsuario, $habilitado);
+if ($habilitar==1) {
+  alertar("Cambio en el estado de cobrador de usuario exitoso", "success");
+}
+
+
+}
+
+if(isset($_POST['vendedor']) && is_numeric($_POST["idUsuario"])){
+$habilitado=$_POST['vendedor'];
+$idUsuario=$_POST['idUsuario'];
+$habilitar=habilitarVendedor($idUsuario, $habilitado);
+if ($habilitar==1) {
+  alertar("Cambio en el estado de vendedor de usuario exitoso", "success");
+}
+
+
+}
+
+
+
+if(isset($_POST['guardar']) && is_numeric($_POST["idUsuario"])){
+$idPrestador=$_POST['idPrestador'];
+$idUsuario=$_POST['idUsuario'];
+$habilitar=updatePrestadorUsuario($idUsuario, $idPrestador);
+if ($habilitar==1) {
+  alertar("Cambios en el usuario ok", "success");
+}
+
+
+}
+
+
+
+ }
+
+
+
 
  ?>
   <!-- Content Wrapper. Contains page content -->
@@ -69,7 +130,10 @@ alertar("Prestador guardado con exito", "success");
                   <th>Foto</th>
                   <th>Nombre </th>        
                   <th>Email</th> 
-                  <th>Rol</th>  
+                  <th>Estado</th>  
+                    <th>Vendedor</th> 
+                      <th>Cobrador</th> 
+                        <th>Prestador</th> 
                     <th>F.Alta</th>
                   <th>Acciones</th>
                 </thead> 
@@ -79,23 +143,99 @@ alertar("Prestador guardado con exito", "success");
 
 
 <?php
+
 $prestadores=getPrestadores();
-for($i=0;$i < count($prestadores); $i++){
- $idPrestador=$prestadores[$i]["idPrestador"];
- $idUsuario=$prestadores[$i]["idUsuario"];
- $usuario=getUsuario($idUsuario);
+$usuarios=getUsuarios();
+for($i=0;$i < count($usuarios); $i++){
+$prestador=getPrestador($usuarios[$i]["idPrestador"]);
+
+$nombrePrestador="SIN PRESTADOR";
+if (is_array($prestador) && count($prestador)==1) {
+  $nombrePrestador=$prestador[0]["razonSocial"];
+}
+ $idUsuario=$usuarios[$i]["idUsuario"];
+/* Tema fotito*/
+$imagen="./classes/imgUsuario/".$usuarios[$i]['fotoUsuario'];
+
+
+if (stripos ( $usuarios[$i]['fotoUsuario'], "ttps:")==1) {
+  $imagen= $usuarios[$i]['fotoUsuario'];
+}
+
+
+/*fin tema fotito*/
+ /* boton habilitar desabilitar usuario   */
+ $botonStatus="btn-sm btn-success";
+  $botonStatusTexto="Habilitar";
+  $botonAccion=1;
+   if ($usuarios[$i]["status"]>0) {
+   $botonStatus="btn-sm btn-danger";
+   $botonStatusTexto="Deshabilitar";
+   $botonAccion=0;
+   };
+ /* finn   boton habilitar desabilitar usuario   */
+
+
+  /* boton habilitar desabilitar vendedor   */
+ $botonVendedorStatus="btn-sm btn-success";
+  $botonVendedorStatusTexto="Habilitar Ventas";
+  $botonVendedorAccion=1;
+   if ($usuarios[$i]["idVendedor"]>0) {
+   $botonVendedorStatus="btn-sm btn-danger";
+   $botonVendedorStatusTexto="Deshabilitar Ventas";
+   $botonVendedorAccion=0;
+   };
+ /* finn   boton habilitar desabilitar vendedor   */
+
+
+  /* boton habilitar desabilitar cobrador   */
+ $botonCobradorStatus="btn-sm btn-success";
+  $botonCobradorStatusTexto="Habilitar Cobros";
+  $botonCobradorAccion=1;
+   if ($usuarios[$i]["idCobrador"]>0) {
+   $botonCobradorStatus="btn-sm btn-danger";
+   $botonCobradorStatusTexto="Deshabilitar Cobros";
+   $botonCobradorAccion=0;
+   };
+ /* finn   boton habilitar desabilitar cobrador   */
+ $fecha_alta=date("d-m-Y H:i", strtotime($usuarios[$i]["fecha_alta"]));
+
     ?>
     
     <tr> 
-   <td> <?= $prestadores[$i]["nombre"]; ?> </td>
-   <td> <?= $prestadores[$i]["razonSocial"]; ?> </td>
+      <form method="POST">
+        <input type="hidden" name="idUsuario" value="<?=$idUsuario;?>">
+   <td><img src="<?=$imagen;?>" style="width:  75px;"/>  </td>
+   <td> <?= $usuarios[$i]["usuario"]; ?> </td>
 
-   <td> <?= $prestadores[$i]["documento"]; ?> </td>
-   <td> <?= $prestadores[$i]["telefono"]; ?> </td> 
-   <td> <?= $prestadores[$i]["email"]; ?> </td>
+   <td> <?= $usuarios[$i]["email"]; ?> </td>
+   <td> <button class="<?=$botonStatus; ?>" value="<?=$botonAccion;?>" name="actDes"><?=$botonStatusTexto;?></button> </td> 
+
+
+     <td> <button class="<?=$botonVendedorStatus; ?>" value="<?=$botonVendedorAccion;?>" name="vendedor"><?=$botonVendedorStatusTexto;?></button>  </td>
+
+         <td> <button class="<?=$botonCobradorStatus; ?>" value="<?=$botonCobradorAccion;?>" name="cobrador"><?=$botonCobradorStatusTexto;?></button>  </td>
+
+            <td> 
+<select name="idPrestador">
+  <?php 
+  for ($k=0; $k < count($prestadores); $k++) { 
+     $selected=" ";
+    if($usuarios[$i]["idPrestador"]==$prestadores[$k]["idPrestador"]){
+      $selected="selected";
+    }
+
+     ?>  <option value="<?=$prestadores[$k]["idPrestador"];?>" <?=$selected;?> ><?=$prestadores[$k]["razonSocial"];?></option><?php
+   } ?>
+
+</select>
+
+              </td>
+   <td> <?=  $fecha_alta ?> </td>
       <td>
-          <a class="btn-sm btn-danger"onclick="borraPrestador('<?=$idPrestador;?>')"><i class="fas fa-trash"></i>Eliminar</a>
+          <button class="btn-sm btn-info" name="guardar"><i class="fas fa-save"></i>Guardar</button>
       </td>
+      </form>
 </tr> 
     
     <?php

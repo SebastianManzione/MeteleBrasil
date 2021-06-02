@@ -5,6 +5,11 @@ include("includes/sidebar.php");
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
+
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 $nombre=$_POST["nombre"];

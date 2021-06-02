@@ -56,12 +56,10 @@ $impuestos_pais=getImpuestosPais($idPais);
 
 $_SESSION['impuestos_pais']=$impuestos_pais;
 
-if (isset($_SESSION["moneda_sel"])) {
- $monedaSelSym=$_SESSION["moneda_sel_sym"];
-}
-else{
-  $_SESSION['moneda_sel']=$geo["idPais"];
-$_SESSION['moneda_sel_sym']=$geo["sym"];
+if (!isset($_SESSION["moneda_sel"])) {
+   $_SESSION['moneda_sel']=283;
+$_SESSION['moneda_sel_sym']='R$';
+ $monedaSelSym='R$';
 }
 
 
@@ -72,12 +70,18 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 ?>
 <script type="text/javascript">
   var symMoneda='<?=$_SESSION['moneda_sel_sym'];?>';
-    var idVendedor="<?=$_SESSION["login"]["idVendedor"]?>";
+  var idVendedor="<?=$_SESSION["login"]["idVendedor"]?>";
 </script>
 <?php
 $version = date('Y-m-d H:i:s');
+if (isset($_SESSION['reserva'])) {
+  $carrito=$_SESSION['reserva'];
+}
 
-$carrito=$_SESSION['reserva'];
+else{
+  $carrito=array();
+}
+
 
 //print_r($carrito);
 $cantCarrito=count($carrito);
@@ -258,16 +262,16 @@ $descripcion_corta="Actividades, traslados, entradas, visitas guiadas y excursio
             <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink">
 			  <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;Español</a>
               <a class="dropdown-item" onclick="cambiaIdioma('EN');"><img src="img/countries/United-States-of-Americ-icon.png" style="height: 20px; width: 20px;"> &nbsp;Ingles</a>
-              <a class="dropdown-item" onclick="cambiaIdioma('IT');"><img src="img/countries/italy-icon.png" style="height: 20px; width: 20px;"> &nbsp;Italiano</a>
+              <!--<a class="dropdown-item" onclick="cambiaIdioma('IT');"><img src="img/countries/italy-icon.png" style="height: 20px; width: 20px;"> &nbsp;Italiano</a>-->
               <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;Portugues</a>
-              <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;Frances</a>
+             <!-- <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;Frances</a>-->
             </li>
             <!-- FIN NAV-ITEM-->
            
             <!-- NAV-ITEM-->
     <li class="nav-item mx-0 mx-lg-1 dropdown"  id="drpMonedaSel">
 
-   <a class="nav-link py-3 px-0 px-lg-3 rounded-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="txtMonedaSel" onclick="muestraMenuMonedas()" > <?= $_SESSION["moneda_sel_sym"]; ?></a> </a>
+   <a class="nav-link py-3 px-0 px-lg-3 rounded-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="" onclick="muestraMenuMonedas()" ><?= $_SESSION["moneda_sel_sym"]; ?></a> 
 
      <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink" id="divMonedaSel">
                                    <?php 
@@ -339,7 +343,7 @@ if (data==1) {
                 <div class="col-lg-2"></div>
                  <!-- CONTENEDOR LOGIN -->     
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-<?php if($_SESSION["login"]['rol']==1 || $_SESSION["login"]['rol']==5) { echo '<a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> Iniciar Extranet </a> '; } ?> 
+<?php if($_SESSION["login"]['idVendedor']>0 || $_SESSION["login"]['idCobrador']>0 || $_SESSION["login"]['idPrestador']>0 ) { echo '<a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> Iniciar Extranet </a> '; } ?> 
    
                    
                     <button onclick="logout();" class="dropdown-item" ><i class="fas fa-sign-out-alt"></i> Cerrar sesión </button>
@@ -528,7 +532,7 @@ setTimeout(location.reload(), 3000);
       <!-- FIN NAV-ITEM-->
           <li class="nav-item mx-0 mx-lg-1 dropdown">
             <a class="nav-link py-3 px-0 px-lg-3 rounded-sm " href id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i href="carrito.php" class="fa fa-shopping-cart"></i>
+              <i href="carrito.php" class="fa fa-shopping-cart"><span class="badge badge-danger navbar-badge"><?=$cantCarrito;?></span></i>
             </a>
             <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink">
 	<?php
@@ -549,7 +553,7 @@ setTimeout(location.reload(), 3000);
 <?php  } 
 
 $precioTotalCarrito=0;
-
+if (count($carrito)>0) { 
 for ($i=0; $i < count($carrito); $i++) { 
       $reserva=$carrito[$i][0];
       $idServicio=$reserva[0]['idServicioSeleccionado'];
@@ -585,17 +589,23 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
   <?php
 }   ?>
-		
-  
-  <?php if (count($carrito)>0) { ?>
+		 
 
          <div class="col-md-12 col-12 carrinhovazio" style="margin-top:15px !important; margin-bottom:10px !important">
          <div class="custom-control custom-checkbox mr-sm-2">
            <center><a href="carrito.php"><button class="btn btn-danger btn-radius btn-sm">Finalizar Reserva</button></a></center>
          </div>
         </div> 
- <?php } ?>
-			
+ <?php } else{ ?>
+	
+ <div class="col-md-12 col-12" id="carrinhonovoactividades' . $key . '"><div class="row">     
+      
+          
+  
+          <div class="col-md-8 col-8"><p class="vacio2">Su carrito esta vació</p></div>
+         
+         </div></div>
+  <?php } ?>
 	
 
 
@@ -669,7 +679,8 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
  				<a  class="cursor  collapse text-white" id="cerrar-menu">X</a>
  			</div>
       <div class="col-5 text-center " >
-          <a class="navbar-brand navbar-movil  " href="index.php"><h4 class="mb-0 text-white">METELEBRASIL</h4></a>
+          <a class="navbar-brand navbar-movil  " href="index.php"><h4 class="mb-0 text-white">METELEBRASIL</h4> </a>
+
       </div>
 
 <div class="col-5  text-right">
@@ -679,7 +690,28 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
         <i class="fa fa-search  text-white"></i>
       </a>
     </li>
+    <li>
 
+   <a class="text-white color-w cursor-size cursor"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="" onclick="muestraMenuMonedas()" ><?= $_SESSION["moneda_sel_sym"]; ?></a> 
+
+     <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink" id="divMonedaSel">
+                                   <?php 
+
+
+for ($i=0; $i < count($monedas); $i++) { 
+ ?>
+   <a onclick="cambiaMoneda(<?=$monedas[$i]["idMoneda"];?>);" class="dropdown-item">
+                     <?=$monedas[$i]["Symbol"]." ".$monedas[$i]["CurrencyName"];?>
+          </a>
+
+ <?php
+}
+       ?>
+                    
+                      
+                   
+                    </div>
+          </li>
 
 
     <li>
@@ -692,6 +724,7 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
               <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;Frances</a>
         </div>
     </li>
+    
     <li>
       <a   class="text-white color-w cursor-size cursor"  role="button"  id="txtMonedaSelMovil" style="font-weight: 700;" ></a>
 
@@ -717,7 +750,7 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
 	<li style="position:relative">
             <a class="text-white color-w cursor-size cursor" id="navbarDropdownMenuLinkMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i href="carrito.php" class="fa fa-shopping-cart"></i>
+            <i href="carrito.php" class="fa fa-shopping-cart"><span class="badge badge-danger navbar-badge"><?=count($carrito);?></span></i>
             </a>
             <div class="dropdown-menu menu-civa menumobile" aria-labelledby="navbarDropdownMenuLinkMobile">
                        <?php
@@ -754,115 +787,6 @@ $precioTotalCarrito=0;
  </section>
 
 
-         <script>
-var money="";
-
-
- function muestraMenuMonedas(){
-  $('#divMonedaSel').show();
- }
-  //selector de monedas
-  var cookieValue = getCook('money');
-  var sym = getCook('sym');
-if (cookieValue=="") {
- // alert("no hay cookie");
-     simboloMonetario="<?= $sym?>";
-      tipoMoneda(<?= $money?>);
-    
-}
-else{
-
-   var simboloMonetario=sym;
-   money=cookieValue;
-    moneda=cookieValue;
-     
-}
-(function() {
-   // your page initialization code here
-   // the DOM will be available here
- 
-elemento = document.getElementById("txtMonedaSel");
- elemento.innerHTML =tipoMoneda(money);
-
- elemento2 = document.getElementById("txtMonedaSelMovil");
- elemento2.innerHTML = tipoMoneda(money);
-
- tipoMoneda(money);
-})();
-
-
-function tipoMoneda(moneda){
-
-   //$('#divMonedaSel').hide();
-if (2==1) {
-  elemento = document.getElementById("txtMonedaSel");
-}
-else{
-  elemento = document.getElementById("txtMonedaSelMovil");
-}
-
-  switch (moneda){
-    case 188: //dolar 
-    simboloMonetario="U$S ";
-    elemento.innerHTML =  simboloMonetario;
-    
-      break;
-
-    case 213: //euro
-   simboloMonetario="€ ";
-  elemento.innerHTML =  simboloMonetario;
-   
-    break;
-
-    case 225: //guaranies  
-     simboloMonetario="₲ ";
-     elemento.innerHTML =  simboloMonetario;
-   
-   
-
-    break;
-
-    case 270: //pArg
-    
-   
-      simboloMonetario="AR$ "; 
-       elemento.innerHTML =  simboloMonetario;
-    break;
-
-    case 271: //pCh
-  
- simboloMonetario="CL$ ";
-   elemento.innerHTML =  simboloMonetario; 
-  break;
-
-    case 283: //reales
-    simboloMonetario="R$ ";
-    elemento.innerHTML =  simboloMonetario;
-     
-    break;
- } 
-
-
- money=moneda;
- document.cookie = 'money='+money ;
-  document.cookie = 'sym='+simboloMonetario ; 
-  return simboloMonetario;
-}
-
-
-  function getCook(cookiename)  {
-  // Get name followed by anything except a semicolon
-  var cookiestring=RegExp(""+cookiename+"[^;]+").exec(document.cookie);
-  // Return everything after the equal sign, or an empty string if the cookie name not found
-  return decodeURIComponent(!!cookiestring ? cookiestring.toString().replace(/^[^=]+./,"") : "");
-  }
-
-
-
-
-
-
-</script>
 
 
 

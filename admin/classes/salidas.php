@@ -52,6 +52,25 @@ function getSalidas(){
     
     
     }
+        function getSalidasServicioIdPrestador($idServicio){
+ $fechaHoy =date("Y-m-d");
+    require("conexion.php");
+    $idPrestador=$_SESSION["login"]["idPrestador"];
+    $data=["idServicio"=>$idServicio,"idPrestador"=>$idPrestador];
+    $consulta = "select * from servicio_salidas WHERE idServicio=:idServicio AND idPrestador= :idPrestador";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
 
    function getSalidasFechaLuegoIdServicio($fecha,$idServicio){
 
@@ -149,13 +168,13 @@ function getSalidas(){
     
     }
 
-  function altaSalida($nombre,$idServicio, $fecha,$hSalida,$horaCheckIn,$anticipacionReserva,$duracionMinima, $duracionMaxima, $disponibilidad, $idAccesibilidad,$prestador, $idServiciosSalidasPack, $idMoneda){
+  function altaSalida($nombre,$idServicio, $fecha,$hSalida,$horaCheckIn,$anticipacionReserva,$duracionMinima, $duracionMaxima, $disponibilidad, $idAccesibilidad,$prestador, $idServiciosSalidasPack, $idMoneda, $nota_salida){
 
 
         require("conexion.php");
-        $data=["nombre"=> $nombre, "idServicio"=>$idServicio, "fecha" => $fecha,"hSalida"=> $hSalida, "horaCheckIn"=>$horaCheckIn, "anticipacionReserva"=>$anticipacionReserva,"duracionMinima"=>$duracionMinima, "duracionMaxima"=>$duracionMaxima,  "disponibilidad" => $disponibilidad, "idAccesibilidad"=>$idAccesibilidad, "prestador" =>  $prestador, "idServiciosSalidasPack"=>$idServiciosSalidasPack, "idMoneda"=>$idMoneda];
+        $data=["nombre"=> $nombre, "idServicio"=>$idServicio, "fecha" => $fecha,"hSalida"=> $hSalida, "horaCheckIn"=>$horaCheckIn, "anticipacionReserva"=>$anticipacionReserva,"duracionMinima"=>$duracionMinima, "duracionMaxima"=>$duracionMaxima,  "disponibilidad" => $disponibilidad, "idAccesibilidad"=>$idAccesibilidad, "prestador" =>  $prestador, "idServiciosSalidasPack"=>$idServiciosSalidasPack, "idMoneda"=>$idMoneda, "nota_salida"=>$nota_salida];
 
-        $consulta = "INSERT INTO servicio_salidas (nombre,idServicio, fecha, horaSalida, horaCheckIn, anticipacionReserva, duracionMinima, duracionMaxima,disponibilidadOriginal, disponibilidad,idAccesibilidad, idPrestador, idServiciosSalidasPack, idMoneda) VALUES (:nombre, :idServicio, :fecha, :hSalida, :horaCheckIn,:anticipacionReserva,:duracionMinima,:duracionMaxima, :disponibilidad,:disponibilidad,:idAccesibilidad, :prestador, :idServiciosSalidasPack, :idMoneda) ";
+        $consulta = "INSERT INTO servicio_salidas (nombre,idServicio, fecha, horaSalida, horaCheckIn, anticipacionReserva, duracionMinima, duracionMaxima,disponibilidadOriginal, disponibilidad,idAccesibilidad, idPrestador, idServiciosSalidasPack, idMoneda, nota_salida) VALUES (:nombre, :idServicio, :fecha, :hSalida, :horaCheckIn,:anticipacionReserva,:duracionMinima,:duracionMaxima, :disponibilidad,:disponibilidad,:idAccesibilidad, :prestador, :idServiciosSalidasPack, :idMoneda, :nota_salida) ";
         
         $comando = $pdo->prepare($consulta);
         

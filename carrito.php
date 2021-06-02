@@ -1,5 +1,6 @@
 <?php 
 session_start();
+
 include("admin/classes/salidas.php");
 include("admin/classes/tarifas.php");
 include("admin/classes/tarifas_ubicacion.php");
@@ -186,7 +187,7 @@ location.href="index.php";
       <?php 
          
 $precioTotalCarrito=0;
-
+$totalDescuentos=0;
     for ($i=0; $i < $cantCarrito; $i++) {  
      echo "RESERVA nro: ".($i+1);
       $reserva=$carrito[$i][0];
@@ -204,6 +205,7 @@ $precioTotalCarrito=0;
   
         $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
 
+          $totalDescuentos+=$tarifa[0]["totalDescuentos"];
           $precioReserva+=$tarifa[0]["valor"];
           if ($j==0) {
             ?>
@@ -219,9 +221,10 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
       }
       
-
-echo("<li>comision Vendedor". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
-echo("<li>comision Sistema". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionSistema"].'</li>');
+if ($_SESSION["login"]["idVendedor"]>0) {
+  echo("<li>comision Vendedor: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
+echo("<li>comision Sistema: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionSistema"].'</li>');
+}
 ?>
    <li>Subtotal Reserva <?= $_SESSION['moneda_sel_sym']."".$precioReserva;?></li>
    
@@ -250,7 +253,15 @@ for ($j=0; $j < count($reservaAdicionales); $j++) {
  <?php
 
 
-} ?>
+} 
+if ($totalDescuentos>0) {
+  ?>
+ <li>SU DESCUENTO: <?=$_SESSION['moneda_sel_sym'].$totalDescuentos;?></li>
+   <li>Anfitrión: <?=$_SESSION['cupon_descuento']['anfitrion'];?></li>
+  <?php
+}
+
+?>
 
 
      

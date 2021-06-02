@@ -1,0 +1,19 @@
+[04-May-2021 15:10:25 America/Sao_Paulo] PHP Notice:  Undefined index: amount in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 19
+[04-May-2021 15:10:25 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function InsertaPago() in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php:24
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 24
+[04-May-2021 15:11:56 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 16
+[04-May-2021 15:11:56 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 20
+[04-May-2021 15:18:03 America/Sao_Paulo] PHP Notice:  Undefined index: amount in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 25
+[04-May-2021 15:18:03 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function InsertaPago() in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php:30
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 30
+[04-May-2021 15:18:18 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 22
+[04-May-2021 15:18:18 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 26
+[04-May-2021 15:18:55 America/Sao_Paulo] PHP Notice:  Undefined index: amount in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 25
+[04-May-2021 15:18:55 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function InsertaPago() in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php:30
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 30

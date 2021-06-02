@@ -15,7 +15,10 @@ require("classes/servicio.php");
 require("classes/comprobantes.php");
 require("classes/convierte_monedas.php");
 
-
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 $idReserva=$_POST["detallesCarrito"];

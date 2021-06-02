@@ -7,8 +7,8 @@ include("../classes/edades.php");
 	include("../classes/comisiones.php");
 include("../classes/cancelaciones.php");
 include("../classes/convierte_monedas.php");
-
-
+include_once("../classes/tipos_tarifa.php");
+include_once("../classes/servicio.php");
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
@@ -53,7 +53,9 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 			$tarifas= getTarifas($idSalida);
 
 			$salida=getSalida($tarifas[0]['idServicioSalidas']);
-				//print_r($salida);
+			
+				$servicio= getServicio($salida[0]["idServicio"]);
+					$idCategoria_servicio=($servicio[0]["idCategoria_servicio"]);
 			include("../classes/servicios_adicionales.php");
 			
 			
@@ -65,15 +67,18 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 	
 			$comisionVendedor=getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,1);
 $comisionSistema=getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,2);
-
-
+$idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
+ $tipoTarifaNombre=getTipoTarifa($idTipoTarifa)[0]["nombre"];
 			$retorno[$i]['idServicioSalidasTarifas']=$idServicioSalidasTarifas;
 			$retorno[$i]['idServicioSalidas']=$tarifas[$i]['idServicioSalidas'];
 			$retorno[$i]['idSalida']=$idSalida;
+			$retorno[$i]['idCategoria_servicio']=$idCategoria_servicio;
 				$retorno[$i]['nombre']=$tarifas[$i]['nombre'];
 			$retorno[$i]['edadFrom']=getEdad($tarifas[$i]['idFromEdad'])[0]["valor"];
 			$retorno[$i]['edadTo']=getEdad($tarifas[$i]['idToEdad'])[0]["valor"];
-			$retorno[$i]['idTipoTarifa']=$tarifas[$i]['idTipoTarifa'];
+			$retorno[$i]['idTipoTarifa']=$idTipoTarifa;
+			$retorno[$i]['tipoTarifaNombre']=$tipoTarifaNombre;
+
 			$precio=$tarifas[$i]['valor'];
 			$precio=convierteMoneda( $salida[0]["idMoneda"],$_SESSION['moneda_sel'],$precio);
 			$retorno[$i]["disponibilidad"]=$salida[0]["disponibilidad"];
@@ -93,7 +98,7 @@ $comisionSistema=getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,2
 			$retorno[0]['adicionalesIncluidos']=getServiciosAdicionalesSalidaIncluidos($idSalida);
 			$retorno[0]['adicionalesNoIncluidos']=getServiciosAdicionalesSalidaNoIncluidos($idSalida);
 			
-	echo json_encode($retorno);
+echo json_encode($retorno);
 		 exit();
 		 	
   }

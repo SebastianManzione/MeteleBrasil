@@ -11,6 +11,7 @@ include("admin/classes/servicio.php");
     include("admin/classes/cancelaciones.php");
     include("admin/classes/servicios_adicionales.php");
 include("admin/classes/reserva.php");
+include("admin/classes/comprobantes.php");
 include("admin/classes/moneda.php");
 include("admin/classes/convierte_monedas.php");
 include("includes/headPagos.php");
@@ -162,6 +163,12 @@ for ($j=0; $j < count($adicionales); $j++) {
       <!--FIN RESUMEN DE PEDIDO-->
 
       <!--DATOS DE PAGO-->
+      <?php 
+$comprobantes= getComprobantesIdReservaDolar($idReserva);
+$total_dolares=$reserva["total_dolares"];
+
+if ($comprobantes<$total_dolares) {
+     ?>
       <div class="col-lg-8 col-md-8">
 
         <!--METODOS DE PAGO-->
@@ -180,21 +187,26 @@ for ($j=0; $j < count($adicionales); $j++) {
                       <div class="row paymentWrap">
                    <div class="btn-group col-lg-12">
                     <!--AQUI VA LA CARGA DE DIVISA-->
-                      <label class="btn btn-primary paymentMethod texto-moneda  " id="euros">
+                    <?php 
+$reales=convierteMoneda($idMonedaSel,283,$reserva["total"]);
+$pesos_argentinos=convierteMoneda($idMonedaSel,270,$reserva["total"]);
+$dolares=convierteMoneda($idMonedaSel,188,$reserva["total"]);
+                     ?>
+                      <label class="btn btn-primary paymentMethod texto-moneda  " id="reales">
                       <i class="fa fa-dollar-sign"> </i>
                             <small> Reales</small>
-                          <?=convierteMoneda($idMonedaSel,283,$reserva["total"]);?>
+                          <?=$reales;?>
                       </label>
                       <label class="btn btn-primary paymentMethod texto-moneda" id="pesos">
                         
                         <i class="fa fa-dollar-sign"></i>
                         <small> Pesos ARG</small>
-                          <?=convierteMoneda($idMonedaSel,270,$reserva["total"]);?>
+                          <?=$pesos_argentinos?>
                       </label>
                       <label class="btn btn-primary paymentMethod texto-moneda" id="dolar">
                        <i class="fa fa-dollar-sign"></i>
                          <small> Dolares</small>
-                          <?=convierteMoneda($idMonedaSel,188,$reserva["total"]);?>
+                          <?=$dolares;?>
                       </label>
                       <!--FIN AQUI VA LA CARGA DE DIVISA-->
                       </div>        
@@ -203,31 +215,22 @@ for ($j=0; $j < count($adicionales); $j++) {
                        <?php 
 $total=0;//0ConvierteMoneda($monedaNativa,270, $totalAPagar);
 $totalMercadopagoArgentina=convierteMoneda($idMonedaSel,270,$reserva["total"]);
+$totalMercadopagoBrasil=convierteMoneda($idMonedaSel,283,$reserva["total"]);
 $totalPayPal=convierteMoneda($idMonedaSel,188,$reserva["total"]);
-
-include("./admin/pasarelas/mercadopago/procesaPago.php");
+include("./admin/pasarelas/mercadopagoArgentina/procesaPago.php");
+include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 //include("../query.php");
 ?>
 
   <script
-    src="https://www.paypal.com/sdk/js?client-id=AY_f6DGMcccB4MHNGbvKcJsDN-3V0jw_45N9PVuM3apECjAqy1GtrZF413qTZeLzYGusTC2Uc3wz7W2D"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    src="https://www.paypal.com/sdk/js?client-id=AbVzfexjVQ8bKuBQEkVem15h-IbQI4liLK_L9COokXJJvBdmj_JFReUBSOROn2DTxauOqRpmyvJVm6l9"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
   </script>
-
-   
-
 
   <script>
     var totalPayPal = '<?= $totalPayPal ?>';
-  
+   var idReserva = '<?= $idReserva ?>';
     var codigoAmigable = '<?=$codigoAmigable ?>';
     
-   if (totalPayPal<=1) {
-
-$("#cardVisitas").html("<h1>Felicitaciones, tu reserva esta confirmada!!!</h1>");
-
-
-   }
-   else{
 
     $("#textoMetodoDePago").html("Divisa");
 
@@ -237,10 +240,11 @@ $("#cardVisitas").html("<h1>Felicitaciones, tu reserva esta confirmada!!!</h1>")
       // This function sets up the details of the transaction, including the amount and line item details.
       return actions.order.create({
         purchase_units: [{
-           "reference_id": codigoAmigable,
+           "reference_id": idReserva,
         "custom_id": codigoAmigable,
-          amount: { value: totalPayPal, currency: 'BRL'},
-          description: "Reserva en metelebrasil.com"
+          amount: { value: totalPayPal, currency: 'USD'},
+          description: "Reserva en metelebrasil.com",
+          notify_url : "https://metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php"
         }]
       });
     },
@@ -249,12 +253,12 @@ $("#cardVisitas").html("<h1>Felicitaciones, tu reserva esta confirmada!!!</h1>")
       return actions.order.capture().then(function(details) {
         // This function shows a transaction success message to your buyer.
              alert('Gracias por pagar en metelebrasil '+ details.payer.name.given_name+' el pago de paypal puede demorar unos segundos en impactar en el sistema, Gracias');
-        window.location='./consultaReserva.php?id='+codigoAmigable;
+        window.location='./consultaReserva.php?reserva='+codigoAmigable;
       });
     }
   }).render('#paypal-button-container');
   //This function displays Smart Payment Buttons on your web page.
- }
+ 
   
 </script>
      
@@ -280,6 +284,22 @@ $("#cardVisitas").html("<h1>Felicitaciones, tu reserva esta confirmada!!!</h1>")
                         </div>
                       </label>
                    
+
+
+        <label class="btn btn-primary paymentMethod" id="mercadopagoBrasil" style="display:none">
+                     <div class="method paypal">
+              <div class="method mercadopagoArgentina" >
+
+
+            </div>
+
+       
+
+
+                        </div>
+                      </label>
+
+
         <label class="btn btn-primary paymentMethod" id="paypal"  style="display:none">
                        
 
@@ -287,19 +307,7 @@ $("#cardVisitas").html("<h1>Felicitaciones, tu reserva esta confirmada!!!</h1>")
           <div class="method paypal">
  <div id="paypal-button-container"></div>  
 
-<script type="text/javascript">
-  function validaRecibo() {
-   if (confirm("Realmente desea cobrar??")) {
-return true;
 
-   }
-   else
-   {
-    return false;
-   }
-  }
-
-</script>
 
       
                     
@@ -327,7 +335,24 @@ return true;
 
          if($_SESSION["login"]["idCobrador"]>0)
       {
-?>  <br><div class="card card-visitas method vendedor" >
+?>  
+
+
+
+<script type="text/javascript">
+  function validaRecibo() {
+   if (confirm("Realmente desea cobrar??")) {
+return true;
+
+   }
+   else
+   {
+    return false;
+   }
+  }
+
+</script>
+<br><div class="card card-visitas method vendedor" >
 
 
  <div class="card-body" id="divVendedor" >      
@@ -356,6 +381,23 @@ return true;
 
           
       </div>
+
+    <?php } else{ // ($comprobantes<$total_dolares) {
+      ?>
+    <div class="col-lg-8 col-md-8">
+
+        <!--METODOS DE PAGO-->
+        <div class=" py-3">
+                  <div class="card card-visitas" id="cardVisitas">
+
+              <div class="card-body">
+
+
+                 <h5 class="mb-4" id="textoMetodoDePago">Felicidades</h5>
+<h1 class="success">100% Del pago confirmado</h1>
+</div></div></div>
+</div>
+ <?php   }?>
       <!--FIN DATOS DE PAGO-->
     </div>
 
@@ -363,7 +405,8 @@ return true;
 
    <!--BOTON SIGUIENTE-->
 <?php 
-if ($reserva["total"]>0) {
+
+if ($comprobantes<$total_dolares) {
 ?>
 
 
@@ -436,55 +479,65 @@ if ($reserva["total"]>0) {
  <!-- SCRIPTS NECESARIOS-->
   <script type="text/javascript">
     //por default arrancamos en reales
-     $("#euros").css('background',' #029ce2'); //pinta
-      $("#euros").css('color',' #fff '); //pinta
-      $("#paypal").css('display','block');
+     $("#reales").css('background',' #029ce2'); //pinta
+      $("#reales").css('color',' #fff '); //pinta
+      $("#paypal").css('display','none');
       $("#mercadopago").css('display','none');
+        $("#mercadopagoBrasil").css('display','block');
+$("#btnPagar").attr("href",mercadoPagoLinkBrasil);
+$("#btnPagar").css("display","block");
 
 
-    $("#euros").click(function(){
-      $("#paypal").css('display','block');
+    $("#reales").click(function(){
+      $("#paypal").css('display','none');
       $("#mercadopago").css('display','none');
-      $("#euros").css('background',' #029ce2'); //pinta
-      $("#euros").css('color',' #fff '); //pinta
+      $("#mercadopagoBrasil").css('display','block');
+      $("#reales").css('background',' #029ce2'); //pinta
+      $("#reales").css('color',' #fff '); //pinta
       $("#pesos").css('background',' #fff'); //despinta
       $("#pesos").css('color',' #929292 ');  //despinta
       $("#dolar").css('background',' #fff'); //despinta
       $("#dolar").css('color',' #929292 ');  //despinta
-$("#btnPagar").css("display","none");
+      $("#btnPagar").attr("href",mercadoPagoLinkBrasil);
+$("#btnPagar").css("display","block");
     });
 
      $("#dolar").click(function(){
       $("#paypal").css('display','block');
       $("#mercadopago").css('display','none');
-
+      $("#mercadopagoBrasil").css('display','none');
       $("#dolar").css('background',' #029ce2'); //pinta
       $("#dolar").css('color',' #fff '); //pinta
       $("#pesos").css('background',' #fff'); //despinta
       $("#pesos").css('color',' #929292 ');  //despinta
-      $("#euros").css('background',' #fff'); //despinta
-      $("#euros").css('color',' #929292 ');  //despinta
+      $("#reales").css('background',' #fff'); //despinta
+      $("#reales").css('color',' #929292 ');  //despinta
 $("#btnPagar").css("display","none");
 
     });
-
+var mercadoPagoLink= '<?= $preference->init_point;?>';
+var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
     $("#pesos").click(function(){
+
       $("#mercadopago").css('display','block');
+            $("#mercadopagoBrasil").css('display','none');
       $("#paypal").css('display','none');
 
       $("#pesos").css('background',' #029ce2'); //pinta
       $("#pesos").css('color',' #fff '); //pinta
       $("#dolar").css('background',' #fff'); //despinta
       $("#dolar").css('color',' #929292 ');  //despinta
-       $("#euros").css('background',' #fff'); //despinta
-      $("#euros").css('color',' #929292 ');  //despinta
+       $("#reales").css('background',' #fff'); //despinta
+      $("#reales").css('color',' #929292 ');  //despinta
       $("#btnPagar").css("display","block");
+      $("#btnPagar").attr("href",mercadoPagoLink);
     });
-var mercadoPagoLink= '<?= $preference->init_point;?>';
+
 
           $("#paypal").click(function(){
  $("#mercadopago").css('border','  none '); //pinta
  $("#paypal").css('border','  4px solid  #029ce2 '); //pinta
+       $("#mercadopagoBrasil").css('display','none');
 $("#btnPagar").css("display","none");
    
            });
@@ -493,8 +546,17 @@ $("#btnPagar").css("display","none");
       $("#mercadopago").click(function(){
  $("#paypal").css('border','  none '); //pinta
  $("#mercadopago").css('border','  4px solid  #029ce2 '); //pinta
+       $("#mercadopagoBrasil").css('display','none');
 $("#btnPagar").attr("href",mercadoPagoLink);
-$("#btnPagar").css("display","none");
+
+      });
+
+           $("#mercadopagoBrasil").click(function(){
+         
+ $("#paypal").css('border','  none '); //pinta
+ $("#mercadopago").css('border','  4px solid  #029ce2 '); //pinta
+$("#btnPagar").attr("href",mercadoPagoLinkBrasil);
+
       });
   </script>
  <!-- JQUERY-->

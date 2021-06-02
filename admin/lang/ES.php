@@ -1,5 +1,10 @@
 <?php
+/* <?=$lang["ingresa_tu_email_para_recibir_novedades"]?> 
 
+,
+	"recibe_las_ultimas_ofertas"=>"Recibe las últimas ofertas"
+
+*/
 $lang = array(
 	"crea_tu_viaje" => "Crea tu viaje",
 	"excursiones_en_brasil" => "EXCURSIONES EN BRASIL",
@@ -20,5 +25,8 @@ $lang = array(
 	"Transporte"=>"Transporte",
 	"Excursiones"=>"Excursiones",
 	"Evento nocturno"=>"Evento Noturno"	,
-	"actividades_destacadas"=>"ACTIVIDADES DESTACADAS"
+	"actividades_destacadas"=>"ACTIVIDADES DESTACADAS",
+	"ingresa_tu_email_para_recibir_novedades"=>"Ingresa tu email para recibir novedades",
+	"recibe_las_ultimas_ofertas"=>"Recibe las últimas ofertas",
+	"escribe_tu_mail"=>"Escribe tu mail"
 );

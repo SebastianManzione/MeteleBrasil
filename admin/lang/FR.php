@@ -21,5 +21,8 @@ $lang = array(
 	"Transporte"=>"Transport",
 	"Excursiones"=>"Excursions",
 	"Evento nocturno"=>"Événement nocturne",
-	"actividades_destacadas"=>"ACTIVITÉS EXCEPTIONNELLES"
+	"actividades_destacadas"=>"ACTIVITÉS EXCEPTIONNELLES",
+	"ingresa_tu_email_para_recibir_novedades"=>"Entrez votre email pour recevoir des actualités",
+	"recibe_las_ultimas_ofertas"=>"Recevez les dernières offres",
+	"escribe_tu_mail"=>"Ecrivez votre mail"
 );

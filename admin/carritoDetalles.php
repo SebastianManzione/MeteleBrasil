@@ -3,6 +3,7 @@
 <?php 
 
 
+
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
@@ -16,7 +17,14 @@ require("classes/servicio.php");
 require("classes/comprobantes.php");
 require("classes/convierte_monedas.php");
 require("classes/origenes_comprobantes.php");
+require("classes/codigos_telefonicos.php");
 
+
+
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["nota"])) {
   if (strlen($_POST["nota"])>3) {
@@ -36,6 +44,10 @@ $_POST["detallesCarrito"]=$_POST["idReserva"];
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["detallesCarrito"]) ) {
 $idReserva=$_POST["detallesCarrito"];
 $reserva=getReservaId($idReserva);
+echo "string";
+$codigo_telefonico=gerCodigoTelefonico($reserva[0]["idCountry"]);
+$nombre_pais=$codigo_telefonico[0]['nicename'];
+$idioma=$reserva[0]["idioma"];
 $codigoAmigable=$reserva[0]["codigoAmigable"];
 $fechaReserva=date("d-m-Y H:i:s", strtotime($reserva[0]['fechaAlta']));
 $idUsuario=$reserva[0]['idUsuario'];
@@ -98,10 +110,17 @@ $horarios=getReservaHorarios($idReserva);
                                       <tr>
                                          <td><?=$fechaReserva;?></td>
                                          <td><?=$codigoAmigable;?></td>
-                                         <td>N/D</td>
-                                         <td>N/D</td>
+                                         <td><?=$nombre_pais;?></td>
+                                         <td><?=$idioma;?></td>
                                          <td><?=$nombre_usuario;?></td>
-                                         <td> <button type="button" class="btn btn-warning">Pendiente</button></td>
+                                         <td><?php 
+                                         $claseBoton="btn btn-warning";
+                                        $textoBoton="Pendiente";
+                                      if ($diferenciaComprobantesPrecio<1 && $precio > 0) {
+                                         $claseBoton="btn btn-success";
+                                          $textoBoton="Confirmada";
+                                      }
+                                        ?> <button type="button" class="<?= $claseBoton;?>"><?= $textoBoton;?></button></td>
                                       </tr>
                    </table>
 
@@ -134,7 +153,7 @@ $horarios=getReservaHorarios($idReserva);
                 </div>
            </div>
 
-        <button type="button" class="btn btn-secondary btn-lg btn-block" data-card-widget="collapse">Servicos Contratados</button>
+        <button type="button" class="btn btn-secondary btn-lg btn-block" data-card-widget="collapse">Servicios Contratados</button>
 
 </div>
 <!-- /.card-header -->
@@ -162,25 +181,30 @@ $horarios=getReservaHorarios($idReserva);
 
 
 
-<?php for ($i=0; $i < count($horarios); $i++) { 
+<?php 
 
-  $nombre_servicio=$horarios[$i]["nombre"];
+for ($i=0; $i < count($horarios); $i++) { 
+$servicio=getServicio($horarios[$i]["idServicioSeleccionado"]);
+$nombre_servicio=$servicio[0]["nombre_servicio"];
+  $nombre_salida=$horarios[$i]["nombre"];
     $fecha_checkIn=date("d-m-Y", strtotime($horarios[$i]['fecha']));
     $monedaSel=$horarios[$i]["horaCheckIn"];
   $hora_checkIn=$horarios[$i]["horaCheckIn"];
     $horaSalida=$horarios[$i]["horaSalida"];
        $idReservaHorarios=$horarios[$i]["idReservaHorarios"];
-    
+  $adicionales=   getReservaAdicionalesNoIncluidos($idReservaHorarios);
+
     $tarifas=getReservaTarifas($idReservaHorarios);
     $nombre_tarifa=($tarifas[0]["nombre"]);
      $cantidad=($tarifas[0]["cantidad"]);
     $totalTarifa=0;
     $trs='';
+       $trAdc='';
     $fromEdad=getEdad($tarifas[0]['idFromEdad'])[0]['valor'];
     $toEdad=getEdad($tarifas[0]['idToEdad'])[0]['valor'];
 
     for ($j=0; $j < count($tarifas); $j++) { 
- $idReservaTarifas=$tarifas[$i]['idReservaTarifas'];
+ $idReservaTarifas=$tarifas[$j]['idReservaTarifas'];
  $pasajeros=getPasajeros($idReservaTarifas);
  	  $trs=$trs.'  
 <tr><td colspan="2">'.$cantidad.' '.$nombre_tarifa.' '.$fromEdad.' a '.$toEdad.' Años</td></tr>';
@@ -196,6 +220,24 @@ $horarios=getReservaHorarios($idReserva);
     $totalTarifa+=  $tarifas[$j]["valor"];
   
     }
+
+
+
+for ($k=0; $k < count($adicionales); $k++) { 
+    $trAdc=$trAdc.'  
+
+    <tr>
+                                            <td>'. $adicionales[$k]["nombre"].'</td>
+                                               <td>'. $adicionales[$k]["descripcion"].'</td>
+                                                  <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioUnitarioSIva"].'</td>
+                                                     <td>'. $adicionales[$k]["cantidad"].'</td>
+                                                        <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioUnitarioSIva"]*$adicionales[$k]["cantidad"].'</td>
+                                                           <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioIva"].'</td>
+
+                                           
+                                          </tr>';
+}
+
   
 ?>
 
@@ -220,7 +262,7 @@ $horarios=getReservaHorarios($idReserva);
                                           <tr>
                                             <th scope="col">Servicio</th>
                                             <th scope="col">Descripcion</th>
-                                            <th scope="col">Valor por Unidad</th>                
+                                            <th scope="col">Valor por Unidad s/iva</th>                
                                             <th scope="col">Cantidad</th>
                                             <th scope="col">Total sin Impuestos</th>
                                             <th scope="col">Total con Impuetos</th>
@@ -229,14 +271,7 @@ $horarios=getReservaHorarios($idReserva);
                                       </thead>
                                                     
                                      <tbody>
-                                         <tr>
-                                            <td>Snorkel</td>
-                                            <td>Podras utilizar el snorkel solo por 20 min en la playa principal</td>
-                                            <td>10</td>
-                                            <td>5</td>
-                                            <td>50</td>
-                                            <td>55</td> 
-                                          </tr>
+                              <?=$trAdc;?>
 
                                     </tbody>
                               </table>

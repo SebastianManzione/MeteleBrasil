@@ -1,30 +1,59 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
         include("includes/header.php");
         include("includes/navbar.php");
         include("includes/sidebar.php");
         require("classes/functions.php");
+           require("classes/prestador.php");
         require("classes/categoria.php");
         require("classes/texto_miniaturas.php");
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['txtNomEvt'])) {
-    require("classes/servicio.php");
-    require("classes/fotos_servicio.php");
-
-    //$idUsuario=$_SESSION['login']['idUsuario'];
-    $idUsuario=1;
-$idServicio=altaServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['txtDescripcion'],  $_POST['txtDescripcionCorta'],  $_POST['txtDocumentacionViajero'],  $_POST['txtObservaciones'],  $_POST['idTextoMiniatura'],$idUsuario  );
-
-$_SESSION["altaServicio"] = $idServicio;
-      
-$fotos=altaFotosServicio($_FILES, $idServicio);
-alertar("Servicio dado de alta correctamente...","success");
-
-     
+   require("classes/usuario.php");
+if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
 
 
+$idPrestador=$_POST["selPrestador"];
+$usuario=$_POST["txtNombre"];
+$email=$_POST["txtEmail"];
+$password=md5($_POST["txtPassword"]);
+ $idVendedor=0;
+if (isset($_POST["vendedor"])) {
+   $idVendedor=1;
+}
+ $idCobrador=0;
+if (isset($_POST["cobrador"])) {
+   $idCobrador=1;
+}
+ $status=0;
+if (isset($_POST["activado"])) {
+   $status=1;
+}
 
-redireccionar("altaSalidas.php");
+$idUsuario= altaUsuario($usuario, $email, $password, $status, $idVendedor, $idCobrador, $idPrestador);
+if ($idUsuario>0) {
+    $fotos=updateFotoUsuario($_FILES, $idUsuario);
+
+}
+
+
+
+if ($idUsuario>0) {
+   alertar("Usuario dado de alta correctamente...","success");
+   //redireccionarLento("usuariosLista");
+}
+
+
+else{
+    alertar("Email Duplicado","warning");
+   //redireccionarLento("usuarioAlta");
+}
+
+
+    
+
+
 exit();
 }
 
@@ -54,7 +83,7 @@ exit();
             <div class="card card-default">
                 <div class="card-header">
                     <h3 class="card-title">Nuevo Usuario</h3>
-                    <form method="post" enctype="multipart/form-data">
+                    <form method="post" enctype="multipart/form-data" onsubmit="return(validar())">
                         <div class="card-tools">
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
@@ -85,14 +114,14 @@ exit();
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Contraseña</label>
-                                        <input type="password" name="txtPassword" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="¿Contraseña?" required>
+                                        <input type="password" name="txtPassword" id="txtPassword" class="form-control select2bs4" style="width: 100%;" placeholder="¿Contraseña?" required>
                                     </div>
                                 </div>
 
 <div class="col-md-6">
                                     <div class="form-group">
                                         <label>Repetir Contraseña</label>
-                                        <input type="password" name="txtPassword" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="¿Contraseña?" required>
+                                        <input type="password" name="txtPassword2" id="txtPassword2" class="form-control select2bs4" style="width: 100%;" placeholder="¿Contraseña?" required>
                                     </div>
                                 </div>
 
@@ -101,20 +130,29 @@ exit();
                                     <div class="form-group">
                                     
                                         <label>Rol</label>
-                                          <select name="selCategoria" class="form-group form-control" id="selCategoria"
-                                            placeholder="Categoria" required>   
+                                          <select name="selPrestador" class="form-group form-control"  required>   
 
                                                	<?php 
-                                    	$categorias=getCategorias();
+                                    	$prestadores=getPrestadores();
                                 
-                                    	for ($i=0; $i < count($categorias); $i++) { ?>
-                                    		                             <option value="<?=$categorias[$i]["idCategoria_servicio"];?>">
-                                                        <?=$categorias[$i]["nombre_categoria_servicio"];?></option>;
-                                    		echo " i ".;
+                                    	for ($i=0; $i < count($prestadores); $i++) { ?>
+                                  <option value="<?=$prestadores[$i]["idPrestador"];?>">
+                                                        <?=$prestadores[$i]["nombre"];?></option>;
+                                    	
                                     	
                                     	<?php } ?>                    
                                                                                                    
                                         </select>
+                                    </div>
+                                </div>
+                                            <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Vendedor?</label>
+                             <input type="checkbox" name="vendedor">
+                               <label>Cobrador?</label>
+                             <input type="checkbox" name="cobrador">
+                               <label>Activado?</label>
+                             <input type="checkbox" name="activado" checked>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -149,10 +187,19 @@ exit();
    
             <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
             <script type="text/javascript">
-                CKEDITOR.replace('txtDescripcionCorta');
-                CKEDITOR.replace('txtDocumentacionViajero');
-                CKEDITOR.replace('txtDescripcion');
-                CKEDITOR.replace('txtObservaciones'); 
+                function validar(){
+                    if ($("#txtPassword").val()!==$("#txtPassword2").val()) {
+                         alert("Las contraseñas no coinciden");
+                         $("#txtPassword").focus();
+                            return false;
+                    }
+                    else{
+                       return true;
+                    }
+ 
+                }
+    
+
             </script>
             <!-- /.row -->
         </div><!-- /.container-fluid -->

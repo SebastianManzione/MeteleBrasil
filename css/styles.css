@@ -1913,6 +1913,15 @@ min-width: 200px;
 height: 200px;
 
 }
+
+.paymentWrap .paymentBtnGroup .paymentMethod .method.mercadopagoBrasil {
+background-image: url(../img/mercadopago.png);
+padding-top: 20px;
+padding-bottom: 20px;
+min-width: 200px;
+height: 200px;
+
+}
 .paymentWrap .paymentBtnGroup .paymentMethod .method.ebanxs {
 background-image: url(../img/ebanxs.png);
 padding-top: 20px;

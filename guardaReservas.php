@@ -5,7 +5,8 @@
 session_start();
 
 include("admin/classes/salidas.php");
-include("admin/classes/tarifas.php");include("admin/classes/tarifas_ubicacion.php");
+include("admin/classes/tarifas.php");
+include("admin/classes/tarifas_ubicacion.php");
 include("admin/classes/idiomas.php");
 include("admin/classes/servicio.php");
 include("admin/classes/moneda.php");
@@ -17,7 +18,9 @@ include("admin/classes/convierte_monedas.php");
     include("admin/classes/reserva.php");
 
         include("includes/headPagos.php");
-    //include ("sistema/functions.php");
+       
+    include ("admin/classes/functions.php"); 
+    alertar("Su reserva esta siendo guardada", "success");
 ?>
 
 
@@ -37,9 +40,9 @@ $nombreResponsable=$_POST["txtNombreResponsable"];
 $apellidoResponsable=$_POST["txtApellidoResponsable"];
 $emailResponsable=$_POST["txtEmailResponsable"];
 $telefonoResponsable=$_POST["txtTelefonoResponsable"];
-
-
-$reserva=altaReserva($idUsuario,$nombreResponsable, $apellidoResponsable, $emailResponsable, $telefonoResponsable, $monedaSel, $impuestos_pais);
+$idCountry=$_POST["idCountry"];
+$idioma=$_SESSION["idioma"];
+$reserva=altaReserva($idUsuario,$nombreResponsable, $apellidoResponsable, $emailResponsable, $idCountry, $telefonoResponsable, $monedaSel, $impuestos_pais, $idioma);
 $idReserva=$reserva["idReserva"];
 $codigoAmigable=$reserva["codigoAmigable"];
 
@@ -150,7 +153,8 @@ for ($s=0; $s < count($pasajerosPost); $s++) {
 //echo "Total de pasajeros= ".$cantidadPasajeros."<br>";
 //echo "Precio Total de reserva= ".$precioTotalReserva."<br>";
 //echo "IVA COBRADO= ".$totalIvaReserva."<br>";
-$resultadoUpdateTotal=updateTotalReserva($idReserva, $precioTotalReserva,$totalIvaReserva);
+  $total_dolares=ConvierteMoneda($monedaSel,188, $precioTotalReserva);
+$resultadoUpdateTotal=updateTotalReserva($idReserva, $precioTotalReserva,$total_dolares,$totalIvaReserva);
 //echo "Resultado update total reservca: ".print_r($resultadoUpdateTotal);
 }  //if ($idReserva>1) {
 }
@@ -160,6 +164,7 @@ $cuerpo=getCuerpoEmailReserva($codigoAmigable, $parametros[0]["site"]);
 enviaMail($emailResponsable,"Reserva exitosa en MeteleBrasil", $cuerpo, $parametros[0]["site"]);
 
 unset($_SESSION["reserva"]);
+unset($_SESSION["cupon_descuento"]);
 ?>
 <a href="consultaReserva?reserva=<?=$codigoAmigable?>">ver Reserva</a>
 <script type="text/javascript">

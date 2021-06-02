@@ -37,7 +37,7 @@ session_start();
 	$_SESSION["login"]['rol']=$resultado[0]['rol'];
 $_SESSION["login"]['idVendedor']=$resultado[0]['idVendedor'];
 $_SESSION["login"]['idCobrador']=$resultado[0]['idCobrador'];
-
+$_SESSION["login"]['idPrestador']=$resultado[0]['idPrestador'];
 	
 			header('location: index.php');
 			}

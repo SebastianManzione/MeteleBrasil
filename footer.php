@@ -11,7 +11,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true" class="fa fa-arrow-left float-left text-white"></span>
         </button>
-        <h5 class="text-white" style="position:absolute;margint-left:0;margin-right:0; left:70px;">Ingresa tu email para recibir novedades</h5>
+        <h5 class="text-white" style="position:absolute;margint-left:0;margin-right:0; left:70px;"><?=$lang["ingresa_tu_email_para_recibir_novedades"]?></h5>
         </div>
 <!---- Cuerpo del modal -------->
          <div class="modal-body" style="">
@@ -49,10 +49,10 @@
     <div class="container d-md-none mb-4">
       <div class="row">
          <div class="col-lg-3 py-2">
-          <h5 class="text-uppercase mb-4 text-m-footer">Recibe las últimas ofertas</h5>
+          <h5 class="text-uppercase mb-4 text-m-footer"><?=$lang["recibe_las_ultimas_ofertas"];?></h5>
           <form class="form-buscar">
                   <div class="input-group">
-                <input class="field form-control"  name="buscar" type="text" placeholder="Escribe tu mail" value="">
+                <input class="field form-control"  name="buscar" type="text" placeholder="<?=$lang['escribe_tu_mail'];?>" value="">
                 <span class="input-group-append">
                   <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><i class="fa fa-arrow-right"></i></button>
                 </span>

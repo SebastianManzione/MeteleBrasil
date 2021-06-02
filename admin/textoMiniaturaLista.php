@@ -24,7 +24,7 @@ $fotos=getFotosServicio($idServicio);
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  print_r($_POST);
+  //print_r($_POST);
   $cantDias=calculaDias($_POST["inicio_periodo"],$_POST["fin_periodo"]);
 echo "Cant Salidas:".$cantDias. " || <br>";
 for ($i=0; $i < $cantDias; $i++) { 

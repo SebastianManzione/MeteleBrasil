@@ -11,14 +11,14 @@ require("classes/usuario.php");
 require("classes/reserva.php");
 require("classes/salidas.php");
 require("classes/categoria.php");
+
 require("classes/servicio.php");
-if ($_SERVER["REQUEST_METHOD"]=="POST") {
-
- if($prestador>1){
-alertar("Prestador guardado con exito", "success");
- }
-
-
+require("classes/comprobantes.php");
+require("classes/convierte_monedas.php");
+require("classes/origenes_comprobantes.php");
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
 }
 
  ?>
@@ -166,37 +166,55 @@ alertar("Prestador guardado con exito", "success");
     </thead>
     <tbody>
       <?php 
-$reservas=getReservas();
-for ($i=0; $i < count($reservas); $i++) { 
-	$idReserva=$reservas[$i]["idReserva"];
-getMoneda($reservas[$i]["monedaSel"]);
-$horariosReserva=getReservaHorarios($idReserva);
+$comprobantes=getComprobantes();
+
+for ($i=0; $i < count($comprobantes); $i++) { 
+ 
+$fechaIngreso=date("d-m-Y", strtotime($comprobantes[$i]["fechaIngreso"]));
+$idMonedaOrigen=$comprobantes[$i]["monedaComprobante"];
+$totalComprobanteMonedaOrigen=$comprobantes[$i]["total"];
+ $totalComprobanteConvertido=ConvierteMoneda($idMonedaOrigen,$_SESSION["moneda_sel"], $totalComprobanteMonedaOrigen);	
+ $idReserva=$comprobantes[$i]["idReserva"];
+ $reserva=getReservaId($idReserva);
+ $codigoAmigable=$reserva[0]["codigoAmigable"];
+ $monedaComprobante=getMoneda($idMonedaOrigen);
+ $origenComprobante=getOrigenComprobante($comprobantes[$i]["origenComprobante"])[0]["nombre"];
+
+
+$fecha_reserva=date("d-m-Y", strtotime($reserva[0]["fechaAlta"]));
+$total=$reserva[0]["total"];
+
+$precio=ConvierteMoneda($reserva[0]["monedaSel"],$_SESSION["moneda_sel"], $total);
+  $totalComprobantes=getComprobantesIdReserva($idReserva);
+  $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
+ echo "<br>";
+
+$claseBoton="btn btn-warning";
+                                        $textoBoton="Pendiente";
+                                        if ($diferenciaComprobantesPrecio<1 && $precio > 0) {
+                                         $claseBoton="btn btn-success";
+                                          $textoBoton="Confirmada";
+                                        }
+
+
 $trs='';
-for ($j=0; $j < count($horariosReserva); $j++) { 
-	$idServicioSalidas=$horariosReserva[$j]["idServicioSalidas"];
 
-	$salida=getSalida($idServicioSalidas);
-
-   $fecha_salida=date("d-m-Y", strtotime($salida[0]["fecha"]));
-	$servicio=getServicio($salida[0]["idServicio"]);
-  $idCategoria_servicio=$servicio[0]["idCategoria_servicio"];
- $categoria_servicio=getCategoria($idCategoria_servicio);
- $nombre_categoria_servicio=$categoria_servicio[0]["nombre_categoria_servicio"];
-
-	$nombreServicio=$servicio[0]["nombre_servicio"];
 	$trs=$trs.' 
                                                     <tr class="table-secondary">
                                                     
-                                                    <td>'.$nombreServicio.'</td>
-                                                    <td>'.$nombre_categoria_servicio.'</td>
-                                                    <td>'.$nombre_categoria_servicio.'</td>
-                                                    <td>'.$nombre_categoria_servicio.'</td>
-                                                    <td> <button type="button" class="btn btn-warning">Pendiente</button></td>
-                                                  	<td class="details-control"><a class="btn btn-success" href="carritoDetalles">Ver carrito</a></td>
+                                                    <td>'.$reserva[0]["nombreResponsable"]." ".$reserva[0]["apellidoResponsable"].'</td>
+                                                    <td>'.$fecha_reserva.'</td>
+                                                    <td>'.$_SESSION["moneda_sel_sym"].round($precio,2).'</td>
+                                                    <td>'.$_SESSION["moneda_sel_sym"].round($diferenciaComprobantesPrecio,2).'</td>
+                                                    <td> <button type="button" class="'.$claseBoton.'">'.$textoBoton.'</button></td>
+                                                  	<td class="details-control"> <form method="post" action="carritoDetalles">
+                                                    <button class="btn btn-success" name="detallesCarrito" value="'.$idReserva.'" >Ver carrito</button>
+                                                    </form>
+                                                    </td>
 
                                                     </tr> ';
 	
-}
+
 $dataChildValue=' <div class="table-responsive">                                      
                                                     <h5 class="m-0 text-dark">Detalles de la reserva</h5> <table class="table">
                                                       <tr>
@@ -217,11 +235,11 @@ $dataChildValue=' <div class="table-responsive">
                           data-child-name="row0"
                             data-child-value='<?=$dataChildValue;?>'>
 
-                                 <td>22/12/2021</td>
-                                 <td><?=$reservas[$i]["codigoAmigable"]?></td>
-                                 <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
-                                 <td> <?=date("d-m-Y", strtotime($reservas[$i]['fecha']));?></td>
-                                 <td>22:00</td>
+                                 <td><?=$fechaIngreso;?></td>
+                                 <td><?=$monedaComprobante[0]["Symbol"].round($totalComprobanteMonedaOrigen,2);?></td>
+                                 <td><?=$codigoAmigable;?></td>
+                                 <td><?= $origenComprobante;?></td>
+                              <td> <?=$comprobantes[$i]["compOrigen"];?></td>
                                  <td class="details-control"><input id="boton" type="submit" name="proceso" class="btn btn-info" value="Ver"></td>                              
 
 </tr>

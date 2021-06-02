@@ -50,7 +50,12 @@ echo' <li class="nav-item has-treeview menu-open">
           ?>
           
 <?php
-     
+
+
+   if($_SESSION["login"]["rol"]==1){
+
+ 
+   
 $clientesIcon="far";
 $clientesClass=" ";
 $clientesListClass=" ";
@@ -100,7 +105,7 @@ if ($archivo_actual=="prestadores.php") {
                                   </li> 
                                 </ul>
                               </li>
-
+<?php   } ?>
 
 <!--COMIENZA-->
                      <?php
@@ -130,12 +135,14 @@ if ($archivo_actual=="prestadores.php") {
                                         </a>
 
                                           <ul class="nav nav-treeview ">
+                                            <?php  if($_SESSION["login"]["rol"]==1){ ?>
                                             <li class="nav-item">
                                              <a href="altaServicio" class="nav-link <?=$clientesClass?>">
                                               <i class="fa fa-plus" aria-hidden="true"></i>
                                               <p>Alta Servicios</p>
                                               </a>
                                             </li>
+                                          <?php } ?>
                                                 <?php
 
            //btn alta clientes
@@ -157,7 +164,7 @@ if ($archivo_actual=="prestadores.php") {
 <!--TERMINA-->
 
 
-
+     <?php  if($_SESSION["login"]["rol"]==1){ ?>
 <!--COMIENZA-->
 <?php
      
@@ -212,11 +219,11 @@ if ($archivo_actual=="reservasEstado.php") {
           </li>
 <!--TERMINA-->
 
+     <?php } ?>
 
 
 
-
-
+<?php  if($_SESSION["login"]["rol"]==1){ ?>
 
 <!--COMIENZA-->
 <?php
@@ -225,7 +232,7 @@ $clientesIcon="far";
 $clientesClass=" ";
 $clientesListClass=" ";
 $treeviewClientes="   ";
-if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" ) {
+if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" ||$archivo_actual=="altaArticulo.php" ||$archivo_actual=="listaBlog.php" ) {
 $treeviewClientes=" menu-open ";
   $clientesListClass="active";
               
@@ -301,16 +308,32 @@ if ($archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServicio
                   <p>Editor de categorías</p>
                 </a>
               </li>
+
+
+<?php 
+$clientesClass=" ";
+if ($archivo_actual=="altaArticulo.php" ||$archivo_actual=="listaBlog.php") {
+               $clientesClass="active";
+               $clientesIcon="fas";
+             } ?>
+ <li class="nav-item">
+                <a href="listaBlog" class="nav-link <?=$clientesClass?>">
+                <i class="fa fa-calendar-day" aria-hidden="true"></i>
+                  <p>Blog</p>
+                </a>
+              </li>
+
+
       <!-- individual-->
               </ul>
           </li>
 <!--TERMINA-->
 
+<?php  } ?>
 
 
 
-
-
+<?php  if($_SESSION["login"]["rol"]==1){ ?>
 <!--COMIENZA-->
 <?php
      
@@ -373,7 +396,7 @@ if ($archivo_actual=="comisionesLista.php") {
           </li>
 <!--TERMINA-->
 
-
+<?php  } ?>
 
 
 

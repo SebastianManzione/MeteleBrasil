@@ -14,13 +14,11 @@ require("classes/categoria.php");
 require("classes/servicio.php");
 require("classes/comprobantes.php");
 require("classes/convierte_monedas.php");
-if ($_SERVER["REQUEST_METHOD"]=="POST") {
-
- if($prestador>1){
-alertar("Prestador guardado con exito", "success");
- }
 
 
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
 }
 
  ?>
@@ -191,7 +189,7 @@ for ($j=0; $j < count($horariosReserva); $j++) {
 
 	$idServicioSalidas=$horariosReserva[$j]["idServicioSalidas"];
 	$salida=getSalida($idServicioSalidas);
-  $fecha_salida=date("d-m-Y", strtotime($salida[0]["fecha"]));
+  $fecha_salida=date("d-m-Y ", strtotime($salida[0]["fecha"]));
 	$servicio=getServicio($salida[0]["idServicio"]);
   $idCategoria_servicio=$servicio[0]["idCategoria_servicio"];
   $categoria_servicio=getCategoria($idCategoria_servicio);
@@ -228,9 +226,9 @@ $dataChildValue=' <div class="table-responsive">
                                  <td><?=$reservas[$i]["codigoAmigable"]?></td>
                                  <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
 
-                                 <td> <?=date("d-m-Y", strtotime($reservas[$i]['fechaAlta']));?></td>
-                                 <td><?=$_SESSION["moneda_sel_sym"].$precio;?></td>
-                                 <td><?=$_SESSION["moneda_sel_sym"].$diferenciaComprobantesPrecio;?></td>
+                                 <td> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
+                                 <td><?=$_SESSION["moneda_sel_sym"].round($precio,2) ;?></td>
+                                 <td><?=$_SESSION["moneda_sel_sym"].round($diferenciaComprobantesPrecio,2);?></td>
                                  <?php $claseBoton="btn btn-warning";
                                         $textoBoton="Pendiente";
                                         if ($diferenciaComprobantesPrecio<1 && $precio > 0) {
@@ -239,7 +237,7 @@ $dataChildValue=' <div class="table-responsive">
                                         }
                                   ?>
                                  <td> <button type="button" class="<?= $claseBoton;?>"><?= $textoBoton;?></button></td> 
-                                 <td class="details-control"> <form method="post" action="carritoDetalles"> <button class="btn btn-primary" name="detallesCarrito" value="<?=$idReserva;?>">Detalles carrito</a></form> </td>
+                                 <td > <form method="post" action="carritoDetalles"> <button class="btn btn-primary" name="detallesCarrito" value="<?=$idReserva;?>">Detalles carrito</a></form> </td>
                               
 
 </tr>

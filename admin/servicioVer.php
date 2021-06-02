@@ -147,11 +147,11 @@ for ($i=0; $i <  count($fotos); $i++) {
 
 
       <!-- Default box -->
-                  <?php $salidas=getSalidasServicio($idServicio);
-               
+                  <?php $salidas=getSalidasServicioIdPrestador($idServicio);
+          
                     for ($i=0; $i < count($salidas); $i++) { 
                     	$idMoneda=($salidas[$i]["idMoneda"]);
-
+//print_r($salidas[$i]);
                     	$moneda=getMoneda($idMoneda);
                     $idServiciosSalidasPack=$salidas[$i]["idServiciosSalidasPack"];
                     $idServicioSalidas=$salidas[$i]["idServicioSalidas"];
@@ -205,13 +205,15 @@ for ($i=0; $i <  count($fotos); $i++) {
                                                   <tr>
                                                     <th>Horario de Salida</th>
                                                     <th>Horario de Check In</th>
-                                              
+                                                 <th>Nota de salida</th>
                                                   </tr>
                                                   <tr>
                                                     <td><?=$salidas[$i]["horaSalida"]?></td>
                                                     <td><?=$salidas[$i]["horaCheckIn"]?></td>
+                                                       <th><?=$salidas[$i]["nota_salida"]?></th>
                                                 
                                                  </tr>
+                                             
 
                                                </table>
 

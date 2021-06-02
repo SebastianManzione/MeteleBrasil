@@ -52,7 +52,7 @@ function getReservas(){
     
     }
 
-    function altaReserva($idUsuario, $nombreResponsable, $apellidoResponsable, $emailResponsable, $telefonoResponsable, $monedaSel, $impuestosPais){
+    function altaReserva($idUsuario, $nombreResponsable, $apellidoResponsable, $emailResponsable, $idCountry, $telefonoResponsable, $monedaSel, $impuestosPais, $idioma){
         $conta=0;
             require("conexion.php");
             require("generador_aleatorio.php");
@@ -64,9 +64,9 @@ do{
 
 $idEstadoVenta=1;
 
-$data=["idUsuario"=>$idUsuario, "codigoAmigable"=>$codigoAmigable, "nombreResponsable"=>$nombreResponsable, "apellidoResponsable"=>$apellidoResponsable, "emailResponsable"=>$emailResponsable, "telefonoResponsable"=>$telefonoResponsable, "monedaSel"=>$monedaSel, "impuestosPais"=>$impuestosPais];
+$data=["idUsuario"=>$idUsuario, "codigoAmigable"=>$codigoAmigable, "nombreResponsable"=>$nombreResponsable, "apellidoResponsable"=>$apellidoResponsable, "emailResponsable"=>$emailResponsable, "idCountry"=>$idCountry, "telefonoResponsable"=>$telefonoResponsable, "monedaSel"=>$monedaSel, "impuestosPais"=>$impuestosPais, "idioma"=>$idioma ];
 
-$consulta = "INSERT INTO reservas (idUsuario,codigoAmigable, nombreResponsable, apellidoResponsable, emailResponsable, telefonoResponsable, monedaSel, impuestosPais) VALUES (:idUsuario,:codigoAmigable, :nombreResponsable,:apellidoResponsable,:emailResponsable,:telefonoResponsable,:monedaSel,:impuestosPais) ";
+$consulta = "INSERT INTO reservas (idUsuario,codigoAmigable, nombreResponsable, apellidoResponsable, emailResponsable, idCountry, telefonoResponsable, monedaSel, impuestosPais, idioma) VALUES (:idUsuario,:codigoAmigable, :nombreResponsable,:apellidoResponsable,:emailResponsable, :idCountry,:telefonoResponsable,:monedaSel,:impuestosPais, :idioma) ";
 
 $comando = $pdo->prepare($consulta);
 
@@ -95,13 +95,13 @@ while ($error>0) ;
 
 
 
-function updateTotalReserva($idReserva, $total, $impuestos){
+function updateTotalReserva($idReserva, $total,$total_dolares, $impuestos){
 
 require("conexion.php");
 
  $data=[
-"idReserva"=>$idReserva, "total"=>$total, "impuestos"=>$impuestos];
-$consulta = "UPDATE reservas SET total=:total, impuestos=:impuestos WHERE idReserva = :idReserva ";
+"idReserva"=>$idReserva, "total"=>$total,"total_dolares"=>$total_dolares, "impuestos"=>$impuestos];
+$consulta = "UPDATE reservas SET total=:total, total_dolares=:total_dolares, impuestos=:impuestos WHERE idReserva = :idReserva ";
 
 $comando = $pdo->prepare($consulta);
 

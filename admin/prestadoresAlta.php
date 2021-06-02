@@ -1,5 +1,12 @@
-<?php include "includes/header.php";
+<?php 
+require("classes/functions.php");
+include "includes/header.php";
 include "includes/navbar.php";
+
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
 ?>
 
 

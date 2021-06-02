@@ -9,11 +9,23 @@ require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
 require("classes/edades.php");
+require("classes/servicio.php");
 require("classes/reserva.php");
+require("classes/salidas.php");
+require("classes/tarifas.php");
+require("classes/comprobantes.php");
+require("classes/cancelaciones.php");
 require("classes/convierte_monedas.php");
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
+
 $idServicioSalidas=($_POST["idServicioSalidas"]);
+$salida=getSalida($idServicioSalidas);
+$servicio=getServicio($salida[0]["idServicio"]);
+
+$fechaSalida=date("d-m-Y", strtotime($salida[0]["fecha"]));
+$horaSalida=$salida[0]["horaSalida"];
+$horaCheckIn=$salida[0]["horaCheckIn"];
 
 
 }
@@ -45,7 +57,7 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Fecha del Servicio</h3>
+            <h3 class="card-title">Fecha del Servicio <?=$fechaSalida;?></h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -75,10 +87,10 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
                                                   </tr>
              
                                                   <tr align="center">
-                                                    <td>Costa da Lagoa</td>
-                                                    <td>12/02/2022</td>
-                                                    <td>11:00</td>
-                                                    <td>10:30</td>
+                                                    <td><?=$servicio[0]["nombre_servicio"]?></td>
+                                                    <td><?= $fechaSalida ?></td>
+                                                    <td><?=$horaSalida;?></td>
+                                                    <td><?= $horaCheckIn ?></td>
                                                     <td>2785,00</td>
                                                 
                                                    </tr>
@@ -93,11 +105,11 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
                                                <table style="width:100%">
 
                                                   <tr align="center">
-                                                       <th>Observaciones sobre la salida:</th>
+                                                       <th>Notas de salida:</th>
                                                   </tr>
 
                                                   <tr class="bg-secondary" align="center" style="width:80%">
-                                                       <td>en este servicio tienen que buscar a los piratas que se encuentran en la plaza principal</td>
+                                                       <td><?=$salida[0]["nota_salida"];?></td>
                                                   </tr>
 
                                                </table>
@@ -130,14 +142,21 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
      <tbody>
 
 
-          	<?php $tarifas=getTarifasReservadas($idServicioSalidas) ; //$tarifas=getTarifasReservadas(788);//788 tiene registros
+          	<?php $tarifas=getTarifasReservadas($idServicioSalidas) ;
+         //   $tarifas=getTarifasReservadas(1455);//788 tiene registros
                         	for ($i=0; $i < count($tarifas); $i++) { 
 
                             $fromEdad=getEdad($tarifas[$i]['idFromEdad'])[0]["valor"];
                             $toEdad=getEdad($tarifas[$i]['idToEdad'])[0]["valor"];
                             $idReservaTarifas=$tarifas[$i]['idReservaTarifas'];
       $horario=getReservaHorariosId($tarifas[$i]['idReservaHorarios']);
+  
+      $idReserva=$horario[0]["idReserva"];
       $tarifa2=getTarifasReservadasIdTarifa( $idReservaTarifas);
+
+      $tarifaOriginal=getTarifa($tarifa2[0]['idServicioSalidasTarifas']);
+      $cancelacion=getTipoCancelaciones($tarifaOriginal[0]['idCancelaciones'])[0]["texto"];
+     
        $pasajeros=getPasajeros($idReservaTarifas);
       $moneda=getMoneda($tarifa2[0]["monedaSel"]);
       $symMoneda=$_SESSION["moneda_sel_sym"];
@@ -146,11 +165,24 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
       $valor=ConvierteMoneda($tarifa2[0]["monedaSel"],$_SESSION["moneda_sel"], $tarifa2[0]["valor"]);
       $comisionVendedor=ConvierteMoneda($tarifa2[0]["monedaSel"],$_SESSION["moneda_sel"], $tarifa2[0]["comisionVendedor"]);
 
-      $reserva=getReservaId($horario[0]["idReserva"]);
+      $reserva=getReservaId($idReserva);
+        $totalComprobantes=getComprobantesIdReserva($idReserva);
+$totalReserva=ConvierteMoneda($reserva[0]["monedaSel"],$_SESSION["moneda_sel"], $reserva[0]["total"]);
+$diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
+
+                                       $claseBoton="btn btn-warning";
+                                        $textoBoton="Pendiente";
+                                        if ($diferenciaComprobantesPrecio<1 && $totalReserva > 0) {
+                                         $claseBoton="btn btn-success";
+                                          $textoBoton="Confirmada";
+                                        }
+
+
       $fechaAlta= date( "d-m-Y", strtotime( $reserva[0]["fechaAlta"] ) );
                      for ($j=0; $j < count($pasajeros); $j++) { 
                      
-                    
+
+
                         	 	?>
 
 
@@ -176,38 +208,38 @@ $idServicioSalidas=($_POST["idServicioSalidas"]);
                             <tr>
                               <td>Total</td>
                               <td>Pago</td>
-                              <td>Medio de Pago</td> 
+                          
                               <td>A Pagar</td> 
                             </tr>
                             <tr>
-                              <td><?=$symMoneda.' '.$valor?></td>
-                              <td><?=$symMoneda?>32132132</td>
-                              <td>????pueden ser varios</td>
-                              <td><?=$symMoneda?>32132132</td>
+                              <td><?=$_SESSION["moneda_sel_sym"].$totalReserva;?></td>
+                              <td><?=$_SESSION["moneda_sel_sym"].$totalComprobantes;?></td>
+                             
+                              <td><?=$_SESSION["moneda_sel_sym"].$diferenciaComprobantesPrecio;?></td>
                             </tr>
                             <tr>
                               <td>Tipo De Tarifa</td>
                               <td>Valor Comisionable</td>
-                              <td>Comision Total</td> 
+                            
                               <td>Canal de Venta</td> 
                             </tr>
                             <tr>
                               <td><?=$tarifa2[0]["nombre"]?> (<?=$fromEdad?> a <?=$toEdad?> Años)</td>
-                              <td><?=$symMoneda?> <?=$valorSinIva;?></td>
-                              <td><?=$symMoneda?> <?=$comisionVendedor;?></td> 
-                              <td>No tenemos esto todavia</td>
+                              <td><?=$_SESSION["moneda_sel_sym"].$comisionVendedor;?></td>
+                         
+                              <td></td>
                             </tr>
                           </table>">
                   	<td class="details-control"><?=$pasajeros[$j]["nombrePasajero"]?> <?=$pasajeros[$j]["apellidoPasajero"]?> </td>
-                    <td class="details-control">de 5 a 10 anos</td>                
+                    <td class="details-control"><?=$tarifa2[0]["nombre"]?> (<?=$fromEdad?> a <?=$toEdad?> Años)</td>                
                   	<td class="details-control"><?=$reserva[0]["codigoAmigable"]?></td>
                     <td class="details-control"><?=$reserva[0]["telefonoResponsable"]?></td>
-                    <td class="details-control"><?=$tarifa2[0]["nombre"]?> (<?=$fromEdad?> a <?=$toEdad?> Años)</td>
-                    <td class="details-control">000</td>
-                    <td class="details-control">100</td>
-                    <td class="details-control">No reembolsable</td>
-                    <td> <button type="button" class="btn btn-warning">Pendiente</button></td> 
-                    <td class="details-control">tenemos una persona con disapacidad y precisamos ayuda para subirala al barco</td>
+                    <td class="details-control"><?=$_SESSION["moneda_sel_sym"].$totalReserva;?></td>
+                    <td class="details-control"><?=$_SESSION["moneda_sel_sym"].$totalComprobantes;?></td>
+                    <td class="details-control"><?=$_SESSION["moneda_sel_sym"].$diferenciaComprobantesPrecio;?></td>
+                    <td class="details-control"><?=$cancelacion;?></td>
+                    <td> <button type="button" class="<?= $claseBoton;?>"><?= $textoBoton;?></button></td> 
+                    <td class="details-control"><?= $horario[0]['comentario']?></td>
 
                   </tr>
 

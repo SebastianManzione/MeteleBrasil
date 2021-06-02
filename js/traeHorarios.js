@@ -114,6 +114,7 @@ function traeTarifas($idSalida){
 
 reserva=[];
 reservaAdicionales=[];
+console.log(data);
    var tarifas = JSON.parse(data);
    
 disponibilidad=tarifas[0]["disponibilidad"];
@@ -125,9 +126,9 @@ disponibilidad=tarifas[0]["disponibilidad"];
                  $('#rowCirculosPreciosMovil').html('');
 
    for (var i = 0; i < tarifas.length; i++) {
-
+tipoTarifa=tarifas[i]['tipoTarifaNombre'];
 var lineaPrecios='   <div class="col-lg-2 col-5" style="margin-left: 20px">'+
-  '<p class="text-center ">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años)'+'</p>'+
+  '<p class="text-center ">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años) '+tipoTarifa+'</p>'+
                '<div class="circulo-b">'+
                  '<p class="text-center text-primary">'+tarifas[i]['valor']+'</p>'+
                '</div>'+
@@ -137,7 +138,7 @@ var lineaPrecios='   <div class="col-lg-2 col-5" style="margin-left: 20px">'+
 var linea='	<div class="container py-3">'+
                             '  <div class="row">'+
                                   '<div class="col-md-12">'+
-                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años)'+'</p>'+
+                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años) '+tipoTarifa+'</p>'+
                                   '</div>'+
                                   '<div class="col-md-3">'+
    '<span class="counter-label_span"><label id="txtPrecioMovil['+tarifas[i]['idServicioSalidasTarifas']+']">'+tarifas[i]['valor']+'</label></span>'+
@@ -165,7 +166,7 @@ var linea='	<div class="container py-3">'+
 var lineaCelular=' <div class="container py-3">'+
                             '  <div class="row">'+
                                   '<div class="col-md-12">'+
-                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años)'+'</p>'+
+                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' Años) '+tipoTarifa+'</p>'+
                                   '</div>'+
                                   '<div class="col-md-3 col-3">'+
    '<span class="counter-label_span"><label id="txtPrecioMovil['+tarifas[i]['idServicioSalidasTarifas']+']">'+tarifas[i]['valor']+'</label></span>'+
@@ -219,8 +220,15 @@ for (var j = 0; j < adicionalesIncluidos.length; j++) {
 }
     adicionalesNoIncluidos=tarifas[0]["adicionalesNoIncluidos"];
                           
-            
-for (var k = 0; k < adicionalesNoIncluidos.length; k++) {
+  if (adicionalesNoIncluidos.length<1) { //esto es para ocultar el acordeon de adicionales si no tenemos ningun servicio adicional
+    $('#Seleccionar_adicionales_b').hide(); 
+    $('#Seleccionar_adicionales_b_celular').hide();
+}
+else{
+  $('#Seleccionar_adicionales_b').show(); 
+    $('#Seleccionar_adicionales_b_celular').show();
+}          
+for (var k = 0; k < adicionalesNoIncluidos.length; k++) { //llenamos el acordeon de adicionales con los adicionales
 
   var lineaAdicionalesNoIncluidos='             <div class="row">'+
                                   '<div class="col-md-12">'+

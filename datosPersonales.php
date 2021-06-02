@@ -1,5 +1,6 @@
 <?php 
 session_start();
+print_r($_SESSION);
 include("admin/classes/salidas.php");
 include("admin/classes/tarifas.php");
 include("admin/classes/idiomas.php");
@@ -9,7 +10,7 @@ include("admin/classes/servicio.php");
     include("admin/classes/cancelaciones.php");
     include("admin/classes/servicios_adicionales.php");
         include("admin/classes/convierte_monedas.php");
-
+    include("admin/classes/codigos_telefonicos.php");
 $totalCarrito=0;
 
 include ("admin/classes/functions.php");
@@ -185,7 +186,7 @@ location.href="carrito";
       <?php 
          
 $precioTotalCarrito=0;
-
+$totalDescuentos=0;
     for ($i=0; $i < $cantCarrito; $i++) {  
      echo "RESERVA nro: ".($i+1);
       $reserva=$carrito[$i][0];
@@ -202,7 +203,7 @@ $precioTotalCarrito=0;
       $cantidadPasajeros+=$reserva[$j]['cantidad']; 
   
         $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
-
+          $totalDescuentos+=$tarifa[0]["totalDescuentos"];
           $precioReserva+=$tarifa[0]["valor"];
           if ($j==0) {
             ?>
@@ -218,9 +219,11 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
       }
       
+if ($_SESSION["login"]["idVendedor"]>0) {
+  echo("<li>comision Vendedor: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
+echo("<li>comision Sistema: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionSistema"].'</li>');
+}
 
-echo("<li>comision Vendedor". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
-echo("<li>comision Sistema". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionSistema"].'</li>');
 ?>
    <li>Subtotal Reserva <?= $_SESSION['moneda_sel_sym']."".$precioReserva;?></li>
    
@@ -246,7 +249,16 @@ for ($j=0; $j < count($reservaAdicionales); $j++) {
  ?>
   <hr>
  <?php
-} ?>
+
+} 
+if ($totalDescuentos>0) {
+  ?>
+ <li>SU DESCUENTO: <?=$_SESSION['moneda_sel_sym'].$totalDescuentos;?></li>
+  <li>Anfitrión: <?=$_SESSION['cupon_descuento']['anfitrion'];?></li>
+  <?php
+}
+
+?>
 
  <!--  <li> Total Adicionales: ".$sym." ".$subTotalAdicionales."</li>
       Total Reserva: ".$sym." ".$parcialReserva."-->
@@ -278,7 +290,7 @@ for ($j=0; $j < count($reservaAdicionales); $j++) {
 
 <div class="card-body">
                 <h5>Responsable de la Reserva</h5>
-                
+
                   <div class="form-row ">
                     <div class="form-group col-6">
                       <input type="text" class="form-control" placeholder="Nombre" name="txtNombreResponsable" required>
@@ -293,10 +305,15 @@ for ($j=0; $j < count($reservaAdicionales); $j++) {
                       <input type="email" class="form-control" placeholder="Correo Electronico" name="txtEmailResponsable" required>
                     </div>
                     <div class="form-group col-3">
-                      <select class="form-control" name="txtPrefijoResponsable">
-                        <?php /*foreach (PaisesTelefonos() as $key => $value) {
-                          echo "<option value=".$value[1].">".$value[1]."</option>";
-                        }*/ ?>
+                      <select class="form-control" name="idCountry">
+                        <?php $codigosTelefonicos=getCodigosTelefonicos();
+                for ($i=0; $i < count($codigosTelefonicos); $i++) { 
+                  $selected="";
+                  if ($codigosTelefonicos[$i]["phonecode"]==55) {
+                  $selected="selected";
+                  }
+               ?><option value="<?=$codigosTelefonicos[$i]['id'];?>"<?=$selected;?>> +<?=$codigosTelefonicos[$i]['phonecode'];?> <?=$codigosTelefonicos[$i]['nicename'];?> </option><?php
+                 } ?>
                         
                       </select>
                     </div>
@@ -501,7 +518,7 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
                 <div class="col-lg-12">
                   <div class="custom-control custom-checkbox mr-sm-2">
                     <input type="checkbox" class="custom-control-input" id="customControlAutosizing" >
-                    <label class="custom-control-label" for="customControlAutosizing">Acepto la <a >política de privacidad</a> <a data-toggle="modal" data-target="#politicas"><i class="fa fa-exclamation-circle"></i></a> y las <a >condiciones generales</a>.</label>
+                    <label class="custom-control-label" for="customControlAutosizing">Acepto la <a href="privacy" target="_BLANK">política de privacidad</a> <a data-toggle="modal" data-target="#politicas"><i class="fa fa-exclamation-circle"></i></a> y las condiciones generales.</label>
                   </div>
                 </div>
               </div>

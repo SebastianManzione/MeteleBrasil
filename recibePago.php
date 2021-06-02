@@ -16,7 +16,8 @@ $idMoneda=$_POST["moneda"];
 $idReserva=$_POST["idReserva"];
 $idUsuario=$_SESSION["login"]["idUsuario"];
 $total=$_POST["dinero"];
-$comprobante=insertaComprobante($idReserva, $total, 3, $_POST["moneda"], $idUsuario);
+$comprobante=insertaComprobante($idReserva, $total, 6, $_POST["moneda"], $idUsuario);
+echo "comprobante".$comprobante;
 if ($comprobante>0) {
   # code...
 
@@ -389,7 +390,7 @@ else
 
 
 
-echo ("<script>location.href='consultaReserva.php?reserva=".$codigoAmigable."'</script>");
+//echo ("<script>location.href='consultaReserva.php?reserva=".$codigoAmigable."'</script>");
 
 }
 ?>

@@ -10,10 +10,22 @@ require("classes/functions.php");
 require("classes/categoria.php");
 
 
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+}
 
-$categorias=getCategorias();
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["desHabilitarCategoria"]) ) {
+desHabilitarCategoria($_POST["desHabilitarCategoria"]);
 
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["habilitarCategoria"]) ) {
 
+habilitarCategoria($_POST["habilitarCategoria"]);
+
+}
+
+$categorias=getAllCategorias();
  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -119,6 +131,7 @@ $categorias=getCategorias();
 <?php 
 
 for ($i=0; $i < count($categorias); $i++) { 
+  $idCategoria_servicioTMP=$categorias[$i]["idCategoria_servicio"];
 
 ?>
     <tr>
@@ -131,7 +144,14 @@ for ($i=0; $i < count($categorias); $i++) {
                                 <td>foto</td>
                                 <td><?=$categorias[$i]["nViajeros"];?></td>
                                 <td><?=$categorias[$i]["orden"];?></td>
-                                <td><?=$categorias[$i]["habilitado"];?></td>
+                                <td><form method="post"><?php 
+                                if($categorias[$i]["habilitado"]==0){ ?>
+                                <button class="btn btn-sm btn-success" name="habilitarCategoria" value="<?=$idCategoria_servicioTMP?>">Habilitar</button>
+                                <?php }
+                                else{
+                                  ?><button class="btn btn-sm btn-warning" name="desHabilitarCategoria" 
+                                   value="<?=$idCategoria_servicioTMP;?>">Deshabilitar</button>
+                               <?php }?>    </form></td>
                                 <td><form method="post" action="categoriaOpiniones">
 <button type="submit" name="idCategoria_servicio" value="<?=$categorias[$i]["idCategoria_servicio"];?>" class="btn-sm btn-primary">Opiniones</button></form>
 </td>
