@@ -200,6 +200,28 @@ $descripcion_corta="Actividades, traslados, entradas, visitas guiadas y excursio
 
 <div id="fb-root"></div>
 
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v5.0&appId=533299343733095&autoLogAppEvents=1"></script>-->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-175922201-1"></script>
+
+<script>
+
+  window.dataLayer = window.dataLayer || [];
+
+  function gtag(){dataLayer.push(arguments);}
+
+  gtag('js', new Date());
+
+
+
+  gtag('config', 'UA-175922201-1');
+
+</script>
+
 
 
 
@@ -228,7 +250,8 @@ $descripcion_corta="Actividades, traslados, entradas, visitas guiadas y excursio
 
 <meta property="og:image:height" content="720" />
 
-
+<meta property="og:image" 
+content="www.metelebrasil.com/img/og-image.jpg" />
 
 
 
