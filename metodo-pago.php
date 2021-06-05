@@ -37,7 +37,7 @@ location.href="index.php";
 ';
 }
 ?>
-<head>
+
 
    <title>MeteleBrasil.com</title>
 

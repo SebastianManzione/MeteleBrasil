@@ -1,0 +1,23 @@
+Ejemplo de como traducir una palabra o frase:
+
+en el archivo original, por ejemplo, index.php
+
+   <p class="texto-bottom">Hola Mundo!</p>
+
+En admin/lang, hay archivos php que son los diccionarios, ES.php correponde al español, PT corresponde al portugués
+
+Creamos en el arrary de ES.php la variable
+,"hola_mundo"=>"Hola Mundo"
+
+En el archivo pt.php le agregamos lo mismo en portugués
+
+,"hola_mundo"=>"Hoi Mundiño"
+
+En donde estaba la palabra o frase original (index.php en el ejemplo)
+
+   <p class="texto-bottom">Hola Mundo!</p>
+   
+La reemplazamos por:
+
+   <p class="texto-bottom"><?=$lang["hola_mundo"];?></p>
+

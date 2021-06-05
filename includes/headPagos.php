@@ -53,5 +53,8 @@ include("admin/classes/parametros.php");
    <!-- FUENTES-->
    
   <!-- ESTILOS NECESARIOS -->
+<?= $parametros[0]["head"]?>
 
 </head>
+<body>
+   <?= $parametros[0]["body"]?>

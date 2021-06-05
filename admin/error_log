@@ -1,16 +1,568 @@
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(../classes/email_pago_recibido.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(../classes/email_pago_recibido.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(): Failed opening '../classes/email_pago_recibido.php' for inclusion (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Notice:  Undefined variable: mail in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 90
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Notice:  Undefined variable: email_pago_recibido in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 90
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  require(../email/PHPMailerAutoload.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  require(../email/PHPMailerAutoload.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required '../email/PHPMailerAutoload.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(../classes/email_pago_recibido.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(../classes/email_pago_recibido.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  include(): Failed opening '../classes/email_pago_recibido.php' for inclusion (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 88
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Notice:  Undefined variable: mail in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 90
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Notice:  Undefined variable: email_pago_recibido in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/mercadopagoArgentina/notificacionesTest.php on line 90
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  require(../email/PHPMailerAutoload.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Warning:  require(../email/PHPMailerAutoload.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
-[04-May-2021 22:44:20 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required '../email/PHPMailerAutoload.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/classes/reservaEmail.php on line 36
+[31-May-2021 17:02:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[31-May-2021 17:02:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[31-May-2021 17:02:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[31-May-2021 17:02:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[31-May-2021 17:09:12 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[31-May-2021 17:09:12 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[31-May-2021 17:34:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[31-May-2021 17:34:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 12:52:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 12:52:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 12:52:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 12:52:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 12:54:11 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 12:54:11 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 12:54:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 12:54:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 12:58:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 12:58:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:00:52 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:00:52 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 175
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 20
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 55
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 138
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 167
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 226
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 320
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:01 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'classes/monedas.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:14 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:36:14 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:36:14 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:14 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:14 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'classes/monedas.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 12
+[02-Jun-2021 13:36:37 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:36:37 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:36:37 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 15
+[02-Jun-2021 13:36:37 America/Sao_Paulo] PHP Warning:  require(classes/monedas.php): failed to open stream: No such file or directory in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 15
+[02-Jun-2021 13:36:37 America/Sao_Paulo] PHP Fatal error:  require(): Failed opening required 'classes/monedas.php' (include_path='.:/opt/alt/php73/usr/share/pear') in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 15
+[02-Jun-2021 13:36:57 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:36:57 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:36:57 America/Sao_Paulo] PHP Fatal error:  Cannot redeclare getMonedas() (previously declared in /home/pontopraiacom/metelebrasil.com/admin/classes/moneda.php:4) in /home/pontopraiacom/metelebrasil.com/admin/classes/moneda.php on line 18
+[02-Jun-2021 13:37:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:37:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:37:13 America/Sao_Paulo] PHP Notice:  Undefined variable: servicio in /home/pontopraiacom/metelebrasil.com/admin/textoMiniaturaLista.php on line 84
+[02-Jun-2021 13:37:28 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:37:28 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 13:39:57 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 13:39:57 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:21:48 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:21:48 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:22:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:22:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:22:14 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:22:14 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:22:44 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:22:44 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:23:01 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:23:01 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: idCategoria_servicio in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 80
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: habilitados in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 80
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: idCategoria_servicio in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 129
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: habilitados in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 129
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: idCategoria_servicio in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 175
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: habilitados in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 175
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: idCategoria_servicio in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 221
+[02-Jun-2021 14:23:38 America/Sao_Paulo] PHP Notice:  Undefined variable: habilitados in /home/pontopraiacom/metelebrasil.com/admin/reservasEstado.php on line 221
+[02-Jun-2021 14:24:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:24:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:24:36 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:24:36 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:25:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:25:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:25:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:25:42 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:32:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:32:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:32:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:32:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:32:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:32:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:36:05 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:36:05 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:36:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:36:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:38:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:38:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:55:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:55:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 14:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 14:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:03:11 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:03:11 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:03:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:03:34 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:10:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:10:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:10:16 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:10:16 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:16:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:16:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:16:26 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:16:26 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:16:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:16:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:17:02 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:17:02 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:24:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:24:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 175
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 20
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 55
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 138
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 167
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 226
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/includes/sidebar.php on line 320
+[02-Jun-2021 15:58:21 America/Sao_Paulo] PHP Notice:  Undefined index: login in /home/pontopraiacom/metelebrasil.com/admin/prestadores.php on line 10
+[02-Jun-2021 21:18:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:18:11 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:18:17 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:18:17 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:18:17 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function getTextosMiniaturas() in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php:121
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 121
+[02-Jun-2021 21:21:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:21:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:22:15 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:22:15 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:22:35 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:22:35 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:23:17 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:23:17 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:23:17 America/Sao_Paulo] PHP Notice:  Undefined index: idTextoMiniaturas in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 128
+[02-Jun-2021 21:23:17 America/Sao_Paulo] PHP Notice:  Undefined index: idTextoMiniaturas in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 128
+[02-Jun-2021 21:24:00 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:24:00 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:24:00 America/Sao_Paulo] PHP Notice:  Undefined index: idTextoMiniaturas in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 128
+[02-Jun-2021 21:24:00 America/Sao_Paulo] PHP Notice:  Undefined index: idTextoMiniaturas in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 128
+[02-Jun-2021 21:24:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:24:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:27:33 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:27:33 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:27:55 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:27:55 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:33:09 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:33:09 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:33:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:33:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:33:40 America/Sao_Paulo] PHP Notice:  Array to string conversion in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 17
+[02-Jun-2021 21:34:16 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:34:16 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:40:31 America/Sao_Paulo] PHP Parse error:  syntax error, unexpected ':' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 22
+[02-Jun-2021 21:40:42 America/Sao_Paulo] PHP Parse error:  syntax error, unexpected ':' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 22
+[02-Jun-2021 21:41:17 America/Sao_Paulo] PHP Parse error:  syntax error, unexpected ':' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 23
+[02-Jun-2021 21:41:23 America/Sao_Paulo] PHP Parse error:  syntax error, unexpected ':' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 23
+[02-Jun-2021 21:41:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:41:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:42:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:42:13 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:43:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:43:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:43:29 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:43:29 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:43:44 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:43:44 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:44:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:44:10 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:44:10 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function getAllServicios() in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php:88
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 88
+[02-Jun-2021 21:49:26 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:49:26 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:49:26 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function getDestino() in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php:93
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 93
+[02-Jun-2021 21:49:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:49:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:49:45 America/Sao_Paulo] PHP Fatal error:  Uncaught Error: Call to undefined function getDestino() in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php:96
+Stack trace:
+#0 {main}
+  thrown in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 96
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fechaAlta in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 114
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fechaAlta in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 114
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fechaAlta in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 114
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:49:56 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:50:21 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:18 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:51:40 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:52:51 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:53:08 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:53:50 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:53:50 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:54:24 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:54:24 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 116
+[02-Jun-2021 21:54:25 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 118
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 21:54:43 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 21:54:47 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:54:47 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 21:56:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 21:56:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:07:52 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:07:52 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:07:52 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 34
+[02-Jun-2021 22:08:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:08:19 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:08:19 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined offset: 1 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined offset: 2 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined offset: 3 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:08:51 America/Sao_Paulo] PHP Notice:  Undefined offset: 4 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 1 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 2 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 3 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:09:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 4 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined offset: 1 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined offset: 2 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined offset: 3 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:10:41 America/Sao_Paulo] PHP Notice:  Undefined offset: 4 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined offset: 1 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined offset: 2 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined offset: 3 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:03 America/Sao_Paulo] PHP Notice:  Undefined offset: 4 in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 35
+[02-Jun-2021 22:11:22 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:11:22 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:11:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:11:39 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Only variables should be passed by reference in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Warning:  move_uploaded_file(blog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/php8Oenge' to 'blog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Notice:  Only variables should be passed by reference in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Warning:  move_uploaded_file(blog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:14:49 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpUi6v9a' to 'blog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Only variables should be passed by reference in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Warning:  move_uploaded_file(imgBlog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpxAhX1n' to 'imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Notice:  Only variables should be passed by reference in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 38
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Warning:  move_uploaded_file(imgBlog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:16:04 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpepwatn' to 'imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 40
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Warning:  move_uploaded_file(imgBlog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpVqhWd8' to 'imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Warning:  move_uploaded_file(imgBlog/): failed to open stream: Is a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:16:31 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/php3kxjHe' to 'imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): The second argument to copy() function cannot be a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpJbb9Vz' to 'classes/imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Notice:  Undefined index: image in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 37
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): The second argument to copy() function cannot be a directory in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:17:00 America/Sao_Paulo] PHP Warning:  move_uploaded_file(): Unable to move '/tmp/phpDBFKmP' to 'classes/imgBlog/' in /home/pontopraiacom/metelebrasil.com/admin/blogAlta.php on line 39
+[02-Jun-2021 22:26:38 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:26:38 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:27:07 America/Sao_Paulo] PHP Notice:  Undefined variable: idServicio in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 111
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:31 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:30:41 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:45 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:32:46 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:35 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:37 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:59:37 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 22:59:53 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:19:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:19:41 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:20:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:20:40 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:20:54 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:20:54 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:22:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:22:20 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:21 America/Sao_Paulo] PHP Notice:  Undefined variable: fotos in /home/pontopraiacom/metelebrasil.com/admin/blogLista.php on line 109
+[02-Jun-2021 23:22:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:22:23 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217
+[02-Jun-2021 23:22:47 America/Sao_Paulo] PHP Notice:  Undefined index: nombre_empresa in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 206
+[02-Jun-2021 23:22:47 America/Sao_Paulo] PHP Notice:  Undefined index: nombre in /home/pontopraiacom/metelebrasil.com/admin/includes/navbar.php on line 217

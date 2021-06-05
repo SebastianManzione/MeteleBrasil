@@ -41,7 +41,4 @@
            
 
 
-<!-- DataTables -->
-
-<!-- AdminLTE App -->
 

@@ -1,5 +1,6 @@
 <?php 
 
+require("classes/parametros.php");
  session_start(); 
 
 if(!isset($_SESSION["login"]["rol"])){
@@ -22,23 +23,7 @@ $GLOBALS["path"]=$_SERVER['DOCUMENT_ROOT']."/admin";
 
 
 $archivo_actual = basename($_SERVER['SCRIPT_NAME']); //Regresa el nombre del archivo actual
-function getParametros(){
 
-require($GLOBALS["path"]."/classes/conexion.php");
-
-$consulta = "select * from parametros";
-
-$comando = $pdo->prepare($consulta);
-
-$comando->execute();
-$cuenta_col = $comando->columnCount();
-
-$resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-// Imprimir en pantalla
-return $resultado;
-
-
-}
 $parametros=getParametros();
 
 ?>
@@ -75,8 +60,7 @@ $parametros=getParametros();
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 <script
   src="./js/jquery-3.5.1.js"
-  integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-  crossorigin="anonymous"></script>
+  ></script>
 <!-- jQuery -->
  <script src="./js/jquery.dataTables.min.js
 " type="text/javascript" charset="utf-8" ></script>

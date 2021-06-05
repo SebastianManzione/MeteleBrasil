@@ -1,1 +1,0 @@
-[04-May-2021 22:54:46 America/Sao_Paulo] PHP Deprecated:  __autoload() is deprecated, use spl_autoload_register() instead in /home/pontopraiacom/metelebrasil.com/admin/email/PHPMailerAutoload.php on line 45

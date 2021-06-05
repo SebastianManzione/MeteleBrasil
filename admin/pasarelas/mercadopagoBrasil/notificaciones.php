@@ -1,13 +1,6 @@
 <?php 
 
 include("config.php");
-include("../../classes/functions.php");
-include("../../classes/comprobantes.php");
-include("../../classes/reservaEmail.php");
-include("../../classes/reserva.php");
-include("../../classes/moneda.php");
-include("../../classes/usuario.php");
-include("../../classes/convierte_monedas.php");
 header('Access-Control-Allow-Origin: *');
 header('Content-type: application/json;  charset=UTF-8');
 
@@ -24,8 +17,8 @@ $geet=$_GET;
 
 
 $fp = fopen("./MPResu.csv", 'a+');
-fputcsv($fp, $bodyy,";");
-fputcsv($fp, "***************************************************/n",";");
+fputcsv($fp, $body,";");
+
  http_response_code(200);
 
     if(!is_null($geet["type"])){
@@ -56,11 +49,8 @@ $url = 'https://api.mercadopago.com/v1/payments/'.$id.'?access_token='.$accessTo
     curl_close( $curl );
     $respuestas = json_decode( $json, true );
 
-$fp = fopen("./MPResu.csv", 'a+');
-fputcsv($fp,  $json,";");
+print_r($respuestas);
 
-fputcsv($fp, "***************************************************/n",";");
-fputcsv($fp, "***************************************************/n",";");
 if (!isset($respuestas['message'])) {
 
 //csv on
@@ -83,17 +73,15 @@ $hora= (new DateTime)->format('H:i:s');
 $nombre=$respuestas['payer']['first_name'];
 $apellido=$respuestas['payer']['last_name'];
 $lista =array( $respuestas['external_reference'] ,$nombre,$apellido,$respuestas['payer']['identification']['number'],$id,$respuestas['transaction_amount']);
-$total_transaccion=$respuestas['transaction_amount'];
-$total_dolares=  $total_dolares=ConvierteMoneda(283,188, $total_transaccion);
-$comprobante=insertaComprobante($respuestas['external_reference'], $total_transaccion, 2, 283, $id, $total_dolares);
 
 
 
-//$contacto=DevuelveContacto($respuestas['external_reference']);
+echo(InsertaPago($respuestas['external_reference'],$respuestas['transaction_amount'],1, 270,$id));
+$contacto=DevuelveContacto($respuestas['external_reference']);
 
-//$mail=$contacto[3];
+$mail=$contacto[3];
 
-/*enviaMail($mail,"Recibimos tu pago correctamente!","
+enviaMail($mail,"Recibimos tu pago correctamente!","
 <!doctype html>
 <html xmlns='http://www.w3.org/1999/xhtml' xmlns:v='urn:schemas-microsoft-com:vml' xmlns:o='urn:schemas-microsoft-com:office:office'>
   <head>
@@ -439,7 +427,7 @@ $comprobante=insertaComprobante($respuestas['external_reference'], $total_transa
 </html>
 
 
-   ");*/
+   ");
 
 
 

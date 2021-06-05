@@ -1,4 +1,0 @@
-[04-May-2021 16:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 32
-[04-May-2021 16:55:56 America/Sao_Paulo] PHP Notice:  Undefined index: purchase_units in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/notificaciones.php on line 35
-[04-May-2021 16:56:06 America/Sao_Paulo] PHP Notice:  Undefined index: resource in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/test.php on line 7
-[04-May-2021 16:56:23 America/Sao_Paulo] PHP Notice:  Undefined index: resource in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/PayPal/test.php on line 7

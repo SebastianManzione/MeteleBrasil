@@ -34,12 +34,12 @@ function getTextosMiniaturas(){
     
     
     }
-   /* function setPrestador($nombre, $rSocial, $documento, $telefono, $email, $observaciones, $direccion, $latitud, $longitud){
+ function setTextoMiniatura($texto){
 
 
         require("conexion.php");
-        $data=["nombre"=> $nombre, "rSocial"=>$rSocial, "documento"=>$documento, "telefono"=>$telefono, "email"=> $email, "observaciones"=> $observaciones,"direccion"=>$direccion, "latitud"=>$latitud,"longitud"=>$longitud];
-        $consulta = "INSERT INTO prestadores (nombre, razonSocial, documento, telefono, email, observaciones,direccion, latitud, longitud) VALUES (:nombre, :rSocial, :documento,:telefono,:email,:observaciones,:direccion, :latitud, :longitud) ";
+        $data=["texto"=> $texto];
+        $consulta = "INSERT INTO texto_miniaturas (texto) VALUES (:texto) ";
         
         $comando = $pdo->prepare($consulta);
         
@@ -54,13 +54,17 @@ function getTextosMiniaturas(){
         
         
         }
-
+ 
         
-function borraPrestador($idPrestador){
+function borraTextoMiniatura($idTextoMiniaturas){
 
 require("conexion.php");
-    $data=["idPrestador"=> $idPrestador];
-    $consulta = "DELETE FROM prestadores WHERE idPrestador=:idPrestador ";
+
+
+$cantidad=count(getTextoMiniaturasServicio($idTextoMiniaturas));
+if ($cantidad==0) {
+        $data=["idTextoMiniaturas"=> $idTextoMiniaturas];
+    $consulta = "DELETE FROM texto_miniaturas WHERE idTextoMiniaturas=:idTextoMiniaturas ";
     
     $comando = $pdo->prepare($consulta);
     
@@ -71,8 +75,33 @@ require("conexion.php");
     
     
     return $cuenta_row;
+}
+else{
+    return -5;
+}
+
+
     
     
-    }*/
+    }      
+
+
+    function getTextoMiniaturasServicio($idTextoMiniaturas){
+
+    require("conexion.php");
+    $data=["idTextoMiniaturas"=>$idTextoMiniaturas];
+    $consulta = "select * from servicio WHERE idTextoMiniaturas=:idTextoMiniaturas";
     
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
 ?>
