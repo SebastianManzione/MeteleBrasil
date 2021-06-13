@@ -1,4 +1,4 @@
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
 <?php
 include("includes/navbar.php");
 
@@ -17,11 +17,11 @@ include("includes/navbar.php");
       <div class="col-lg-12">
           
           <!--BUCLE DE LOS RESULTADOS AQUI--> 
-        <div class="badge badge-primary badge-ciudad"></div>
+        <div class="badge badge-primary badge-ciudad"><?=$lang["sostenibilidad"]?></div>
          <!--FIN BUCLE DE LOS RESULTADOS AQUI-->
          
           <!--TITULO-->
-        <h1 class="text-white texto-shadow py-2 bold" style=" text-shadow: -1px 0px 6px #000000;"></h1>
+        <h1 class="text-white texto-shadow py-2 bold" style=" text-shadow: -1px 0px 6px #000000;">S<?=$lang["sostenibilidad"]?></h1>
          <!--TITULO-->
         
       
@@ -81,13 +81,10 @@ include("includes/navbar.php");
 <!--FIN MENU FIJO-->
 
 
-<!--SECCION INFORMACION DE VISITA MOVIL-->
 
 
-<!--FIN SECCION INFORMACION DE VISITA MOVIL-->
 
-
-<section class="py-5 d-md-block d-none">
+<section class="d-md-block">
   <div class="container container_r clearfix">
       <div class="row">
            <!--COL INFORMACION IZQUIERDA-->
@@ -95,54 +92,106 @@ include("includes/navbar.php");
              <div id="content">
                  
             <div class="o-container-work-us">
-<h1 class="a-title-empleo afiliados" style="text-align: center;"><?=$lang["contacto"]?></h1>
-<span class="py-4 text-primary"><?=$lang["si_le_quedan_dudas_respecto"]?></span>
+        
+            <h1 class="a-title-empleo"><?=$lang["sostenibilidad"]?></h1>
 
-<br><br>
+            <span class="py-4 text-primary"></span>
+
+            <p><?=$lang["el_presente_sitio"]?><i>“<b>METELEBRASIL</b>”</i>)<?=$lang["con_cnpj"]?></p>
+
+            <p>METELEBRASIL <?=$lang["se_toma_muy_enserio"]?></p>
+
+            <p><?=$lang["la_presente"]?></p>
+
+            <p><?=$lang["si_desea_ponerse"]?><a href="mailto:dpo@METELEBRASIL.com">dpo@METELEBRASIL.com</a>.</p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["2_porque_metelebrasil"]?></span>
+
+            <p><?=$lang["los_datos_de_los"]?></p>
+
+            <p><?=$lang["de_conformidad_con"]?></p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["3_procedimento_de_dados"]?></span>
+
+            <p>METELEBRASIL <?=$lang["podra_recabar_datos"]?></p>
+
+            <ol>
+            <li><?=$lang["la_prestacion_de_servicios"]?></li>
+            <li><?=$lang["enviar_comunicaciones_comerciales"]?></li>
+            </ol>
+
+            <p><?=$lang["asimismo_el_usuario"]?></p>
+
+            <p><?=$lang["igualmente_y_por_motivos"]?></p>
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["4_caracter_obligatorio"]?></span>
+
+            <p><?=$lang["el_usuario_garantiza"]?></p>
+
+            <p><?=$lang["se_recomienda_tener"]?></p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["practicas_no_permitidas"]?></span>
+
+            <p>METELEBRASIL <?=$lang["anulara_el_registro"]?>
+
+            <b>(i)</b><?=$lang["incluyan_o_promocionen"]?>
+            <b>(ii)</b><?=$lang["promocionen_cualquier_tipo"]?>
+            <b>(iii)</b><?=$lang["remitan_bulk"]?>
+            <b>(iv)</b><?=$lang["inclumplan_algun_derecho"]?></p>
+
+            <p><?=$lang["los_datos_personales_proporcionados"]?></p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["6_derechos_del_usuario"]?></span>
+
+            <p><?=$lang["el_usuario_tiene_derecho"]?><b>(i)</b><?=$lang["acceder_a_sus_datos"]?><b>(ii)</b><?=$lang["solicitar_la_rectificacion"]?><b>(iii)</b><?=$lang["solicitar_su_supresion"]?><b>(iv)</b><?=$lang["solicitar_la_limitacion"]?><b>(v)</b><?=$lang["opomerse_al_tratamiento"]?><b>(vi)</b><?=$lang["ejercitar_el_derecho"]?><b>(vii)</b>><?=$lang["solicitar_su_portabilidad"]?></p>
+
+            <p><?=$lang["para_ejercer_dichos_derechos"]?></p>
+
+            <p><?=$lang["el_usuario_puede_ejercer"]?><a href="mailto:METELEBRASIL@METELEBRASIL.com">METELEBRASIL@METELEBRASIL.com</a><?=$lang["indicando_el_motivo"]?></p>
+
+            <p><?=$lang["el_usuario_puede_tambien"]?></p>
+
+            <p><b>METELEBRASIL TOURS S.L.</b></p>
+
+            <p>calle Rua Mil 110 , Balneário Camboriú</p>
+
+            <p>Brasil.</p>
+
+            <p><?=$lang["sin_prejuicio"]?></p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["7_seguridad"]?></span>
+
+            <p><?=$lang["la_proteccion_de_la_privacidad"]?></p>
+
+            <p>METELEBRASIL <?=$lang["mantiene_los_niveles"]?></p>
+
+            <p>METELEBRASIL <?=$lang["se_compromete_a_cumplir"]?></p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["8_perguntas"]?></span>
+
+            <p><?=$lang["si_tiene_alguna_pregunta"]?><a href="mailto:METELEBRASIL@METELEBRASIL.com">METELEBRASIL@METELEBRASIL.com</a>.</p>
+
+            <!-- ---------------------------------------------------------------------------------------------------------- -->
+
+            <span class="py-4 text-primary"><?=$lang["9_aceptacion_y_concentimiento"]?></span>
+
+            <p><?=$lang["el_usuario_declara_haber"]?></p>
 
 
-
-        <span class=""><?=$lang["si_usted_continua_con_dudas_"]?>
-           </span>
-        <form class="form-buscar" style="padding-top: 30px;">
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["nombre"]?></h5>
-          
-                  <div class="input-group">
-                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="Escribe tu nombre" value="">
-              </div>
-            
-        </div>
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["email"]?></h5>
-         
-                  <div class="input-group">
-                <input class="field form-control" id="email" name="email" type="text" placeholder="Escribe tu mail" value="">
-              </div>
-           
-        </div>
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["telefono"]?></h5>
-         
-                  <div class="input-group">
-                <input class="field form-control" id="phone" name="phone" type="text" placeholder="Escribe tu teléfono" value="">
-              </div>
-            
-        </div>
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["mensaje"]?></h5>
-         
-              <div class="input-group">
-                <textarea class="field form-control" id="mensaje" name="mensaje">
-                
-                </textarea>
-              </div>
-            
-        </div>
-        </form>
-       
-
-            </div>
+                </div>
 
         </div>
         
@@ -151,55 +200,9 @@ include("includes/navbar.php");
         </div> 
            </div>
           </section>
-<div class="container py-2">
-                          <div class="row">
-                              <div class="col-12">
-<h1 class="a-title-empleo afiliados" style="text-align: center;"> <?=$lang["contacto"]?></h1>
-<span class="py-4 text-primary"><?=$lang["si_le_quedan_dudas_respecto"]?></span>
 
-<br><br>
+        
 
-        <span class=""><?=$lang["si_usted_continua_con_dudas_"]?>
-           </span>
-        <form class="form-buscar" style="padding-top: 30px;">
-        
-          <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["nombre"]?></h5>
-          
-                  <div class="input-group">
-                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="Escribe tu nombre" value="">
-              </div>
-            
-        
-       
-          <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["email"]?></h5>
-         
-                  <div class="input-group">
-                <input class="field form-control" id="email" name="email" type="text" placeholder="Escribe tu mail" value="">
-              </div>
-           
-        
-        
-          <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["telefono"]?></h5>
-         
-                  <div class="input-group">
-                <input class="field form-control" id="phone" name="phone" type="text" placeholder="Escribe tu teléfono" value="">
-              </div>
-            
-        
-        
-          <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["mensaje"]?></h5>
-         
-              <div class="input-group">
-                <textarea class="field form-control" id="mensaje" name="mensaje">
-                
-                </textarea>
-              </div>
-            
-        
-        </form>
-                              </div>
-                          </div>
-</div>
   
  <!-- Footer -->
 <?php include "footer.php"; ?>
@@ -221,7 +224,7 @@ include("includes/navbar.php");
           <div class="input-group ">
             <input class="field form-control" id="buscar" name="buscar" type="text" placeholder="¿Dónde vamos?" value="">
             <span class="input-group-append">
-              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit"><?=$lang["nombre"]?><?=$lang["buscar"]?><i class="fa fa-arrow-right"></i></button>
+              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit"><?=$lang["buscar"]?><i class="fa fa-arrow-right"></i></button>
             </span>
           </div>
               <!--EMPIEZA DESPLEGABLE DEL BANNER--> 
@@ -241,7 +244,7 @@ include("includes/navbar.php");
                             <!--EL BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                             <div class="col-md-3 col-6 mb-3">
                             <h4 class=" mb-0"><a href="#" class="text-destinos">Rio de Janeiro</a></h4>
-                            <small>Salvador Bahia</small>
+                            <small>Brasil</small>
                             </div>
                             <!--FIN BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                   

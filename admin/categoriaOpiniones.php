@@ -13,6 +13,13 @@ require("classes/categoria.php");
 
 require("classes/opiniones_categoria.php");
 
+if (!$_SESSION["login"]["rol"]==1) {
+
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+
+  redireccionarLento("index");
+
+}
 
 if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["idCategoria_servicio"])) {
     $idCategoria_servicio=$_GET["idCategoria_servicio"];

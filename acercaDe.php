@@ -65,41 +65,45 @@ include("includes/navbar.php");
              <div id="content">
                  
             <div class="o-container-work-us">
-<h1 class="a-title-empleo afiliados">Acerca de nosotros</h1>
+
+<h1 class="a-title-empleo afiliados"><?=$lang["acerca_de_nosotros"]?></h1>
 
 
-        <span class="py-4 text-primary">¿Quienes somos?:</span>
+        <span class="py-4 text-primary"><?=$lang["quienes_somos"]?></span>
 
-            <span class="">METELEBRASIL es una plataforma digital especializada en brindar alto valor profesional en soluciones integrales de servicios de viajes. Mejorando la logistica de prestadores de servicios, operadores de turismo nacional e internacional y agencias de viajes y turismo de todo sudamerica.
-            <br><br>
+            <span class=""><?=$lang["metelebrasil_es_una_plataforma"]?>
+            <br>
+            <br>
             </span>
 
-        <span class="py-4 text-primary">¿Que le aportamos a su experiencia?</span>
+        <span class="py-4 text-primary"><?=$lang["que_le_aportamos_a_su_experiencia"]?></span>
 
-        <span class="">Sumamos conocimiento, experiencia y estrategia para ayudar a nuestros clientes a tomar las decisiones que necesitan para optimizar sus gastos de viajes y representación.</span>
+        <span class=""><?=$lang["sumamos_su_conocimiento"]?></span>
         <br><br>
-        <span class="py-4 text-primary">Valor agregado</span>
+        <span class="py-4 text-primary"><?=$lang["valor_agregado"]?></span>
 
-        <span class="">Flexible y de respuesta en tiempo real, nuestros especialistas colaboran para responder a la demanda de un mercado cada vez más exigente, combinando el trato altamente personalizado y los beneficios de la economía de escala que se traducen en ahorros.</span>
+        <span class=""><?=$lang["flexible_y_de_respuesta"]?></span>
+        
+        <br>
+        <br>
+        <span class="py-4 text-primary"><?=$lang["soporte_permanente"]?></span>
 
-        <span class="py-4 text-primary">Soporte permanente</span>
-
-        <span class="">Nuestras unidades de negocios comprenden:
+        <span class=""><?=$lang["nuestras_unidades_de"]?><br>
 Business Travel<br>
 Groups, Events & Meetings<br>
 Incoming Services<br>
 </span>
         <br>
 
-        <span class="py-4 text-primary">Nuestro propósito</span>
+        <span class="py-4 text-primary"><?=$lang["nuestro_proposito"]?></span>
 
-        <span class="">Nuestro propósito es que la experiencia de los viajes resulte personalmente agradable y lo más beneficiosa posible.
+        <span class=""><?=$lang["nuestro_proposito_es"]?>
 
-En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque en definitiva cuidar su bienestar e interés es nuestro negocio, ya que de ello también depende nuestro bienestar.</span><br><br>
+<?=$lang["en_sintesis"]?></span><br><br>
 
 <div id="accordion">  
 
-          <h2 class="a-title-empleo afiliados text-primary" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Nuestra Startup</h2>
+          <h2 class="a-title-empleo afiliados text-primary" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><?=$lang["nuestra_startup"]?></h2>
       
 
 
@@ -107,26 +111,25 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
        <div class="card-body">
         <span class="py-4 text-primary">Reservate</span>
         
-        <span class=""> es una Startup de actividades y eventos turísticos locales que, a diferencia de las plataformas actuales, es un modelo B2B y B2C. Metele Brasil - RESERVTE viene a solucionar un gran problema de logistica que hay entre agencias, operadores y prestadores de servicios, los cuales se están volviendo obsoletos frente a grandes plataformas digitales. Creemos que de esta forma podemos hacer que las agencias y operadores estén más preparados para la competencia de cara al mercado POST PANDEMIA que exige innovación y tecnologia.
+        <span class=""><?=$lang["es_una_startup"]?>
         </span>
         <br><br>
             
 
-        <span class="py-4 text-primary">¿Que soluciones les brindamos a la Agencias de viajes?</span>
+        <span class="py-4 text-primary"><?=$lang["que_soluciones"]?></span>
 
-        <span>Las agencias que estén afiliadas a nuestro sistema tendrán la posibilidad de recibir clientes que ingresen en nuestro site y estén en la misma geolocalización ofreciéndoles una atención más personalizada y el dicho descuento.
-        <br><br></span>
+        <span><?=$lang["las_agencias_que_esten"]?><br><br></span>
          
         
-        <span class="py-4 text-primary">¿Que soluciones les brindamos a los Operadores de Turismo internacional?</span>
+        <span class="py-4 text-primary"><?=$lang["que_soluciones_les_brindamos_a_los_operadores"]?></span>
         <span>
-        Brindamos una plataforma en la cual presentamos servicios de operadores mayoristas y el público final puede comprarlas de manera directa, y los agentes de viajes tendrán la posibilidad de ser parte de estas compras, por medio de cupones de descuentos y regalías que ofrecemos al consumidor final por acercarse a uno de nuestros afiliados, en este caso las agencias minoristas.
+        <?=$lang["brindamos_una_plataforma_en_la_cual"]?>
         <br><br></span>
          
 
-        <span class="py-4 text-primary">Nuestra solución agencias de turismo, hoteles/hospedajes y otros que tengan atención directa con el turista</span>
+        <span class="py-4 text-primary"><?=$lang["nuestra_solucion_agencias_hoteles"]?></span>
 
-       <span>El sistema también será ofrecido para vendedores autonomos y cualquiera que diariamente es consultado por el turista sobre actividades turísticas  y agencias receptivas, tendrán la posibilidad de ofrecer cupones de descuento a sus clientes o turistas curiosos.</span>
+       <span><?=$lang["el_sistema_tambien_sera"]?></span>
 
 
                                             </div>
@@ -149,41 +152,41 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                           <div class="row">
                               <div class="col-12">
                                   <!--CONTENEDOR DESCRIPCION-->
-       <h1 class="a-title-empleo afiliados">Acerca de nosotros</h1>
+       <h1 class="a-title-empleo afiliados"><?=$lang["acerca_de_nosotros"]?></h1>
 
 
-        <span class="py-4 text-primary">¿Quienes somos?:</span>
+        <span class="py-4 text-primary"><?=$lang["quienes_somos"]?>::</span>
 
-            <span class="">METELEBRASIL es una plataforma digital especializada en brindar alto valor profesional en soluciones integrales de servicios de viajes. Mejorando la logistica de prestadores de servicios, operadores de turismo nacional e internacional y agencias de viajes y turismo de todo sudamerica.
+            <span class=""><?=$lang["metelebrasil_es_una_plataforma"]?>
             <br><br>
             </span>
 
-        <span class="py-4 text-primary">¿Que le aportamos a su experiencia?</span>
+        <span class="py-4 text-primary"><?=$lang["que_le_aportamos_a_su_experiencia"]?></span>
 
-        <span class="">Sumamos conocimiento, experiencia y estrategia para ayudar a nuestros clientes a tomar las decisiones que necesitan para optimizar sus gastos de viajes y representación.</span>
+        <span class=""><?=$lang["sumamos_su_conocimiento"]?></span>
         <br><br>
-        <span class="py-4 text-primary">Valor agregado</span>
+        <span class="py-4 text-primary"><?=$lang["valor_agregado"]?></span>
 
-        <span class="">Flexible y de respuesta en tiempo real, nuestros especialistas colaboran para responder a la demanda de un mercado cada vez más exigente, combinando el trato altamente personalizado y los beneficios de la economía de escala que se traducen en ahorros.</span>
+        <span class=""><?=$lang["flexible_y_de_respuesta"]?></span>
 
-        <span class="py-4 text-primary">Soporte permanente</span>
+        <span class="py-4 text-primary"><?=$lang["soporte_permanente"]?></span>
 
-        <span class="">Nuestras unidades de negocios comprenden:
+        <span class=""><?=$lang["nuestras_unidades_de"]?>:
 Business Travel<br>
 Groups, Events & Meetings<br>
 Incoming Services<br>
 </span>
         <br>
 
-        <span class="py-4 text-primary">Nuestro propósito</span>
+        <span class="py-4 text-primary"><?=$lang["nuestro_proposito"]?></span>
 
-        <span class="">Nuestro propósito es que la experiencia de los viajes resulte personalmente agradable y lo más beneficiosa posible.
+        <span class=""><?=$lang["nuestro_proposito_es"]?>
 
-En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque en definitiva cuidar su bienestar e interés es nuestro negocio, ya que de ello también depende nuestro bienestar.</span><br><br>
+<?=$lang["en_sintesis"]?></span><br><br>
 
  <div id="accordion2">  
 
-      <button class="btn btn-outline-primary btn-lg btn-block""><h3 class="a-title-empleo afiliados" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Nuestra Startup</h3></button>
+      <button class="btn btn-outline-primary btn-lg btn-block""><h3 class="a-title-empleo afiliados" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><?=$lang["nuestra_startup"]?></h3></button>
 
 
           <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion2">
@@ -192,26 +195,26 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
               <div class="card-body">
                 <span class="py-4 text-primary">Reservate</span>
             
-                <span class=""> es una Startup de actividades y eventos turísticos locales que, a diferencia de las plataformas actuales, es un modelo B2B y B2C. Metele Brasil - RESERVTE viene a solucionar un gran problema de logistica que hay entre agencias, operadores y prestadores de servicios, los cuales se están volviendo obsoletos frente a grandes plataformas digitales. Creemos que de esta forma podemos hacer que las agencias y operadores estén más preparados para la competencia de cara al mercado POST PANDEMIA que exige innovación y tecnologia.
+                <span class=""><?=$lang["es_una_startup"]?>
                 </span>
                 <br><br>
                 
 
-                <span class="py-4 text-primary">¿Que soluciones les brindamos a la Agencias de viajes?</span>
+                <span class="py-4 text-primary"><?=$lang["que_soluciones"]?></span>
 
-                <span>Las agencias que estén afiliadas a nuestro sistema tendrán la posibilidad de recibir clientes que ingresen en nuestro site y estén en la misma geolocalización ofreciéndoles una atención más personalizada y el dicho descuento.
+                <span><?=$lang["las_agencias_que_esten"]?>
                 <br><br></span>
                  
                 
-                <span class="py-4 text-primary">¿Que soluciones les brindamos a los Operadores de Turismo internacional?</span>
+                <span class="py-4 text-primary"><?=$lang["que_soluciones_les_brindamos_a_los_operadores"]?></span>
                 <span>
-                Brindamos una plataforma en la cual presentamos servicios de operadores mayoristas y el público final puede comprarlas de manera directa, y los agentes de viajes tendrán la posibilidad de ser parte de estas compras, por medio de cupones de descuentos y regalías que ofrecemos al consumidor final por acercarse a uno de nuestros afiliados, en este caso las agencias minoristas.
+                <?=$lang["brindamos_una_plataforma_en_la_cual"]?>
                 <br><br></span>
                  
 
-                <span class="py-4 text-primary">Nuestra solución agencias de turismo, hoteles/hospedajes y otros que tengan atención directa con el turista</span>
+                <span class="py-4 text-primary"><?=$lang["nuestra_solucion_agencias_hoteles"]?></span>
 
-               <span>El sistema también será ofrecido para vendedores autonomos y cualquiera que diariamente es consultado por el turista sobre actividades turísticas  y agencias receptivas, tendrán la posibilidad de ofrecer cupones de descuento a sus clientes o turistas curiosos.</span>
+               <span><?=$lang["el_sistema_tambien_sera"]?></span>
 
                   </div>
               </div>
@@ -244,18 +247,18 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                    <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                   <p class="text-muted">
-                    Se destaca por su personalidad, esta todo el dia produciendo material audiovisual o grabando cualquier situacion. No pierde oportunidad.
+                    <?=$lang["se_destaca_por_su_personalidad"]?>
                   </p>
 
                  <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i><?=$lang["vive"]?></strong>
 
-                <p class="text-muted"> Florianopolis, Brasil</p>
+                <p class="text-muted"><?=$lang["florianopolis_santa_catarina_brasil"]?></p>
 
                 <hr>
 
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Especializadades</strong>
+                <strong><i class="fas fa-pencil-alt mr-1"></i><?=$lang["especialidades"]?></strong>
 
                 <p class="text-muted">
                   <span class="tag tag-danger">Premier</span>
@@ -267,9 +270,9 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
 
                 <hr>
 
-                <strong><i class="far fa-file-alt mr-1"></i> Notas</strong>
+                <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Le encanta irse de vacaciones con los amigos y disfrutar de la buena vida, mucho asado y caipirinha.</p>
+                <p class="text-muted"><?=$lang["le_encanta_irse_de_vacaciones"]?></p>
               </div>
               <!-- /.card-body -->
               </div>
@@ -301,12 +304,12 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                 <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                    <p class="text-muted">
-                       Le encantan los motores y cualqueir tipo de maquina que sea propulsada a reaccion. Ama irse de vacaciones a Monte Hermoso.
+                       <?=$lang["le_encantan_los_motores"]?>
                     </p>
 
                  <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i><?=$lang["vive"]?></strong>
 
                   <p class="text-muted"> Buenos Aires, Argentina</p>
 
@@ -324,9 +327,9 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
 
                   <hr>
 
-                 <strong><i class="far fa-file-alt mr-1"></i> Notas</strong>
+                 <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Es proactivo, le encanta hacer mil cosas a la vez y es adicto a los desafios. No se da por vencido facilmente.</p>
+                <p class="text-muted"><?=$lang["es_proactivo"]?></p>
             </div>
               <!-- /.card-body -->  
           </div>
@@ -352,39 +355,39 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title text-center">Ariel Bohe</h3>
-                <p class="text-muted text-center">Comunicador Multimedia</p>
+                <p class="text-muted text-center"><?=$lang["comunicador_multimedia"]?></p>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                 <p class="text-muted">
-                  Leer libros tecnicos de comunicacion y biograficas, tambien es amante del aire libre y viajar. Es muy curioso con la Tecnologia.
+                 <?=$lang["leer_libros_comunicacion"]?>
                 </p>
 
                 <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i><?=$lang["vive"]?></strong>
 
-                <p class="text-muted"> Balneario Camboriu, Brasil</p>
+                <p class="text-muted"><?=$lang["balneario_camboriu_brasil"]?></p>
 
                 <hr>
 
-                <strong><i class="fas fa-pencil-alt mr-1"></i> Especialidades</strong>
+                <strong><i class="fas fa-pencil-alt mr-1"></i><?=$lang["especialidades"]?></strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger">Locutor</span>
-                  <span class="tag tag-primary">Metodologias Agiles</span>
+                  <span class="tag tag-danger"><?=$lang["locutor"]?></span>
+                  <span class="tag tag-primary"><?=$lang["metodologias_agiles"]?></span>
                   <span class="tag tag-info">Podcaster</span>
-                  <span class="tag tag-warning">Mentor</span>
+                  <span class="tag tag-warning"><?=$lang["mentor"]?></span>
 
                 </p>
 
                 <hr>
 
-                <strong><i class="far fa-file-alt mr-1"></i>Notas</strong>
+                <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Evita comidas pesadas pero le encanta bailar cualquier tipo de musica brasilera. Es muy creativo.</p>
+                <p class="text-muted"><?=$lang["evita_comidas_pesadas"]?></p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -408,37 +411,37 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title text-center">Lucas Nieto</h3>
-                <p class="text-muted text-center">CEO Fundador</p>
+                <p class="text-muted text-center"><?=$lang["ceo_fundador"]?></p>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                 <p class="text-muted">
-                  Adora los desafios grandes y resulve conflictos comunes en los estadios de MVP. Disfruta mucho del trabajo. Colabora siempre.
+                  <?=$lang["adora_los_desafios"]?>
                 </p>
 
                 <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i><?=$lang["vive"]?></strong>
 
-                <p class="text-muted">Florianopolis, Santa Catarina, Brasil</p>
+                <p class="text-muted"><?=$lang["florianopolis_santa_catarina_brasil"]?></p>
 
                 <hr>
 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger">Dirección General</span>
-                  <span class="tag tag-success">Gestor Comercial</span>
-                  <span class="tag tag-primary">Neuromarketing y Growth Haking</span>
+                  <span class="tag tag-danger"><?=$lang["direccion_general"]?></span>
+                  <span class="tag tag-success"><?=$lang["gestor_comercial"]?></span>
+                  <span class="tag tag-primary">Neuromarketing & Growth Haking</span>
                 </p>
 
                 <hr>
 
-                <strong><i class="far fa-file-alt mr-1"></i> Notas</strong>
+                <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Adora viajar por mucho tiempo a lugares muy lejanos y exoticos. Ama la gastronomia Argentina.</p>
+                <p class="text-muted"><?=$lang["adora_viajar_por_mucho_tiempo"]?></p>
               </div>
               <!-- /.card-body -->   
             </div>
@@ -463,19 +466,19 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title text-center">Claudio Monaco</h3>
-                <p class="text-muted text-center">Asesor & Consultor</p>
+                <p class="text-muted text-center"><?=$lang["asesor_y_consultor"]?></p>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
                 <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                 <p class="text-muted">
-                  Le encantan las montañas y los paisajes frios, ama comer cordero patagonico acompañado de un buen vino chileno. Le gusta la historia.
+                  <?=$lang["le_encantan_las_montanas"]?>
                 </p>
 
                 <hr>
 
-                <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
+                <strong><i class="fas fa-map-marker-alt mr-1"></i><?=$lang["vive"]?></strong>
 
                 <p class="text-muted">Buenos Aires, Argentina</p>
 
@@ -484,16 +487,16 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                 <strong><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
 
                 <p class="text-muted">
-                  <span class="tag tag-danger">Mentoria</span>
-                  <span class="tag tag-success">Asesor</span>
-                  <span class="tag tag-primary">Politicas de grupo</span>
+                  <span class="tag tag-danger"><?=$lang["mentoria"]?></span>
+                  <span class="tag tag-success"><?=$lang["asesor"]?></span>
+                  <span class="tag tag-primary"><?=$lang["politicas_de_grupo"]?></span>
                 </p>
 
                 <hr>
 
-                <strong><i class="far fa-file-alt mr-1"></i> Notas</strong>
+                <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Se destaca por su buena aceptación en grupo, le cae bien a todo el mundo y siempre esta con buenas intensiones.</p>
+                <p class="text-muted"><?=$lang["se_destaca_por_su_buena"]?></p>
               </div>
               <!-- /.card-body -->   
             </div>
@@ -525,14 +528,14 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                 <strong><i class="fas fa-book mr-1"></i> Hobbies</strong>
 
                 <p class="text-muted">
-                  Sus tiempos libres los pasa tocando el bajo y en compania de la familia, adora escuchar musica y le encantan los shows en vivo.
+                  <?=$lang["sus_tiempos_libres"]?>
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Vive</strong>
 
-                <p class="text-muted">Florianopolis, Santa Catarina, Brasil</p>
+                <p class="text-muted"><?=$lang["florianopolis_santa_catarina_brasil"]?></p>
 
                 <hr>
 
@@ -541,14 +544,14 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                 <p class="text-muted">
                   <span class="tag tag-danger">Marketing</span>
                   <span class="tag tag-success">Comercial</span>
-                  <span class="tag tag-primary">Desarrollo Web</span>
+                  <span class="tag tag-primary"><?=$lang["desarrollo_web"]?></span>
                 </p>
 
                 <hr>
 
-                <strong><i class="far fa-file-alt mr-1"></i> Notas</strong>
+                <strong><i class="far fa-file-alt mr-1"></i><?=$lang["notas"]?></strong>
 
-                <p class="text-muted">Dedico varios años a ser operador de sonido y organizar eventos para bandas reconocidas. Siempre esta dispuesto a aprender.</p>
+                <p class="text-muted"><?=$lang["dedico_varios_anos_a_ser_operador"]?></p>
               </div>
               <!-- /.card-body -->   
             </div>
@@ -596,11 +599,11 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
       </div>
       <div class="modal-body">
         <form class="form-buscar">
-            <label class="sr-only" for="s">¿Dónde vamos?</label>
+            <label class="sr-only" for="s"><?=$lang["nuestra_solucion_agencias_hoteles"]?><?=$lang["donde_vamos"]?></label>
           <div class="input-group ">
             <input class="field form-control" id="buscar" name="buscar" type="text" placeholder="¿Dónde vamos?" value="">
             <span class="input-group-append">
-              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit">Buscar <i class="fa fa-arrow-right"></i></button>
+              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit"><?=$lang["buscar"]?>i class="fa fa-arrow-right"></i></button>
             </span>
           </div>
               <!--EMPIEZA DESPLEGABLE DEL BANNER--> 
@@ -612,22 +615,22 @@ En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque 
                          <div class="container">
                         <div class="row mb-4">
                           <div class="col-lg-12">
-                            <h3 class="text-center text-primary">Top Destinos</h3>
+                            <h3 class="text-center text-primary"><?=$lang["top_actividades"]?></h3>
                           </div>
                         </div>
                         <div class="row  mb-4">
                             
                             <!--EL BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                             <div class="col-md-3 col-6 mb-3">
-                            <h4 class=" mb-0"><a href="#" class="text-destinos">Nueva York</a></h4>
-                            <small>Estados Unidos</small>
+                            <h4 class=" mb-0"><a href="#" class="text-destinos">Rio de Janeiro</a></h4>
+                            <small>Salvador Bahia</small>
                             </div>
                             <!--FIN BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                   
                          </div>
                          <div class="row py-4">
                           <div class="col-lg-12">
-                            <h3 class="text-center"><a href="" class="btn btn-outline-primary btn-white" style="border-radius:25px;">Ver todos los destinos</a></h3>
+                            <h3 class="text-center"><a href="" class="btn btn-outline-primary btn-white" style="border-radius:25px;"><?=$lang["ver_todos_los_destinos"]?></a></h3>
                           </div>
                         </div>
                         </div>

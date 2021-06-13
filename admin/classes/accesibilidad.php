@@ -34,12 +34,31 @@ function getAccesibilidades(){
     
     
     }
-   /* function setPrestador($nombre, $rSocial, $documento, $telefono, $email, $observaciones, $direccion, $latitud, $longitud){
+
+  function getAllAccesiblidadesSalidas($idAccesibilidad){
+
+    require("conexion.php");
+    $data=["idAccesibilidad"=>$idAccesibilidad];
+    $consulta = "select * from servicios_salidas WHERE idAccesibilidad=:idAccesibilidad";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
+  function setTextoAccesibilidad($texto){
 
 
         require("conexion.php");
-        $data=["nombre"=> $nombre, "rSocial"=>$rSocial, "documento"=>$documento, "telefono"=>$telefono, "email"=> $email, "observaciones"=> $observaciones,"direccion"=>$direccion, "latitud"=>$latitud,"longitud"=>$longitud];
-        $consulta = "INSERT INTO prestadores (nombre, razonSocial, documento, telefono, email, observaciones,direccion, latitud, longitud) VALUES (:nombre, :rSocial, :documento,:telefono,:email,:observaciones,:direccion, :latitud, :longitud) ";
+        $data=["texto"=> $texto];
+        $consulta = "INSERT INTO accesibilidad (texto) VALUES (:texto) ";
         
         $comando = $pdo->prepare($consulta);
         
@@ -55,12 +74,12 @@ function getAccesibilidades(){
         
         }
 
-        
-function borraPrestador($idPrestador){
+       
+function borraTextoAccesibilidad($idAccesibilidad){
 
 require("conexion.php");
-    $data=["idPrestador"=> $idPrestador];
-    $consulta = "DELETE FROM prestadores WHERE idPrestador=:idPrestador ";
+    $data=["idAccesibilidad"=> $idAccesibilidad];
+    $consulta = "DELETE FROM accesibilidad WHERE idAccesibilidad=:idAccesibilidad ";
     
     $comando = $pdo->prepare($consulta);
     
@@ -73,6 +92,6 @@ require("conexion.php");
     return $cuenta_row;
     
     
-    }*/
+    }  /* */
     
 ?>

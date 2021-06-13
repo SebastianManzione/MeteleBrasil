@@ -6,6 +6,9 @@
 
 */
 $lang = array(
+
+	/* Index + navbar */
+
 	"crea_tu_viaje" => "Crea tu viaje",
 	"excursiones_en_brasil" => "EXCURSIONES EN BRASIL",
 	"que_hacemos"=> "¿Que hacemos?",
@@ -19,14 +22,891 @@ $lang = array(
 	"opiniones"=>"Opiniones",
 	"viajeros_ya_lo_han_disfrutado"=>"viajeros ya lo han disfrutado",
 	"Actividades"=>"Actividades",
-	"Paseo de barco"=>"Paseo de barco",
+	"Paseo de barco"=>"Paseos en barco",
 	"Hospedaje"=>"Hospedaje",
 	"Paquetes turísticos"=>"Paquetes turísticos",
 	"Transporte"=>"Transporte",
 	"Excursiones"=>"Excursiones",
-	"Evento nocturno"=>"Evento Nocturno"	,
+	"Evento nocturno"=>"Eventos Nocturnos"	,
 	"actividades_destacadas"=>"ACTIVIDADES DESTACADAS",
 	"ingresa_tu_email_para_recibir_novedades"=>"Ingresa tu email para recibir novedades",
 	"recibe_las_ultimas_ofertas"=>"Recibe las últimas ofertas",
-	"escribe_tu_mail"=>"Escribe tu mail"
-);
+	"escribe_tu_mail"=>"Escribe tu mail",
+	"mi_cuenta"=>"Mi Cuenta",
+	"ya_tiene_cuenta_accede_a_tu_panel_de_usuario"=>"¿Ya tienes cuenta? Accede a tu panel de Usuario",
+	"he_olvidado_mi_contrasena"=>"He olvidado mi contraseña",
+	"iniciar_sesion"=>"Iniciar sesion",
+	"no_tienes_cuenta"=>"¿No tienes cuenta?",
+	"registrate"=>"Regístrate",
+	"aqui"=>"aquí",
+	"mis_reservas"=>"Mis reservas",
+	"puedes_gestionar_tu_reserva_sin_estar_registrado"=>"Puedes gestionar tu reserva sin estar registrado",
+	"ir_a_reserva"=>"Ir a reserva",
+	"preguntas_frecuentes"=>"Preguntas Frecuentes",
+	"contactar_con_metelebrasil.com"=>"Contactar con Metelebrasil.com",
+    "tu_carrito_esta_vacio"=>"Tu Carrito Esta Vacío",
+    "finalizar_reserva"=>"Finalizar Reserva",
+    "destacados"=>"Destacados",
+    "ver_todos_los_destinos"=>"Ver todos los destinos",
+    "cerrar_sesion"=>"Cerrar sesión",
+    "contrasena"=>"Contraseña",
+    "espanol"=>"Español",
+    "italiano"=>"Italiano",
+    "portugues"=>"Portugues",
+    "ingles"=>"Ingles",
+    "frances"=>"Frances",
+    "donde_vamos"=> "¿Donde Vamos?",
+
+/* footer */
+
+   	"recibe_las_ultimas_noticias_de_este_evento"=>"Recibe las últimas noticias de este servicio",
+    "quienes_somos"=>"Quiénes somos",
+    "servicios"=>"Servicios",
+    "guia_de_viajes"=>"Guías de viajes",
+    "sostenibilidad"=>"Sostenibilidad",
+    "soporte"=>"Soporte",
+    "contacto"=>"Contacto",
+    "politica_de_uso"=>"Política de uso",
+    "condiciones_generales"=>"Condiciones generales",
+    "aviso_legal"=>"Aviso legal",
+    "politica_de_privacidad"=>"Política de privacidad",
+    "cookies"=>"Cookies",
+    "trabaja_con_nosotros"=>"Trabaja con Nosotros",
+    "venta_freelance"=>"Venta freelance",
+    "agencias_de_viajes"=>"Agencias de viajes",
+    "destinos"=>"Destinos",
+	"guia_de_viajes"=>"Guia de Viajes",
+	"contacto"=>"Contacto",
+	"es_una_marca_registrada_de_reservate_sl"=> " es una marca registrada de RESERVARTE SL.",
+    
+    "real_brasileno"=>"Real Brasileño",
+    "moneda"=>"Moneda",
+
+
+
+    "todos_nuestros_servicios"=>"Todos nuestos servicios",
+
+
+
+/* CATEGORIAS */
+
+    "viajeros_lo_han_disfrutado"=>"viajeros ya lo han disfrutado",
+    "opiniones_reales"=>"opiniones reales",
+    "asi_nos_puntuan"=>"así nos califican",
+    "disponibilidad"=>"Disponibilidad",
+    "hoy"=>"Hoy",
+    "manana"=>"Mañana",
+    "categoria"=>"Categorias",
+    "ordenar"=>"Ordenar",
+    "menor_precio"=>"Menor precio",
+    "mayor_precio"=>"Mayor precio",
+    "visitas_guiadas"=>"Visitas guiadas",
+    "accesible"=>"Accesible",
+    "duracion"=>"Duración", 
+    "actividades_en"=>"actividades en ",
+    "cancelacion_gratuita"=>"Cancelación gratuita",
+    "Proxima"=>"Proxima",
+    "anterior"=>"Anterior",
+    "conoce_nuestra_guia_de"=>"Conoce nuestra guia de ",
+    "que_hacemos"=>"¿Que hacemos?",
+    "buscar"=>"Buscar",
+    "top_actividades"=>"Actividades Top",
+    "filtrar"=> "Filtrar",
+
+
+
+    /* QUIENES SOMOS */
+
+    "acerca_de_nosotros"=>"Acerca de nosotros",
+
+    "metelebrasil_es_una_plataforma"=>"METELEBRASIL es una plataforma digital especializada en brindar alto valor profesional en soluciones integrales de servicios de viajes. Mejorando la logistica de prestadores de servicios, operadores de turismo nacional e internacional y agencias de viajes y turismo de todo sudamerica.",
+
+    "que_le_aportamos_a_su_experiencia"=>"¿Que le aportamos a su experiencia?",
+
+    "sumamos_su_conocimiento"=>"Sumamos conocimiento, experiencia y estrategia para ayudar a nuestros clientes a tomar las decisiones que necesitan para optimizar sus gastos de viajes y representación.",
+    "valor_agregado"=>"Valor agregado",
+
+    "flexible_y_de_respuesta"=>"Flexible y de respuesta en tiempo real, nuestros especialistas colaboran para responder a la demanda de un mercado cada vez más exigente, combinando el trato altamente personalizado y los beneficios de la economía de escala que se traducen en ahorros.",
+
+    "soporte_permanente"=>"Soporte permanente",
+
+    "nuestras_unidades_de"=>"Nuestras unidades de negocios comprenden:",
+
+    "nuestro_proposito"=>"Nuestro propósito",
+
+    "nuestro_proposito_es"=>"Nuestro propósito es que la experiencia de los viajes resulte personalmente agradable y lo más beneficiosa posible.",
+
+    "en_sintesis"=>"En síntesis, nosotros nos preocupamos para que ustedes no se preocupen, porque en definitiva cuidar su bienestar e interés es nuestro negocio, ya que de ello también depende nuestro bienestar.",
+
+    "nuestra_startup"=>"Nuestra Startup",
+
+    "es_una_startup"=>" es una Startup de actividades y eventos turísticos locales que, a diferencia de las plataformas actuales, es un modelo B2B y B2C. Metele Brasil - RESERVTE viene a solucionar un gran problema de logistica que hay entre agencias, operadores y prestadores de servicios, los cuales se están volviendo obsoletos frente a grandes plataformas digitales. Creemos que de esta forma podemos hacer que las agencias y operadores estén más preparados para la competencia de cara al mercado POST PANDEMIA que exige innovación y tecnologia.",
+
+    "que_soluciones"=>"¿Que soluciones les brindamos a la Agencias de viajes?",
+
+    "las_agencias_que_esten"=>"Las agencias que estén afiliadas a nuestro sistema tendrán la posibilidad de recibir clientes que ingresen en nuestro site y estén en la misma geolocalización ofreciéndoles una atención más personalizada y el dicho descuento.",
+
+    "que_soluciones_les_brindamos_a_los_operadores"=>"¿Que soluciones les brindamos a los Operadores de Turismo internacional?",
+
+    "brindamos_una_plataforma_en_la_cual"=>"Brindamos una plataforma en la cual presentamos servicios de operadores mayoristas y el público final puede comprarlas de manera directa, y los agentes de viajes tendrán la posibilidad de ser parte de estas compras, por medio de cupones de descuentos y regalías que ofrecemos al consumidor final por acercarse a uno de nuestros afiliados, en este caso las agencias minoristas.",
+
+    "nuestra_solucion_agencias_hoteles"=>"Nuestra solución agencias de turismo, hoteles/hospedajes y otros que tengan atención directa con el turista",
+
+    "el_sistema_tambien_sera"=>"El sistema también será ofrecido para vendedores autonomos y cualquiera que diariamente es consultado por el turista sobre actividades turísticas  y agencias receptivas, tendrán la posibilidad de ofrecer cupones de descuento a sus clientes o turistas curiosos.",
+
+
+
+/* PLACAS DE PARTICIPANTES */
+
+     "se_destaca_por_su_personalidad"=>"Se destaca por su personalidad, esta todo el dia produciendo material audiovisual o grabando cualquier situacion. No pierde oportunidad.",
+
+     "le_encanta_irse_de_vacaciones"=>"Le encanta irse de vacaciones con los amigos y disfrutar de la buena vida, mucho asado y caipirinha.",
+
+     "le_encantan_los_motores"=>"Le encantan los motores y cualqueir tipo de maquina que sea propulsada a reaccion. Ama irse de vacaciones a Monte Hermoso.",
+
+     "es_proactivo"=>"Es proactivo, le encanta hacer mil cosas a la vez y es adicto a los desafios. No se da por vencido facilmente.",
+
+     "comunicador_multimedia"=>"Comunicador Multimedia",
+     "leer_libros_comunicacion"=>" Leer libros tecnicos de comunicacion y biograficas, tambien es amante del aire libre y viajar. Es muy curioso con la Tecnologia.",
+     "balneario_camboriu_brasil"=>" Balneario Camboriu, Brasil",
+     "especialidades"=>" Especialidades",
+     "locutor"=>"Locutor",
+     "metodologias_agiles"=>"Metodologias Agiles",
+     "mentor"=>"Mentor",
+     "evita_comidas_pesadas"=>"Evita comidas pesadas pero le encanta bailar cualquier tipo de musica brasilera. Es muy creativo.",
+     "ceo_fundador"=>"CEO Fundador",
+     "adora_los_desafios"=>"Adora los desafios grandes y resulve conflictos comunes en los estadios de MVP. Disfruta mucho del trabajo. Colabora siempre.",
+     "direccion_general"=>"Dirección General",
+     "gestor_comercial"=>"Gestor Comercial",
+     "adora_viajar_por_mucho_tiempo"=>"Adora viajar por mucho tiempo a lugares muy lejanos y exoticos. Ama la gastronomia Argentina.",
+     "asesor_y_consultor"=>"Asesor & Consultor",
+     "le_encantan_las_montanas"=>"Le encantan las montañas y los paisajes frios, ama comer cordero patagonico acompañado de un buen vino chileno. Le gusta la historia.",
+     "vive"=>" Vive",
+     "mentoria"=>"Mentoria",
+     "asesor"=>"Asesor",
+     "politicas_de_grupo"=>"Politicas de grupo",
+     "se_destaca_por_su_buena"=>"Se destaca por su buena aceptación en grupo, le cae bien a todo el mundo y siempre esta con buenas intensiones.",
+     "sus_tiempos_libres"=>"Sus tiempos libres los pasa tocando el bajo y en compania de la familia, adora escuchar musica y le encantan los shows en vivo.",
+     "florianopolis_santa_catarina_brasil"=>"Florianopolis, Santa Catarina, Brasil",
+     "desarrollo_web"=>"Desarrollo Web",
+     "notas"=>"notas",
+     "dedico_varios_anos_a_ser_operador"=>"Dedico varios años a ser operador de sonido y organizar eventos para bandas reconocidas. Siempre esta dispuesto a aprender.",
+
+
+/* SOSTENIBILIDAD */
+
+     
+     "el_presente_sitio"=>"El presente sitio web es propiedad de METELEBRASIL TOURS S.L. (en adelante,",
+
+     "con_cnpj"=>", con CNPJ 15484954/0001-94 domicilio social en calle Rua Mil 110 , Balneário Camboriú e inscrita en la Receita Federal do Brasil.",
+
+     "se_toma_muy_enserio"=>"se toma muy en serio la protección de su privacidad y de sus datos personales. Por ello, METELEBRASIL cumple íntegramente con la legislación vigente en materia de protección de datos de carácter personal para que tu información personal se conserve de forma segura.",
+
+     "la_presente"=>"La presente política de protección de datos regula el acceso y el uso del servicio del presente Sitio Web que METELEBRASIL, pone a disposición de los Usuarios interesados en los servicios ofrecidos por METELEBRASIL.",
+
+     "si_desea_ponerse"=>"Si desea ponerse en contacto con nuestro Delegado de Protección de Datos, puede hacerlo a través del correo electrónico ",
+
+     "2_porque_metelebrasil"=>"2.- ¿Por qué METELEBRASIL está legitimada para llevar a cabo el tratamiento de datos?",
+     "los_datos_de_los"=>"Los datos de los Usuarios que se recaban a través de los formularios de registro online disponibles en los Sitios Web son recabados por METELEBRASIL con la finalidad de poder prestarles los Servicios ofrecidos a través del Sitio Web.",
+
+     "de_conformidad_con"=>"De conformidad con lo establecido en la normativa de privacidad aplicable y su normativa de desarrollo, METELEBRASIL, titular de los Sitios Web, informa al Usuario de la existencia de un fichero automatizado de datos de carácter personal, debidamente inscrito en el Registro General de la Agencia Española de Protección de Datos, creado por METELEBRASIL bajo su responsabilidad.",
+
+     "3_procedimento_de_dados"=>"3.- Procesamiento de datos personales y finalidad del tratamiento",
+
+     "podra_recabar_datos"=>"podrá recabar datos personales de los Usuarios a través de formularios de registro, los datos de carácter personal recabados por METELEBRASIL, podrán ser utilizados para las siguientes finalidades:",
+
+     "la_prestacion_de_servicios"=>"La prestación de los servicios ofrecidos en el Sitio Web.",
+
+     "enviar_comunicaciones_comerciales"=>"Enviar comunicaciones comerciales a los Usuarios por carta, teléfono, correo electrónico, SMS/MMS, mensajería instantánea o por otros medios de comunicación equivalentes relacionadas con los servicios de METELEBRASIL, siempre y cuando el Usuario haya consentido esta finalidad de tratamiento de datos personales.",
+
+     "asimismo_el_usuario"=>"Asimismo, el Usuario consiente el tratamiento de sus datos para la elaboración de perfiles, así como para la segmentación de sus datos. Los citados tratamientos pueden tener como finalidad tanto el análisis y realización de estadísticas para conocer el tráfico y utilización del Sitio Web por parte de los Usuarios, como la determinación de sus gustos y preferencias para remitirle información promocional acorde con sus intereses.",
+
+     "igualmente_y_por_motivos"=>"Igualmente, y por motivos de la solicitud realizada por el usuario, METELEBRASIL podrá ceder sus datos de carácter personal a favor de terceras entidades colaboradoras de METELEBRASIL (agencias de viajes) para poder atender a la solicitud del Usuario, y ello de conformidad con lo establecido en el artículo 6.1 b) del Reglamento (UE) 2016/679 del Parlamento Europeo y del Consejo, de 27 de abril de 2016, relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos.",
+
+     "4_caracter_obligatorio"=>"4.- Carácter obligatorio o facultativo de la información facilitada por el Usuario y veracidad de los datos",
+
+     "el_usuario_garantiza"=>"El Usuario garantiza que los datos personales facilitados son veraces y se hace responsable de comunicar a METELEBRASIL cualquier modificación de los mismos. El Usuario responderá de la veracidad de los datos facilitados, reservándose METELEBRASIL el derecho a excluir de los servicios registrados a todo Usuario que haya facilitado datos falsos, sin perjuicio de las demás acciones que procedan en Derecho.",
+
+     "se_recomienda_tener"=>"Se recomienda tener la máxima diligencia en materia de Protección de Datos mediante la utilización de herramientas de seguridad, no pudiéndose responsabilizar a METELEBRASIL de sustracciones, modificaciones o pérdidas de datos ilícitas.",
+
+     "practicas_no_permitidas"=>"5.- Prácticas no permitidas y conservación de los datos",
+
+     "anulara_el_registro"=>"anulará el registro de los Usuarios que: ",
+
+     "incluyan_o_promocionen"=>" incluyan o promocionen material ilícito, inmoral, obsceno o nocivo; ",
+
+     "promocionen_cualquier_tipo"=>" promocionen cualquier tipo de discriminación; ",
+
+     "remitan_bulk"=>" Remitan bulk (correo masivo), junk (correo basura), o spam e-mail (correo no deseado) o newsgroup communications cuando no hayan sido solicitados; ",
+
+     "inclumplan_algun_derecho"=>" incumplan algún derecho de propiedad intelectual o industrial de terceros. Asimismo, el Usuario se obliga a abstenerse de utilizar y recabar datos a partir de listas de distribución a las que se pueda acceder a través de las informaciones y servicios contenidos en el Sitio Web para la realización de actividades con fines promocionales o publicitarios, así como de remitir comunicaciones comerciales de cualquier clase y a través de cualquier soporte no solicitados ni previamente consentidos por METELEBRASIL y/o los usuarios del Sitio Web.",
+
+     "los_datos_personales_proporcionados"=>"Los datos personales proporcionados se conservarán por parte de METELEBRASIL mientras el Usuario no manifieste su voluntad de darse de baja de los servicios de METELEBRASIL y ello con la finalidad de recibir información sobre productos de la empresa.",
+
+     "6_derechos_del_usuario"=>"6.- Derechos del Usuario en relación con sus datos",
+
+     "el_usuario_tiene_derecho"=>"El Usuario tiene derecho a ",
+
+     "acceder_a_sus_datos"=>" acceder a sus datos personales, así como a ",
+
+     "solicitar_la_rectificacion"=>" solicitar la rectificación de los datos inexactos o, en su caso, ",
+
+     "solicitar_su_supresion"=>" solicitar su supresión, ",
+
+     "solicitar_la_limitacion"=>" solicitar la limitación del tratamiento de sus datos, ",
+
+     "opomerse_al_tratamiento"=>" oponerse al tratamiento de sus datos ",
+
+     "ejercitar_el_derecho"=>" ejercitar el derecho al olvido de sus datos y ",
+      
+     "solicitar_su_portabilidad"=>" solicitar su portabilidad. ",
+
+     "para_ejercer_dichos_derechos"=>"Para ejercer dichos derechos es necesario que el Usuario acredite su personalidad frente a METELEBRASIL mediante el envío de una fotocopia de su Documento Nacional de Identidad o cualquier otro medio válido en Derecho.",
+     
+     "el_usuario_puede_ejercer"=>"El Usuario puede ejercer todos estos derechos en la siguiente dirección de email ",
+
+     "indicando_el_motivo"=>", indicando el motivo de su petición.",
+
+     "el_usuario_puede_tambien"=>"El Usuario puede también enviar su petición por correo ordinario a la siguiente dirección:",
+
+     "sin_prejuicio"=>"Sin perjuicio de cualquier otro recurso administrativo o acción judicial, el Usuario tendrá derecho a presentar una reclamación ante una Autoridad de Control, en particular en el Estado miembro en el que tenga su residencia habitual, lugar de trabajo o lugar de la supuesta infracción, en caso de que considere que el tratamiento de sus datos personales no es adecuado a la normativa, así como en el caso de no ver satisfecho el ejercicio de sus derechos. La autoridad de control ante la que se haya presentado la reclamación informará al reclamante sobre el curso y el resultado de la reclamación.",
+
+     "7_seguridad"=>"7.- Seguridad de los datos",
+
+     "la_proteccion_de_la_privacidad"=>"La protección de la privacidad y los datos personales de sus clientes y visitantes es muy importante para METELEBRASIL. Por lo tanto, METELEBRASIL hace todo lo que está en su mano para impedir que sus datos se utilicen de forma inadecuada. A sus datos solo puede acceder el personal autorizado.",
+
+     "mantiene_los_niveles"=>"mantiene los niveles de seguridad de protección de datos personales conforme a la normativa aplicable y ha establecido todos los medios técnicos a su alcance para evitar la pérdida, mal uso, alteración, acceso no autorizado y robo de los datos que el Usuario facilite a través de los Sitios Web, sin perjuicio de informarle de que las medidas de seguridad en Internet no son inexpugnables.",
+
+     "se_compromete_a_cumplir"=>"se compromete a cumplir con el deber de secreto y confidencialidad respecto de los datos personales de acuerdo con la legislación aplicable, así como a conferirles un tratamiento seguro en las cesiones y transferencias internacionales de datos que, en su caso, puedan producirse.",
+
+     "8_perguntas"=>"8.- Preguntas",
+
+     "si_tiene_alguna_pregunta"=>"Si tiene alguna pregunta sobre esta política de privacidad, rogamos que se ponga en contacto con nosotros enviando un email a ",
+
+     "9_aceptacion_y_concentimiento"=>"9.- Aceptación y Consentimiento ",
+
+     "el_usuario_declara_haber"=>"El Usuario declara haber sido informado de las condiciones sobre protección de datos personales, aceptando y consintiendo el tratamiento de los mismos por parte de METELEBRASIL, en la forma y para las finalidades indicadas en la presente Política de Privacidad.",
+
+
+
+/* Aviso Legal */
+
+
+
+     "las_presentes_condiciones"=>"Las presentes Condiciones de Uso regulan el acceso, navegación y uso del presente sitio web (en adelante, el “Sitio Web”).",
+
+     "1_datos_del_titular"=>"1.- Datos del titular:",
+
+     "en_cumplimiento_con_el_deber"=>"En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, le facilitamos los datos del titular del presente Sitio Web:",
+
+     "en_adelante"=>"(en adelante, “METELEBRASIL”) con CNPJ 15484954/0001-94 y domicilio social en calle Rua Mil 110 , Balneário Camboriú e inscrita en la Receita Federal do Brasil.",
+
+     "prestra_servicios_de_forma_directa"=>"prestará servicios de forma directa, y en particular los relacionados con su actividad, de agencia de viajes, como por ejemplo en relación con viajes, traslados, actividades, excursiones y visitas guiadas.",
+
+     "2_usuarios"=>"2.- Usuarios",
+
+     "el_acceso_y"=>"El acceso y/o el uso del Sitio Web se entenderán como una aceptación por parte del usuario de las presentes Condiciones de Uso y, en su caso, los cambios efectuados en las mismas.",
+
+     "3_uso_del_sitio"=>"3.- Uso del sitio web",
+
+     "el_sitio_web_puede_proporcionar_acceso_a_multitud"=>"El Sitio Web puede proporcionar acceso a multitud de textos, gráficos, dibujos, diseños, códigos, software, fotografías, música, vídeos, sonidos, bases de datos, imágenes, expresiones e informaciones (en adelante, Contenidos) pertenecientes a METELEBRASIL o a terceros a los que el Usuario puede tener acceso.",
+
+     "el_usuario_asume_la_responsabilidad"=>"El Usuario asume la responsabilidad del uso del Sitio Web. Dicha responsabilidad se extiende al registro que, en su caso, sea necesario para acceder a Contenidos o servicios que preste el Sitio Web.",
+
+     "el_usuario_se_compromete_a_hacer_un_uso"=>"El Usuario se compromete a hacer un uso lícito, diligente y adecuado de los Contenidos y servicios ofrecidos a través del Sitio Web y todo ello bajo los principios de la buena fe y respetando en todo momento a la legalidad vigente y a las presentes Condiciones de Uso.",
+
+     "en_particular_con_caracter"=>"En particular, con carácter enunciativo pero no limitativo, el Usuario del Sitio Web:",
+
+
+     "no_utilizara_o_reutilizara"=>"No utilizará o reutilizará material ilegal, ofensivo, abusivo, indecente, difamatorio, obsceno o amenazante de ningún tipo, o que suponga una violación de derechos de propiedad intelectual, marcas registradas, confidencialidad, privacidad o cualquier otro derecho, o sea de otro modo injurioso o censurable para terceras partes, o cuyo contenido contenga virus informáticos, propaganda política, contenido publicitario, correos en cadena, envío masivo de correos o cualquier otro tipo de SPAM y, en general, cualquier tipo de molestia o inconveniente innecesario.",
+
+     "no_provocara_ni_maliciosa"=>"No provocará ni maliciosa ni intencionadamente daños o perjuicios que puedan menoscabar, alterar el propio Sitio Web, ni tampoco introducirá, ni difundirá virus informáticos que puedan producir alteraciones no autorizadas de los Contenidos o sistemas integrantes del Sitio Web.",
+
+     "no_utilizara_el_sitio"=>"No utilizará el Sitio Web con fines fraudulentos, o relacionados con delitos penales o actividades ilícitas de ningún tipo.",
+
+     "no_reproducira"=>"No reproducirá, copiará, distribuirá, transformará o modificará la información y los Contenidos alojados en el Sitio Web, a menos que cuente con la autorización del titular de los correspondientes derechos.",
+
+     "se_reserva_el_derecho"=>"se reserva el derecho a denegar el acceso al Sitio Web a Usuarios que hagan un mal uso de los Contenidos y/o incumplan cualquiera de las condiciones que aparecen en el presente documento.",
+
+     "4_propiedad_intelectual"=>"4.- Propiedad intelectual",
+
+     "todos_los_contenidos_que_se_muestran"=>"Todos los Contenidos que se muestran en el Sitio Web y en especial diseños, textos, gráficos, logos, iconos, botones, software, nombres comerciales, marcas, dibujos industriales o cualesquiera otros signos susceptibles de utilización industrial y comercial están sujetos a derechos de propiedad intelectual e industrial de METELEBRASIL o de terceros titulares de los mismos que han autorizado debidamente su inclusión en el Sitio Web, y es a ellos a quien corresponde el ejercicio exclusivo de los derechos de explotación de los mismos.",
+
+     "no_concede_ninguna_licencia"=>"no concede ninguna licencia o autorización de uso de ninguna clase sobre sus derechos de propiedad intelectual e industrial o sobre cualquier otra propiedad o derecho relacionado con el Sitio Web, los servicios o los Contenidos del mismo.",
+
+     "por_ello_y_en_virtud"=>"Por ello y en virtud de lo dispuesto en el Real Decreto Legislativo 1/1996, de 12 de Abril, por el que se aprueba el Texto Refundido de la Ley de Propiedad Intelectual, así como en la Ley 17/2001, de 7 de diciembre, de Marcas y la legislación complementaria en materia de propiedad intelectual e industrial, queda prohibida la reproducción, transmisión, adaptación, traducción, distribución, comunicación pública, incluida su modalidad de puesta a disposición, o cualquier otra explotación y/o modificación, total o parcial, sin previa autorización expresa de METELEBRASIL de cualquier Contenido incluido en el Sitio Web.",
+
+     "los_usuarios_se_comprometen"=>"Los Usuarios se comprometen a respetar los derechos de propiedad del Sitio Web y los derechos de propiedad intelectual e industrial sobre el mismo, sean de METELEBRASIL o de terceros.",
+
+     "asimismo_metelebrasil_rechaza"=>"Asimismo, METELEBRASIL rechaza todo tipo de responsabilidad acerca de la explotación o la difusión de las imágenes y/o Contenidos insertados en el Sitio Web.",
+     
+     "5_responsabilidad"=>"5.- Responsabilidad y garantías",
+
+     "declara_que_ha_adoptado"=>"declara que ha adoptado las medidas necesarias que, dentro de sus posibilidades y el estado de la tecnología, permitan el correcto funcionamiento de su sitio Web así como la ausencia de virus y componentes dañinos.",
+
+     "sin_embargo_metelebrasil"=>"Sin embargo, METELEBRASIL no otorga ninguna garantía ni se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran derivarse del acceso o uso de los Contenidos o del Sitio Web. Entre otras, y a título enunciativo y no limitativo, METELEBRASIL no se responsabiliza de las siguientes circunstancias:",
+
+     "la_falta_de_disponibilidad_mantenimiento"=>"La falta de disponibilidad, mantenimiento y efectivo funcionamiento del Sitio Web y/o de sus servicios o Contenidos, excluyéndose, en la máxima medida permitida por la legislación vigente, cualquier responsabilidad por los daños y perjuicios de toda naturaleza que puedan deberse a la falta de disponibilidad o de continuidad del funcionamiento del Sitio Web y de los Contenidos habilitados en el mismo.",
+
+     "los_errores_que_pudieran_existir"=>"Los errores que pudieran existir en los Contenidos ni la corrección de cualquier defecto que pudiera ocurrir.",
+
+         
+     "la_falta_de_utilidad_del_sitio"=>"La falta de utilidad del Sitio Web o los Contenidos.",
+
+     "la_existencia_de_virus"=>"La existencia de virus, programas maliciosos o lesivos en los Contenidos.",
+
+     "el_mal_servicio"=>"El mal servicio o cualquier problema surgido con las empresas proveedoras de los servicios.",
+
+     "la_recepcion_obtencion_almacenamiento"=>"La recepción, obtención, almacenamiento, difusión o transmisión, por parte de los Usuarios, de los Contenidos.",
+
+     "el_uso_ilicito_negligente"=>"El uso ilícito, negligente, fraudulento, contrario a los términos de las presentes Condiciones de Uso, o a la buena fe, del Sitio Web o sus Contenidos, por parte de los Usuarios.",
+   
+     "podra_suspender_temporalmente"=>"podrá suspender temporalmente y sin previo aviso, la accesibilidad al Sitio Web con motivo de operaciones de mantenimiento, reparación, actualización o mejora. No obstante, siempre que las circunstancias lo permitan, METELEBRASIL comunicará al Usuario, con antelación suficiente, la fecha prevista para la suspensión de los servicios.",
+
+
+     "6_links_a_paginas"=>"6.- Links a páginas de terceros",
+
+     "el_sitio_web_puede_contenter"=>"El Sitio Web puede contener links o hipervínculos a páginas web titularidad de terceros.",
+
+     "no_asume_ninguna_responsabilidad"=>"no asume ninguna responsabilidad por el contenido, informaciones o servicios que pudieran aparecer en dichos sitios web, sobre los que METELEBRASIL no tiene ningún tipo de control, por lo que el Usuario accede bajo su exclusiva responsabilidad al contenido y en las condiciones de uso que rijan en los mismos.",
+
+     "en_este_sentido"=>"En este sentido, les recomendamos que lean las políticas de privacidad y condiciones de uso de estos sitios web propiedad de terceros.",
+
+     "7_comentarios_y_opiniones"=>"7.- Comentarios y opiniones",
+
+     "en_caso_de_que_metelebrasil"=>"En caso de que METELEBRASIL permitiera a los Usuarios publicar sus opiniones y/o comentarios en el Sitio Web, éstos no deberán contener expresiones que no sean aptas para todos los públicos, incluyendo por tanto, textos indecorosos o que no se consideren apropiados o que hieran la sensibilidad general.",
+
+
+     "tampoco_se_permitiran_comentarios"=>"Tampoco se permitirán comentarios y/o opiniones que vayan en contra de un particular y que vulneren los principios del derecho al honor, a la intimidad personal y familiar, a la propia imagen y a la dignidad de la persona. Se prohíbe cualquier tipo de comentario discriminatorio ya sea por motivos de raza, sexo, religión, opinión, nacionalidad, discapacidad o cualquier otra circunstancia personal o social.",
+
+     "asimismo_no_estan_permitidas"=>"Asimismo, no están permitidas aquellas publicaciones que sean intimidantes, amenazantes degradantes o que de cualquier manera promuevan la violencia contra una persona o un colectivo determinado.",
+
+     "tampoco_podra_utilizarse_el_sitio_web_como_medio"=>"Tampoco podrá utilizarse el Sitio Web como medio para realizar publicidad, promoción de negocios, marcas o elementos personales.",
+
+
+     "en_cualquier_caso_metelebrasil"=>"En cualquier caso, METELEBRASIL no será responsable de las opiniones y/o comentarios vertidos en el Sitio Web, siendo en todo caso responsabilidad de los autores de las mismas.",
+
+     "8_duracion_y_modificacion"=>"8.- Duración y modificación",
+
+     "las_presentes_condiciones_de_uso_estaran"=>"Las presentes Condiciones de Uso estarán vigentes hasta que sean modificadas, pudiendo METELEBRASIL efectuar estos cambios que serán comunicados al Usuario.",
+
+
+     "podra_suprimir_anadir_o_cambiar"=>"podrá suprimir, añadir o cambiar tanto los Contenidos como los servicios que presta, así como también la forma en la que los mismos aparezcan localizados o presentados. Se entienden como vigentes, las condiciones que estén publicadas en el momento en el que el usuario acceda al Sitio Web de METELEBRASIL.",
+
+     "el_acceso_del_sitio_web_se_entenderan"=>"El acceso y/o el uso del Sitio Web se entenderán como una aceptación por parte del usuario de las presentes Condiciones de Uso y, en su caso, los cambios efectuados en las mismas.",
+
+     "9_legislacion"=>"9.- Legislación y jurisdicción aplicables",
+
+     "los_terminos"=>"Los términos, condiciones y demás documentos de METELEBRASIL se regirán por la legislación Brasileira.",
+
+     "en_caso_de_disputa"=>"En caso de disputa, las partes se someten a los Juzgados y Tribunales del domicilio del Usuario en caso de ser éste una persona física, y al Fórum de la Comarca (Florianopolis) en caso de ser persona jurídica.",
+
+
+/* Politicas de privacidad */
+
+     
+     "politica_de_privacidad_"=>"Política de privacidad",
+
+     "politica_de_privacidad_y_proteccion"=>"Política de privacidad y protección de datos",
+
+     "1_presentacion_y_derecho"=>"1.- Presentación y derecho de información",
+
+     "el_presente_sitio_web_es_propiedad"=>"El presente sitio web es propiedad de METELEBRASIL TOURS S.L. (en adelante, ",
+
+      "_con_cnpj_15484"=>", con  CNPJ 15484954/0001-94 y domicilio social en calle Rua Mil 110 , Balneário Camboriú e inscrita en la Receita Federal do Brasil. ", 
+
+     "se_toma_muy_en_serio_la_proteccion"=>"se toma muy en serio la protección de su privacidad y de sus datos personales. Por ello, METELEBRASIL cumple íntegramente con la legislación vigente en materia de protección de datos de carácter personal para que tu información personal se conserve de forma segura.",
+
+     "la_presente_politica_de_proteccion_de_datos"=>"La presente política de protección de datos regula el acceso y el uso del servicio del presente Sitio Web que METELEBRASIL, pone a disposición de los Usuarios interesados en los servicios ofrecidos por METELEBRASIL.",
+
+     "si_desea_ponerse_en_contacto_con_nuestro"=>"Si desea ponerse en contacto con nuestro Delegado de Protección de Datos, puede hacerlo a través del correo electrónico ",
+
+     "2_por_que_metelebrasil_esta_legitima_para_llevar"=>"2.- ¿Por qué METELEBRASIL está legitimada para llevar a cabo el tratamiento de datos?",
+
+     "los_datos_de_los_usuarios_que_se_recaban"=>"Los datos de los Usuarios que se recaban a través de los formularios de registro online disponibles en los Sitios Web son recabados por METELEBRASIL con la finalidad de poder prestarles los Servicios ofrecidos a través del Sitio Web.",
+
+     "de_conformidad_con_lo_establecido"=>"De conformidad con lo establecido en la normativa de privacidad aplicable y su normativa de desarrollo, METELEBRASIL, titular de los Sitios Web, informa al Usuario de la existencia de un fichero automatizado de datos de carácter personal, debidamente inscrito en el Registro General de la Agencia Española de Protección de Datos, creado por METELEBRASIL bajo su responsabilidad.",
+
+     "3_procedimiento_de_datos_personales"=>"3.- Procesamiento de datos personales y finalidad del tratamiento",
+
+     "podra_recabar_datos_personales"=>"podrá recabar datos personales de los Usuarios a través de formularios de registro, los datos de carácter personal recabados por METELEBRASIL, podrán ser utilizados para las siguientes finalidades:",
+
+     "la_prestacion_de_los_servicios_ofrecidos"=>"La prestación de los servicios ofrecidos en el Sitio Web.",
+
+     "enviar_comunicaciones_comerciales_a_los"=>"Enviar comunicaciones comerciales a los Usuarios por carta, teléfono, correo electrónico, SMS/MMS, mensajería instantánea o por otros medios de comunicación equivalentes relacionadas con los servicios de METELEBRASIL, siempre y cuando el Usuario haya consentido esta finalidad de tratamiento de datos personales.",
+
+     "asimismo_el_usuario_consiente"=>"Asimismo, el Usuario consiente el tratamiento de sus datos para la elaboración de perfiles, así como para la segmentación de sus datos. Los citados tratamientos pueden tener como finalidad tanto el análisis y realización de estadísticas para conocer el tráfico y utilización del Sitio Web por parte de los Usuarios, como la determinación de sus gustos y preferencias para remitirle información promocional acorde con sus intereses.",
+
+     "igualmente_y_por_motivos_de_la_solicitud"=>"Igualmente, y por motivos de la solicitud realizada por el usuario, METELEBRASIL podrá ceder sus datos de carácter personal a favor de terceras entidades colaboradoras de METELEBRASIL (agencias de viajes) para poder atender a la solicitud del Usuario, y ello de conformidad con lo relativo a la protección de las personas físicas en lo que respecta al tratamiento de datos personales y a la libre circulación de estos datos.",
+
+     "4_caracter_obligatorio_o_facultativo"=>"4.- Carácter obligatorio o facultativo de la información facilitada por el Usuario y veracidad de los datos",
+
+     "el_usuario_garantiza_que_los_datos_personales"=>"El Usuario garantiza que los datos personales facilitados son veraces y se hace responsable de comunicar a METELEBRASIL cualquier modificación de los mismos. El Usuario responderá de la veracidad de los datos facilitados, reservándose METELEBRASIL el derecho a excluir de los servicios registrados a todo Usuario que haya facilitado datos falsos, sin perjuicio de las demás acciones que procedan en Derecho.",
+
+     "se_recomienda_tener_la_maxima_diligencia"=>"Se recomienda tener la máxima diligencia en materia de Protección de Datos mediante la utilización de herramientas de seguridad, no pudiéndose responsabilizar a METELEBRASIL de sustracciones, modificaciones o pérdidas de datos ilícitas.",
+
+     "5_practicas_no_permitidas"=>"5.- Prácticas no permitidas y conservación de los datos",
+
+     "anulara_el_registro_de_los_usuarios"=>"anulará el registro de los Usuarios que: ",
+
+     "incluyan_o_promocionen_material_ilicito"=>" incluyan o promocionen material ilícito, inmoral, obsceno o nocivo;",
+
+     "promocionen_cualquier_discriminacion"=>" promocionen cualquier tipo de discriminación;",
+
+     "remitan_bulk_correo_masivo"=>" Remitan bulk (correo masivo), junk (correo basura), o spam e-mail (correo no deseado) o newsgroup communications cuando no hayan sido solicitados;", 
+
+    "incumplan_algun_derecho_de_propiedad"=>" incumplan algún derecho de propiedad intelectual o industrial de terceros. Asimismo, el Usuario se obliga a abstenerse de utilizar y recabar datos a partir de listas de distribución a las que se pueda acceder a través de las informaciones y servicios contenidos en el Sitio Web para la realización de actividades con fines promocionales o publicitarios, así como de remitir comunicaciones comerciales de cualquier clase y a través de cualquier soporte no solicitados ni previamente consentidos por METELEBRASIL y/o los usuarios del Sitio Web. ",
+
+    "los_datos_personales_proporcionados"=>"Los datos personales proporcionados se conservarán por parte de METELEBRASIL mientras el Usuario no manifieste su voluntad de darse de baja de los servicios de METELEBRASIL y ello con la finalidad de recibir información sobre productos de la empresa.",
+    
+    "derecho_del_usuario_en_relacion_con"=>"6.- Derechos del Usuario en relación con sus datos",
+
+    "el_usuario_tiene_derecho_a"=>"El Usuario tiene derecho a ",
+
+    "acceder_a_sus_datos"=>" acceder a sus datos personales, así como a ",
+
+    "solicitar_la_rectificacion_de_los_datos"=>" solicitar la rectificación de los datos inexactos o, en su caso, ",
+
+    "solicitar_su_supresion"=>" solicitar su supresión,  ",
+
+    "solicitar_la_limitacion_del_tratamiento"=>" solicitar la limitación del tratamiento de sus datos, ",
+
+    "oponerse_al_tratamiento_de_sus_datos"=>" oponerse al tratamiento de sus datos ",
+
+    "ejercitar_el_derecho_al_olvido"=>" ejercitar el derecho al olvido de sus datos y",
+
+    "solicitar_su_portabilidad"=>" solicitar su portabilidad.",
+
+    "para_ejercer_dichos_derechos_es_necesario"=>"Para ejercer dichos derechos es necesario que el Usuario acredite su personalidad frente a METELEBRASIL mediante el envío de una fotocopia de su Documento Nacional de Identidad o cualquier otro medio válido en Derecho.",
+
+    "el_usuario_puede_ejercer_todos"=>"El Usuario puede ejercer todos estos derechos en la siguiente dirección de email ",
+
+    "indicando_el_motivo_de"=>", indicando el motivo de su petición.",
+
+    "el_usuario_puede_tambien_enviar"=>"El Usuario puede también enviar su petición por correo ordinario a la siguiente dirección:",
+
+    "brasil"=>" Brasil.",
+
+    "sin_perjuicio_de_cualquier"=>"Sin perjuicio de cualquier otro recurso administrativo o acción judicial, el Usuario tendrá derecho a presentar una reclamación ante una Autoridad de Control, en particular en el Estado miembro en el que tenga su residencia habitual, lugar de trabajo o lugar de la supuesta infracción, en caso de que considere que el tratamiento de sus datos personales no es adecuado a la normativa, así como en el caso de no ver satisfecho el ejercicio de sus derechos. La autoridad de control ante la que se haya presentado la reclamación informará al reclamante sobre el curso y el resultado de la reclamación.",
+
+    "7_seguridad_de_los_datos"=>"7.- Seguridad de los datos",
+
+    "la_proteccion_de_la_privacidad"=>"La protección de la privacidad y los datos personales de sus clientes y visitantes es muy importante para METELEBRASIL. Por lo tanto, METELEBRASIL hace todo lo que está en su mano para impedir que sus datos se utilicen de forma inadecuada. A sus datos solo puede acceder el personal autorizado.",
+
+    "mantiene_los_niveles_de_seguridad"=>"mantiene los niveles de seguridad de protección de datos personales conforme a la normativa aplicable y ha establecido todos los medios técnicos a su alcance para evitar la pérdida, mal uso, alteración, acceso no autorizado y robo de los datos que el Usuario facilite a través de los Sitios Web, sin perjuicio de informarle de que las medidas de seguridad en Internet no son inexpugnables.",
+
+    "se_compromete_a_cumplir_con_el_deber"=>"se compromete a cumplir con el deber de secreto y confidencialidad respecto de los datos personales de acuerdo con la legislación aplicable, así como a conferirles un tratamiento seguro en las cesiones y transferencias internacionales de datos que, en su caso, puedan producirse.",
+
+    "8_preguntas"=>"8.- Preguntas",
+
+    "si_tiene_alguna_pregunta_sobre"=>"Si tiene alguna pregunta sobre esta política de privacidad, rogamos que se ponga en contacto con nosotros enviando un email a ",
+
+    "9_aceptacion_y_concentimiento"=>"9.- Aceptación y Consentimiento ",
+
+    "el_usuario_declara_haber"=>"El Usuario declara haber sido informado de las condiciones sobre protección de datos personales, aceptando y consintiendo el tratamiento de los mismos por parte de METELEBRASIL, en la forma y para las finalidades indicadas en la presente Política de Privacidad.",
+
+
+     
+    /* Cookies */
+
+
+   "politicas_de_cookies"=>"Política de cookies",
+
+   "el_presente_sitio_web_en_adelante_el_sitio_web_utiliza"=>"El presente sitio web (en adelante, el “Sitio Web”) utiliza cookies para realizar un seguimiento de las interacciones de los usuarios con los servicios que ofrece el titular del sitio web, METELEBRASIL TOURS S.L. y mejorar su experiencia en el sitio web.",
+
+   "1_que_son_las_cookies"=>"1.- Qué son las cookies:",
+
+   "las_cookies_son_pequenos"=>"Las cookies son pequeños archivos de texto que se descargan y almacenan en el terminal
+            (ordenador/smartphone/tablet) del usuario al acceder a determinadas páginas web y que permiten al sitio web
+            recordar preferencias de navegación y navegar de manera eficiente, haciendo que la interacción entre el
+            usuario y el sitio web sea más rápida y fácil.",
+   
+   "la_informacion_recogida_por_las_cookies"=>"La información recogida por las cookies u otros dispositivos de almacenamiento es totalmente anónima y no
+            contiene ninguna información sensible (como el nombre, dirección o detalles bancarios) ya que éstas no
+            recogen datos que puedan identificar personalmente al usuario.",
+
+
+    "2_tipos_de_cookies"=>"2.- Tipos de cookies utilizadas:",
+
+    "el_presente_sitio_web_utiliza_cookies"=>"El presente Sitio Web utiliza cookies, píxeles u otros dispositivos de almacenamiento y recuperación deinformación para realizar un seguimiento de las interacciones de los usuarios en el Sitio Web. Los tipos de cookies que utiliza el Sitio Web son los siguientes:",
+   
+     "cookies_propias"=>"Cookies propias",
+
+     "cookies_de_metelebrasil"=>"Cookies de METELEBRASIL: Estas cookies permiten que el sitio Web funcione correctamente por lo que son
+            esenciales para que el usuario pueda usar todas las opciones del Sitio Web y pueda moverse por el mismo con normalidad. Permiten, por ejemplo, guardar sus preferencias personales.",
+
+   
+    "cookies_de_terceros"=>"Cookies de Terceros", 
+
+    "cookies_de_analitica"=>"Cookies de analítica",
+
+
+    "estas_cookies_permiten"=>": Estas cookies permiten recopilar información anónima sobre la navegación de los
+            usuarios por el Sitio Web y sus patrones de comportamiento, con el fin de conocer el origen de las visitas y
+            otros datos estadísticos, así como de mejorar el funcionamiento del servicio.",
+
+     "cookies_de_publicidad"=>"Cookies de publicidad",        
+
+     "permiten_la_gestion"=>": Permiten la gestión, de la forma más eficaz posible, de los espacios
+            publicitarios que, el editor haya incluido en el Sitio Web, aplicación o plataforma desde la que presta el
+            servicio solicitado en base a criterios como el contenido editado o la frecuencia en la que se muestran los
+            anuncios. Permiten ofrecer publicidad afín a los intereses del Usuario.",
+     
+     "3_web_beacons"=>"3.- Web beacons o web bug:",
+
+     "este_sitio_web_tambien_utiliza_web_beacons"=>"Este Sitio Web también utiliza Web Beacons, que suelen ser pequeñas imágenes de un pixel por un pixel,
+            visibles o invisibles colocados dentro del código fuente de algunos sitios web, y tienen una finalidad
+            similar a las cookies. Los Web Beacons suelen utilizarse a modo estadístico, para medir el tráfico de
+            usuarios que visitan una página web y poder sacar un patrón de los usuarios de un sitio web. Los datos
+            obtenidos a través de los Web Beacons son en todo caso anónimos.",
+
+     "4_como_deshabilitar_las_cookies"=>"4.- Cómo deshabilitar las cookies y otros dispositivos:      ",
+     
+      "la_mayoria_de_los_navegadores"=>"La mayoría de navegadores web permiten gestionar las preferencias de cookies u otros dispositivos de
+            almacenamiento, para tener un control más preciso sobre la privacidad.",
+
+
+     "los_siguientes_links_muestren"=>"Los siguientes links muestran las instrucciones para desactivar la configuración de las cookies en cada
+            navegador:",
+
+
+     "1_intetnet_explorer"=>"1. Internet Explorer ",
+
+     "en_el_menu_de_herramientas"=>"En el menú de herramientas, seleccione “Opciones de Internet”.",
+
+     "haga_clic_en_la_pestana"=>"Haga clic en la pestaña de privacidad.",
+
+
+     "podra_configurar_la_privacidad"=>"Podrá configurar la privacidad con un cursor con seis posiciones que le permite controlar la cantidad de
+                cookies que se instalarán: Bloquear todas las cookies, Alta, Media Alto, Media (nivel por defecto),
+                Baja, y Aceptar todas las cookies.",
+
+     "2_mozilla"=>"2. Mozilla Firefox       ",
+
+     "en_la_parte_superior"=>"En la parte superior de la ventana de Firefox hacer clic en el menú Herramientas.",
+
+     "seleccionar_opciones"=>"Seleccionar Opciones.",
+     
+     "seleccionar_el_panel_privacidad"=>"Seleccionar el panel Privacidad.",
+
+     "en_la_opcion_firefox"=>"En la opción Firefox podrá elegir Usar una configuración personalizada para el historial para configurar las opciones.",
+
+     "3_google_chrome"=>"3. Google Chrome ",
+
+     "hacer_clic_en_el_menu_situado"=>"Hacer clic en el menú situado en la barra de herramientas.",
+
+     "seleccionar_configuracion"=>"Seleccionar Configuración.",
+
+     "hacer_clic_en_mostrar"=>"Hacer clic en Mostar opciones avanzadas.",
+
+     "en_la_seccion_privacidad"=>"En la sección 'Privacidad' hacer clic en el botón Configuración de contenido.",
+
+     "en_la_seccion_de_cookies"=>"En la sección de 'Cookies' se pueden configurar las opciones.",
+
+     "4_safari"=>"4. Safari ",
+
+     "en_el_menu_de_configuracion"=>"En el menú de configuración, seleccione la opción de “preferencias”.",
+
+     "abra_la_pestana"=>"Abra la pestaña de privacidad.",
+
+     "seleccione_la_opcion"=>"Seleccione la opción que quiera de la sección de “bloquear cookies”.",
+
+     "recuerde_que_ciertas"=>"Recuerde que ciertas funciones y la plena funcionalidad del Sitio pueden no estar disponibles después de
+                deshabilitar los cookies.",
+
+     "5_cookies"=>"5.- Cookies en los dispositivos móviles:  ",
+     
+
+      "el_presente_sitio"=>"El presente Sitio Web también usa cookies u otros dispositivos de almacenamiento en dispositivos móviles. En
+            este caso, al igual que sucede en los navegadores de ordenadores, los navegadores de los dispositivos
+            móviles permiten configurar las opciones o ajustes de privacidad para desactivar o eliminar las cookies.",
+
+
+    "si_desea_modificar"=>"Si desea modificar las opciones de privacidad siga las instrucciones especificadas por el desarrollador de su
+            navegador para dispositivo móvil.",
+
+    "6_aceptacion_de_cookies"=>"6.- Aceptación de cookies:    ",
+     
+    "si_usted_continua"=>"Si usted continúa su navegación, entenderemos que acepta la utilización de las cookies por parte del sitio",
+
+    "le_informamos_que"=>"Le informamos que en el caso de bloquear o no aceptar la instalación de cookies, es posible que ciertos
+            servicios no estén disponibles sin la utilización de éstas o que no pueda acceder a determinados servicios
+            ni tampoco aprovechar por completo todo lo que este sitio web le ofrece.",
+
+
+/* Texto Cookies */
+
+"utilizamos_cookies_propias"=>"Utilizamos cookies propias y terceros para mejorar su experiencia según sus hábitos de navegación. Si continua navegando, consideramos que acepta su uso. Encontraras más información en nuestra ",
+
+
+
+
+
+/* preguntas frecuentes */
+
+
+   
+    "cual_es_el_punto"=>"¿Cual es el punto de encuentro de la actividad?",
+
+
+    "el_punto_de_encuentro_esta_detallado"=>"El punto de encuentro está detallado en cada actividad así como en el email de confirmación una vez realizada la reserva. Si tienes dudas una vez en el destino, puedes contactar con el proveedor local en el teléfono que verás en el bono.",
+
+    "vamos_a_viajar_a_otras"=>"¿Vamos a viajar a otras ciudades?¿Donde más tienen tours? ",
+
+
+    "podran_ver_todas_nuestras_guias_de_viajes"=>"Podrán ver todas nuestras guías de viajes en el home de nuestra página, en la mayoría de ellas, tenemos servicios de visitas guiadas, excursiones y traslados",
+
+
+    "tienen_otros_tours_o_actividades"=>"¿Tienen otros tours o actividades además de los publicados en cada destino?", 
+
+    
+    "en_algunos_destinos_ofrecemos_servicios"=>"En algunos destinos ofrecemos servicios privados para actividades no publicadas en la web. En todo caso, puedes ver todos los servicios con los que contamos en Nuestra página.",
+
+    "es_necesario_imprimir_un_bono"=>"¿Es necesario imprimir un bono o un justificante? ",
+
+
+    "algunos_servicios_requieren"=>"Algunos servicios requieren un bono impreso, otros en el móvil, y otros no requieren llevar nada. Ésto es específico de cada actividad y lo podréis ver en su ficha.",
+
+
+    "en_las_excursiones"=>"En las excursiones en vehículo ¿Hay sillas para niños pequeños? ",
+
+
+    "los_proveedores_disponen"=>"Los proveedores disponen de sillitas de niño en función de las leyes del país (en el 90% de los destinos son obligatorias). Al hacer la reserva no olvidéis indicar la edad de los niños en los comentarios.",
+
+
+    "se_accede_a_todos"=>"¿Se accede a todos los lugares indicados en el itinerario? ",
+
+
+    "siempre_tratamos_de_dejar"=>"Siempre tratamos de dejar claro si a un monumento se accede o solo se pasa por él. En caso de que no indiquemos nada, lo normal es que no se acceda a su interior.",
+
+
+    "no_se_si_me_dara_el_tiempo"=>"No sé si me dará el tiempo para llegar al tour ¿Si llego tarde me esperarán?", 
+
+     
+     "los_tours_regulares_salen_siempre"=>"Los tours regulares salen siempre puntuales y no es posible modificar la hora de inicio. Respecto a los tours privados, si queréis empezar a otra hora podéis consultarnos antes de hacer la reserva.",
+
+    
+     "puedo_reservar_para_otra_persona"=>"¿Puedo reservar para otra persona? ",
+
+
+     "claro_simplemente_debes_indicar"=>"¡Claro! Simplemente debes indicar los datos de la persona que realizará la actividad en lugar de los tuyos. En la información de pago sí que deberás indicar tus datos para que la transacción se complete correctamente.",
+
+      "como_puedo_pagar"=>"¿Como puedo pagar mis reservas?",
+
+
+      "nuestra_web_ofrece_un_servicio"=>"Nuestra web ofrece un servicio de reserva muy fácil e intuitivo y te permite realizar el pago de manera segura con Visa, MasterCard o PayPal. No es posible pagar en el destino o al guía directamente. Todas las reservas deben hacerse a través de la página web. ",
+       
+  
+      "el_pago_es_seguro"=>"¿El pago es seguro?",
+
+
+     "en_metelebrasil_disponemos_de_un"=>"En METELEBRASIL disponemos de un sistema de pago online 100% seguro y encriptado contra fraudes y transacciones no autorizadas, estando certificados como comercio electrónico Trustwave Trustkeeper.",
+
+
+    "creo_que_he_realizado"=>"Creo que he realizado el pago y no me ha llegado la confirmación",
+
+
+   "muy_probablemente_el_pago"=>"Muy probablemente el pago no llegó a completarse y por lo tanto el servicio no está confirmado, deberías volver a hacer la reserva y finalizar el proceso. Si compruebas que te han cargado el importe en tu banco / paypal, posiblemente hayas puesto mal el email. En este caso, escríbenos y te ayudaremos a solucionarlo. ",
+
+
+  "es_posible_hacer_la_reserva"=>"¿Es posible hacer la reserva y pagar todo en destino?",
+
+
+ "en_la_actualidad_es_necesario"=>"En la actualidad es necesario abonar el importe total en el momento de hacer la reserva. Es posible pagar con tarjeta de crédito (excepto American Express), tarjeta de débito o mediante cuenta de PayPal. ",
+
+
+ "cuanto_tiempo_tengo_que_esperar"=>"¿Cuanto tiempo tengo que esperar para recibir el email de confirmación?",
+
+"el_correo_de_confirmacion"=>"El correo de confirmación es inmediato una vez realizado el pago. Si no te llega hay dos posibles motivos:",
+
+"que_no_se_haya_completado"=>"Que no se haya completado correctamente el pago. Comprueba tu cuenta bancaria o Paypal. <br>Que no hayas escrito correctamente tu email. Escríbenos un email y te ayudaremos a solucionarlo lo antes posible.",
+
+"que_no_se_haya_escrito"=>"Que no hayas escrito correctamente tu email. Escríbenos un email y te ayudaremos a solucionarlo lo antes posible. ", 
+
+"las_opiniones_son_demasiado"=>"Las opiniones son demasiado buenas ¿Son reales?",
+
+"todas_las_opiniones"=>"Todas las opiniones son de personas que han reservado a través de Metele Brasil. Al acabar la actividad recibiras un email para que podáis publicar vuestra valoración de la que esperemos haya sido una fantástica experiencia.",
+
+"como_puedo_dejar_mi_opinion"=>"¿Cómo puedo dejar mi opinión sobre una actividad?",
+
+"nuestra_razon_de_ser"=>"Nuestra razón de ser es su satisfacción. Recibirás automáticamente una encuesta por email al finalizar cada actividad reservada. ¡Ayúdanos a mejorar!",
+
+"tienen_descuento_para_un_rubro"=>"¿Tienen descuentos para un rubro específico o funcionarios públicos?",
+
+"lo_sentimos_los_precios"=>"Lo sentimos; los precios disponibles en cada actividad son los únicos que podemos ofrecer. Son los mismos para para todos los clientes. ",
+
+"hacen_descuentos_para_jubilados"=>"¿Hacen descuentos para jubilados, niños o minusválidos?",
+
+"solo_se_realizan_estos"=>"Solo se realizan estos descuentos si están indicados en la ficha de la actividad, es algo que depende de nuestros colaboradores locales.",
+
+"hay_descuentos_por_contratar"=>"¿Hay decuentos por contratar varias excursiones o servicios?",
+
+"tratamos_de_ofrecer_el_precio"=>"Tratamos de ofrecer el precio mínimo en cada actividad, por lo que no hacemos descuentos adicionales por reservar dos o más tours.",
+
+"las_reservas_se_pueden"=>"¿Las reservas se pueden cancelar?",
+
+"en_la_ficha_de_cada"=>"En la ficha de cada actividad se indica su política de cancelación. Si la cancelación se realiza fuera de plazo y es por causas graves o ajenas, contactad con nosotros para que tratemos de solucionarlo.",
+
+"cual_es_la_politica"=>"¿Cuál es la política de cancelación?",
+
+"siempre_tratamos_de_maximizar"=>"Siempre tratamos de maximizar el periodo de cancelación sin gastos. No obstante, cada actividad y cada destino es diferente por lo que tendrás que visitar el apartado cancelaciones de cada actividad para ver las condiciones específicas de cancelación.",
+
+"en_caso_de_tener"=>"En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar. ",
+
+"que_sucede_si_llueve"=>"¿Qué sucede si llueve o hace mal tiempo?",
+
+"todas_las_actividades_se_realizan_con_normalidad"=>"Todas las actividades se realizan con normalidad a lo largo de todo el año independientemente de la lluvia. Si por condiciones extremas (por ejemplo, una fuerte nevada) el proveedor tuviera que cancelar un tour, se ofrecería una fecha alternativa o el reintegro inmediato del pago.",
+
+"puedo_cambiar_la_forma"=>"¿Puedo cambiar la forma de pago en caso de cancelación",
+
+"en_caso_de_tener_derecho_a_cancelacion"=>"En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar.",
+
+
+
+
+
+
+
+  /*contact*/
+
+  "si_le_quedan_dudas_respecto"=>"Si le quedán dudas respecto a nuestros servicios utilice nuestro formulario de contacto.",
+
+  "si_usted_continua_con_dudas_"=>"Responderemos a la Brevedad.",
+
+  "nombre"=>"Nombre",
+
+  "email"=>"Email",
+
+  "telefono"=>"Teléfono",
+
+  "mensaje"=>"Mensaje",
+
+
+
+  
+
+
+
+   /*SERVICIO*/
+
+   "que_se_visita"=>" ¿Qué se visita? ",
+
+   "importante"=>" Importante ",
+
+   "precio"=>" Precio ",
+
+   "mas_populas"=>" MÁS POPULAR ",
+
+   "detalles_"=>" Detalles ",
+
+   "duracion_"=>" Duración ",
+
+   "idioma_"=>" Idioma ",
+
+   "incluido_"=>" Incluido ",
+
+   "no_incluido"=>" No Incluido ",
+
+   "documentacion_para_el_viajero"=>" Documentación para el Viajero ",
+
+   "cuando_reservar"=>" ¿Cuándo reservar? ",
+
+   "reserva_cuanto_antes_para"=>" Reserva cuanto antes para garantizar la disponibilidad, especialmente en puentes y festivos.",
+
+   "se_permiten_reservas_hasta_las_23"=>" Se permiten reservas hasta las 23:00 horas del día anterior (Horario de brasilia) siempre que queden plazas",
+
+   "justificante"=>" Justificante ",
+
+   "te_enviaremos_un_email"=>" Te enviaremos un email con un bono que podrás imprimir o llevar en tu móvil a la actividad.",
+
+   "viajeros"=>"Viajero",
+
+   "es_posible_organizar"=>" - ¿Es posible organizar una visita con grupos familiares de todas las edades?",
+
+   "si_la_visita_puede_ser"=>" - Sí. La visita puede ser realizada por grupos familiares y personas de todas las edades, incluyendo menores de 3 años.",
+
+   "accesibilidad_"=>" Accesibilidad ",
+
+   "si_nuestras_actividades"=>"Si (nuestras actividades son aptas personas de movilidad reducida, y carritos de bebé).",
+
+   "sin_sobreprecios"=>" Sin sobreprecios ni costos ocultos",
+
+   "cancelacion_gratuita_"=>" Cancelación gratuita hasta 48 horas antes ",
+
+   "hora"=>" Hora ",
+
+   "cupon_de_descuento"=>" Cupon de descuento ",
+
+   "ingrese_un_cupon"=>"Ingrese un cupon de descuento",
+
+   "personas"=>" Personas ",
+
+   "adicionales"=>" Adicionales ",
+
+   "reservar"=>" Reservar ",
+
+   "punto_de_encuentro"=>" Punto de encuentro ",
+
+   "cancelaciones_"=>" Cancelaciones ",
+
+   "opiniones_de_nuestros"=>" Opiniones de nuestros clientes ",
+
+   "todas_las_opiniones"=>" Todas las opiniones han sido escritas por clientes reales que han reservado con nosotros.",
+
+   "ver_todas_las_opiniones"=>"Ver todas las opiniones",
+
+   "mostrando"=>" Mostrando ",
+  
+   "de_"=>" de ",
+
+   "opiniones"=>" opiniones ",
+
+   "tambien_te_puede_interesar"=>"También te puede interesar",
+
+   "elegi_la_hora"=>" Elegí la Hora ",
+
+   "cuantas_personas"=>" ¿Cuantas personas? ",
+
+   "cupon_de_descuento"=>" Cupon de descuento ",
+
+   "desde"=>"Desde",
+
+   "precio_"=>"precio",
+
+
+   
+ /*SERVICIO Head*/
+
+"categoria_servicio"=>"Categoría Servicio ",
+
+"descripcion_"=>"Descripción",
+
+"compartir"=>"Compartir",
+
+"adultos"=>"Adulto",
+
+
+
+"encuentros"=>"Encuentros",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+);  

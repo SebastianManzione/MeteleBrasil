@@ -23,7 +23,7 @@
 
 
                 <div class="col-lg-12 py-2 d-md-block d-none">
-              <h5 class="text-uppercase mb-4">Recibe las últimas noticias de este servicio</h5>
+              <h5 class="text-uppercase mb-4"><?=$lang["recibe_las_ultimas_noticias_de_este_evento"];?></h5>
               <form class="form-buscar">
                 <div class="input-group">
                 <input class="field form-control"  name="buscar" type="text" placeholder="Escribe tu mail" value="">
@@ -71,7 +71,7 @@
                     <div class="" id="headingOneMetelebrasil">
                       <h5 class="mb-0">
                         <button class="btn btn-accordion btn-footer"  data-toggle="collapse" data-target="#metele" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;">
-                          Metelebrasil <i class="fa fa-sort-down float-right"></i>
+                          Metele Brasil <i class="fa fa-sort-down float-right"></i>
                         </button>
                       </h5>
                     </div>
@@ -79,10 +79,10 @@
                     <div id="metele" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOneMetelebrasil">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-                  <li><a href="acercaDe">Quiénes somos</a></li>
-                  <li><a href="categorias">Servicios</a></li>
-                  <li><a href="guias">Guías de viajes</a></li>
-                   <li><a href="sostenibilidad">Sostenibilidad</a></li>
+                  <li><a href="acercaDe"><?=$lang["quienes_somos"]?></a></li>
+                  <li><a href="categorias"><?=$lang["servicios"]?></a></li>
+                  <li><a href="guias"><?=$lang["guia_de_viajes"]?></a></li>
+                   <li><a href="sostenibilidad"><?=$lang["sostenibilidad"]?></a></li>
                   <!--<li><a href="#">METELEBRASIL Magazine</a></li>
                  
                   <li><a href="#">Prensa</a></li>-->
@@ -97,8 +97,7 @@
                  <div class="card card-accordion">
                     <div class="" id="headingOneSoporte">
                       <h5 class="mb-0">
-                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#soporte" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;">
-                          Soporte <i class="fa fa-sort-down float-right"></i>
+                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#soporte" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;"><?=$lang["soporte"]?><i class="fa fa-sort-down float-right"></i>
                         </button>
                       </h5>
                     </div>
@@ -106,8 +105,8 @@
                     <div id="soporte" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOneSoporte">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-                    <li><a href="faq">Preguntás Frecuentes</a></li>
-                          <li><a href="contact">Contacto</a></li>
+                    <li><a href="faq"><?=$lang["preguntas_frecuentes"]?></a></li>
+                          <li><a href="contact"><?=$lang["contacto"]?></a></li>
                 </ul> 
                      </div>
                     </div>
@@ -119,8 +118,7 @@
                  <div class="card card-accordion">
                     <div class="" id="headingOnePolitica-de-uso">
                       <h5 class="mb-0">
-                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#politica" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;">
-                          Política de uso <i class="fa fa-sort-down float-right"></i>
+                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#politica" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;"><?=$lang["politica_de_uso"]?><i class="fa fa-sort-down float-right"></i>
                         </button>
                       </h5>
                     </div>
@@ -128,10 +126,10 @@
                     <div id="politica" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOnePolitica-de-uso">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-                    <li><a href="condiciones">Condiciones generales</a></li>
-                    <li><a href="aviso">Aviso legal</a></li>
-                    <li><a href="privacy">Política de privacidad</a></li>
-                    <li><a href="cookies">Cookies</a></li>
+                    <li><a href="condiciones"><?=$lang["politica_de_uso"]?></a></li>
+                    <li><a href="aviso"><?=$lang["aviso_legal"]?></a></li>
+                    <li><a href="privacy"><?=$lang["politica_de_privacidad"]?></a></li>
+                    <li><a href="cookies"><?=$lang["cookies"]?></a></li>
                 </ul> 
                      </div>
                     </div>
@@ -143,8 +141,7 @@
                  <div class="card card-accordion">
                     <div class="" id="headingOneTrabajo">
                       <h5 class="mb-0">
-                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#trabajo" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;">
-                          Trabaja con Nosotros <i class="fa fa-sort-down float-right"></i>
+                        <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#trabajo" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;"><?=$lang["trabaja_con_nosotros"]?><i class="fa fa-sort-down float-right"></i>
                         </button>
                       </h5>
                     </div>
@@ -152,8 +149,8 @@
                     <div id="trabajo" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOneTrabajo">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-            <li><a href="contact">Venta freelance</a></li>
-            <li><a href="contact">Agencias de viajes</a></li>
+            <li><a href="contact"><?=$lang["venta_freelance"]?></a></li>
+            <li><a href="contact"><?=$lang["agencias_de_viajes"]?></a></li>
                    
                 </ul> 
                      </div>
@@ -191,7 +188,7 @@
                     <div class="" id="headingOneMonedaFooter">
                       <h5 class="mb-0">
                         <button class="btn btn-accordion btn-footer" id="btn-cancelaciones" href="#" data-toggle="collapse" data-target="#Moneda-fter" aria-expanded="true" aria-controls="collapseOne" style="border-bottom: 2px solid;">
-                          Moneda <i class="fa fa-sort-down float-right"></i>
+                          <?=$lang["moneda"]?><i class="fa fa-sort-down float-right"></i>
                         </button>
                       </h5>
                     </div>
@@ -204,7 +201,7 @@
                     <li><a href="" onClick="tipoMoneda(225)"><i>PYS/</i> Guaranies</a></li>
                     <li> <a href=""  onClick="tipoMoneda(270)"><i>ARS</i> Peso Argentino</a></li>
                     <li> <a href=""  onClick="tipoMoneda(271)"><i>CL</i><i class="fa fa-dollar-sign"></i> Peso Chileno</a></li>
-                    <li> <a href=""  onClick="tipoMoneda(283)"><i>R</i><i class="fa fa-dollar-sign"></i> Real Brasileño</a></li>
+                    <li> <a href=""  onClick="tipoMoneda(283)"><i>R</i><i class="fa fa-dollar-sign"></i> <?=$lang["real_brasileno"]?></a></li>
                 </ul> 
                      </div>
                     </div>
@@ -222,40 +219,40 @@
         <div class="col-lg-3 mb-5 mb-lg-0 d-md-block d-none ">
           <h4 class="text-uppercase mb-4">METELEBRASIL</h4>
           <ul class="footer-ul">
-            <li><a href="acercaDe">Quiénes somos</a></li>
-            <li><a href="categorias">Destinos</a></li>
-            <li><a href="guias">Guías de viajes</a></li>
+            <li><a href="acercaDe"><?=$lang["quienes_somos"]?></a></li>
+            <li><a href="categorias"><?=$lang["destinos"]?></a></li>
+            <li><a href="guias"><?=$lang["guia_de_viajes"]?></a></li>
             <!--<li><a href="#">METELEBRASIL Magazine</a></li>-->
-            <li><a href="sostenibilidad">Sostenibilidad</a></li>
+            <li><a href="sostenibilidad"><?=$lang["sostenibilidad"]?></a></li>
            <!-- <li><a href="#">Prensa</a></li>-->
           </ul>
         </div>
 
         <!-- Footer Social Icons -->
         <div class="col-lg-3 mb-5 mb-lg-0 d-md-block d-none">
-          <h4 class="text-uppercase mb-4">Soporte</h4>
+          <h4 class="text-uppercase mb-4"><?=$lang["soporte"]?></h4>
           <ul class="footer-ul">
-            <li><a href="faq">Preguntás Frecuentes</a></li>
-            <li><a href="contact">Contacto</a></li>
+            <li><a href="faq"><?=$lang["preguntas_frecuentes"]?></a></li>
+            <li><a href="contact"><?=$lang["contacto"]?></a></li>
           </ul>
         </div>
 
         <!-- Footer About Text -->
         <div class="col-lg-3 d-md-block d-none">
-          <h4 class="text-up percase mb-4">políticas de uso</h4>
+          <h4 class="text-up percase mb-4"><?=$lang["politica_de_uso"]?></h4>
           <ul class="footer-ul">
-            <li><a href="condiciones">Condiciones generales</a></li>
-            <li><a href="aviso">Aviso legal</a></li>
-            <li><a href="privacy">Política de privacidad</a></li>
-            <li><a href="cookies">Cookies</a></li>
+            <li><a href="condiciones"><?=$lang["condiciones_generales"]?></a></li>
+            <li><a href="aviso"><?=$lang["aviso_legal"]?></a></li>
+            <li><a href="privacy"><?=$lang["politica_de_privacidad"]?></a></li>
+            <li><a href="cookies"><?=$lang["cookies"]?></a></li>
           </ul>
         </div>
 
         <div class="col-lg-3 d-md-block d-none">
-          <h4 class="text-uppercase mb-4">Trabaja con nosotros</h4>
+          <h4 class="text-uppercase mb-4"><?=$lang["trabaja_con_nosotros"]?></h4>
           <ul class="footer-ul">
-            <li><a href="contact">Venta freelance</a></li>
-            <li><a href="contact">Agencias de viajes</a></li>
+            <li><a href="contact"><?=$lang["venta_freelance"]?></a></li>
+            <li><a href="contact"><?=$lang["agencias_de_viajes"]?></a></li>
             <!--<li><a href="#">Empleo</a></li>-->
           </ul>
         </div>
@@ -325,7 +322,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-8 col-12">
-          <h4 class="text-left"><small><span>METELEBRASIL</span> es una marca de RESERVARTE SL.</small></h4>
+          <h4 class="text-left"><small><span>METELEBRASIL</span><?=$lang["es_una_marca_registrada_de_reservate_sl"]?></small></h4>
         </div>
         <div class="col-lg-4 col-md-4 col-12 d-md-block d-none">
            <a class="btn btn-outline-light btn-social mx-1" target="_blank" href="https://www.facebook.com/Metele-Brasil-2731641913727960/">

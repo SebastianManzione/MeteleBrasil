@@ -612,7 +612,7 @@ $clientesListClass=" ";
 
 $treeviewClientes="   ";
 
-if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php") {
+if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" ) {
 
 $treeviewClientes=" menu-open ";
 
@@ -737,6 +737,88 @@ if ($archivo_actual=="textoMiniaturaLista.php") {
 
       <!-- individual-->
 
+ <!-- individual-->
+
+<?php 
+
+$clientesClass=" ";
+
+if ($archivo_actual=="textosAccesibilidad.php") {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="textosAccesibilidad" class="nav-link <?=$clientesClass?>">
+
+                <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
+
+                  <p>Editor de Textos Accesiblidad</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
+ <!-- individual-->
+
+<?php 
+
+$clientesClass=" ";
+
+if ( $archivo_actual=="destinosAlta.php") {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="destinosAlta" class="nav-link <?=$clientesClass?>">
+
+                <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
+
+                  <p>Editor de Destinos</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
+
+              <!-- individual-->
+
+<?php 
+
+$clientesClass=" ";
+
+if ($archivo_actual=="serviciosAdicionalesAlta.php") {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="serviciosAdicionalesAlta" class="nav-link <?=$clientesClass?>">
+
+                <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
+
+                  <p>Editor de Servicios Adicionales</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
               <!-- individual-->
 
 <?php 

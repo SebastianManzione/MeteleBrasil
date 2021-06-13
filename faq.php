@@ -16,7 +16,7 @@ include("includes/navbar.php");
       <div class="col-lg-12">
                   
           <!--TITULO-->
-        <h1 class="text-white texto-shadow py-2 bold" style=" text-shadow: -1px 0px 6px #000000;">Preguntas Frecuentes</h1>
+        <h1 class="text-white texto-shadow py-2 bold" style=" text-shadow: -1px 0px 6px #000000;"><?=$lang["preguntas_frecuentes"]?></h1>
          <!--TITULO-->
         
       
@@ -101,13 +101,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#puntoencuentro" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cual es el punto de encuentro de la actividad? 
+                                  <?=$lang["cual_es_el_punto"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="puntoencuentro" class="collapse " aria-labelledby="headingOne" data-parent="#puntoencuentro">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>El punto de encuentro está detallado en cada actividad así como en el email de confirmación una vez realizada la reserva. Si tienes dudas una vez en el destino, puedes contactar con el proveedor local en el teléfono que verás en el bono.</p>
+                                  <p><?=$lang["el_punto_de_encuentro_esta_detallado"]?></p>
                               </div>
                             </div>
                             </div>
@@ -117,13 +117,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrasciudades" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Vamos a viajar a otras ciudades?¿Donde más tienen tours? 
+                                  <?=$lang["vamos_a_viajar_a_otras"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrasciudades" class="collapse " aria-labelledby="headingOne" data-parent="#otrasciudades">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Podrán ver todas nuestras guías de viajes en el home de nuestra página, en la mayoría de ellas, tenemos servicios de visitas guiadas, excursiones y traslados.</p>
+                                  <p><?=$lang["podran_ver_todas_nuestras_guias_de_viajes"]?>.</p>
                               </div>
                             </div>
                             </div>
@@ -133,13 +133,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrostours" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Tienen otros tours o actividades además de los publicados en cada destino? 
+                                  <?=$lang["tienen_otros_tours_o_actividades"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrostours" class="collapse " aria-labelledby="headingOne" data-parent="#otrostours">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En algunos destinos ofrecemos servicios privados para actividades no publicadas en la web. En todo caso, puedes ver todos los servicios con los que contamos en Nuestra página.</p>
+                                  <p><?=$lang["en_algunos_destinos_ofrecemos_servicios"]?></p>
                               </div>
                             </div>
                             </div>
@@ -149,13 +149,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#bono" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Es necesario imprimir un bono o un justificante? 
+                                  <?=$lang["es_necesario_imprimir_un_bono"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="bono" class="collapse " aria-labelledby="headingOne" data-parent="#bono">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Algunos servicios requieren un bono impreso, otros en el móvil, y otros no requieren llevar nada. Ésto es específico de cada actividad y lo podréis ver en su ficha.</p>
+                                  <p><?=$lang["algunos_servicios_requieren"]?></p>
                               </div>
                             </div>
                             </div>
@@ -165,13 +165,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#sillasniños" aria-expanded="false" aria-controls="collapseOne">
-                                  En las excursiones en vehículo ¿Hay sillas para niños pequeños? 
+                                  <?=$lang["en_las_excursiones"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="sillasniños" class="collapse " aria-labelledby="headingOne" data-parent="#sillasniños">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Los proveedores disponen de sillitas de niño en función de las leyes del país (en el 90% de los destinos son obligatorias). Al hacer la reserva no olvidéis indicar la edad de los niños en los comentarios.</p>
+                                  <p><?=$lang["los_proveedores_disponen"]?></p>
                               </div>
                             </div>
                             </div>
@@ -181,13 +181,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#itinerario" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Se accede a todos los lugares indicados en el itinerario? 
+                                  <?=$lang["se_accede_a_todos"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="itinerario" class="collapse " aria-labelledby="headingOne" data-parent="#itinerario">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Siempre tratamos de dejar claro si a un monumento se accede o solo se pasa por él. En caso de que no indiquemos nada, lo normal es que no se acceda a su interior.</p>
+                                  <p><?=$lang["siempre_tratamos_de_dejar"]?></p>
                               </div>
                             </div>
                             </div>
@@ -197,13 +197,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#tarde" aria-expanded="false" aria-controls="collapseOne">
-                                  No sé si me dará el tiempo para llegar al tour ¿Si llego tarde me esperarán? 
+                                  <?=$lang["no_se_si_me_dara_el_tiempo"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="tarde" class="collapse " aria-labelledby="headingOne" data-parent="#tarde">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Los tours regulares salen siempre puntuales y no es posible modificar la hora de inicio. Respecto a los tours privados, si queréis empezar a otra hora podéis consultarnos antes de hacer la reserva.</p>
+                                  <p><?=$lang["los_tours_regulares_salen_siempre"]?></p>
                               </div>
                             </div>
                             </div>
@@ -213,13 +213,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrapersona" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Puedo reservar para otra persona? 
+                                  <?=$lang["puedo_reservar_para_otra_persona"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrapersona" class="collapse " aria-labelledby="headingOne" data-parent="#otrapersona">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>¡Claro! Simplemente debes indicar los datos de la persona que realizará la actividad en lugar de los tuyos. En la información de pago sí que deberás indicar tus datos para que la transacción se complete correctamente.</p>
+                                  <p><?=$lang["claro_simplemente_debes_indicar"]?></p>
                               </div>
                             </div>
                             </div>
@@ -229,13 +229,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Como puedo pagar mis reservas? 
+                                  <?=$lang["como_puedo_pagar"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago" class="collapse " aria-labelledby="headingOne" data-parent="#pago">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Nuestra web ofrece un servicio de reserva muy fácil e intuitivo y te permite realizar el pago de manera segura con Visa, MasterCard o PayPal. No es posible pagar en el destino o al guía directamente. Todas las reservas deben hacerse a través de la página web.</p>
+                                  <p><?=$lang["nuestra_web_ofrece_un_servicio"]?></p>
                               </div>
                             </div>
                             </div>
@@ -245,13 +245,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿El pago es seguro? 
+                                  <?=$lang["el_pago_es_seguro"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago2" class="collapse " aria-labelledby="headingOne" data-parent="#pago2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En METELEBRASIL disponemos de un sistema de pago online 100% seguro y encriptado contra fraudes y transacciones no autorizadas, estando certificados como comercio electrónico Trustwave Trustkeeper.</p>
+                                  <p><?=$lang["en_metelebrasil_disponemos_de_un"]?></p>
                               </div>
                             </div>
                             </div>
@@ -261,13 +261,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago3" aria-expanded="false" aria-controls="collapseOne">
-                                  Creo que he realizado el pago y no me ha llegado la confirmación
+                                  <?=$lang["creo_que_he_realizado"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago3" class="collapse " aria-labelledby="headingOne" data-parent="#pago3">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Muy probablemente el pago no llegó a completarse y por lo tanto el servicio no está confirmado, deberías volver a hacer la reserva y finalizar el proceso. Si compruebas que te han cargado el importe en tu banco / paypal, posiblemente hayas puesto mal el email. En este caso, escríbenos y te ayudaremos a solucionarlo. </p>
+                                  <p><?=$lang["muy_probablemente_el_pago"]?></p>
                               </div>
                             </div>
                             </div>
@@ -277,13 +277,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago4" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Es posible hacer la reserva y pagar todo en destino?
+                                  <?=$lang["es_posible_hacer_la_reserva"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago4" class="collapse " aria-labelledby="headingOne" data-parent="#pago4">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En la actualidad es necesario abonar el importe total en el momento de hacer la reserva. Es posible pagar con tarjeta de crédito (excepto American Express), tarjeta de débito o mediante cuenta de PayPal. </p>
+                                  <p><?=$lang["en_la_actualidad_es_necesario"]?></p>
                               </div>
                             </div>
                             </div>
@@ -293,14 +293,17 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago5" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cuanto tiempo tengo que esperar para recibir el email de confirmación?
+                                  <?=$lang["cuanto_tiempo_tengo_que_esperar"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago5" class="collapse " aria-labelledby="headingOne" data-parent="#pago5">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>El correo de confirmación es inmediato una vez realizado el pago. Si no te llega hay dos posibles motivos:<br>
-                                    Que no se haya completado correctamente el pago. Comprueba tu cuenta bancaria o Paypal. <br>Que no hayas escrito correctamente tu email. Escríbenos un email y te ayudaremos a solucionarlo lo antes posible. </p>
+                                  <p><?=$lang["el_correo_de_confirmacion"]?>
+
+                                    <br>
+
+                                    <?=$lang["que_no_se_haya_completado"]?></p>
                               </div>
                             </div>
                             </div>
@@ -310,13 +313,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#opiniones1" aria-expanded="false" aria-controls="collapseOne">
-                                  Las opiniones son demasiado buenas ¿Son reales?
+                                  <?=$lang["las_opiniones_son_demasiado"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="opiniones1" class="collapse " aria-labelledby="headingOne" data-parent="#opiniones1">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Todas las opiniones son de personas que han reservado a través de Civitatis. Al acabar la actividad recibiréis un email para que podáis publicar vuestra valoración de la que esperemos haya sido una fantástica experiencia.</p>
+                                  <p><?=$lang["todas_las_opiniones"]?></p>
                               </div>
                             </div>
                             </div>
@@ -326,13 +329,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#opiniones2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cómo puedo dejar mi opinión sobre una actividad?
+                                  <?=$lang["como_puedo_dejar_mi_opinion"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="opiniones2" class="collapse " aria-labelledby="headingOne" data-parent="#opiniones2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Nuestra razón de ser es su satisfacción. Recibirás automáticamente una encuesta por email al finalizar cada actividad reservada. ¡Ayúdanos a mejorar!</p>
+                                  <p><?=$lang["nuestra_razon_de_ser"]?></p>
                               </div>
                             </div>
                             </div>
@@ -342,13 +345,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#funcionarios" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Tienen descuentos para un rubro específico o funcionarios públicos?
+                                  <?=$lang["tienen_descuento_para_un_rubro"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="funcionarios" class="collapse " aria-labelledby="headingOne" data-parent="#funcionarios">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Lo sentimos; los precios disponibles en cada actividad son los únicos que podemos ofrecer. Son los mismos para para todos los clientes. </p>
+                                  <p><?=$lang["lo_sentimos_los_precios"]?></p>
                               </div>
                             </div>
                             </div>
@@ -358,13 +361,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#minusvalidos" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Hacen descuentos para jubilados, niños o minusválidos?
+                                  <?=$lang["hacen_descuentos_para_jubilados"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="minusvalidos" class="collapse " aria-labelledby="headingOne" data-parent="#minusvalidos">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Solo se realizan estos descuentos si están indicados en la ficha de la actividad, es algo que depende de nuestros colaboradores locales.</p>
+                                  <p><?=$lang["solo_se_realizan_estos"]?></p>
                               </div>
                             </div>
                             </div>
@@ -374,13 +377,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#descuentos" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Hay decuentos por contratar varias excursiones o servicios?
+                                  <?=$lang["hay_descuentos_por_contratar"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="descuentos" class="collapse " aria-labelledby="headingOne" data-parent="#descuentos">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Tratamos de ofrecer el precio mínimo en cada actividad, por lo que no hacemos descuentos adicionales por reservar dos o más tours.</p>
+                                  <p><?=$lang["tratamos_de_ofrecer_el_precio"]?></p>
                               </div>
                             </div>
                             </div>
@@ -390,13 +393,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Las reservas se pueden cancelar?
+                                  <?=$lang["las_reservas_se_pueden"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En la ficha de cada actividad se indica su política de cancelación. Si la cancelación se realiza fuera de plazo y es por causas graves o ajenas, contactad con nosotros para que tratemos de solucionarlo.</p>
+                                  <p><?=$lang["en_la_ficha_de_cada"]?></p>
                               </div>
                             </div>
                             </div>
@@ -406,14 +409,14 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar1" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cuál es la política de cancelación?
+                                  <?=$lang["cual_es_la_politica"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar1" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar1">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Siempre tratamos de maximizar el periodo de cancelación sin gastos. No obstante, cada actividad y cada destino es diferente por lo que tendrás que visitar el apartado "cancelaciones" de cada actividad para ver las condiciones específicas de cancelación.</p>
-                                  <p>En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar. </p>
+                                  <p><?=$lang["siempre_tratamos_de_maximizar"]?></p>
+                                  <p><?=$lang["en_caso_de_tener"]?></p>
                               </div>
                             </div>
                             </div>
@@ -423,13 +426,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#lluvia" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Qué sucede si llueve o hace mal tiempo?
+                                  <?=$lang["que_sucede_si_llueve"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="lluvia" class="collapse " aria-labelledby="headingOne" data-parent="#lluvia">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Todas las actividades se realizan con normalidad a lo largo de todo el año independientemente de la lluvia. Si por condiciones extremas (por ejemplo, una fuerte nevada) el proveedor tuviera que cancelar un tour, se ofrecería una fecha alternativa o el reintegro inmediato del pago.</p>
+                                  <p><?=$lang["todas_las_actividades_se_realizan_con_normalidad"]?></p>
                                   
                               </div>
                             </div>
@@ -440,13 +443,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Puedo cambiar la forma de pago en caso de cancelación?
+                                  <?=$lang["puedo_cambiar_la_forma"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar2" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar.</p>
+                                  <p><?=$lang["en_caso_de_tener_derecho_a_cancelacion"]?>.</p>
                                   
                               </div>
                             </div>
@@ -475,7 +478,7 @@ include("includes/navbar.php");
           <div class="col-12">
             <div class="accordion mb-2" id="Seleccionar_descuento">
                  <div class="card card-accordion">
-                    <h1 class="a-title-empleo afiliados text-center">Presuntas Frecuentes</h1>
+                    <h1 class="a-title-empleo afiliados text-center"><?=$lang["preguntas_frecuentes"]?></h1>
                     <div id="seleccionar_descuento" class=" " aria-labelledby="headingOne" data-parent="#seleccionar_descuento">
                       <div class="form-group">
                         <!---- Acá va el acordeon de preguntas generales ---->
@@ -484,13 +487,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#puntoencuentro" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cual es el punto de encuentro de la actividad? 
+                                  <?=$lang["cual_es_el_punto"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="puntoencuentro" class="collapse " aria-labelledby="headingOne" data-parent="#puntoencuentro">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>El punto de encuentro está detallado en cada actividad así como en el email de confirmación una vez realizada la reserva. Si tienes dudas una vez en el destino, puedes contactar con el proveedor local en el teléfono que verás en el bono.</p>
+                                  <p><?=$lang["el_punto_de_encuentro_esta_detallado"]?></p>
                               </div>
                             </div>
                             </div>
@@ -500,13 +503,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrasciudades" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Vamos a viajar a otras ciudades?¿Donde más tienen tours? 
+                                  <?=$lang["vamos_a_viajar_a_otras"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrasciudades" class="collapse " aria-labelledby="headingOne" data-parent="#otrasciudades">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Podrán ver todas nuestras guías de viajes en el home de nuestra página, en la mayoría de ellas, tenemos servicios de visitas guiadas, excursiones y traslados.</p>
+                                  <p><?=$lang["podran_ver_todas_nuestras_guias_de_viajes"]?></p>
                               </div>
                             </div>
                             </div>
@@ -516,13 +519,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrostours" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Tienen otros tours o actividades además de los publicados en cada destino? 
+                                 <?=$lang["tienen_otros_tours_o_actividades"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrostours" class="collapse " aria-labelledby="headingOne" data-parent="#otrostours">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En algunos destinos ofrecemos servicios privados para actividades no publicadas en la web. En todo caso, puedes ver todos los servicios con los que contamos en Nuestra página.</p>
+                                  <p><?=$lang["en_algunos_destinos_ofrecemos_servicios"]?></p>
                               </div>
                             </div>
                             </div>
@@ -532,13 +535,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#bono" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Es necesario imprimir un bono o un justificante? 
+                                  <?=$lang["es_necesario_imprimir_un_bono"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="bono" class="collapse " aria-labelledby="headingOne" data-parent="#bono">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Algunos servicios requieren un bono impreso, otros en el móvil, y otros no requieren llevar nada. Ésto es específico de cada actividad y lo podréis ver en su ficha.</p>
+                                  <p><?=$lang["algunos_servicios_requieren"]?></p>
                               </div>
                             </div>
                             </div>
@@ -548,13 +551,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#sillasniños" aria-expanded="false" aria-controls="collapseOne">
-                                  En las excursiones en vehículo ¿Hay sillas para niños pequeños? 
+                                  <?=$lang["en_las_excursiones"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="sillasniños" class="collapse " aria-labelledby="headingOne" data-parent="#sillasniños">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Los proveedores disponen de sillitas de niño en función de las leyes del país (en el 90% de los destinos son obligatorias). Al hacer la reserva no olvidéis indicar la edad de los niños en los comentarios.</p>
+                                  <p><?=$lang["los_proveedores_disponen"]?></p>
                               </div>
                             </div>
                             </div>
@@ -564,13 +567,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#itinerario" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Se accede a todos los lugares indicados en el itinerario? 
+                                  <?=$lang["se_accede_a_todos"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="itinerario" class="collapse " aria-labelledby="headingOne" data-parent="#itinerario">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Siempre tratamos de dejar claro si a un monumento se accede o solo se pasa por él. En caso de que no indiquemos nada, lo normal es que no se acceda a su interior.</p>
+                                  <p><?=$lang["siempre_tratamos_de_dejar"]?></p>
                               </div>
                             </div>
                             </div>
@@ -580,13 +583,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#tarde" aria-expanded="false" aria-controls="collapseOne">
-                                  No sé si me dará el tiempo para llegar al tour ¿Si llego tarde me esperarán? 
+                                  <?=$lang["no_se_si_me_dara_el_tiempo"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="tarde" class="collapse " aria-labelledby="headingOne" data-parent="#tarde">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Los tours regulares salen siempre puntuales y no es posible modificar la hora de inicio. Respecto a los tours privados, si queréis empezar a otra hora podéis consultarnos antes de hacer la reserva.</p>
+                                  <p><?=$lang["los_tours_regulares_salen_siempre"]?></p>
                               </div>
                             </div>
                             </div>
@@ -596,13 +599,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#otrapersona" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Puedo reservar para otra persona? 
+                                  <?=$lang["puedo_reservar_para_otra_persona"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="otrapersona" class="collapse " aria-labelledby="headingOne" data-parent="#otrapersona">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>¡Claro! Simplemente debes indicar los datos de la persona que realizará la actividad en lugar de los tuyos. En la información de pago sí que deberás indicar tus datos para que la transacción se complete correctamente.</p>
+                                  <p><?=$lang["claro_simplemente_debes_indicar"]?></p>
                               </div>
                             </div>
                             </div>
@@ -612,13 +615,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Como puedo pagar mis reservas? 
+                                  <?=$lang["como_puedo_pagar"]?> 
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago" class="collapse " aria-labelledby="headingOne" data-parent="#pago">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Nuestra web ofrece un servicio de reserva muy fácil e intuitivo y te permite realizar el pago de manera segura con Visa, MasterCard o PayPal. No es posible pagar en el destino o al guía directamente. Todas las reservas deben hacerse a través de la página web.</p>
+                                  <p><?=$lang["nuestra_web_ofrece_un_servicio"]?></p>
                               </div>
                             </div>
                             </div>
@@ -628,13 +631,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿El pago es seguro? 
+                                  <?=$lang["el_pago_es_seguro"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago2" class="collapse " aria-labelledby="headingOne" data-parent="#pago2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En METELEBRASIL disponemos de un sistema de pago online 100% seguro y encriptado contra fraudes y transacciones no autorizadas, estando certificados como comercio electrónico Trustwave Trustkeeper.</p>
+                                  <p><?=$lang["en_metelebrasil_disponemos_de_un"]?></p>
                               </div>
                             </div>
                             </div>
@@ -644,13 +647,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago3" aria-expanded="false" aria-controls="collapseOne">
-                                  Creo que he realizado el pago y no me ha llegado la confirmación
+                                  <?=$lang["creo_que_he_realizado"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago3" class="collapse " aria-labelledby="headingOne" data-parent="#pago3">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Muy probablemente el pago no llegó a completarse y por lo tanto el servicio no está confirmado, deberías volver a hacer la reserva y finalizar el proceso. Si compruebas que te han cargado el importe en tu banco / paypal, posiblemente hayas puesto mal el email. En este caso, escríbenos y te ayudaremos a solucionarlo. </p>
+                                  <p><?=$lang["muy_probablemente_el_pago"]?></p>
                               </div>
                             </div>
                             </div>
@@ -660,13 +663,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago4" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Es posible hacer la reserva y pagar todo en destino?
+                                  <?=$lang["es_posible_hacer_la_reserva"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago4" class="collapse " aria-labelledby="headingOne" data-parent="#pago4">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En la actualidad es necesario abonar el importe total en el momento de hacer la reserva. Es posible pagar con tarjeta de crédito (excepto American Express), tarjeta de débito o mediante cuenta de PayPal. </p>
+                                  <p><?=$lang["en_la_actualidad_es_necesario"]?></p>
                               </div>
                             </div>
                             </div>
@@ -676,14 +679,16 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#pago5" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cuanto tiempo tengo que esperar para recibir el email de confirmación?
+                                  <?=$lang["cuanto_tiempo_tengo_que_esperar"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="pago5" class="collapse " aria-labelledby="headingOne" data-parent="#pago5">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>El correo de confirmación es inmediato una vez realizado el pago. Si no te llega hay dos posibles motivos:<br>
-                                    Que no se haya completado correctamente el pago. Comprueba tu cuenta bancaria o Paypal. <br>Que no hayas escrito correctamente tu email. Escríbenos un email y te ayudaremos a solucionarlo lo antes posible. </p>
+                                  <p><?=$lang["el_correo_de_confirmacion"]?><br>
+
+                                    <?=$lang["que_no_se_haya_completado"]?> <br>
+                                    <?=$lang["que_no_se_haya_escrito"]?></p>
                               </div>
                             </div>
                             </div>
@@ -693,13 +698,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#opiniones1" aria-expanded="false" aria-controls="collapseOne">
-                                  Las opiniones son demasiado buenas ¿Son reales?
+                                  <?=$lang["las_opiniones_son_demasiado"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="opiniones1" class="collapse " aria-labelledby="headingOne" data-parent="#opiniones1">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Todas las opiniones son de personas que han reservado a través de Civitatis. Al acabar la actividad recibiréis un email para que podáis publicar vuestra valoración de la que esperemos haya sido una fantástica experiencia.</p>
+                                  <p><?=$lang["todas_las_opiniones"]?></p>
                               </div>
                             </div>
                             </div>
@@ -709,13 +714,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#opiniones2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cómo puedo dejar mi opinión sobre una actividad?
+                                  <?=$lang["como_puedo_dejar_mi_opinion"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="opiniones2" class="collapse " aria-labelledby="headingOne" data-parent="#opiniones2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Nuestra razón de ser es su satisfacción. Recibirás automáticamente una encuesta por email al finalizar cada actividad reservada. ¡Ayúdanos a mejorar!</p>
+                                  <p><?=$lang["nuestra_razon_de_ser"]?></p>
                               </div>
                             </div>
                             </div>
@@ -725,13 +730,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#funcionarios" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Tienen descuentos para un rubro específico o funcionarios públicos?
+                                  <?=$lang["tienen_descuento_para_un_rubro"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="funcionarios" class="collapse " aria-labelledby="headingOne" data-parent="#funcionarios">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Lo sentimos; los precios disponibles en cada actividad son los únicos que podemos ofrecer. Son los mismos para para todos los clientes. </p>
+                                  <p><?=$lang["lo_sentimos_los_precios"]?> </p>
                               </div>
                             </div>
                             </div>
@@ -741,13 +746,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#minusvalidos" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Hacen descuentos para jubilados, niños o minusválidos?
+                                  <?=$lang["hacen_descuentos_para_jubilados"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="minusvalidos" class="collapse " aria-labelledby="headingOne" data-parent="#minusvalidos">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Solo se realizan estos descuentos si están indicados en la ficha de la actividad, es algo que depende de nuestros colaboradores locales.</p>
+                                  <p><?=$lang["solo_se_realizan_estos"]?></p>
                               </div>
                             </div>
                             </div>
@@ -757,13 +762,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#descuentos" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Hay decuentos por contratar varias excursiones o servicios?
+                                  <?=$lang["hay_descuentos_por_contratar"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="descuentos" class="collapse " aria-labelledby="headingOne" data-parent="#descuentos">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Tratamos de ofrecer el precio mínimo en cada actividad, por lo que no hacemos descuentos adicionales por reservar dos o más tours.</p>
+                                  <p><?=$lang["tratamos_de_ofrecer_el_precio"]?></p>
                               </div>
                             </div>
                             </div>
@@ -773,13 +778,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Las reservas se pueden cancelar?
+                                  <?=$lang["las_reservas_se_pueden"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En la ficha de cada actividad se indica su política de cancelación. Si la cancelación se realiza fuera de plazo y es por causas graves o ajenas, contactad con nosotros para que tratemos de solucionarlo.</p>
+                                  <p><?=$lang["en_la_ficha_de_cada"]?></p>
                               </div>
                             </div>
                             </div>
@@ -789,14 +794,14 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar1" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Cuál es la política de cancelación?
+                                  <?=$lang["cual_es_la_politica"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar1" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar1">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Siempre tratamos de maximizar el periodo de cancelación sin gastos. No obstante, cada actividad y cada destino es diferente por lo que tendrás que visitar el apartado "cancelaciones" de cada actividad para ver las condiciones específicas de cancelación.</p>
-                                  <p>En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar. </p>
+                                  <p><?=$lang["siempre_tratamos_de_maximizar"]?></p>
+                                  <p><?=$lang["en_caso_de_tener_derecho_a_cancelacion"]?></p>
                               </div>
                             </div>
                             </div>
@@ -806,13 +811,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#lluvia" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Qué sucede si llueve o hace mal tiempo?
+                                  <?=$lang["que_sucede_si_llueve"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="lluvia" class="collapse " aria-labelledby="headingOne" data-parent="#lluvia">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>Todas las actividades se realizan con normalidad a lo largo de todo el año independientemente de la lluvia. Si por condiciones extremas (por ejemplo, una fuerte nevada) el proveedor tuviera que cancelar un tour, se ofrecería una fecha alternativa o el reintegro inmediato del pago.</p>
+                                  <p><?=$lang["todas_las_actividades_se_realizan_con_normalidad"]?></p>
                                   
                               </div>
                             </div>
@@ -823,13 +828,13 @@ include("includes/navbar.php");
                               <div class="" id="headingOne">
                                 <h5 class="mb-0">
                                   <a class="btn btn-accordion btn-calendar text-white" href="#" data-toggle="collapse" data-target="#cancelar2" aria-expanded="false" aria-controls="collapseOne">
-                                  ¿Puedo cambiar la forma de pago en caso de cancelación?
+                                  <?=$lang["puedo_cambiar_la_forma"]?>
                                   </a>
                                 </h5>
                              </div>
                             <div id="cancelar2" class="collapse " aria-labelledby="headingOne" data-parent="#cancelar2">
                               <div class="form-group" style="padding-top: 20px;">
-                                  <p>En caso de tener derecho a cancelación, se devolverá el importe mediante la misma forma de pago en la que se realizó la reserva. Es una operación automática que por seguridad no es posible modificar.</p>
+                                  <p><?=$lang["en_caso_de_tener_derecho_a_cancelacion"]?></p>
                                   
                               </div>
                             </div>
@@ -863,11 +868,11 @@ include("includes/navbar.php");
       </div>
       <div class="modal-body">
         <form class="form-buscar">
-            <label class="sr-only" for="s">¿Dónde vamos?</label>
+            <label class="sr-only" for="s"><?=$lang["donde_vamos"]?></label>
           <div class="input-group ">
             <input class="field form-control" id="buscar" name="buscar" type="text" placeholder="¿Dónde vamos?" value="">
             <span class="input-group-append">
-              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit">Buscar <i class="fa fa-arrow-right"></i></button>
+              <button class="submit btn btn-primary" id="searchsubmit2" name="submit" type="submit"><?=$lang["buscar"]?> <i class="fa fa-arrow-right"></i></button>
             </span>
           </div>
               <!--EMPIEZA DESPLEGABLE DEL BANNER--> 
@@ -879,22 +884,22 @@ include("includes/navbar.php");
                          <div class="container">
                         <div class="row mb-4">
                           <div class="col-lg-12">
-                            <h3 class="text-center text-primary">Top Destinos</h3>
+                            <h3 class="text-center text-primary"><?=$lang["top_actividades"]?></h3>
                           </div>
                         </div>
                         <div class="row  mb-4">
                             
                             <!--EL BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                             <div class="col-md-3 col-6 mb-3">
-                            <h4 class=" mb-0"><a href="#" class="text-destinos">Nueva York</a></h4>
-                            <small>Estados Unidos</small>
+                            <h4 class=" mb-0"><a href="#" class="text-destinos">Rio de Janeiro</a></h4>
+                            <small>Salvador Bahia</small>
                             </div>
                             <!--FIN BUCLE DE LOS RESULTADOS DEBE IR ACA-->   
                   
                          </div>
                          <div class="row py-4">
                           <div class="col-lg-12">
-                            <h3 class="text-center"><a href="" class="btn btn-outline-primary btn-white" style="border-radius:25px;">Ver todos los destinos</a></h3>
+                            <h3 class="text-center"><a href="" class="btn btn-outline-primary btn-white" style="border-radius:25px;"><?=$lang["ver_todos_los_destinos"]?></a></h3>
                           </div>
                         </div>
                         </div>

@@ -89,6 +89,48 @@ function getServiciosAdicionales(){
     
     }
 
+  function getServiciosAdicionalesAllSalidas($idServiciosAdicionales){
+
+    require("conexion.php");
+    $idServiciosAdicionales=$idServiciosAdicionales;
+    $data=["idServiciosAdicionales"=>$idServiciosAdicionales];
+    $consulta = "SELECT * FROM servicios_salidas_adicionales WHERE idServiciosAdicionales=:idServiciosAdicionales ";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+    return $resultado;
+    
+    
+    }
+
+  function getServiciosAdicionalesAllCategorias($idServiciosAdicionales){
+
+    require("conexion.php");
+  
+    $data=["idServiciosAdicionales"=>$idServiciosAdicionales];
+    $consulta = "SELECT * FROM servicios_adicionales_categoria WHERE idServiciosAdicionales=:idServiciosAdicionales";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+    return $resultado;
+    
+    
+    }
+
+
+
 
    function getSvAdicionalesNoIncluidosEnCategoria($idCategoria_servicio){
 
@@ -259,6 +301,48 @@ $serviciosAdicionalesSalidaNoIncluidos[$i]['valor']=convierteMoneda( $idMoneda,$
         
         
         }
+
+
+  function setServicioAdicional($nombre, $descripcion_servicio_adicional){
+
+
+        require("conexion.php");
+        $data=["nombre"=> $nombre, "descripcion_servicio_adicional"=>$descripcion_servicio_adicional];
+        $consulta = "INSERT INTO servicios_adicionales (nombre, descripcion_servicio_adicional) VALUES (:nombre, :descripcion_servicio_adicional) ";
+        
+        $comando = $pdo->prepare($consulta);
+        
+        $comando->execute($data);
+        
+        $id = $pdo->lastInsertId(); 
+        $cuenta_col = $comando->columnCount();
+        $cuenta_row = $comando->rowCount();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+              return $id;  
+        }
+
+function borraServicioAdicional($idServiciosAdicionales){
+
+require("conexion.php");
+    $data=["idServiciosAdicionales"=> $idServiciosAdicionales];
+    $consulta = "DELETE FROM servicios_adicionales WHERE idServiciosAdicionales=:idServiciosAdicionales ";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    $cuenta_row = $comando->rowCount();
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    
+    
+    return $cuenta_row;
+    
+    
+    }
 
     /*      
 function borraPrestador($idPrestador){

@@ -11,32 +11,60 @@ require("classes/functions.php");
 require("classes/servicio.php");
 require("classes/categoria.php");
 
-require("classes/opiniones_categoria.php");
+require("classes/servicios_adicionales.php");
 
+if (!$_SESSION["login"]["rol"]==1) {
 
-if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["idCategoria_servicio"])) {
-    $idCategoria_servicio=$_GET["idCategoria_servicio"];
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+
+  redireccionarLento("index");
+
 }
 
-if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idCategoria_servicio"]) && is_numeric($_POST["idCategoria_servicio"])) {
+if ($_SERVER["REQUEST_METHOD"]=="POST" ) {
 
-  $idCategoria_servicio=$_POST["idCategoria_servicio"];
-  if (isset($_POST["setOpinionCategoria"])) {
+  if (isset($_POST["setServicioAdicional"])) {
 
-$opinionResu=setOpinionCategoria($idCategoria_servicio, $_POST["nombre"],$_POST["opinion"], $_POST["estrellasServicio"],$_POST["pais"]);
-if ($opinionResu>0) {
-  alertar("Opinión guardada con éxito","success");
+$nombre=$_POST["nombre"];
+$descripcion_servicio_adicional=$_POST["descripcion_servicio_adicional"];
+$servicio_adicional_resu=setServicioAdicional($nombre, $descripcion_servicio_adicional);
+if ($servicio_adicional_resu>0) {
+  alertar("Servicio Adicional guardado con éxito","success");
 }
   }
 
+  if (isset($_POST["eliminarServicioAdicional"])) {
+   
 
+$idServiciosAdicionales=$_POST["eliminarServicioAdicional"];
+
+
+$getServiciosAdicionalesAllSalidas=getServiciosAdicionalesAllSalidas($idServiciosAdicionales);
+$getServiciosAdicionalesAllCategorias=getServiciosAdicionalesAllCategorias($idServiciosAdicionales);
+
+if (count($getServiciosAdicionalesAllSalidas)>0 ) {
+    alertar("El servicio adicional que desea eliminar esta asignado a algunas salidas de servicio","error");
+
+}
+elseif (count($getServiciosAdicionalesAllCategorias)>0) {
+  alertar("El servicio adicional que desea eliminar esta asignado a alguna categoria","error");
+}
+else{
+  $servicio_adicional_resu=borraServicioAdicional($idServiciosAdicionales);
+if ($servicio_adicional_resu>0) {
+  alertar("Servicio Adicional eliminado con éxito","success");
+}
+}
+
+  }
 
 
 }
 
-   $categoria=getCategoria($idCategoria_servicio)[0];
-  
-  $opiniones=OpinionesCategoria($idCategoria_servicio);
+
+$servicios_adicionales=getServiciosAdicionales();
+
+
  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -81,19 +109,18 @@ if ($opinionResu>0) {
                                           <div class="modal-body">
                                             <form method="post">
                                               <div class="form-group">
-                                            
-                                               <input type="hidden" name="idCategoria_servicio" value="<?=$idCategoria_servicio;?>">
+                                       
                                                   <label for="recipient-name" class="col-form-label">Nombre:</label>
                                                   <input type="text" name="nombre" class="form-control" id="recipient-name">
                                              </div>
                                                   <div class="form-group">
                                                      <label for="message-text" class="col-form-label">Descripcion del servicio adicional</label>
-                                                        <textarea name="opinion" class="form-control" id="message-text"></textarea>
+                                                        <textarea name="descripcion_servicio_adicional" class="form-control" id="message-text"></textarea>
                                                   </div>
                                              
                                             <div class="form-group">
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="submit" name="setOpinionCategoria" class= "btn btn-primary">Agregar</button>
+                                            <button type="submit" name="setServicioAdicional" class= "btn btn-primary">Agregar</button>
                                           </div>
                                             </form>
                                           </div>
@@ -117,7 +144,7 @@ if ($opinionResu>0) {
                                 <tr>
                         
                                    <th scope="col">Nombre</th>
-                                   <th scope="col">Descricion</th>
+                             
                                    <th scope="col">Acción</th>
 
                                 </tr>
@@ -125,19 +152,29 @@ if ($opinionResu>0) {
                   
 
                            <tbody>
+                            <?php for ($i=0; $i < count($servicios_adicionales); $i++) { 
+                              $idServiciosAdicionales=$servicios_adicionales[$i]["idServiciosAdicionales"];
+                          ?>
+
+
+
+                      
 
    <tr>
                            
-                                <td>Snorkel</td>
-                                <td>utilizaremos el servicio durante 20 min (CREO Q PONER DESCRIPCION ES AL PEDO LE DEJARIA SOLO EL NOMBRE Y QUE LA DESCRIPCION SE LA PONGA EL QUE CARGA EN EL MOMENTO)</td>
+                                <td><?= $servicios_adicionales[$i]["nombre"] ?></td>
+                              
                                 <td>
- 
-       <button type="button" class="btn btn-xs btn-toggle" data-toggle="button" aria-pressed="false" autocomplete="off">
-        <div class="handle"></div>
-      </button>
+ <form method="post" id="borra<?=$idServiciosAdicionales;?>">
+  <input type="hidden" name="eliminarServicioAdicional" value="<?=$idServiciosAdicionales;?>" >
+       <a onclick="borrar(<?=$idServiciosAdicionales;?>)" name="eliminarServicioAdicional" class="btn btn-xs btn-danger">
+        Eliminar
+      </a>
+      </form>
 </td>
                              </tr>   
-
+    <?php
+                            } ?>
 
 
                                            
@@ -156,14 +193,10 @@ if ($opinionResu>0) {
 
 
 
-function uploadForm(){
-
-$("#formulario").submit();
-}
-            function borrar(idABorrar){
+            function borrar(idServiciosAdicionales){
            
 
-var parametros={"borraComentarioCategoria" : idABorrar};   
+
 Swal.fire({
 title: 'Esta seguro?',
 text: 'Esta accion no se puede revertir!',
@@ -173,24 +206,16 @@ confirmButtonColor: '#3085d6',
 cancelButtonColor: '#d33',
 confirmButtonText: 'Sí, borrar!'
 }).then((result) => {
-
 if (result.value) {
- $.post("./ctrl/ctrl_comentarios_categoria.php",
-parametros,
-function(data, status){
-console.log(data);
- if (data>0) {
-  location.href = 'categoriaOpiniones?idCategoria_servicio=<?=$idCategoria_servicio?>';
- }
-});
- Swal.fire(
-   'Eliminado!',
-   'El comentario se elimino.',
-   'success'
- )
+  var formulario="#borra"+idServiciosAdicionales
+ $(formulario).submit();
 }
+else{
+  return false;
+}
+
 })   
-     
+    
        }
 
 

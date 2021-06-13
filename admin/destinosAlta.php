@@ -12,29 +12,65 @@ require("classes/usuario.php");
 require("classes/reserva.php");
 require("classes/salidas.php");
 require("classes/servicio.php");
-require("classes/comprobantes.php");
+require("classes/destinos.php");
 require("classes/convierte_monedas.php");
+
+
+if (!$_SESSION["login"]["rol"]==1) {
+
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+
+  redireccionarLento("index");
+
+}
+
 
 
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
-$idReserva=$_POST["detallesCarrito"];
-$reserva=getReservaId($idReserva);
-$codigoAmigable=$reserva[0]["codigoAmigable"];
-$fechaReserva=date("d-m-Y H:i:s", strtotime($reserva[0]['fechaAlta']));
-$idUsuario=$reserva[0]['idUsuario'];
-$usuario=getUsuario($idUsuario);
-$nombre_usuario=$usuario[0]["usuario"];
-$nombreResponsable=$reserva[0]["nombreResponsable"]." ".$reserva[0]["apellidoResponsable"];
-$telefonoResponsable=$reserva[0]["telefonoResponsable"];
-$emailResponsable=$reserva[0]["emailResponsable"];
+
+  if (isset($_POST["addDestino"])) {
+    $textoDestino=$_POST["textoDestino"];
+    $resuDestino=setDestino($textoDestino);
+
+    if ($resuDestino>0) {
+  alertar("Destino guardado con éxito","success");
+}
+  }
 
 
+  if (isset($_POST["eliminarDestino"])) {
+   
 
-$horarios=getReservaHorarios($idReserva);
+$idDestino=$_POST["eliminarDestino"];
+
+
+$getAllDestinos=getAllDestinosBlog($idDestino);
+
+
+if (count($getAllDestinos)>0 ) {
+    alertar("El destino que desea eliminar esta asignado a algun post del blog","error");
 
 }
 
+else{
+  $destinoResu=borraDestino($idDestino);
+if ($destinoResu>0) {
+  alertar("Destino eliminado con éxito","success");
+}
+}
+
+  }
+
+
+
+
+
+
+
+}
+
+$destinos=getDestinos();
  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -77,16 +113,16 @@ $horarios=getReservaHorarios($idReserva);
                                           </div>
 
                                           <div class="modal-body">
-                                            <form>
+                                            <form method="post">
                                               <div class="form-group">
                                                 
                                                   <label for="recipient-name" class="col-form-label">Destino:</label>
-                                                  <input type="text" class="form-control" id="recipient-name">
+                                                  <input type="text" class="form-control" name="textoDestino">
                                              </div>
                                                   
                                             
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class= "btn btn-primary">Agregar</button>
+                                            <button type="submit" name="addDestino" class= "btn btn-primary">Agregar</button>
                                             </form>
                                           </div>
                                           
@@ -100,14 +136,14 @@ $horarios=getReservaHorarios($idReserva);
 <!-- /.card-header -->
 
 
-        <div class="card-body" style="display: none;">
+        <div class="card-body" >
             <div class="row">
                   <div class="table-responsive">   
                             
                             <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                   <th scope="col">Operador</th>
+                       
                                    <th scope="col">Destino</th>              
                                    <th scope="col">Accion</th>
 
@@ -115,14 +151,25 @@ $horarios=getReservaHorarios($idReserva);
                               </thead>
                   
                            <tbody>
+<?php for ($i=0; $i < count($destinos); $i++) { 
+  $idDestino=$destinos[$i]["idDestino"];
+?>
+
 
                              <tr>
-                                <td>Admin</td>
-                                <td>Rio de Janeiro</td>
-                                <td><button type="button" class="btn btn-danger">Eliminar</button>
-<button type="button" class="btn btn-primary">Editar</button></td>
+                      
+                                <td><?=$destinos[$i]["nombre"];?></td>
+                                  
+                                <td>
+                                 <form method="post" id="borra<?=$idDestino;?>">
+  <input type="hidden" name="eliminarDestino" value="<?=$idDestino;?>" >
+       <a onclick="borrar(<?=$idDestino;?>)" class="btn btn-xs btn-danger">
+        Eliminar
+      </a>
+      </form></td>
                              </tr>                    
-
+<?php
+} ?>
 
 
                                            
@@ -135,7 +182,39 @@ $horarios=getReservaHorarios($idReserva);
 
 
 
-                                        
+                          
+                          <script type="text/javascript">
+
+
+
+            function borrar(idDestino){
+           
+
+
+Swal.fire({
+title: 'Esta seguro?',
+text: 'Esta accion no se puede revertir!',
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Sí, borrar!'
+}).then((result) => {
+if (result.value) {
+  var formulario="#borra"+idDestino
+ $(formulario).submit();
+}
+else{
+  return false;
+}
+
+})   
+    
+       }
+
+
+           </script>                       
+                                                
                                   
                                    
 

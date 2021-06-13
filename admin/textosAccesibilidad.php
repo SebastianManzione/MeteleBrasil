@@ -12,29 +12,59 @@ require("classes/usuario.php");
 require("classes/reserva.php");
 require("classes/salidas.php");
 require("classes/servicio.php");
-require("classes/comprobantes.php");
+require("classes/accesibilidad.php");
 require("classes/convierte_monedas.php");
 
+if (!$_SESSION["login"]["rol"]==1) {
 
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
 
-if ($_SERVER["REQUEST_METHOD"]=="POST") {
-$idReserva=$_POST["detallesCarrito"];
-$reserva=getReservaId($idReserva);
-$codigoAmigable=$reserva[0]["codigoAmigable"];
-$fechaReserva=date("d-m-Y H:i:s", strtotime($reserva[0]['fechaAlta']));
-$idUsuario=$reserva[0]['idUsuario'];
-$usuario=getUsuario($idUsuario);
-$nombre_usuario=$usuario[0]["usuario"];
-$nombreResponsable=$reserva[0]["nombreResponsable"]." ".$reserva[0]["apellidoResponsable"];
-$telefonoResponsable=$reserva[0]["telefonoResponsable"];
-$emailResponsable=$reserva[0]["emailResponsable"];
-
-
-
-$horarios=getReservaHorarios($idReserva);
+  redireccionarLento("index");
 
 }
 
+
+if ($_SERVER["REQUEST_METHOD"]=="POST") {
+  if (isset($_POST["addTextoAccesiblidad"])) {
+    $texto=$_POST["texto"];
+    $resuAccesibilidad=setTextoAccesibilidad($texto);
+
+    if ($resuAccesibilidad>0) {
+  alertar("Texto accesibilidad guardado con éxito","success");
+}
+  }
+
+
+  if (isset($_POST["eliminarAccesibilidad"])) {
+   
+
+$idAccesibilidad=$_POST["eliminarAccesibilidad"];
+
+
+$getAllAccesiblidadesSalidas=getAllAccesiblidadesSalidas($idAccesibilidad);
+
+
+if (count($getAllAccesiblidadesSalidas)>0 ) {
+    alertar("El texto accesibilidad que desea eliminar esta asignado a algunas salidas de servicio","error");
+
+}
+
+else{
+  $servicio_adicional_resu=borraTextoAccesibilidad($idAccesibilidad);
+if ($servicio_adicional_resu>0) {
+  alertar("Texto Accesiblidad eliminado con éxito","success");
+}
+}
+
+  }
+
+
+
+
+}
+
+
+$accesibilidades=getAccesibilidades();
  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -77,16 +107,16 @@ $horarios=getReservaHorarios($idReserva);
                                           </div>
 
                                           <div class="modal-body">
-                                            <form>
+                                            <form method="post">
                                               <div class="form-group">
                                                 
                                                   <label for="recipient-name" class="col-form-label">Texto de accesibilidad:</label>
-                                                  <input type="text" class="form-control" id="recipient-name">
+                                                  <input type="text" class="form-control" name="texto">
                                              </div>
                                                   
                                             
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class= "btn btn-primary">Agregar</button>
+                                            <button type="submit" name="addTextoAccesiblidad" class= "btn btn-primary">Agregar</button>
                                             </form>
                                           </div>
                                           
@@ -100,14 +130,14 @@ $horarios=getReservaHorarios($idReserva);
 <!-- /.card-header -->
 
 
-        <div class="card-body" style="display: none;">
+        <div class="card-body">
             <div class="row">
                   <div class="table-responsive">   
                             
                             <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                   <th scope="col">Operador</th>
+                             
                                    <th scope="col">Texto</th>              
                                    <th scope="col">Accion</th>
 
@@ -115,15 +145,26 @@ $horarios=getReservaHorarios($idReserva);
                               </thead>
                   
                            <tbody>
+<?php for ($i=0; $i < count($accesibilidades); $i++) { 
+  $idAccesibilidad=$accesibilidades[$i]["idAccesibilidad"]
+?>
+
+
 
                              <tr>
-                                <td>Admin</td>
-                                <td>Solo Rampa en algunas areas</td>
-                                <td><button type="button" class="btn btn-danger">Eliminar</button>
-<button type="button" class="btn btn-primary">Editar</button></td>
+                                <td><?=$accesibilidades[$i]["texto"]?></td>
+                                
+                                <td>
+                                 <form method="post" id="borra<?=$idAccesibilidad;?>">
+  <input type="hidden" name="eliminarAccesibilidad" value="<?=$idAccesibilidad;?>" >
+       <a onclick="borrar(<?=$idAccesibilidad;?>)" class="btn btn-xs btn-danger">
+        Eliminar
+      </a>
+      </form></td>
                              </tr>                    
 
-
+<?php
+} ?>
 
                                            
                          </tbody>
@@ -135,7 +176,37 @@ $horarios=getReservaHorarios($idReserva);
 
 
 
-                                        
+                          <script type="text/javascript">
+
+
+
+            function borrar(idAccesibilidad){
+           
+
+
+Swal.fire({
+title: 'Esta seguro?',
+text: 'Esta accion no se puede revertir!',
+icon: 'warning',
+showCancelButton: true,
+confirmButtonColor: '#3085d6',
+cancelButtonColor: '#d33',
+confirmButtonText: 'Sí, borrar!'
+}).then((result) => {
+if (result.value) {
+  var formulario="#borra"+idAccesibilidad
+ $(formulario).submit();
+}
+else{
+  return false;
+}
+
+})   
+    
+       }
+
+
+           </script>                       
                                   
                                    
 
