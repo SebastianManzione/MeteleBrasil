@@ -34,12 +34,12 @@ function getTiposCancelaciones(){
     
     
     }
-   /* function setPrestador($nombre, $rSocial, $documento, $telefono, $email, $observaciones, $direccion, $latitud, $longitud){
+ function setTextoCancelacion($texto){
 
 
         require("conexion.php");
-        $data=["nombre"=> $nombre, "rSocial"=>$rSocial, "documento"=>$documento, "telefono"=>$telefono, "email"=> $email, "observaciones"=> $observaciones,"direccion"=>$direccion, "latitud"=>$latitud,"longitud"=>$longitud];
-        $consulta = "INSERT INTO prestadores (nombre, razonSocial, documento, telefono, email, observaciones,direccion, latitud, longitud) VALUES (:nombre, :rSocial, :documento,:telefono,:email,:observaciones,:direccion, :latitud, :longitud) ";
+        $data=["texto"=> $texto];
+        $consulta = "INSERT INTO cancelaciones (texto) VALUES (:texto) ";
         
         $comando = $pdo->prepare($consulta);
         
@@ -53,9 +53,9 @@ function getTiposCancelaciones(){
         return $id;
         
         
-        }
+        }  
 
-        
+   /*        
 function borraPrestador($idPrestador){
 
 require("conexion.php");

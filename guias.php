@@ -1,12 +1,12 @@
 <?php
  include('includes/navbar.php'); 
-  include('admin/classes/servicio.php'); 
+
  include('admin/classes/categoria.php'); 
   include('admin/classes/fotos_categoria.php'); 
-    include('admin/classes/fotos_servicio.php');
+ 
  include('admin/classes/opiniones_categoria.php'); 
 
- /*
+
 if (isset($_GET["idCategoria"])) {
 $idCategoria=$_GET["idCategoria"];
 $categorias=getCategoria($idCategoria);
@@ -30,7 +30,7 @@ $opiniones_categoria=array();
  $cantidad_opiniones_categoria=rand(100,500); ;
     $fotos="sinCategoria.jpg";
 }
-*/
+
 
 ?>
 

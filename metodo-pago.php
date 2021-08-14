@@ -36,71 +36,11 @@ location.href="index.php";
 </script>
 ';
 }
+
+include("includes/headerPagos.php");
 ?>
 
 
-   <title>MeteleBrasil.com</title>
-
-    <meta name="title" content="MeteleBrasil.com" />
-    <meta name="description" content="Actividades, traslados, entradas, visitas guiadas y excursiones en español en todo el mundo. Reserva online con precio mínimo garantizado." />
-    <meta name="keywords" content="excursiones, visitas guiadas, tours, actividades, traslados, transfers, circuitos, guias turísticas, guias de viaje" />
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-     <link rel="icon" href="img/favicon.png" sizes="32x32">
-
-  <!-- ESTILOS NECESARIOS -->
-
-   <!-- FONT-AWESOME -->
-   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-   <!-- FONT-AWESOME -->
-
-   <!-- ANIMATE -->
-   <link rel="stylesheet" href="css/animate.min.css">
-   <!-- ANIMATE -->
-
-   <!-- BOOTSTRAP V4-->
-   <link href="css/bootstrap.css" rel="stylesheet">
-   <!-- BOOTSTRAP V4 -->
-
-   <!-- STYLES GENERALES -->
-   <link href="css/styles.css" rel="stylesheet">
-   <!-- STYLES GENERALES -->
-
-   <!-- RESPONSIVE DESING-->
-   <link href="css/responsive.css" rel="stylesheet">
-   <!-- RESPONSIVE DESING -->
-
-   <!-- ESTILOS CALENDARIO-->
-   <link href="css/clnr.css" rel="stylesheet">
-   <!-- ESTILOS CALENDARIO-->
-
-   <!-- FUENTES-->
-   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600,700" rel="stylesheet">
-   <!-- FUENTES-->
-
-  <!-- ESTILOS NECESARIOS -->
-
-</head>
-
-<body id="page-top">
-
-<!--HEADER PAGO SEGURO-->
-
-<section class="py-2 bg-primary">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-2 col-6">
-         <a class="navbar-brand text-white" ><h3>METELEBRASIL</h3></a>
-      </div>
-      <div class="col-lg-10 col-6">
-        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--FIN HEADER PAGO SEGURO-->
 
 <!--PASOS PARA RESERVA-->
 <section class="py-2 bg-white">
@@ -108,9 +48,9 @@ location.href="index.php";
     <div class="row">
       <div class="col-lg-12  ">
         <ul class="lista-pasos-form">
-          <li><span>1</span> <b>Revisa tu Pedido </b></li>
-          <li><span>2</span> <strong>Datos personales</strong></li>
-          <li class="active"><span>3</span> <strong>Método de pago</strong></li>
+          <li><span>1</span> <b><?=$lang["revisa_tus_reservas"]?></b></li>
+          <li><span>2</span> <strong><?=$lang["datos_personales"]?></strong></li>
+          <li class="active"><span>3</span> <strong><?=$lang["metodo_de_pago"]?></strong></li>
         </ul>
       </div>
     </div>
@@ -130,7 +70,7 @@ location.href="index.php";
         <div class=" py-3">
              <div class="card card-visitas ">
               <div class="card-body">
-                 <h5>Resumen <a  class="float-right"><small> </small></a></h5>
+                 <h5><?=$lang["resumen"]?><a  class="float-right"><small> </small></a></h5>
                  <!--ACORDEON CARACTERISTICAS-->
                   <div class="accordion" id="faq1">
                  <div class="card card-accordion">
@@ -174,9 +114,9 @@ $monedaNativa=($salida[0]["idMoneda"]);
             <?php
           }
       ?>
-    <li><?= $cantidad.' '.$tarifa[0]["nombre"].' ('.$tarifa[0]["edadFrom"].' a '.$tarifa[0]["edadTo"].' Años)'?><li>
+    <li><?= $cantidad.' '.$tarifa[0]["nombre"].' ('.$tarifa[0]["edadFrom"].' a '.$tarifa[0]["edadTo"].' Anos)'?><li>
     <li>Subtotal <?= $tarifa[0]["valorSinIvaSym"]; ?><li>
-      <li>IVA <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
+      <li>ICMS <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
       <?php
 $precioTotalCarrito+=$tarifa[0]["valor"];
 
@@ -231,7 +171,7 @@ $totalAPagar=$precioTotalCarrito; ?>
                  <!--PRECIO TOTAL-->
 
                        <div class="div-precio-t">
-                   <p class="mb-0 d-inline-block"><strong>Total Carrito</strong></p>
+                   <p class="mb-0 d-inline-block"><strong><?=$lang["total_carrito"]?></strong></p>
                   <h5 class="mb-0 bold d-inline-block float-right"><trong><?=  $_SESSION['moneda_sel_sym']."".($precioTotalCarrito); ?></trong></h5>
                  </div>
 
@@ -397,7 +337,7 @@ return true;
             <hr></hr>
 <form method="post" action="recibePago.php" onsubmit="return validaRecibo();">
 
-          <div class="method vendedor">Cobro en mano
+          <div class="method vendedor">><?=$lang["cobro_en_mano"]?>
  <div id="divVendedor">
 <input type="number" step="0.01" name="dinero" width="5">
 <input type="hidden" name="idReserva" value="'.$idReserva.'">
@@ -406,7 +346,7 @@ return true;
 <option value="270">Peso Arg</option>
 <option value="188">Dolares</option>
 </select><br><br>
-<button type="submit" class="btn btn-primary btn-lg btn-radius">Cobrar Signal</button>
+<button type="submit" class="btn btn-primary btn-lg btn-radius"><?=$lang["cobro_de_sena"]?></button>
 </form>
  </div>
 
@@ -461,7 +401,7 @@ if ($totalAPagar>0) {
       <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-2">
-         <p class="text-gris text-pagos"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
+         <p class="text-gris text-pagos"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
         </div>
         <div class="col-lg-2">
           <img src="img/paypal-2.png" class="img-fluid img-foter">
@@ -481,7 +421,7 @@ if ($totalAPagar>0) {
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-           <h4 class="text-left"><small><span>METELEBRASIL</span> es una marca de RESERVARTE SL.</small></h4>
+           <h4 class="text-left"><small><span>METELE BRASIL</span></i><?=$lang["es_una_marca_registrada_de_reservate_sl"]?></small></h4>
         </div>
       </div>
     </div>

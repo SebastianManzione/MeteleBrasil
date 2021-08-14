@@ -108,7 +108,7 @@ function getDestinos(){
 
 
 
-  function setDestino($nombre){
+  function setDestino($nombre, $estado, $idPais){
 
 
 
@@ -116,9 +116,9 @@ function getDestinos(){
 
         require("conexion.php");
 
-        $data=["nombre"=> $nombre];
+        $data=["nombre"=> $nombre,"estado"=>$estado, "idPais"=>$idPais];
 
-        $consulta = "INSERT INTO destinos (nombre) VALUES (:nombre) ";
+        $consulta = "INSERT INTO destinos (nombre,estado, idPais) VALUES (:nombre,:estado, :idPais) ";
 
         
 
@@ -137,6 +137,7 @@ function getDestinos(){
         $cuenta_row = $comando->rowCount();
 
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
 
 
 

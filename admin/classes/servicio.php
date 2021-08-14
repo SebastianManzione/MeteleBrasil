@@ -72,6 +72,41 @@ function getServicios(){
 
 
 
+function getServiciosPaginado($desde, $hasta){
+
+
+
+    require("conexion.php");
+
+
+
+    $consulta = "select * from servicio  WHERE habilitado=1 LIMIT :desde, :hasta";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+$comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+$comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    
+
+    $comando->execute();
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+
+    return $resultado;
+
+    
+
+    
+
+    }
 
 
 
@@ -84,9 +119,9 @@ function getServiciosBusqueda($busqueda){
 
 $busqueda="%".$busqueda."%";
 
-    $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda 
+    $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
 
-    OR descripcion_servicio LIKE :busqueda
+    OR descripcion_servicio LIKE :busqueda  AND habilitado=1
 
     OR descripcion_corta LIKE :busqueda AND habilitado=1";
 
@@ -97,6 +132,49 @@ $busqueda="%".$busqueda."%";
 
 
     $comando->execute(["busqueda"=>$busqueda]);
+
+    $cuenta_col = $comando->columnCount();
+
+   
+
+
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
+
+
+function getServiciosBusquedaPaginada($busqueda, $desde, $hasta){
+
+
+
+    require("conexion.php");
+
+$busqueda="%".$busqueda."%";
+
+    $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
+
+    OR descripcion_servicio LIKE :busqueda  AND habilitado=1
+
+    OR descripcion_corta LIKE :busqueda AND habilitado=1 LIMIT :desde, :hasta";
+
+
+
+    $comando = $pdo->prepare($consulta);
+    $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+    $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    $comando->bindParam(":busqueda", $busqueda, PDO::PARAM_STR );
+
+
+    $comando->execute();
 
     $cuenta_col = $comando->columnCount();
 
@@ -257,7 +335,30 @@ $busqueda="%".$busqueda."%";
     
 
     }
+    function getServiciosidCategoria_servicioPaginado($idCategoria_servicio, $desde, $hasta){
+    require("conexion.php");
 
+    $consulta = "select * from servicio WHERE idCategoria_servicio=:idCategoria_servicio AND habilitado=1 LIMIT :desde, :hasta";
+    $comando = $pdo->prepare($consulta);
+    $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+    $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    $comando->bindParam(":idCategoria_servicio", $idCategoria_servicio, PDO::PARAM_INT);
+
+    $comando->execute();
+    $cuenta_col = $comando->columnCount();
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
     function getDuracionServicio($idServicio){
 
 
@@ -292,7 +393,7 @@ $busqueda="%".$busqueda."%";
 
 
 
-if ($resultado[0]["idCategoria_servicio"]==4) {
+if ($resultado[0]["idCategoria_servicio"]==4) { //si es un paquete mostramos dias / noches
 
     $duracionMinima=($duracionMinima)." Dias ";
 
@@ -300,16 +401,20 @@ if ($resultado[0]["idCategoria_servicio"]==4) {
 
 
 
-}
+}  //fin si es un paquete mostramos dias / noches
 
 else{
 
-  if ($duracionMinima>24) {
+  if ($duracionMinima>24 ) {
 
    $duracionMinima=($duracionMinima/24)." Dias ";
 
 }
+elseif (  $duracionMinima<1) {
 
+   $duracionMinima=round(($duracionMinima*60))." Minutos ";
+
+}
 else{
 
     $duracionMinima=($duracionMinima)." HS ";
@@ -322,6 +427,10 @@ if ($duracionMaxima>24) {
 
    $duracionMaxima=($duracionMaxima/24)." Dias ";
 
+}
+elseif($duracionMaxima<1){
+
+$duracionMaxima=round(($duracionMaxima*60))." Minutos ";
 }
 
 else{
@@ -374,7 +483,7 @@ $retorno["duracionMaxima"] ='N/D';
 
 
 
-  function altaServicio($nombre_servicio, $idCategoria_servicio, $descripcion_servicio, $descripcion_corta, $documentacionViajero, $observaciones, $idTextoMiniaturas, $operador_alta){
+  function altaServicio($nombre_servicio, $idCategoria_servicio, $descripcion_servicio, $descripcion_corta, $documentacionViajero, $observaciones, $idTextoMiniaturas, $operador_alta,$idOrigen, $idDestino){
 
 
 
@@ -382,9 +491,9 @@ $retorno["duracionMaxima"] ='N/D';
 
         require("conexion.php");
 
-        $data=["nombre_servicio"=> $nombre_servicio, "idCategoria_servicio"=>$idCategoria_servicio, "descripcion_servicio"=>$descripcion_servicio, "descripcion_corta"=>$descripcion_corta, "documentacionViajero"=> $documentacionViajero, "observaciones"=> $observaciones,"idTextoMiniaturas"=>$idTextoMiniaturas, "operador_alta"=>$operador_alta];
+        $data=["nombre_servicio"=> $nombre_servicio, "idCategoria_servicio"=>$idCategoria_servicio, "descripcion_servicio"=>$descripcion_servicio, "descripcion_corta"=>$descripcion_corta, "documentacionViajero"=> $documentacionViajero, "observaciones"=> $observaciones,"idTextoMiniaturas"=>$idTextoMiniaturas, "operador_alta"=>$operador_alta,"idOrigen"=>$idOrigen, "idDestino"=>$idDestino];
 
-        $consulta = "INSERT INTO servicio (nombre_servicio, idCategoria_servicio, descripcion_servicio, descripcion_corta, documentacionViajero, observaciones,idTextoMiniaturas, operador_alta) VALUES (:nombre_servicio, :idCategoria_servicio, :descripcion_servicio,:descripcion_corta,:documentacionViajero,:observaciones,:idTextoMiniaturas, :operador_alta) ";
+        $consulta = "INSERT INTO servicio (nombre_servicio, idCategoria_servicio, descripcion_servicio, descripcion_corta, documentacionViajero, observaciones,idTextoMiniaturas, operador_alta,idOrigen, idDestino) VALUES (:nombre_servicio, :idCategoria_servicio, :descripcion_servicio,:descripcion_corta,:documentacionViajero,:observaciones,:idTextoMiniaturas, :operador_alta,:idOrigen, :idDestino) ";
 
         
 
@@ -405,7 +514,6 @@ $retorno["duracionMaxima"] ='N/D';
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
 
-
         return $id;
 
         
@@ -414,6 +522,46 @@ $retorno["duracionMaxima"] ='N/D';
 
         }
 
+
+
+  function updateServicio($nombre_servicio, $idCategoria_servicio, $descripcion_servicio, $descripcion_corta, $documentacionViajero, $observaciones, $idTextoMiniaturas, $operador_alta,$idOrigen, $idDestino, $idServicio){
+
+
+
+
+
+        require("conexion.php");
+
+        $data=["nombre_servicio"=> $nombre_servicio, "idCategoria_servicio"=>$idCategoria_servicio, "descripcion_servicio"=>$descripcion_servicio, "descripcion_corta"=>$descripcion_corta, "documentacionViajero"=> $documentacionViajero, "observaciones"=> $observaciones,"idTextoMiniaturas"=>$idTextoMiniaturas,"idOrigen"=>$idOrigen, "idDestino"=>$idDestino, "idServicio"=>$idServicio];
+
+        $consulta = "UPDATE INTO servicio SET (nombre_servicio= :nombre_servicio, idCategoria_servicio=:idCategoria_servicio, descripcion_servicio=:descripcion_servicio, descripcion_corta=:descripcion_corta, documentacionViajero=:documentacionViajero, observaciones=:observaciones,idTextoMiniaturas=:idTextoMiniaturas,idOrigen=:idOrigen, idDestino=:idDestino)     WHERE idServicio=:idServicio ";
+
+        
+
+        $comando = $pdo->prepare($consulta);
+
+        
+
+        $comando->execute($data);
+
+        
+
+        $id = $pdo->lastInsertId(); 
+
+        $cuenta_col = $comando->columnCount();
+
+        $cuenta_row = $comando->rowCount();
+
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+        return $id;
+
+        
+
+        
+
+        }
 
 
 

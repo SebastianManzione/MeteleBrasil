@@ -320,14 +320,14 @@ echo '<p>'.NombreServicio($idServicio).'</p>';
  echo "<p>".$value[5]." Adultos ".$sym." ".$value[4]." X PAX</p>";
 
 if ($value[6]>0) {
- echo "<p>".$value[6]." Menores de 12 años ".$sym." ".$value[7]." X PAX</p>";
+ echo "<p>".$value[6]." Menores de 12 anos ".$sym." ".$value[7]." X PAX</p>";
 }
 
 if ($value[8]>0) {
- echo "<p>".$value[8]." Menores de 5 años ".$sym." ".$value[9]." X PAX</p>";
+ echo "<p>".$value[8]." Menores de 5 anos ".$sym." ".$value[9]." X PAX</p>";
 }
 if ($value[14]>0) {
- echo "<p>".$value[14]." Menores de 3 años ".$sym." ".$value[15]." X PAX</p>";
+ echo "<p>".$value[14]." Menores de 3 anos ".$sym." ".$value[15]." X PAX</p>";
 }
 
 if (isset($cupon[2])) {

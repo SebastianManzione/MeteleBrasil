@@ -1,0 +1,24 @@
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: operation in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 36
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: notification_type in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 37
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 38
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 48
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 59
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 61
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 63
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 66
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 69
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/classes/comprobantes.php on line 214
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/classes/comprobantes.php on line 221
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/classes/comprobantes.php on line 223
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/classes/comprobantes.php on line 225
+[29-Jul-2021 14:46:59 America/Sao_Paulo] PHP Deprecated:  __autoload() is deprecated, use spl_autoload_register() instead in /home/pontopraiacom/metelebrasil.com/admin/email/PHPMailerAutoload.php on line 45
+[29-Jul-2021 14:48:08 America/Sao_Paulo] PHP Deprecated:  __autoload() is deprecated, use spl_autoload_register() instead in /home/pontopraiacom/metelebrasil.com/admin/email/PHPMailerAutoload.php on line 45
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: operation in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 36
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: notification_type in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 37
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 38
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 48
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 59
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 61
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: payment in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 63
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined offset: 0 in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 66
+[29-Jul-2021 14:50:56 America/Sao_Paulo] PHP Notice:  Undefined index: hash_codes in /home/pontopraiacom/metelebrasil.com/admin/pasarelas/ebanx/notificaciones.php on line 69

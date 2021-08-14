@@ -349,7 +349,15 @@ Swal.fire({
 
       <!-- Default box -->
 
-                  <?php $salidas=getSalidasServicioIdPrestador($idServicio);
+                  <?php
+
+if ($_SESSION['login']["idUsuario"]==1) {
+  $salidas=getAllSalidasServicio($idServicio); 
+}
+else{
+$salidas=getSalidasServicioIdPrestador($idServicio);
+}
+                   
 
           
 
@@ -529,9 +537,9 @@ Swal.fire({
 
                                                     <th >Nombre Tarifa</th>
 
-                                                    <th >Desde Años</th>
+                                                    <th >Desde Anos</th>
 
-                                                    <th >Hasta Años </th>
+                                                    <th >Hasta Anos </th>
 
                                                       <th style="width: 20%;"> Tipo de Tarifa</th>
 

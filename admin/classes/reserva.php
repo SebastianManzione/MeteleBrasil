@@ -802,6 +802,51 @@ function getHorariosReservados_idServicioSeleccionado($idServicioSeleccionado){
 
 
 
+function confirmaReserva($idReserva){
+
+
+
+require("conexion.php");
+
+
+
+ $data=[
+
+"idReserva"=>$idReserva];
+
+$consulta = "UPDATE reservas SET idEstado=3 WHERE idReserva = :idReserva ";
+
+
+
+$comando = $pdo->prepare($consulta);
+
+
+
+$comando->execute($data);
+
+$cuenta_col = $comando->columnCount();
+
+
+
+$resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+
+
+// Imprimir en pantalla
+
+
+
+
+
+return $resultado;
+
+
+
+
+
+}
 /*
 
         

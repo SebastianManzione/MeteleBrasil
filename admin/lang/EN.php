@@ -18,7 +18,7 @@ $lang = array(
 	"ver_mas"=>"See More",
 	"opiniones"=>"Opinions",
 	"viajeros_ya_lo_han_disfrutado"=>"travelers have already enjoyed it",
-	"Actividades"=>"Activities",
+	"servicios"=>"Services",
 	"Paseo de barco"=>"Boat Trips",
 	"Hospedaje"=>"Lodging",
 	"Paquetes turísticos"=>"Tourist packages",
@@ -27,10 +27,11 @@ $lang = array(
 	"Evento nocturno"=>"Evening Events",
 	"actividades_destacadas"=>"OUTSTANDING ACTIVITIES",
 	"ingresa_tu_email_para_recibir_novedades"=>"Enter your email to receive news",
-	"recibe_las_ultimas_ofertas"=>"Receive the latest offers",
+    "recibe_las_ultimas_ofertas"=>"Receive the latest offers",
 	"escribe_tu_mail"=>"Write your mail",
 	"mi_cuenta"=>"My account",
 	"ya_tiene_cuenta_accede_a_tu_panel_de_usuario"=>"Do you already have an account? Access your user panel",
+    "todas_las_categorias"=>"All Categories",
 	"he_olvidado_mi_contrasena"=>"I forgot my password",
 	"iniciar_sesion"=>"Start login",
 	"no_tienes_cuenta"=>"¿Still don't have an account?",
@@ -53,7 +54,8 @@ $lang = array(
     "ingles"=>"English",
     "frances"=>"French",
     "donde_vamos"=> "Where are we going?",
-
+    "iniciar_extranet" => "Start Extranet",
+     
 
 
 
@@ -67,6 +69,7 @@ $lang = array(
     "soporte"=>"Support",
     "contacto"=>"Contact",
     "politica_de_uso"=>"Policy of use",
+    "politica_de_uso_"=>"POLICY OF USE",
     "condiciones_generales"=> "General conditions",
     "aviso_legal"=>"Legal note",
     "politica_de_privacidad"=>"Privacy Policy",
@@ -74,6 +77,8 @@ $lang = array(
     "trabaja_con_nosotros"=>"Work with us",
     "venta_freelance"=>"Freelance sale",
     "agencias_de_viajes"=>"Travel agency",
+    "operadores_mayoristas"=>"Wholesale tour operators",
+    "prestadores_de_servicio"=>"Service providers",
     "destinos"=>"Destinations",
 	"guia_de_viajes"=>"Travel Guide",     
 	"contacto"=>"Contact",
@@ -112,6 +117,7 @@ $lang = array(
     "buscar"=> "Search",
     "top_actividades"=>"Top Activities",
      "filtrar"=> "Filter",
+     "reserva_ahora"=>"Reserve Já",
 
 
 
@@ -785,37 +791,102 @@ $lang = array(
 
 
 
+/* sostenibilidad */
+
+"introduccion_sostenibilidad" => "Introduction",
+
+"en_nuestro_ecosistema" => "In our ecosystem, any user can confirm a reservation in real time about the service they want to perform, being able to pay in their local currency from their bank of Latin American origin (Argentina, Paraguay, Chile, Colombia, Urugua, Peru, Colombia), without restrictions.",
+
+"cualquier_turista" => "Any tourist can issue a bank receipt or make a bank transfer in their own country and thus pay in their local currency without depending on cash and the large costs of international rates.",
+
+"es_una_plataforma_de_reservas" => "it is an online booking platform for local tourist activities and events that, unlike current platforms.",
+
+"integramos_en_una_plataforma" => "We integrate in a platform all the needs of any tour operator or autonomous to advertise their service or reserve it. Interacting easily in a technological way, opening new opportunities in the field of tourism dedicated to the Destination of Brazil",
+
+"creemos_que_de_esta_manera" => "We believe that in this way we can make agencies and operators more prepared to compete against large digital platforms.",
+
+"resolvemos_todos_los_esquemas" => "We resolve all operator schemes with service providers where reservations are made by travel agents, self-employed beach vendors, taxi drivers, hotel receptionists or any other profile that interacts with tourism, also generating commissions for them and discounts for tourists. This facilitates the organization of this tourist network. ",
+
+"nuestra_solucion_para_operadores" => "Our solution for tour operators and agencies that sell tour packages.",
+
+"brindamos" => "We provide a platform in which we present the services of the operators (B2B) and the final public can purchase them directly, and travel agents will have the possibility of being part of these purchases, through discount coupons and royalties that we offer to the final consumer. to get closer to one of our affiliates, in this case travel agencies (B2C). The final customer can approach one of our affiliates and thus earn a discount on the package that he wants to hire on our website , thus being able to bring the client closer to the agency and earn the respective commission. If the client chooses to pay directly on our website, they can do so directly or with a discount coupon that our agents or affiliated agencies can offer. ",
+
+"nuestra_solucion_para_agencias" => "Our solution for B2B agencies and freelancers",
+
+"las_agencias_afiliadas_a_nuestro_sistema" => "The agencies affiliated with our system will be able to receive clients who enter our site and are in the same location, offering them a more personalized service and the aforementioned discount.",
+
+"nuestra_solucion_para_alojamientos" => "Our solution for Hotel Accommodations and others that have direct service to tourists",
+
+"el_sistema_esta_disponible_para_hoteles" => "The system is available for hotels and reception agencies, which may offer discount coupons to customers staying at the hotel or even make a personalized reservation, which in this case the receptionist or reception agent may receive in cash, an amount that will be part of your commission. ",
+
+"los_turistas_no_solo" => "Not only will tourists be able to have local activities within reach of their phones, but receptionists will also have discounts for them. The income of a receptionist would increase and would be an incentive for a hotel or receptionist.",
+
+
+
+"inovacion" => "Innovation",
+
+"el_sistema_reserva_paquetes_turisticos" => "The system reserves tourist packages, activities, boat trips and accommodation / transport (Bus / Air), where sellers (Agencies / Tourism Promoters / Self-employed) can order their sale.",
+
+
+"impacto_socio_ambiental" => "SOCIAL-ENVIRONMENTAL IMPACT",
+
+"nuestro_sistema_integrado" => "Our integrated system allows an operator to sell products from other operators, which he may not even know about or because they have fewer affinities, in terms of methods, than with other agencies, thus generating a social impact where The other's service no longer worries me as a competitor, but it begins to complement my services, thus offering more options to passengers. ",
+
+"cada_operador_tiene" => "Each operator has its own reservation system, generally they give the agencies a login and password to reserve, only 8% of the operators that have this sales procedure, the vast majority still work by mail electronic for availability inquiries, this process that takes too long, making the sale ineffective. ",
+
+"nuestro_sistema_soluciona" => "Our system solves this problem with the possibility of being able to sell, or even that the client goes to the agency closest to his home and can acquire a tourist package from any operator that offers the service. We consider highly innovative in terms of time to systematize a sector that is becoming obsolete and without structure, where everyone can win.",
+
+"impacto_economico" => "ECONOMIC IMPACT ON TOURISM",
+
+"nuestro_impacto_en_el_turismo" => "On the other hand, our impact on receptive tourism is also innovative, where, for example, a hotel receptionist or any local tourist promoter can check availability and values, in real time, with the possibility of making the reservation for the client of the desired service, without having to call or send an email to the service provider to request availability and / or make the reservation, in this way the receptionist can receive a commission for the sale, thus improving his salary in an organized manner (ECONOMIC IMPACT), in turn the hotel can also have a discount code or coupon that can be offered to guests, which when entering a reservation the client will get a discount and the hotel will also have a general commission, that you can use to reward and recognize your employees. (Social Impact) ",
+
+"metas_objetivos" => "Objectives",
+
+"proveedores_de_servicios_agencias" => "Service providers, agencies and tour operators.",
+
+"podemos_generar_mas_trabajo" => "We can generate more work for Service Providers, agencies and tour operators, accompanied by all their knowledge in tourism and thus they will meet new clients and be able to sell another type of service with which they still do not work.",
+
+"los_operadores_tendran_la_posibilidad" => "The operators will have the possibility that all the agencies in the region and other places in the states of the country can offer their services directly on a single platform.",
+
+"ejemplo_una_agencia" => "In this way, all the agencies in the country can sell all the services of all the operators in the country. ",
+
+"nuestro_principal_objetivo_es_vender" => "Our main objective is to sell packages of tourist services exclusively to / in Brazil.",
+
+"este_sistema_esta_implementado" => "This system is implemented in Chile, Uruguay, Paraguay, Peru, Colombia and Argentina, and with the aim of expanding to all of Latin America.",
+
+"si_estas_interesado" => "If you are interested in being part of or want to join our network of service providers, contact us at comercial@metelebrasil.com and tell us about your activities and projects that we could carry out together!",
+
 
 
    /* SERVICIO */
 
-   "que_se_visita" => "What is visited?",
+   "que_se_visita" => " What is visited?",
 
-    "importante" => "Important",
+    "importante" => " Important",
 
-   "precio" => "Price",
+   "precio" => " Price",
 
-   "mas_populas" => "MOST POPULAR",
+   "mas_populas" => " MOST POPULAR",
 
-   "detalles_" => "Details",
+   "detalles_" => " Details",
 
-   "duracion_" => "Duration",
+   "duracion_" => " Duration",
 
-   "idioma_" => "Language",
+   "idioma_" => " Language",
 
-   "incluido_" => "Included",
+   "incluido_" => " Included",
 
-   "no_incluido" => "Not Included",
+   "no_incluido" => " Not Included",
 
-   "documentacion_para_el_viajero" => "Documentation for the Traveler",
+   "documentacion_para_el_viajero" => " Documentation for the Traveler",
 
-   "cuando_reservar" => "When to reserve?",
+   "cuando_reservar" => " When to book?",
 
-   "reserva_cuanto_antes_para" => "Reserve as soon as possible to guarantee availability, especially on long weekends and holidays.",
+   "reserva_cuanto_antes_para" => "R eserve as soon as possible to guarantee availability, especially on long weekends and holidays.",
 
-   "se_permiten_reservas_hasta_las_23" => "Reservations are allowed until 23:00 the previous day (Brasilia time) as long as there are places left",
+   "se_permiten_reservas_hasta_las_23" => " Reservations are allowed until 23:00 the previous day (Brasilia time) as long as there are places left",
 
-    "justificante"=> "receipt",
+    "justificante"=> " Receipt",
 
    "te_enviaremos_un_email" => "We will send you an email with a voucher that you can print or take on your mobile to the activity.",
 
@@ -833,6 +904,8 @@ $lang = array(
 
    "cancelacion_gratuita _" => "Free cancellation up to 48 hours before",
 
+   "elegi_la_fecha"=>"Choose the date ",
+
    "hora" => " Time",
 
    "cupon_de_descuento" => " Discount coupon",
@@ -847,7 +920,7 @@ $lang = array(
 
    "punto_de_encuentro" => "Meeting point",
 
-   "cancelaciones_" => "Cancellations",
+   "cancelaciones_" => " Cancellations",
 
    "opinions_de_nuestros" => "Opinions of our clients",
 
@@ -859,7 +932,7 @@ $lang = array(
   
    "de_" => "de",
 
-   "opiniones" => "opinions",
+   "opiniones" => "Opinions",
 
    "tambien_te_puede_interesar" => "It may also interest you",
 
@@ -869,7 +942,7 @@ $lang = array(
 
    "cupon_de_descuento" => " Discount coupon",
 
-   "from" => "From",
+   "desde" => "From",
 
    "precio_" => "Price", 
 
@@ -883,18 +956,533 @@ $lang = array(
 
 "compartir" => "Share",
 
+"adultos"=>"Adults",
 
 
 "encuentros"=>"meeting",
 
 
 
+/* MOBILE ACCORDION */
+
+
+"recogida_en_el_hotel" => "Pick up at the hotel",
+
+"opcionalmente_podes_reservar_la_recogida" => "Optionally, you can book the pick-up at the hotel. The pick-up is one hour before the start time of the tour and includes all accommodations within a radius of 8 kilometers from the meeting point.",
+
+"menor_12_anos" => "M> 12 years old",
+
+"menor_5_anos" => "M> 5 years old",
+
+"menor_3_anos" => "M> 3 years old",
+
+"el_tour_se_realiza_en" => "The tour is done in Spanish, English and Portuguese.",
 
 
 
 
 
 
+/* CARRINHO */
+
+
+    "revisa_tus_reservas" => "Verifique suas reservas",
+
+    "datos_personales" => "Dados pessoais",
+
+    "metodo_de_pago" => "Método de pagamento",
+
+    "resumen_de_compra" => "Resumo da compra",
+
+    "su_descuento" => "SEU DESCONTO:",
+
+    "anfitrion" => "Host:",
+
+    "total_carrito" => "Total carrinho",
+
+    "eliminar" => "Excluir",
+
+    "continuar" => "Continue",
+
+    "en_metelebrasil_queremos_ser_transparente" => "Na METELEBRASIL Tours S.L. (doravante,“ METELEBRASIL ”), queremos ser transparentes e oferecer a melhor experiência ao usuário.",
+
+"les_informamos_que_todos_los_datos" => "Informamos que todos os dados solicitados são utilizados apenas para poder realizar a prestação dos serviços que reservou no nosso site. Estes dados serão guardados apenas pela METELEBRASIL e seus colaboradores durante o tempo necessário para fornecer nossos serviços. ",
+
+"asimismo_para_ofrecerles" => "Da mesma forma, para oferecer publicidade de nossos produtos de acordo com seus interesses, podemos usar técnicas de perfil ou segmentação. Não faremos cessão ou transferência de seus dados para fins publicitários a terceiros.",
+
+"tenes_derecho_a_presentar_una_reclamacion_ante" => "Você tem o direito de registrar uma reclamação junto a uma autoridade de controle, de não estar sujeito a processamento automatizado e de exercer seus direitos de acesso, retificação, limitação de tratamento, exclusão, esquecimento, portabilidade, oposição no e-mail : METELEBRASIL @ METELEBRASIL.com ",
+
+"leer_mas" => "Leia mais",
+
+
+
+
+
+/*PERSONAL INFORMATION DATOS PERSONALES*/
+
+
+"responsable_de_la_reserva" => "Responsible for the reservation",
+
+"pasajero" => "Passenger",
+
+"comentarios_al_proveedor" => "Comments to the supplier",
+
+"y_las_condiciones_generales" => "and the general conditions.",
+
+
+
+
+
+/* BOOKING CONSULTATION */
+
+
+"pago_seguro" => "SECURE PAYMENT",
+
+"consulta_de_reserva" => "Reservation query",
+
+  "resumen" => "Summary",
+
+"total" => "Total",
+
+"cobro_en_mano" => "Collection in hand",
+
+"cobro_de_sena" => "Collection of Signal",
+
+"Felicidades" => "Congratulations",
+
+"del_pago_confirmado" => "of the confirmed payment",
+
+"pagar" => "Pay",
+
+"detalles_reserva"=>"Purchase details",
+
+"volver_al_site"=>"Return to the site",
+
+
+/* RETURN PAYMENT */
+
+"reserva" => "Reservation",
+
+"pago_de_la_reserva" => "Payment of the reservation no",
+
+"aceptado_correctamente" => "Accepted correctly",
+
+"regresar" => "Return",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Articulo Blog */
+
+
+"tips_y_concejos"=>" Tips and advice ",
+
+"observaciones"=>" Observations ",
+
+"donde_vamos"=> "Where are we going?",
+
+"quiero_comentar"=> "I want to comment",
+
+"nuevo_comentario"=>"New commentary",
+
+"comentario"=> "commentary",
+
+"nombre"=> "Name",
+
+"cancelar"=> "Cancel",
+
+"comentar"=>"Comment",
+
+"apellido"=> "Last name",
+
+
+/* Guias */
+
+
+"guias_de_servicios"=>"Service guides",
+
+"guias_de_actividades_ciudades"=>"Destination guide",
+
+"enviamos_tu_pdf"=> "Complete and we will send the guide to your e-mail",
+
+
+"nombre_apellido"=> "Full name",
+
+"enviar_pdf"=>"Send Guide",
+
+
+
+
+/* Agencias de Turismo y operadores */
+
+
+"agencias_aperadores"=> "Agencias de turismo mayoristas y minoristas",
+
+"ofrecer_un_paquete_turistico_o_actividad"=>"Ofrecer un paquete que cumpla los objetivos de los viajeros en cuanto a precios, calidad y funcionalidad del itinerario es complejo. Debe ser diseñado por operadores capaces de ensamblar diversos servicios turísticos y que trabajen directamente con proveedores. ¿Quién está detrás de la organización de estos travel tours que ofrecen las agencias de viajes?",
+
+
+"que_son_los_operadores_mayoristas"=>"¿Qué son los operadores turísticos mayoristas?",
+
+"los_operadores_turisticos_mayoristas"=>"Los operadores turísticos mayoristas son los encargados de encontrar y combinar servicios turísticos como aerolíneas, hoteles, transporte, etc. Para crear paquetes de viajes atractivos y convenientes.",
+
+
+
+"como_trabaja_un_operador_mayorista"=>"¿Cómo trabaja un operador mayorista?",
+
+"los_operadores_mayoristas"=>"Los operadores mayoristas normalmente formalizan contratos con proveedores de servicios del sector turístico, de esta manera pueden obtener tarifas más competentes al comprar o reservar con volúmenes más altosUna vez que arman sus paquetes, los ofrecen a las agencias de viajes para que estos se encarguen de venderlos a los viajeros a precios competitivos.",
+
+"los_operadores_minoristas"=>"Los operadores minoristas tienen una ganancia en forma de comisión por ello. Los clientes ahorran a la vez que el tour operador tiene una pequeña comisión por cada paquete que vende a un gran número  de personas.",
+
+
+"cual_es_la_diferencia"=>"¿Cuál es la diferencia entre operadores turísticos mayoristas y minoristas?",
+
+"el_operador_mayorista"=>"El operador turistico mayorista no vende al consumidor final, sus principales clientes son las agencias de viajes, quienes funcionan como intermediarios. Por su parte, los clientes de un operador minorista son los viajeros, a quienes ayuda a organizar su viaje y ofrece los paquetes turísticos creados por la agencia mayorista.",
+
+"la_principal_caracteristica_de_los_operadores"=>"La principal característica de los operadores turísticos mayoristas es que por lo general no tratan directamente con los viajeros, pero organizan sus paquetes pensando en ellos. Crean opciones considerando diversos tipos de turismo: vacacionistas jóvenes, viajes de negocios, deportistas, tours culturales, para visitantes nacionales, turismo aventura, turismo religioso, etc.",
+
+"otros_factores_que_deben_tomar"=>"Otros factores que deben tomar en cuenta para crear estos paquetes son los destinos populares y en tendencia, nichos emergentes, las nuevas tecnologías de viajes y asegurarse de que se cumpla con buenas prácticas, por ejemplo, garantizar que se tomen medidas de bioseguridad para proteger la salud de los viajeros, o bien, que se tengan alternativas en caso de que, por alguna razón, se modifiquen las condiciones iniciales del viaje.",
+
+"las_agencias_mayoristas"=>"Las agencias mayoristas de viajes ponen a la disposición de las agencias de viajes estos paquetes para que elijan los que se ajusten mejor a la clasificación de su mercado y satisfagan las expectativas de viaje de sus clientes.",
+
+"paquete_dinamico"=>"¿Paquete dinámico y tarifas opacas que son?",
+
+"a_lo_largo_del_tiempo"=>"A lo largo del tiempo hemos visto evolucionar el proceso de armado de producto, y sin dudas la pandemia ha acelerado todo, es por ello que hoy las operadoras mayoristas tienen herramientas tecnológicas que son fundamentales como el paquete dinámico. Esta herramienta permite armar un paquete a medida seleccionado Vuelo+Hotel+Servicio o Vuelo+Hotel u Hotel+traslado etc. lo que hace que sus clientes tengan opciones más rápidas de cara al pasajero final, lo cual resulta muy importante en estos tiempos donde el acceso a la información y costos de forma ágil y rápida es imperativa.",
+
+"sumate_a_metele_brasil"=>"SUMATE A NUESTRO PROYECTO",
+
+"muchas_veces_no_entendemos"=>"Muchas veces no entendemos por que a través de un paquete turístico es más económico el precio final que si contratamos los servicios por separado, esto tiene que ver a la existencia de las “tarifas Opacas” las mismas son especialmente diseñadas para los operadores mayoristas y tienen las siguientes condiciones: Sólo se puede utilizar para el armado de paquetes turísticos y no se pueden publicar esas tarifas por separado o ser disponibilizadas al cliente de forma individual. Esto es ya que son un poco más económicas que las tarifas para mayoristas habituales y se distribuyen tanto online como offline.",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* REDEFINA SENHA CONTRASEÑA */
+
+
+"redefina_senha"=>"Redefina sua senha",
+
+"indique_su_email"=>"Indique su e-mail!",
+
+"para_iniciar_el_proceso"=>"Para iniciar o processo de redefinição de senha, digite seu e-mail de cadastro do titular da conta.",
+
+"ultimo_paso"=> "Ultimo paso! ",
+
+"altere_senha"=>"Altere sua senha!",
+
+"para_iniciar_el_proceso_redefinicion"=>"Para iniciar o processo de redefinição de senha, digite sua nova senha.",
+
+"repita_senha_nueva"=>"Repita sua senha para confirmar.",
+
+"confirmar_senha_nueva"=> "Confirmar nova senha",
+
+"nueva_senha"=>"Digite su nueva contraseña",
+
+"enviar"=>"Enviar",
+
+
+/* LLAMADA A LA ACCION AGENCIA */
+
+"sumale_clientes_agencia"=>"Add clients and reservations to your agency!",
+
+"sumale_clientes_empresa"=>"Add clients and reservations to your company!",
+
+"completa_agencia"=>"Fill in the details of your Agency",
+
+"completa_empresa"=>"Complete with your company data",
+
+"activaremos_tu_cuenta_agencia"=>"We will activate your account and we will contact you",
+
+"comienza_a_recibir_reservas"=>"Start receiving reservations",
+
+"comience_a_ofrecer"=>"Start earning commission",
+
+"activar_agencia"=>"Activate my agency",
+
+"activar_mis_servicios"=>"Activate my account",
+
+"motivos_para_elegirnos"=>"Reasons for choosing us",
+
+"gratis_sin_costo"=>"Free! at no additional cost",
+
+"totalmente_gratis"=>"Totally Free! We offer our platform without fixed monthly or annual costs.",
+
+"crm_facil_intuitivo"=>"Easy and intuitive CRM",
+
+"controla_reservas_prestador"=>"Control and manage all your reservations in real time and without risks with a super easy and fast interface.",
+
+"genera_mas_reservas_agencia"=>"Generate more reservations with a single click and control your clients' reservations in real time and without risks.",
+
+"1_prestador_por_servicio"=>"1 provider per service",
+
+"somos_democraticos"=>"We are democratic and we chose 1 provider for the service offered.",
+
+"valoramos_cada_agencia"=>"We value each agency",
+
+"valoramos_cada_prestador"=>"We value each provider ",
+
+"valoramos_cada_operador"=>"We value every wholesale operator",
+
+"acompanamos_cada_agencia"=>"We accompany each agency with our partners at all times to improve their sales and their effectiveness.",
+
+"acompanamos_cada_prestador"=>"We accompany each provider at all times to improve their sales and their effectiveness.",
+
+"disponibilidad_en_tiempo_real"=>"Availability in real time",
+
+"acelere_sus_ventas"=>"Accelerate your sales and the confirmation of new reservations with your online services and availabilities in real time.",
+
+"soporte_humano"=>"Human support 24 hours a day",
+
+"resolvemos_agil_rapido"=>"We resolve quickly and efficiently thanks to our 80% human support 365 days 24/7.",
+
+"comunicacion_eficaz"=>"Effective communication with the client",
+
+"nos_comunicamos"=>"We communicate empathically and humanely with each client since the reservation is confirmed.",
+
+"control_de_todas_reservas"=>"Control of all your reservations",
+
+"tiene_la_posibilidad_administrar_comisiones"=>"You have the ability to manage your sales and commissions smoothly.",
+
+"tiene_la_posibilidad_administrar_servicio"=>"You have the ability to manage the availability of your services and commissions seamlessly.",
+
+"recibi_con_un_click"=>"Received with one click",
+
+"reciba_sus_comisiones"=>"Receive your commissions with a single click and in a transparent way. You can also issue collections for your clients from the extranet.",
+
+"reciba_sus_ventas"=>"Receive your sales with a single click and in a transparent way. You can also issue collections for your clients from the extranet.",
+
+"aceptamos_en_otras_monedas"=>"We charge in other currencies",
+
+"ofreceles_diferentes_monedas"=>"Offer your clients different types of currencies from the South American region without surcharges or additional fees, facilitating the payment of all our services.",
+
+"agiliza_tu_logistica"=>"Speed ​​up your logistics",
+
+"mejora_la_confianza"=>"Improve your client's trust by offering to avoid queues and crowds to buy through your agency.",
+
+"guia_de_turismo_personalizado"=>"Personalized tourism guide",
+
+"acompanamos_tus_Clientes"=>"We accompany your clients remotely and humanely at all times, before, during and at the end of each activity.",
+
+"sume_agencias_freelance"=>"Add points of sale",
+
+"aumente_su_red_de_venta"=>"Increase your sales network with our platform and make your services available so that more agencies and autonomous sellers from all over your region can offer them.",
+
+"cobramos_en_moneda_local"=>"We charge in the local currency of your country facilitating the payment of the final client, also the affiliated agencies receive at their own points of sale.",
+
+"agiliza_tus_ventas"=>"Streamline your sales",
+
+"ofrece_en_tiempo_real"=>"Offer your availability in real time, increasing your reservation by 65%.",
+
+"completa_datos_freelance"=>"Complete with your data",
+
+"acelere_sus_ventas"=>"You can check availability and generate reservations for all tourist attractions without intermediaries and with just one click on your phone.",
+
+
+"gana_comisiones"=>"Earn commission easily and autonomously!",
+
+"genera_nuevos_ingresos"=>"Generate new income by offering the most outstanding attractions in your region easily and quickly.",
+
+"facil_intuitivo"=>"Easy and intuitive",
+
+"disponibilizamos_nuestra_plataforma"=>"We provide our platform with the most prominent attractions in your region.",
+
+"se_parte_del_turismo"=>"Be part of the tourism of your region",
+
+"ofrezca_para_turistas"=>"Offer um discount for tourists that you find daily and gere comissões for your contact.",
+
+"gane_reconocimiento"=>"Earn recognition",
+
+"ofrezca_servicios_destacados"=>"Offer outstanding services with availability in real time and 100% secure online payment.",
+
+"acelere_sus_ventas"=>"You can check availability and generate reservations for all tourist attractions without intermediaries and with just one click on your phone.",
+
+
+"mejora_tu_confianza_"=>"Ganhe confiança",
+
+"genere_reservas_sin_filas"=>"Generate reservations without lines and consult quickly and efficiently at any time without time limits.",
+
+
+
+/* FORMULARIO AGENCIA */
+
+
+"datos_de_acceso"=>"Access data",
+
+"datos_de_agencia"=>"Agency details",
+
+
+"registre_agencia"=>"Registre su Agencia",
+
+
+"activa_tu_cuenta_ya"=> "Activate your account now!!",
+
+"completa_datos_para_activar_agencia"=> "Complete the data to activate your account and start adding clients and sales to your agency.",
+
+"confirmar_datos_agencia"=> "Activate my account",
+
+"nombre_agencia"=>"Agency Name",
+
+
+"tipo_de_agencia"=> "Agency type",
+
+"agencia_receptiva_emisiva"=>"RECEPTIVE OR EMISSIVE, RECEPTIVE / EMISSIVE",
+
+"digite_su_email"=>"Enter a user email",
+
+"complete_nombre_fantasia"=> "Indicate fancy name of your travel agency",
+
+"nombre_"=>"Your name",
+
+"complete_con_su_nombre"=> "Complete with your name", 
+
+"senha"=>"Password",
+
+"ingrese_una_contrasena"=>"Enter a password for your account",
+
+"repetir_contrasena"=>"Repeat password",
+
+"repita_la_contrasena"=>"Confirm password",
+
+"cargo_empresa"=>"Position in the company",
+
+"indique_cargo_en_empresa"=>"EJ: owner, manager, salesperson, sales",
+ 
+"activar_cuenta"=>"Request account activation",
+
+"whatsapp_"=>"Whatsapp",
+
+"indique_whatsapp_agencia"=>"Indicate the WhatsApp of the agency to contact us for activation",
+
+"acepto_los"=> "I accept the ",
+
+"terminos_y_condiciones_"=> "terms and conditions.",
+
+
+/* FORMULARIO PRESTADORES DE SERVICIOS */
+
+"datos_de_la_empresa"=> "Company data",
+
+
+"registre_prestador"=> "Registre su empresa",
+
+"completa_datos_para_activar_prestador"=>"Complete the information to activate your account and start adding customers and sales to your company.",
+
+"nuestros_partners_se_comunicaran"=>"Complete the information to activate your account and start adding customers and sales to your company.",
+
+"nombre_prestador"=>"Company name",
+
+"complete_nombre_fantasia_empresa"=>"Fancy name of your company",
+
+"tipo_de_prestador"=>"Type of company (tours, events, gastronomy)",
+
+"cuentanos_tu_empresa"=>"What business area (gastronomy, night events, tours, boat trips or others)",
+
+"indique_cargo_en_empresa_"=>"Ex: General manager, owner, commercial manager, marketing, sales manager",
+
+"indique_whatsapp_empresa"=>"Enter the WhatsApp of your company and confirm its activation.",
+
+"prestador_descripcion"=>"How does your company stand out?",
+
+"describa_su_empresa"=>"Briefly describe where your company stands out",
+
+"prestador_destaque"=>"Describe your company",
+
+"pais_"=>"Country",
+
+"estado_"=>"State",
+
+"ciudad_"=>"City",
+
+"destino_que_opera"=>"What destination does it operate?",
+
+"servicio_que_desea_ofrecer"=>"What service would you like to offer?",
+
+"indique_servicio_ofrecer"=>"Briefly describe the service you would like to offer",
+
+"indique_pais_"=>"Enter Country",
+
+"indique_estado_"=>"Enter State",
+
+"indique_ciudad_"=>"Enter city",
+
+"indique_destino_que_opera"=>"(Beach, neighborhoods, towns, others)",
+
+
+/* REGISTRO FREELANCE */
+
+
+"vendedor_externo" => " Registrate como freelancer",
+
+"datos_vendedor_externo"=> " Datos del vendedor externo",
+
+"tipo_de_vendedor_externo"=>"Tipo de vendedor externo",
+
+
+
+
+
+/* BOTONES DE WHATSAPP */
+
+
+"compartir_en_facebook"=>"Share on Facebook",
+
+"compartir_en_whatsapp"=>"Share on Whatsapp",
+
+"registrarse"=> "Register again",
+
+
+
+/* DATOS PERSONALES */
+
+
+"acepto_las"=>"I accept the",
+
+"politicas"=>"usage policies",
 
 
 

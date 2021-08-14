@@ -2,10 +2,13 @@
 
 <?php 
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
-session_start();
 
+include("includes/headPagos.php");
 include("admin/classes/salidas.php");
 
 include("admin/classes/tarifas.php");
@@ -31,9 +34,21 @@ include("admin/classes/moneda.php");
 
 include("admin/classes/convierte_monedas.php");
 
-include("includes/headPagos.php");
 
-if ($_SERVER["REQUEST_METHOD"]=="GET") {
+
+if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["merchant_payment_code"])) {
+$codigoAmigable=$_GET["merchant_payment_code"];
+
+
+
+$reserva=getReserva($codigoAmigable)[0];
+
+$idReserva=$reserva["idReserva"];
+
+ $moneda=getMoneda($reserva["monedaSel"])[0]["Symbol"];
+
+}
+if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["reserva"])) {
 
 
 
@@ -81,13 +96,13 @@ if (count($reserva)<1) {
 
       <div class="col-lg-2 col-6">
 
-         <a class="navbar-brand text-white" ><h3>METELEBRASIL</h3></a>
+         <a href="index" class="navbar-brand text-white" ><h3>METELE BRASIL</h3></a>
 
       </div>
 
       <div class="col-lg-10 col-6">
 
-        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
+        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
 
       </div>
 
@@ -115,7 +130,7 @@ if (count($reserva)<1) {
 
         <ul class="lista-pasos-form">
 
-      <li class="active"> <strong>Consulta de reserva <?= $codigoAmigable;?></strong></li>
+      <li class="active"> <strong></i><?=$lang["consulta_de_reserva"]?><?= $codigoAmigable;?></strong></li>
 
         </ul>
 
@@ -151,7 +166,7 @@ if (count($reserva)<1) {
 
               <div class="card-body">
 
-                 <h5>Resumen <a  class="float-right"><small> </small></a></h5>
+                 <h5><?=$lang["resumen"]?><a  class="float-right"><small> </small></a></h5>
 
                  <!--ACORDEON CARACTERISTICAS-->
 
@@ -239,11 +254,11 @@ for ($i=0; $i < count($horarios); $i++) {
 
 
 
-<li><?=$reservaTarifas[$j]["cantidad"];?> <?=$reservaTarifas[$j]["nombre"];?> ( <?= $edadFrom[0]["valor"]?> A <?= $edadTo[0]["valor"]?> Años)</li>
+<li><?=$reservaTarifas[$j]["cantidad"];?> <?=$reservaTarifas[$j]["nombre"];?> ( <?= $edadFrom[0]["valor"]?> A <?= $edadTo[0]["valor"]?> Anos)</li>
 
   <li>Subtotal <?= $moneda. $reservaTarifas[$j]["valorSinIva"]; ?></li>
 
-<li>IVA <?= $moneda. $reservaTarifas[$j]["valorDeIva"]; ?><li>
+<li>ICMS <?= $moneda. $reservaTarifas[$j]["valorDeIva"]; ?><li>
 
 
 
@@ -305,7 +320,7 @@ for ($j=0; $j < count($adicionales); $j++) {
 
                  <div class="div-precio-t">
 
-                   <p class="mb-0 float-left"><strong>Precio total</strong></p>
+                   <p class="mb-0 float-left"><strong>Total</strong></p>
 
 <p class="mb-0 float-right"><strong><?= $moneda." ".$reserva["total"];?></strong></p>
 
@@ -436,7 +451,7 @@ $total=0;//0ConvierteMoneda($monedaNativa,270, $totalAPagar);
 $totalMercadopagoArgentina=convierteMoneda($idMonedaSel,270,$reserva["total"]);
 
 $totalMercadopagoBrasil=convierteMoneda($idMonedaSel,283,$reserva["total"]);
-
+$totalReales=convierteMoneda($idMonedaSel,283,$reserva["total"]);
 $totalPayPal=convierteMoneda($idMonedaSel,188,$reserva["total"]);
 
 include("./admin/pasarelas/mercadopagoArgentina/procesaPago.php");
@@ -548,7 +563,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
                 
 
                       <label class="btn btn-primary paymentMethod" id="mercadopago" style="display:none">
-
+<a href="<?= $preference->init_point; ?>">
                      <div class="method paypal">
 
               <div class="method mercadopagoArgentina" >
@@ -559,7 +574,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
             </div>
 
-
+</a>
 
        
 
@@ -578,7 +593,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
 
         <label class="btn btn-primary paymentMethod" id="mercadopagoBrasil" style="display:none">
-
+<a href="<?= $preferenceBr->init_point;?>">
                      <div class="method paypal">
 
               <div class="method mercadopagoArgentina" >
@@ -591,7 +606,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
 
 
-       
+       </a>
 
 
 
@@ -600,8 +615,34 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
                         </div>
 
                       </label>
+<?php 
 
 
+
+
+include("admin/pasarelas/ebanx/ebanx.php");
+ $url_ebanx=url_ebanx($codigoAmigable, $totalReales);
+ ?>
+ <label class="btn btn-primary paymentMethod" id="ebanx" style="display:none">
+<a href="<?=$url_ebanx;?>">
+                     <div class="method paypal"> </div>
+
+              <div class="method ebanxs" ></div>
+
+
+            
+
+
+
+       
+
+
+
+
+
+                       
+</a>
+                      </label>
 
 
 
@@ -717,7 +758,7 @@ return true;
 
  <div class="card-body" id="divVendedor" >      
 
-     <h5 class="mb-4" id="textoMetodoDePago">Cobro en mano</h5>             
+     <h5 class="mb-4" id="textoMetodoDePago"><?=$lang["cobro_en_mano"]?></h5>             
 
 <form method="post" action="recibePago.php" onsubmit="return validaRecibo();">
 
@@ -735,7 +776,7 @@ return true;
 
 </select><br><br>
 
-<button type="submit" class="btn btn-primary btn-lg btn-radius">Cobrar Signal</button>
+<button type="submit" class="btn btn-primary btn-lg btn-radius"><?=$lang["cobro_de_sena"]?></button>
 
 </form>
 
@@ -791,13 +832,38 @@ return true;
 
 
 
-                 <h5 class="mb-4" id="textoMetodoDePago">Felicidades</h5>
+                 <h3 class="mb-4" id="textoMetodoDePago"><?=$lang["Felicidades"]?></h5>
 
-<h1 class="success">100% Del pago confirmado</h1>
+<h5 class="success">100% <?=$lang["del_pago_confirmado"]?></h3>
+
+
+
+        
+
+
+
 
 </div></div></div>
 
+
+ <div class="col">
+          <a href="#" class="btn btn-secondary btn-lg btn-radius" id="btnPagar" style="width: 100% !important;"><?=$lang["detalles_reserva"];?></a>
+
 </div>
+
+<br>
+
+
+<div class="col">
+          <a href="#" class="btn btn-primary btn-lg btn-radius" id="btnPagar" style="width: 100% !important;"><?=$lang["volver_al_site"];?></a>
+       
+
+
+</div>
+
+
+<br>
+
 
  <?php   }?>
 
@@ -812,6 +878,9 @@ return true;
 
 
    <!--BOTON SIGUIENTE-->
+
+
+
 
 <?php 
 
@@ -833,7 +902,7 @@ if ($comprobantes<$total_dolares) {
 
         <div class="col-lg-4 col-md-4 col-12 text-right">
 
-          <a href="#" class="btn btn-primary btn-lg btn-radius" id="btnPagar" style="display: none; width: 100% !important;">Pagar</a>
+   
 
         </div>
 
@@ -881,7 +950,7 @@ if ($comprobantes<$total_dolares) {
 
         <div class="col-lg-2">
 
-         <p class="text-gris text-pagos"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
+         <p class="text-gris text-pagos"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
 
         </div>
 
@@ -921,7 +990,7 @@ if ($comprobantes<$total_dolares) {
 
         <div class="col-lg-12">
 
-           <h4 class="text-left"><small><span>METELEBRASIL</span> es una marca de RESERVARTE SL.</small></h4>
+           <h4 class="text-left"><small><span>METELE BRASIL</span><?=$lang["es_una_marca_registrada_de_reservate_sl"]?></small></h4>
 
         </div>
 
@@ -972,10 +1041,8 @@ if ($comprobantes<$total_dolares) {
       $("#mercadopago").css('display','none');
 
         $("#mercadopagoBrasil").css('display','block');
+     $("#ebanx").css('display','block');
 
-$("#btnPagar").attr("href",mercadoPagoLinkBrasil);
-
-$("#btnPagar").css("display","block");
 
 
 
@@ -988,6 +1055,8 @@ $("#btnPagar").css("display","block");
       $("#mercadopago").css('display','none');
 
       $("#mercadopagoBrasil").css('display','block');
+      $("#ebanx").css('display','block');
+      
 
       $("#reales").css('background',' #029ce2'); //pinta
 
@@ -1001,9 +1070,9 @@ $("#btnPagar").css("display","block");
 
       $("#dolar").css('color',' #929292 ');  //despinta
 
-      $("#btnPagar").attr("href",mercadoPagoLinkBrasil);
 
-$("#btnPagar").css("display","block");
+
+
 
     });
 
@@ -1016,6 +1085,7 @@ $("#btnPagar").css("display","block");
       $("#mercadopago").css('display','none');
 
       $("#mercadopagoBrasil").css('display','none');
+       $("#ebanx").css('display','none');
 
       $("#dolar").css('background',' #029ce2'); //pinta
 
@@ -1029,7 +1099,6 @@ $("#btnPagar").css("display","block");
 
       $("#reales").css('color',' #929292 ');  //despinta
 
-$("#btnPagar").css("display","none");
 
 
 
@@ -1046,6 +1115,7 @@ var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
       $("#mercadopago").css('display','block');
 
             $("#mercadopagoBrasil").css('display','none');
+               $("#ebanx").css('display','none');
 
       $("#paypal").css('display','none');
 
@@ -1063,9 +1133,7 @@ var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
 
       $("#reales").css('color',' #929292 ');  //despinta
 
-      $("#btnPagar").css("display","block");
 
-      $("#btnPagar").attr("href",mercadoPagoLink);
 
     });
 
@@ -1080,8 +1148,6 @@ var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
  $("#paypal").css('border','  4px solid  #029ce2 '); //pinta
 
        $("#mercadopagoBrasil").css('display','none');
-
-$("#btnPagar").css("display","none");
 
    
 
@@ -1099,7 +1165,7 @@ $("#btnPagar").css("display","none");
 
        $("#mercadopagoBrasil").css('display','none');
 
-$("#btnPagar").attr("href",mercadoPagoLink);
+
 
 
 
@@ -1115,7 +1181,7 @@ $("#btnPagar").attr("href",mercadoPagoLink);
 
  $("#mercadopago").css('border','  4px solid  #029ce2 '); //pinta
 
-$("#btnPagar").attr("href",mercadoPagoLinkBrasil);
+
 
 
 

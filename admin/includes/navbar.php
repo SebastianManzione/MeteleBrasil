@@ -116,6 +116,83 @@
         </div>
       </li>-->
 <?php 
+// verificamos la sesion creada
+
+if(isset($_SESSION['idioma'])){
+
+  // si es true, se crea el require y la variable lang
+
+  $lang = $_SESSION["idioma"];
+
+
+
+  require "lang/".$lang.".php";
+
+
+
+  // si no hay sesion por default se carga el lenguaje espanol
+
+}else{
+
+  $_SESSION["idioma_bandera"]='img/countries/Brazil-icon.png';
+
+   $_SESSION["idioma"]="PT";
+
+  require "lang/PT.php";
+
+}
+
+ ?>
+
+
+           <li class="nav-item dropdown">
+
+            <a class="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="nav-item mx-0 mx-lg-1 dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 15; width: 15px;">
+
+            <span class="dropdown-item-title"><?=$_SESSION["idioma"];?></span>
+
+            </a>
+
+            <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink">
+
+        <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="../img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
+
+              <a class="dropdown-item" onclick="cambiaIdioma('EN');"><img src="../img/countries/United-States-of-Americ-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["ingles"];?></a>
+
+              <!--<a class="dropdown-item" onclick="cambiaIdioma('IT');"><img src="img/countries/italy-icon.png" style="height: 20px; width: 20px;"> &nbsp;Italiano</a>-->
+
+              <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="../img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["portugues"];?></a>
+
+             <!-- <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;Frances</a>-->
+
+            </li>
+
+
+<script type="">
+        function cambiaIdioma(idioma){
+
+
+
+      $.post("ctrl/ctrlIdioma", {cambiaIdioma: idioma}, function(data, status){console.log(data);
+
+if (data==1) {
+
+
+
+  location.reload();
+
+
+
+}
+
+
+
+  });
+
+   }
+</script>
+
+<?php 
 
 if (isset($_SESSION["moneda_sel"])) {
  $monedaSelSym=$_SESSION["moneda_sel_sym"];

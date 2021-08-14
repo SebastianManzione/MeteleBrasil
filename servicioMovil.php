@@ -44,9 +44,10 @@
 
             <div class="col-3">
 
-                 <p class="mb-0"><i class="fa fa-comment text-primary"></i></p>
+            <p id="LiIdiomasNavCelular"><i class="fa fa-comment text-primary"></i><small id="pIdiomasNavCelular"></small> </p>
 
-                <small> Español Ingles Portugués</small>
+             
+            
 
             </div>
 
@@ -54,7 +55,9 @@
 
             <div class="col-3 ">
 
-                <p class="text-success mb-0 " style="font-size:12px;"><strong><?=$lang["cancelacion_gratuita"]?></strong></p>
+                <p class="text-success mb-0 "  id="textoCancelacionGratuitaCelular" style="font-size:12px; display: none;"><strong><?=$lang["cancelacion_gratuita"]?></strong></p>
+
+                <p class="text-success mb-0 "  id="textoCancelacionGratuitaCelularReservaAhora" style="font-size:12px; display: none;"><strong><?=$lang["reserva_ahora"];?></strong></p>
 
             </div>
 
@@ -238,7 +241,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <h4 class="py-4 text-primary"><?=$lang["que_se_visita"]?> ¿Qué se visita?</h4>
+        <h4 class="py-4 text-primary"><?=$lang["que_se_visita"]?></h4>
 
 
 
@@ -505,7 +508,6 @@ for ($i=0; $i < count($fotos); $i++) {
         <p class="mx-4" id="txtDuracionMovil"> </p>
 
 
-
         <h5 class="semibold"><i class="fa fa-language"></i><?=$lang["idioma_"]?> </h5>
 
         <p class="mx-4" id="pIdiomasMovil"></p>
@@ -526,7 +528,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
         </ul>
 
-
+<div id="divNoIncluidosCuerpoCelular">
 
 
 
@@ -537,7 +539,7 @@ for ($i=0; $i < count($fotos); $i++) {
         </ul>
 
 
-
+</div>
 
 
         <h5 class="semibold"><i class="fas fa-passport"></i><?=$lang["documentacion_para_el_viajero"]?></h5>
@@ -560,7 +562,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
         <h5 class="semibold"><i class="fa fa-file"></i><?=$lang["justificante"]?></h5>
 
-        <p class="mx-4"><?=$lang["te_enviamos_un_email"]?></p>
+        <p class="mx-4"><?=$lang["te_enviaremos_un_email"]?></p>
 
 
 
@@ -662,7 +664,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
                  <div class="card card-accordion">
 
-                    <div class="" id="divEncuentrosMovil">
+                    <!--<div class="" id="divEncuentrosMovil">
 
                       <h5 class="mb-0">
 
@@ -674,7 +676,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
                       </h5>
 
-                    </div>
+                    </div>-->
 
 
 
@@ -770,13 +772,13 @@ for ($i=0; $i < count($fotos); $i++) {
 
                  <div class="card card-accordion">
 
-                    <div class="" id="divCancelacionesMovil">
+                    <div class="">
 
                       <h5 class="mb-0">
 
                         <a class="btn btn-accordion bg-white border-top  " id="btn-cancelaciones"  data-toggle="collapse" data-target="#cancelaciones-movil" aria-expanded="true" aria-controls="collapseOne">
 
-                         <?=$lang["cancelaciones"]?><i class="fa fa-sort-down text-primary float-right"></i>
+                         <?=$lang["cancelaciones_"]?><i class="fa fa-sort-down text-primary float-right"></i>
 
                         </a>
 
@@ -795,20 +797,14 @@ for ($i=0; $i < count($fotos); $i++) {
                           <div class="col-12">
 
                                  <!-- CONTENEDOR CANCELACION-->
+         <h4 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h4>
+                          <div  id="divCancelacionesMovil"> 
 
-                          <div id="cancelaciones"> 
-
-                            <h4 class="py-4 text-primary"><?=$lang["cancelaciones"]?></h4>
+                   
 
                 
 
-                                  <?php 
 
-
-
-//echo '   <p>'.Cancelaciones($id)[0][1].'</p> ';
-
- ?>
 
                           </div>
 

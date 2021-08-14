@@ -14,7 +14,7 @@
 
           <!--BUCLE DE LOS RESULTADOS AQUI--> 
 
-        <div class="badge badge-primary badge-ciudad"><?=$destino[0]["nombre"]?></div>
+        <div class="badge badge-primary badge-ciudad"><?=$destino[0]["nombre"]?>, <?=$pais[0]["nombre"]?></div>
 
          <!--FIN BUCLE DE LOS RESULTADOS AQUI-->
 
@@ -136,7 +136,7 @@
 
       <div class="col-6">
 
-        <a href="categorias.php?id=<?= $idcatsrv;?>" class="btn btn-movil-header  text-primary "><i class="fa fa-arrow-left"></i><?=$destino[0]["nombre"]?></a>
+        <a href="categorias.php?id=<?= $idcatsrv;?>" class="btn btn-movil-header  text-primary "><i class="fa fa-arrow-left"></i><?=$destino[0]["nombre"]?>, <?=$pais[0]["nombre"]?></a>
 
       </div>
 

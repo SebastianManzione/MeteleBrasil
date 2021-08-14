@@ -6,259 +6,36 @@
 
 
 
- include('admin/classes/categoria.php'); 
-
-  include('admin/classes/fotos_categoria.php'); 
-
-
-
- include('admin/classes/opiniones_categoria.php'); 
-
- include('admin/classes/servicio_opiniones.php');
-
+ include('admin/classes/blog.php'); 
+ include('admin/classes/texto_miniaturas_blog.php');
+ include('admin/classes/destinos.php'); 
+ include('admin/classes/paises.php'); 
     
 
+ $idDestinoSeleccionado=0;
+if ($_SERVER["REQUEST_METHOD"] == "GET" ) {
 
-
-/*
-
-
-
-  include($GLOBALS['path'].'/conectar.php');
-
-$ordenar=" ";
-
-if (isset($_GET["priceMin"])) {
-
-  $ordenar="ORDER BY sv.precioSugerido ASC";
-
+  if (isset($_GET["idDestino"])) {
+    $idDestinoSeleccionado=$_GET["idDestino"];
+    $articulos=getArticulosBlogIdDestino($idDestinoSeleccionado);
+  }
+  else{
+    $articulos=getArticulosBlog();
+  }
 }
-
-if (isset($_GET["priceMax"])) {
-
-  $ordenar="ORDER BY sv.precioSugerido DESC";
-
-}
-
-if (isset($_GET['id'])&&is_numeric($_GET['id'])&&$_GET['id']>0) {
-
-   $id=$_GET['id'];
-
-$consulta="WHERE idCategoria_servicio=".$id ;
-
-$fotoSrv=DevuelveFotosCategoria($id)[0];
-
-
-
-$OpinionesCategoria=OpinionesCategoria($id);
-
-$CantOpinionesCategoria=count($OpinionesCategoria);
-
-  
-
-// header("location: ./index.php");
-
-}else if(isset($_GET["buscar"])&&is_string($_GET["buscar"])){
-
-  $buscar=  $_GET["buscar"];
-
-   $_GET["buscar"] = preg_replace('/\&(.)[^;]*;/', '\\1', $_GET["buscar"]);
-
-$precioMin=10;
-
- $id="-1";
-
-  $consulta=" WHERE sv.nombre_servicio LIKE '%".$_GET["buscar"]."%' 
-
-    OR sv.descripcion_servicio LIKE '%".$_GET["buscar"]."%' OR sv.descripcion_corta LIKE '%".$_GET["buscar"]."%' OR csv.nombre_categoria_servicio LIKE '%".$_GET["buscar"]."%' ".$ordenar;
-
-
-
-} 
-
 else{
-
-   $id="0";
-
-  $consulta=" ".$ordenar;
-
-
-
+  $articulos=getArticulosBlog();
 }
+$destinos=getDestinos();
 
-
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-           
-
-            ".$consulta;
-
-
-
-$hoy= date("Y-m-d");
-
-if(isset($_GET["hoy"])){
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-            LEFT JOIN horarios hss ON sv.idServicio=hss.servicioId
-
-            LEFT JOIN horarios_paquetes hsp ON sv.idServicio=hsp.servicioId
-
-
-
-            ".$consulta." WHERE hss.fechaIn='".$hoy."'
-
-           ".$ordenar;
-
-
-
-}
-
-if(isset($_GET["manana"])){
-
-
-
-$manana= date("Y-m-d",strtotime($hoy."+ 1 days"));
-
-  $ordenar=" sv.idServicio ";
-
- if(isset($_GET["price"])){
-
-  $ordenar=" sv.pAdulto ";
-
- }  
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-            LEFT JOIN horarios hss ON sv.idServicio=hss.servicioId
-
-            LEFT JOIN horarios_paquetes hsp ON sv.idServicio=hsp.servicioId
-
-
-
-            ".$consulta." WHERE hss.fechaIn='".$manana."'
-
-            ".$ordenar;
-
-
-
-} */
-
+$nombre_categoria="Blog";
+$cantidad_de_post=count($articulos);        
 $busqueda="";
-
-if (isset($_GET["idCategoria"])) {
-
-
-
-$idCategoria=$_GET["idCategoria"];
-
-$categorias=getCategoria($idCategoria);
-
-$servicios=getServiciosidCategoria_servicio($idCategoria);
-
- 
-
-  $nViajeros=$categorias[0]["nViajeros"];
-
-   $id=$categorias[0]["idCategoria_servicio"];
-
-   $nombre_categoria=$categorias[0]["nombre_categoria_servicio"];
-
-   $opiniones_categoria=OpinionesCategoria($id);
-
-   $cantidad_opiniones_categoria=count($opiniones_categoria);
-
-   $fotos=$categorias[0]["img_categoria_servicio"];
-
-}
-
-else if (isset($_GET["buscar"])) {
-
-$busqueda=$_GET["buscar"];
-
-  $idCategoria=0;
-
-
-
-  $servicios=getServiciosBusqueda($_GET["buscar"]);
-
- 
-
-
-
- $categorias=getCategorias();
-
- $nViajeros=rand(690,1200); 
-
-$nombre_categoria=" Todas Las Categorías";
-
-$opiniones_categoria=array();
-
- $cantidad_opiniones_categoria=rand(100,500); ;
-
-    $fotos="sinCategoria.jpg";
-
-
-
-
-
-
-
-}
-
-else{
-
-  $idCategoria=0;
-
-  $servicios=getServicios();
-
- 
-
-
-
- $categorias=getCategorias();
-
- $nViajeros=rand(690,1200); 
-
-$nombre_categoria=" Todas Las Categorías";
-
-$opiniones_categoria=array();
-
- $cantidad_opiniones_categoria=rand(100,500); ;
-
-    $fotos="sinCategoria.jpg";
-
-}
-
-
-
-
-
-$cantidad_servicios_categoria=count($servicios);
-
-
-
-        
-
 ?>
 
  <!--SECCION HEADER-->
 
-<section id="header-destinos"  style="background-image: url('admin/img/categoria_servicio/<?= $fotos; ?> ');" >
+<section id="header-destinos"  style="background-image: url('admin/img/categoria_servicio/sinCategoria.jpg ');" >
 
   <div class="container mb-5">
 
@@ -326,15 +103,15 @@ $cantidad_servicios_categoria=count($servicios);
 
       <div class="col-lg-3 col-md-3">
 
-          <h2 class="title-numeros mb-0 bold"><?= $cantidad_servicios_categoria; ?></h2>
+          <h2 class="title-numeros mb-0 bold"><?= $cantidad_de_post; ?></h2>
 
-          <p class="text-d-number"><?= $nombre_categoria ?></p>
+          <p class="text-d-number">Posts</p>
 
       </div>
 
       <div class="col-lg-3 col-md-3">
 
-          <h2 class="title-numeros mb-0 bold"><?= $nViajeros; ?></h2>
+          <h2 class="title-numeros mb-0 bold">22</h2>
 
           <p class="text-d-number">viajeros ya lo han disfrutado</p>
 
@@ -342,7 +119,7 @@ $cantidad_servicios_categoria=count($servicios);
 
       <div class="col-lg-3 col-md-3">
 
-          <h2 class="title-numeros mb-0 bold"><?=$cantidad_opiniones_categoria;?></h2>
+          <h2 class="title-numeros mb-0 bold">22</h2>
 
           <p class="text-d-number">opiniones reales</p>
 
@@ -422,118 +199,10 @@ $cantidad_servicios_categoria=count($servicios);
 
           <div class="card-body">
 
-              <div>
-
-                <form class="form-buscar mb-5 " action="categorias.php" method="get">
-
-            <label class="sr-only" for="s"><?= $lang["que_hacemos"]; ?></label>
-
-          <div class="input-group">
-
-            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="<?= $lang["que_hacemos"]; ?>" value="<?=$busqueda?>">
-
-            <span class="input-group-append">
-
-              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
-
-            </span>
-
-          </div>
-
-</form>
-
-        </div>
 
               <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
 
-            <div class="accordion" id="Disponibilidad">
-
-                 <div class="card card-accordion">
-
-                    <div class="" id="headingOne">
-
-                      <h5 class="mb-0">
-
-                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-                          Disponibilidad <i class="fa fa-sort-down float-right"></i>
-
-                        </a>
-
-                      </h5>
-
-                    </div>
-
-
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
-
-                      <div class="card-body">
-
-                        <div class="btn-group" role="group" aria-label="Basic example">
-
-                          <?php 
-
-
-
-$btnHoy="btn btn-primary btn-size";
-
-$btnManana="btn btn-primary btn-size";           
-
-if (isset($_GET["hoy"]))
-
- {
-
-$btnHoy="btn btn-primary-selected btn-size";
-
-   }
-
-   if (isset($_GET["manana"]))
-
- {
-
-$btnManana="btn btn-primary-selected btn-size";
-
-   }
-
-
-
-
-
-
-
-                           ?>
-
-                          <form action="categorias.php">
-
-                            <input type="hidden" name="hoy"></input>
-
-                          <button type="submit" class="<?=$btnHoy;?>">Hoy</button>
-
-                        </form>
-
-                         <form action="categorias.php">
-
-                          <input type="hidden" name="manana"></input>
-
-                          <button type="submit" class="<?= $btnManana;?>">Mañana</button>
-
-                            </form>
-
-                       
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-              </div>
-
-              <br>
-
+           
                <div class="accordion" id="accordionExample">
 
                  <div class="card card-accordion">
@@ -544,7 +213,7 @@ $btnManana="btn btn-primary-selected btn-size";
 
                         <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne">
 
-                          Categorias <i class="fa fa-sort-down float-right"></i>
+                          Destinos <i class="fa fa-sort-down float-right"></i>
 
                         </a>
 
@@ -558,49 +227,29 @@ $btnManana="btn btn-primary-selected btn-size";
 
                       <div class="card-body">
 
-                        <?php 
-
-                       $todas_las_categorias=getCategorias();
-
-                        for ($i=0; $i < count($todas_las_categorias); $i++) { 
-
-                          $idCategoria_todas=$todas_las_categorias[$i]["idCategoria_servicio"];
-
-                          $nombre_categoria_servicio_todas=$todas_las_categorias[$i]["nombre_categoria_servicio"];
-
-$checked="";
-
-$type="";
-
-
-
-                          if($idCategoria==$idCategoria_todas){
-
-                           $checked="checked";
-
-                           $type="radio";
-
-                          }
-
-                         echo '    
-
-<a href="categorias?idCategoria='.$idCategoria_todas.'">
+         
+    <?php for ($i=0; $i < count($destinos); $i++) { 
+             $idDestino=$destinos[$i]["idDestino"];
+             $checked="";
+             $type="";
+             if ($idDestino==$idDestinoSeleccionado) {
+               $checked="checked";
+               $type="radio";
+             }
+             $nombre_destino=$destinos[$i]["nombre"];
+          ?>        
+<a href="blog?idDestino=<?=$idDestino;?>">
 
                          <div class="custom-control custom-checkbox mb-2">
 
-                          <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
+                          <input type="<?=$type?>" class="custom-control-input" id="" <?=$checked;?>>
 
-                          <label class="custom-control-label" for="">'.$nombre_categoria_servicio_todas.'</label>
+                          <label class="custom-control-label" for=""><?=$nombre_destino;?></label>
 
-                        </div></a>';
-
-                        }
-
-                      ?>
-
+                        </div></a>
                        
 
-                    
+                <?php  } ?>    
 
                       
 
@@ -822,59 +471,6 @@ $type="";
 
               <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
 
-            <div class="accordion" id="Disponibilidad">
-
-                 <div class="card card-accordion">
-
-                    <div class="" id="headingOne">
-
-                      <h5 class="mb-0">
-
-                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-                          Disponibilidad <i class="fa fa-sort-down float-right"></i>
-
-                        </a>
-
-                      </h5>
-
-                    </div>
-
-
-
-                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
-
-                      <div class="card-body">
-
-                        <div class="btn-group" role="group" aria-label="Basic example">
-
-                               <form action="categorias.php">
-
-                            <input type="hidden" name="hoy"></input>
-
-                          <button type="submit" class="<?=$btnHoy;?>">Hoy</button>
-
-                        </form>
-
-                         <form action="categorias.php">
-
-                          <input type="hidden" name="manana"></input>
-
-                          <button type="submit" class="<?= $btnManana;?>">Mañana</button>
-
-                            </form>
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-              </div>
-
-              <br>
 
                <div class="accordion" id="accordionExample">
 
@@ -1120,7 +716,7 @@ $type="";
 
             
 
-            <p class="text-left text-filtrar" >22222</p>
+            <p class="text-left text-filtrar" ><?=$cantidad_de_post;?></p>
 
           </div>
 
@@ -1130,17 +726,33 @@ $type="";
 
 
 
- <p class="text-left d-md-block d-none " style="font-size: 30px;">22222222 actividades en 22222</p>
+ <p class="text-left d-md-block d-none " style="font-size: 30px;"><?=$cantidad_de_post;?> post</p>
 
 
 
 
 
 
+<?php for ($i=0; $i < count($articulos); $i++) { 
+$titulo=$articulos[$i]["titulo"];
+$descripcionCorta=$articulos[$i]["descripcionCorta"];
+
+$idPost=$articulos[$i]["idPost"];
+$idTextoMiniaturas=$articulos[$i]["idTextoMiniaturasBlog"];
+$textoMiniatura=getTextoMiniaturaBlog($idTextoMiniaturas)[0]["texto"];
+$idDestino=$articulos[$i]["idDestino"];
+$destino=getDestino($idDestino);
+$pais=getPais($destino[0]["idPais"]);
+$img=getImgArticulo($idPost);
+$foto='default.jpg';
+if (count($img)>0) {
+  $foto=$img[0]['ruta'];
+}
+
+ ?>
 
 
-
-<a href="servicio?id=<?= $idServicio?>">
+<a href="articuloBlog?post=<?=$idPost?>">
 
               <div class="mb-4">
 
@@ -1150,7 +762,7 @@ $type="";
 
                     <div class="col-6">
 
-                         <div class="badge badge-primary badge-destacado">¡ahorra!</div>
+                         <div class="badge badge-primary badge-destacado"><?=$textoMiniatura;?></div>
 
                     </div>
 
@@ -1162,7 +774,7 @@ $type="";
 
         <div class="col-md-4 col-4">
 
-            <img src="admin/classes/imgServicio/<?=$fotos_servicio;?>" class="w-100 img-fluid img-card-destinos">
+            <img src="admin/classes/imgBlog/<?=$foto;?>" class="w-100 img-fluid img-card-destinos">
 
           </div>
 
@@ -1170,11 +782,10 @@ $type="";
 
             <div class="card-block ">
 
-       <h4 class="text-left titulo-card-destinos semibold">asd</h4>
+       <h4 class="text-left titulo-card-destinos semibold"><?=$titulo;?></h4>
 
-                    <h5 class="texto-opinion-desta"><strong>est/10</strong> <small class="text-gris"> opiniones</small></h5>
-
-                    <p class="text-gris d-md-block d-none">desc</p>
+                   
+                    <p class="text-gris d-md-block d-none"><?=$descripcionCorta;?></p>
 
             </div>
 
@@ -1186,9 +797,9 @@ $type="";
 
                     </ul>
 
-                    <h4 class="text-success text-cancelacion  float-left d-md-none semibold">Cancelación gratuita</h4>
+                   
 
-                    <p class="float-right d-md-none semibold">ps</p>
+                    <p class="float-right d-md-none semibold"><</p>
 
           </div>
 
@@ -1242,7 +853,7 @@ $type="";
 
          </a>
 
-
+<?php } ?>
 
 
 
@@ -1457,64 +1068,6 @@ $type="";
         </div>
 
 
-
-
-
-           <div class="accordion" id="Disponibilidad">
-
-                 <div class="card card-accordion">
-
-                    <div class="" id="headingOne">
-
-                      <h5 class="mb-0">
-
-                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-                          Disponibilidad <i class="fa fa-sort-down float-right"></i>
-
-                        </a>
-
-                      </h5>
-
-                    </div>
-
-
-
-                    <div id="collapseOne" class="collapse show " aria-labelledby="headingOne" data-parent="#Disponibilidad">
-
-                      <div class="card-body">
-
-                        <div class="btn-group" role="group" aria-label="Basic example">
-
-                                <form action="categorias.php">
-
-                            <input type="hidden" name="hoy"></input>
-
-                          <button type="submit" class="<?=$btnHoy;?>">Hoy</button>
-
-                        </form>
-
-                         <form action="categorias.php">
-
-                          <input type="hidden" name="manana"></input>
-
-                          <button type="submit" class="<?= $btnManana;?>">Mañana</button>
-
-                            </form>
-
-                          
-
-                        </div>
-
-                      </div>
-
-                    </div>
-
-                  </div>
-
-              </div> 
-
-              <br>
 
              <!--  <div class="accordion" id="accordionExample">
 

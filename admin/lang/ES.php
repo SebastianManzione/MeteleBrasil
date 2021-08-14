@@ -1,6 +1,9 @@
 <?php
 /* <?=$lang["ingresa_tu_email_para_recibir_novedades"]?> 
 
+
+ <?=$lang[$nombre_categoria];?>
+
 ,
 	"recibe_las_ultimas_ofertas"=>"Recibe las últimas ofertas"
 
@@ -21,13 +24,14 @@ $lang = array(
 	"ver_mas"=>"Ver Mas",
 	"opiniones"=>"Opiniones",
 	"viajeros_ya_lo_han_disfrutado"=>"viajeros ya lo han disfrutado",
-	"Actividades"=>"Actividades",
+	"servicios"=>"Servicios",
 	"Paseo de barco"=>"Paseos en barco",
 	"Hospedaje"=>"Hospedaje",
 	"Paquetes turísticos"=>"Paquetes turísticos",
 	"Transporte"=>"Transporte",
 	"Excursiones"=>"Excursiones",
 	"Evento nocturno"=>"Eventos Nocturnos"	,
+    "todas_las_categorias"=>"Todas Las Categorías",
 	"actividades_destacadas"=>"ACTIVIDADES DESTACADAS",
 	"ingresa_tu_email_para_recibir_novedades"=>"Ingresa tu email para recibir novedades",
 	"recibe_las_ultimas_ofertas"=>"Recibe las últimas ofertas",
@@ -66,14 +70,17 @@ $lang = array(
     "sostenibilidad"=>"Sostenibilidad",
     "soporte"=>"Soporte",
     "contacto"=>"Contacto",
-    "politica_de_uso"=>"Política de uso",
+    "politica_de_uso"=>"Políticas de uso",
+    "politica_de_uso_"=>"POLÍTICAS DE USO",
     "condiciones_generales"=>"Condiciones generales",
     "aviso_legal"=>"Aviso legal",
-    "politica_de_privacidad"=>"Política de privacidad",
+    "politica_de_privacidad"=>"Políticas de privacidad",
     "cookies"=>"Cookies",
     "trabaja_con_nosotros"=>"Trabaja con Nosotros",
     "venta_freelance"=>"Venta freelance",
     "agencias_de_viajes"=>"Agencias de viajes",
+    "operadores_mayoristas"=>"Operadores mayoristas",
+    "prestadores_de_servicio"=>"Prestadores de servicios",
     "destinos"=>"Destinos",
 	"guia_de_viajes"=>"Guia de Viajes",
 	"contacto"=>"Contacto",
@@ -112,6 +119,7 @@ $lang = array(
     "buscar"=>"Buscar",
     "top_actividades"=>"Actividades Top",
     "filtrar"=> "Filtrar",
+    "reserva_ahora"=>"Reserva ahora",
 
 
 
@@ -694,8 +702,7 @@ $lang = array(
       "como_puedo_pagar"=>"¿Como puedo pagar mis reservas?",
 
 
-      "nuestra_web_ofrece_un_servicio"=>"Nuestra web ofrece un servicio de reserva muy fácil e intuitivo y te permite realizar el pago de manera segura con Visa, MasterCard o PayPal. No es posible pagar en el destino o al guía directamente. Todas las reservas deben hacerse a través de la página web. ",
-       
+      "nuestra_web_ofrece_un_servicio"=>"Nuestra web ofrece un servicio de reserva muy fácil e intuitivo y te permite realizar el pago de manera segura con Visa, MasterCard o PayPal. No es posible pagar en el destino o al guía directamente. Todas las reservas deben hacerse a través de la página web. ", 
   
       "el_pago_es_seguro"=>"¿El pago es seguro?",
 
@@ -767,6 +774,78 @@ $lang = array(
 
 
 
+
+
+/* sostenibilidad */
+
+
+"introduccion_sostenibilidad" =>"Introducción",
+
+"en_nuestro_ecosistema"=> "En nuestro ecosistema, cualquier usuario puede confirmar una reserva en tiempo real sobre el servicio que desea realizar pudiendo pagar en su moneda local desde su banco de origen latinoamericano (Argentina, Paraguay, Chile, Colombia, Urugua, Peru, Colombia), sin restricciones.",
+
+"cualquier_turista"=>"Cualquier turista puede emitir un comprobante bancario o realizar una transferencia bancaria en su propio país y así pagar en su moneda local sin depender del efectivo y los grandes costos de las tarifas internacionales.",
+
+"es_una_plataforma_de_reservas"=>"es una plataforma de reservas online para actividades y eventos turísticos en  Brasil.",
+
+"integramos_en_una_plataforma"=>"Integramos en una plataforma todas las necesidades de cualquier operador turistico o autónomo para publicitar su servicio o reservarlo. Interactuando de manera facil de manera tecnologica, abriendo nuevas oportunidades en el ámbito del turismo dedicado al Destino de Brasil.",
+
+"creemos_que_de_esta_manera"=>"Creemos que de esta manera podemos hacer que las agencias y operadores estén más preparados para competir contra las grandes plataformas digitales.",
+
+"resolvemos_todos_los_esquemas"=>"Resolvemos todos los esquemas de operador con prestadores de servicios donde las reservas se realizan por agentes de viajes, vendedores de playa autónomos, taxistas, recepcionistas de hoteles o cualquier otro perfil que interactúe con el turismo, generando además comisiones para ellos y descuentos para turistas. Esto facilita la organización de esta red turística.",
+
+"nuestra_solucion_para_operadores"=>" Nuestra solución para operadores de turismo y agencias que venden paquetes turísticos.",
+
+"brindamos" =>"Brindamos una plataforma en la que presentamos los servicios de los operadores (B2B) y el público final puede adquirirlos directamente, y los agentes de viajes tendrán la posibilidad de ser parte de estas compras, a través de cupones de descuento y regalías que ofrecemos al consumidor final. para acercarse a uno de nuestros afiliados, en este caso agencias de viajes (B2C). El cliente final podrá acercarse a uno de nuestros afiliados y así ganar un descuento en el paquete que quiera contratar en nuestra web, pudiendo así acercar al cliente a la agencia y ganar la comisión respectiva. Si el cliente opta por pagar directamente en nuestro sitio web, puede hacerlo directamente o con un cupón de descuento que pueden ofrecer nuestros agentes o agencias afiliadas.",
+
+"nuestra_solucion_para_agencias"=>"Nuestra solución para agencias B2B y autónomos freelance",
+
+"las_agencias_afiliadas_a_nuestro_sistema"=>"Las agencias afiliadas a nuestro sistema podrán recibir a los clientes que ingresen a nuestro sitio y se encuentren en la misma ubicación, ofreciéndoles un servicio más personalizado y el descuento antes mencionado.",
+
+"nuestra_solucion_para_alojamientos"=>"Nuestra solución para Alojamientos Hoteles y otros que tienen servicio directo al turista",
+
+"el_sistema_esta_disponible_para_hoteles" =>"El sistema está disponible para hoteles y agencias de recepción, que podrán ofrecer cupones de descuento a los clientes que se alojen en el hotel o incluso realizar una reserva personalizada, que en este caso la recepcionista o agente de recepción podrá recibir en efectivo, una cantidad que formará parte de tu comisión.",
+
+"los_turistas_no_solo"=>"Los turistas no solo podrán tener actividades locales al alcance de sus teléfonos, sino que los recepcionistas también tendrán descuentos para ellos. Los ingresos de una recepcionista aumentaría y sería un incentivo para un hotel o recepcionista.",
+
+
+
+"inovacion"=>"Innovación",
+
+"el_sistema_reserva_paquetes_turisticos"=>"El sistema reserva paquetes turísticos, actividades, viajes en barco y alojamiento / transporte (Bus / Aéreo), donde los vendedores (Agencias / Promotores de Turismo / Autónomos) pueden encargar su venta.",
+
+
+"impacto_socio_ambiental"=>"IMPACTO SOCIO-AMBIENTAL",
+
+"nuestro_sistema_integrado"=>"Nuestro sistema integrado permite que un operador venda productos de otros operadores, que quizás ni siquiera conozca o porque tienen menos afinidades, en cuanto a métodos, que con otras agencias, generando así un impacto social donde el servicio del otro ya no me preocupa como competidor, pero comienza a complementar mis servicios, ofreciendo así más opciones a los pasajeros.",
+
+"cada_operador_tiene"=>"Cada operador tiene su propio sistema de reserva, por lo general le dan a las agencias un login y contraseña para reservar, solo el 8% de los operadores que tienen este procedimiento de venta, la gran mayoría aún trabaja por correo electrónico para consultas de disponibilidad, este trámite que toma demasiado tiempo, haciendo la venta ineficaz.",
+
+"nuestro_sistema_soluciona"=>"Nuestro sistema soluciona este problema con la posibilidad de poder vender, o incluso que el cliente acuda a la agencia más cercana a su domicilio y pueda adquirir un paquete turístico de cualquier operador que ofrezca el servicio. Consideramos sumanete innovador en términos de tiempo para sistematizar un sector que se está volviendo obsoleto y sin estructura, donde todos pueden ganar.",
+
+"impacto_economico"=>"IMPACTO ECONÓMICO EN EL TURISMO",
+
+"nuestro_impacto_en_el_turismo"=>"Nuestro impacto en el turismo receptivo también es innovador, donde un recepcionista de hotel o cualquier promotor turístico local puede consultar disponibilidad y valores, en tiempo real, con la posibilidad de realizar la reserva para el cliente del deseado. servicio, sin tener que llamar o enviar un e-mail al prestador del servicio para solicitar disponibilidad y / o realizar la reserva, de esta manera el recepcionista puede recibir una comisión por la venta, mejorando así su salario de manera organizada (IMPACTO ECONÓMICO ), a su vez el hotel también puede tener un código de descuento o cupón que se puede ofrecer a los huéspedes, que al ingresar en una reserva el cliente obtendrá un descuento y el hotel también tendrá una comisión general, que puede utilizar para recompensar y reconocer a sus empleados. (Impacto social)",
+
+"metas_objetivos"=>"Metas y Objetivos",
+
+"proveedores_de_servicios_agencias"=>"Proveedores de servicios, agencias y tour operadores.",
+
+"podemos_generar_mas_trabajo"=>"Podemos generar más trabajo para Prestadores de Servicios, agencias y tour operadores, acompañados de todo su conocimiento en turismo y así conocerán nuevos clientes y podrán vender otro tipo de servicio con el que aún no trabajan.",
+
+"los_operadores_tendran_la_posibilidad"=>"Los operadores tendrán la posibilidad de que todas las agencias de la región y otros lugares de los estados del país puedan ofrecer sus servicios directamente en una sola plataforma.",
+
+"ejemplo_una_agencia"=>"De esta manera todas las agencias del país pueden vender todos los servicios de todos los operadores del país.",
+
+"nuestro_principal_objetivo_es_vender"=>"Nuestro principal objetivo es vender paquetes de servicios turísticos exclusivamente a / en Brasil.",
+
+"este_sistema_esta_implementado"=>"Este sistema esta implementado en Chile, Uruguay, Paraguay, Perú, Colombia y Argentina, y con el objetivo de expandirse a toda América Latina.",
+
+"si_estas_interesado"=>"Si estas interesado en formar parte o quieres sumarte a nuestra red de prestadores de servicios contactanos en comercial@metelebrasil.com y cuentanos sobre tus actividades y proyectos que podriamos realizar juntos!",
+
+
+
+
+
   /*contact*/
 
   "si_le_quedan_dudas_respecto"=>"Si le quedán dudas respecto a nuestros servicios utilice nuestro formulario de contacto.",
@@ -833,6 +912,8 @@ $lang = array(
 
    "cancelacion_gratuita_"=>" Cancelación gratuita hasta 48 horas antes ",
 
+   "elegi_la_fecha"=>"Elija una fecha ",
+
    "hora"=>" Hora ",
 
    "cupon_de_descuento"=>" Cupon de descuento ",
@@ -883,13 +964,118 @@ $lang = array(
 
 "compartir"=>"Compartir",
 
-"adultos"=>"Adulto",
+"adultos"=>"Adultos",
 
 
 
 "encuentros"=>"Encuentros",
 
 
+/*MOVIL ACORDEON*/
+
+
+"recogida_en_el_hotel"=>"Recogida en el hotel",
+
+"opcionalmente_podes_reservar_la_recogida"=>"Opcionalmente, podes reservar la recogida en por el hotel. La recogida es una hora antes de la hora de inicio del tour e incluye todos los alojamientos en un radio de 8 kilómetros desde el punto de encuentro.",
+
+"menores_12_anos"=>"M> 12 años",
+
+"menores_5_anos"=>"M> 5 años",
+
+"menores_3_anos"=>"M> 3 años",
+
+"el_tour_se_realiza_en"=>" El tour se realiza en español, ingles y portugués.",
+
+
+
+
+
+
+   /*CARRITO*/
+
+
+   "revisa_tus_reservas"=>" Revisa tus reservas",
+
+   "datos_personales"=>" Datos personales",
+
+   "metodo_de_pago"=>"Método de pago",
+
+   "resumen_de_compra"=>"Resumen de Compra ",
+
+   "su_descuento"=>"SU DESCUENTO: ",
+
+   "anfitrion"=>"Anfitrión: ",
+
+   "total_carrito"=>"Total Carrito",
+
+   "eliminar"=>"Eliminar",
+
+   "continuar"=>"Continuar",
+
+"en_metelebrasil_queremos_ser_transparente"=>"En METELEBRASIL Tours S.L. (en adelante, “METELEBRASIL”), queremos ser transparentes y ofrecer la mejor experiencia de usuario.",
+
+"les_informamos_que_todos_los_datos"=>"Les informamos que todos los datos solicitados son utilizados únicamente para poder llevar a cabo la prestación de los servicios que hayas reservado en nuestro sitio web. Estos datos serán conservados únicamente por METELEBRASIL y sus colaboradores durante el tiempo necesario para prestaros nuestros servicios.",
+
+"asimismo_para_ofrecerles"=>"Asímismo, para poder ofrecerles publicidad de nuestros productos acorde a vuestros intereses, podremos utilizar técnicas de perfilados o segmentaciones. No haremos cesiones o transferencias de vuestros datos con fines publicitarios a terceras empresas.",
+
+"tenes_derecho_a_presentar_una_reclamacion_ante"=>"Tenes derecho a presentar una reclamación ante una autoridad de control, a no ser objeto de tratamientos automatizados y a ejercer vuestros derechos de acceso, rectificación, limitación de tratamiento, supresión, olvido, portabilidad, oposición en el email: METELEBRASIL@METELEBRASIL.com",
+
+"leer_mas"=>"Leer más",
+
+
+
+
+
+ /*DATOS PERSONALES*/
+
+
+"responsable_de_la_reserva"=>"Responsable de la Reserva",
+
+"pasajero"=>"Pasajero",
+
+"comentarios_al_proveedor"=>"Comentarios al proveedor",
+
+"y_las_condiciones_generales"=>" y las condiciones generales.",
+
+
+
+
+
+/*CONSULTA RESERVA*/
+
+
+"pago_seguro"=>" PAGO SEGURO",
+
+"consulta_de_reserva"=>"Consulta de reserva",
+
+ "resumen"=> "Resumen",
+
+"total"=>"Total",
+
+"cobro_en_mano"=>"Cobro en mano",
+
+"cobro_de_sena"=>"Cobro de Seña",
+
+"Felicidades"=>"Felicidades",
+
+"del_pago_confirmado"=>"del pago confirmado",
+
+"pagar"=>"Pagar",
+
+"detalles_reserva"=>"Detalles reserva",
+
+"volver_al_site"=>"Volver al Site",
+
+
+/*RETORNO PAGO*/
+
+"reserva"=>"Reserva",
+
+"pago_de_la_reserva"=>"Pago de la reserva nro",
+
+"aceptado_correctamente"=>" Aceptado correctamente",
+
+"regresar"=>"Regresar",
 
 
 
@@ -901,6 +1087,429 @@ $lang = array(
 
 
 
+/* Articulo Blog */
+
+
+"tips_y_concejos"=>" Tips Y Consejos ",
+
+"observaciones"=>" Observações ",
+
+"donde_vamos"=> "¿Donde vamos?",
+
+"quiero_comentar"=> "Quiero comentar",
+
+"nuevo_comentario"=>"Nuevo comentario",
+
+"comentario"=> "Comentario",
+
+"nombre"=> "Nombre",
+
+"cancelar"=> "Cancelar",
+
+"comentar"=>"Cometar",
+
+"apellido"=> "Apellido",
+
+
+/* Guias */
+
+
+"guias_de_servicios"=>"Guias de Servicios",
+
+"guias_de_actividades_ciudades"=>"Guias de destinos",
+
+"enviamos_tu_pdf"=> "Completa y enviaremos la guia a tu e-mail",
+
+"nombre_apellido"=> "Nombre completo",
+
+"enviar_pdf"=>"Enviar Guia",
+
+
+
+
+
+
+
+
+/* Agencias de Turismo y operadores */
+
+
+"ofrecer_un_paquete_turistico_o_actividad"=>"Ofrecer un paquete que cumpla los objetivos de los viajeros en cuanto a precios, calidad y funcionalidad del itinerario es complejo. Debe ser diseñado por operadores capaces de ensamblar diversos servicios turísticos y que trabajen directamente con proveedores. ¿Quién está detrás de la organización de estos tours y actividades que ofrecen las agencias de viajes?",
+
+"agencias_aperadores"=> "Agencias de turismo mayoristas y minoristas",
+
+"que_son_los_operadores_mayoristas"=>"¿Qué son los operadores turísticos mayoristas?",
+
+"los_operadores_turisticos_mayoristas"=>"Los operadores turísticos mayoristas son los encargados de encontrar y combinar servicios turísticos como aerolíneas, hoteles, transporte, etc. Para crear paquetes de viajes atractivos y convenientes.",
+
+
+
+"como_trabaja_un_operador_mayorista"=>"¿Cómo trabaja un operador mayorista?",
+
+"los_operadores_mayoristas"=>"Los operadores mayoristas normalmente formalizan contratos con proveedores de servicios del sector turístico, de esta manera pueden obtener tarifas más competentes al comprar o reservar con volúmenes más altos. Una vez que arman sus paquetes, los ofrecen a las agencias de viajes para que estos se encarguen de venderlos a los viajeros a precios competitivos.",
+
+"los_operadores_minoristas"=>"Los operadores minoristas tienen una ganancia en forma de comisión por cada servicio vendido de los ofrecidos por los operadores mayoristas.",
+
+
+"cual_es_la_diferencia"=>"¿Cuál es la diferencia entre operadores turísticos mayoristas y minoristas?",
+
+"el_operador_mayorista"=>"El operador turistico mayorista no vende al consumidor final, sus principales clientes son las agencias de viajes, quienes funcionan como intermediarios. Por su parte, los clientes de un operador minorista son los turistas, a quienes ayuda a organizar su viaje y ofrece los paquetes turísticos creados por la agencia mayorista.",
+
+"la_principal_caracteristica_de_los_operadores"=>"La principal característica de los operadores turísticos mayoristas es que por lo general no tratan directamente con el consumidor final, pero organizan sus paquetes pensando en ellos. Crean opciones considerando diversos tipos de turismo tales como: vacacionistas jóvenes, viajes de negocios, deportistas, tours culturales,  visitantes nacionales e internacionales, turismo aventura, turismo religioso, etc.",
+
+"otros_factores_que_deben_tomar"=>"Otros factores que deben tomar en cuenta para crear estos tipos de paquetes y servicios turisticos son los destinos y servicios populares y/o en tendencia, nichos emergentes, con nuevas tecnologías y asegurarse de que se cumpla los servicios con buenas practicas, por ejemplo, garantizar que se tomen medidas de bioseguridad para proteger la salud de los viajeros, o bien, que se tengan alternativas en caso de que, por alguna razón, se modifiquen las condiciones iniciales del viaje.",
+
+"las_agencias_mayoristas"=>"Metele Brasil le ofrece a las agencias mayoristas de viajes poner a la disposición agencias de viajes minoristas estos paquetes y servicios para que elijan los que se ajusten mejor a la clasificación de su mercado y satisfagan las expectativas de viaje de sus clientes.",
+
+"paquete_dinamico"=>"¿Paquete dinámico y tarifas opacas que son?",
+
+"a_lo_largo_del_tiempo"=>"A lo largo del tiempo hemos visto evolucionar el proceso de armado de producto, y sin dudas la pandemia ha acelerado todo, es por ello que hoy las operadoras mayoristas tienen herramientas tecnológicas que son fundamentales como el paquete dinámico. Esta herramienta permite armar un servicio a medida seleccionado el tipo de servicio (Actividades, Paseos de Barco, etc.) o algun anuncio especifico, el usuario selecciona la fecha el horario de salida el servicio adicional, puede tener la posibilidad de colocar algun cupon de descuento y luego ya carga su actividad personalizada al carrito de compras, lo que hace que sus clientes tengan opciones más rápidas de cara al pasajero final, lo cual resulta muy importante en estos tiempos donde el acceso a la información y costos de forma ágil y rápida es imperativa.",
+
+"sumate_a_metele_brasil"=>"SUMATE A NUESTRO PROYECTO",
+
+"muchas_veces_no_entendemos"=>"Muchas veces no entendemos por que a través de un paquete turístico es más económico el precio final que si contratamos los servicios por separado, esto tiene que ver a la existencia de las “tarifas Opacas” las mismas son especialmente diseñadas para los operadores mayoristas y tienen las siguientes condiciones: Sólo se puede utilizar para el armado de paquetes turísticos y no se pueden publicar esas tarifas por separado o ser disponibilizadas al cliente de forma individual. Esto es ya que son un poco más económicas que las tarifas para mayoristas habituales y se distribuyen tanto online como offline.", 
+
+
+
+
+
+
+
+
+
+"¿Cómo se desarrolla una confirmacion de reserva en una Agencia minorista en Metele Brasil?",
+
+
+"A la hora de confirmar una reserva frente al cliente final, es necesaria la utilización de de herramientas rapidas y efectivas que informen en tiempo real sobre disponibilidad y lugares disponibles para ofrecerle al cliente. Metele Brasil ha desarrollado una herramienta que permite tener en iempo real todos los detalles sobre todas las reservas de todos los servicios anunciados en esta plataforma sin riesgo alguno para confirmar la operación y contratacion del servicio elegido por el cliente. Este proceso automatizado permite no solamente incrementar los márgenes en más de un 85% por reserva, sino que además mejora el servicio de cara con cliente y la operación durante el proceso. Cada venta sera confirmada de manera automatica en tiempo real via mail para el cliente y la agencia minorista que concreto la venta junto con el voucher correspondiente a todas las informaciones y detalles de la reserva realizada.",
+
+
+"¿Cómo se desarrolla una confirmacion de reserva en una Agencia Mayorista?",
+
+
+    "La tecnología es la principal aliada a la hora de hablar de confirmacion de reserva, ya que gracias a la utilización de este tipo de herramientas se obtienen resultados mucho más rápidos y efectivos, como es el caso de Metele Brasil, que ha desarrollado una herramienta basada en tecnologias de alta performance que permite incrementar reservas existentes de forma automática con agencias minoristas, sin riesgo alguno para la operación. Este proceso automatizado permite no solamente incrementar los márgenes en más de un 35% por servicio, sino que además mejora el servicio de cara con cliente y la operación durante el proceso de confirmar una reserva. ",
+
+
+"¿Cómo se desarrolla una confirmacion de reserva para un prestador de servicio?",
+
+ "Para la confirmacion de reserva enviaremos un email a la cuenta registrada por el prestador con el voucher y todos los detalles de la reserva. Solo son emitidas y confirmadas reservas que completaron el valor minimo que cada prestador ofrece para confirmar el servicio. Gracias a la utilización de este tipo de herramientas se obtienen resultados mucho más rápidos y efectivos, Metele Brasil ha desarrollado una herramienta basada en tecnologias de alta performance que permite cobrar en moneda local y otros tipos de moneda de la region de Latinoamerica, de esta manera incrementamos las reservas existentes de forma automática con agencias minoristas, vendedores freelance, recepcionistas y otros agentes que se relacionan directamente con el turista, sin riesgo alguno en la operación y totalmente seguro. Este proceso automatizado permite no solamente incrementar los márgenes en más de un 85% por servicio, sino que además mejora el servicio de cara con cliente y la operación durante el proceso de confirmar una reserva. ",
+
+
+
+
+
+
+
+
+
+/* REDEFINA SENHA CONTRASEÑA */
+
+
+"redefina_senha"=>"Redefina su contraseña",
+
+"indique_su_email"=>"Indique su e-mail de registro y listo!",
+
+"para_iniciar_el_proceso"=>"Para iniciar el processo de recuperacion del password digite el e-mail registrado para su cuenta.",
+
+"ultimo_paso"=> "Ultimo paso! ",
+
+"altere_senha"=>"Altere su contraseña!",
+
+"para_iniciar_el_proceso_redefinicion"=>"Para iniciar el processo de redefinición, digite su nueva contraseña.",
+
+"repita_senha_nueva"=>"Confirme su nueva contraseña",
+
+"confirmar_senha_nueva"=> "Confirmar",
+
+"nueva_senha"=>"Digite su nueva contraseña",
+
+"enviar"=>"Enviar",
+
+
+/* LLAMADA A LA ACCION AGENCIA */
+
+"sumale_clientes_agencia"=>"Sumale clientes y reservas a tu Agencia!",
+
+"sumale_clientes_empresa"=>"Mais clientes e reservas para a sua empresa!",
+
+"completa_agencia"=>"Completa con los datos de tu Agencia",
+
+"completa_empresa"=>"Completa con los datos de tu empresa",
+
+
+"activaremos_tu_cuenta_agencia"=>"Activaremos tu cuenta y nos comunicaremos contigo",
+
+"comienza_a_recibir_reservas"=>"Comienza a recibir reservas",
+
+"comience_a_ofrecer"=>"Comience a ganar comisión",
+
+"activar_agencia"=>"Activar mi agencia",
+
+"activar_mis_servicios"=>"Activar mi cuenta",
+
+"motivos_para_elegirnos"=>"Motivos para elegirnos.",
+
+"gratis_sin_costo"=>"Gratis! sin costo adicional",
+
+"totalmente_gratis"=>"Totalmente Gratis! Ofrecemos nuestra plataforma sin costos fijos mensuales ni anuales.",
+
+"crm_facil_intuitivo"=>"CRM facil e intuitivo",
+
+"controla_reservas_prestador"=>"Controlar y administra todas tus reservas en timepo real y sin riesgos con un una interfaz super facil y rapida.",
+
+"genera_mas_reservas_agencia"=>"Genera mas reservas con un solo click y controla las reservas de tus clientes en tiempo real y sin riesgos.",
+
+"1_prestador_por_servicio"=>"1 prestador por servicio",
+
+"somos_democraticos"=>"Somos democraticos y elegimos 1 prestador por servicio ofrecido.",
+
+"valoramos_cada_agencia"=>"Valoramos cada agencia",
+
+"valoramos_cada_prestador"=>"Valoramos cada prestador",
+
+"valoramos_cada_operador"=>"Valoramos cada operador mayorista",
+
+"acompanamos_cada_agencia"=>"Acompañamos con nuestros partners a cada agencia en todo momento para mejorar sus ventas y su efectividad.",
+
+"acompanamos_cada_prestador"=>"Acompañamos a cada prestador en todo momento para mejorar sus ventas y su efectividad.",
+
+"disponibilidad_en_tiempo_real"=>"Disponibilidad en tiempo real",
+
+"acelere_sus_ventas"=>"Acelere sus ventas y la confirmación de nuevas reservas con sus servicios en linea y disponibilidades en tiempo real.",
+
+"soporte_humano"=>"Soporte humano las 24hs",
+
+"resolvemos_agil_rapido"=>"Resolvemos de manera agil y eficaz gracias a nuestro soporte 80% humano los 365 dias 24/7.",
+
+"comunicacion_eficaz"=>"Comunicación eficaz con el cliente",
+
+"nos_comunicamos"=>"Nos comunicamos de manera empatica y humana con cada cliente desde que la reserva es confirmada.",
+
+"control_de_todas_reservas"=>"Control de todas sus reservas",
+
+"tiene_la_posibilidad_administrar_comisiones"=>"Tiene la posibilidad de administrar sus ventas y comisiones sin contratiempos.",
+
+"tiene_la_posibilidad_administrar_servicio"=>"Tiene la posibilidad de administrar la disponibilidad de sus servicios y comisiones sin contratiempos.",
+
+"recibi_con_un_click"=>"Recibi con un click",
+
+"reciba_sus_comisiones"=>"Reciba sus comisiones con un solo click y de manera transparente. Tambien podra emitir cobranzas para tus clientes desde la extranet.",
+
+"reciba_sus_ventas"=>"Reciba sus ventas con un solo click y de manera transparente. Tambien podra emitir cobranzas para tus clientes desde la extranet.",
+
+"aceptamos_en_otras_monedas"=>"Aceptamos en otras monedas",
+
+"ofreceles_diferentes_monedas"=>"Ofreceles a tus clientes diferentes tipos de monedas de la region sudamericana sin sobreprecios ni tazas adicionales facilitandole el pago de todos nuestros servicios.",
+
+"agiliza_tu_logistica"=>"Agiliza tu logistica",
+
+"mejora_la_confianza"=>"Mejora la confianza de tu cliente ofreciendo evitar filas y aglomeraciones por comprar por medio de tu agencia.",
+
+"guia_de_turismo_personalizado"=>"Guia de turismo personalizado",
+
+"acompanamos_tus_Clientes"=>"Acompañamos a tus clientes manera remota y humana en todo momento, antes, durante y al finalizar cada actividad.",
+
+"sume_agencias_freelance"=>"Sume puntos de ventas",
+
+"aumente_su_red_de_venta"=>"Aumente su red de venta con nuestra plataforma y disponibilice sus servicios para que mas agencias y vendedores autonomos de toda su región puedan ofrecerlos.",
+
+"cobramos_en_moneda_local"=>"Cobramos en la moneda local de tu pais facilitandole el pago del cliente final, tambien las agencias afiliadas reciben en sus propios puntos de ventas.",
+
+"agiliza_tus_ventas"=>"Agiliza tus ventas",
+
+"ofrece_en_tiempo_real"=>"Ofrece en tiempo real tu disponibilidad aumentando tu reserva en un 65%.",
+
+"completa_datos_freelance"=>"Completa con tus datos",
+
+"acelere_sus_ventas"=>"Podrás consultar disponibilidad y generar reservas de todos los atractivos turisticos sin intermediarios y con tan solo un click en tu telefono.",
+
+"ofrezca_servicios_destacados"=>"Ofrezca servicios destacados y con disponibilida en tiempo real y pago online 100% seguro.",
+
+"gana_comisiones"=>"Gana comisión de manera fácil y autonoma!",
+
+"genera_nuevos_ingresos"=>"Genera nuevos ingresos ofreciendo los atractivos mas destacados de tu región de manera facil y rapida.",
+
+"facil_intuitivo"=>"Fácil y intuitivo",
+
+"disponibilizamos_nuestra_plataforma"=>"Disponibilizamos nuestra plataforma con los atractivos mas destacados de su región.",
+
+"se_parte_del_turismo"=>"Se parte del turismo de tu región",
+
+"ofrezca_para_turistas"=>"Ofrezca descuento para los turistas que se encuentra cotidianamete y genere comisiones para su cuenta.",
+
+"gane_reconocimiento"=>"Gane reconocimiento",
+
+"ofrezca_servicios_destacados"=>"Ofrezca servicios destacados y con disponibilida en tiempo real y pago online 100% seguro.",
+
+"acelere_sus_ventas"=>"Podrás consultar disponibilidad y generar reservas de todos los atractivos turisticos sin intermediarios y con tan solo un click en tu telefono.",
+
+
+"mejora_tu_confianza_"=>"Gana confianza",
+
+"genere_reservas_sin_filas"=>"Genere reservas sin filas y consulte de manera agil y eficaz a toda hora sin limite de horario.",
+
+
+
+/* FORMULARIOs Agencias */
+
+
+"datos_de_acceso"=>"Datos de acceso",
+
+"datos_de_agencia"=>" Datos de la Agencia",
+
+"registre_agencia"=>"Registra tu Agencia",
+
+
+"activa_tu_cuenta_ya"=> "Activa tu cuenta ya!",
+
+"completa_datos_para_activar_agencia"=> "Completa los datos para activar tu cuenta y comenzar a sumar clientes y ventas a tu agencia receptiva o emisiva de viajes y turismo.",
+
+"confirmar_datos_agencia"=> "Activar mi cuenta",
+
+"nombre_agencia"=>"Nombre de la Agencia",
+
+"tipo_de_agencia"=> "Tipo de agencia",
+
+"agencia_receptiva_emisiva"=>"RECEPTIVA O EMISIVA, RECEPTIVA/EMISIVA",
+
+"digite_su_email"=>"Indique un mail de usuario",
+
+"complete_nombre_fantasia"=> "Indique nombre de fantasia de su agencia de viajes",
+
+"nombre_"=>"Nombre",
+
+"complete_con_su_nombre"=>"Complete con su nombre",
+
+"senha"=>"Contraseña",
+
+"ingrese_una_contrasena"=>"ingrese una contraseña para su cuenta",
+
+"repetir_contrasena"=>"Repetir Contraseña",
+
+"repita_la_contrasena"=>"Repita la contraseña",
+
+"cargo_empresa"=>"Cargo",
+
+"indique_cargo_en_empresa"=>"EJ: propietario, gerente, comercial, ventas",
+ 
+"activar_cuenta"=>"Solicitar activación de cuenta",
+
+"whatsapp_"=>"Whatsapp",
+
+"indique_whatsapp_agencia"=>"Indique el Whatsapp de la agencia para comunicarnos para la activación",
+
+"acepto_los"=> "Acepto los ",
+
+"terminos_y_condiciones_"=> "teminos y condiciones.",
+
+/* LLAMADA A LA ACCION PRESTADOR */
+
+
+
+
+
+
+
+
+/* FORMULARIO PRESTADORES DE SERVICIOS y OPERADORES */
+
+"datos_de_la_empresa"=> "Datos de la empresa",
+
+
+"registre_prestador"=> "Registre su empresa",
+
+"completa_datos_para_activar_prestador"=>"Completa los datos de tu empresa.",
+
+"nuestros_partners_se_comunicaran"=>"Agentes de Metele Brasil se comunicaran contigo para ajustar detalles y aumentar tus reservas lo mas pronto posible.",
+
+"nombre_prestador"=>"Nombre de la empresa",
+
+"complete_nombre_fantasia_empresa"=>"Complete con el nombre de fantasia de su empresa",
+
+"tipo_de_prestador"=>"Tipo de empresa (tours, eventos, gastronomia)",
+
+"cuentanos_tu_empresa"=>"A que ramos turistico se dedica tu empresa (gastronomia, eventos nocturnos, tours, paseos de barco u otros).",
+
+
+"indique_cargo_en_empresa_"=>"Ej: Gerente general, propietario, gerente comercial, marketing, gerente de ventas ",
+
+"indique_whatsapp_empresa"=>"Indique el Whatsapp de su empresa y confirmar su activación.",
+
+"prestador_descripcion"=>"¿En que se destaca tu empresa?",
+
+"describa_su_empresa"=>"Describe brevemente  en que se destaca tu empresa ",
+
+"prestador_destaque"=>"Describa su empresa",
+
+"pais_"=>"Pais",
+
+"estado_"=>"Estado",
+
+"ciudad_"=>"Ciudad",
+
+"destino_que_opera"=>"¿Que destino opera?",
+
+"servicio_que_desea_ofrecer"=>"¿Que servicio le gustaria ofrecer?",
+
+"indique_servicio_ofrecer"=>"Describa brevemente el servicio que le gustaria ofrecer",
+
+"indique_pais_"=>"Indique su Pais",
+
+"indique_estado_"=>"indique el Estado",
+
+"indique_ciudad_"=>"indique la ciudad",
+
+
+"indique_destino_que_opera"=>"(Playa, barrios, localidades, otros)",
+
+
+
+
+/* REGISTRO FREELANCE */
+
+
+"vendedor_externo" => " Registrate como freelance",
+
+"datos_vendedor_externo"=> " Datos del vendedor ,externo",
+
+"tipo_de_vendedor_externo"=>"Tipo de vendedor externo",
+
+
+
+
+/* REGISTRO FREELANCE */
+
+
+"vendedor_externo" => " Registrate vendedor externo",
+
+"datos_vendedor_externo"=> " Datos del vendedor externo",
+
+"tipo_de_vendedor_externo"=>"Tipo de vendedor externo",
+
+
+
+
+
+
+
+/* BOTONES DE WHATSAPP */
+
+
+"compartir_en_facebook"=>"Compartir en Facebook",
+
+"compartir_en_whatsapp"=>"Compartir en Whatsapp",
+
+"registrarse"=> "Registrese nuevamente",
+
+
+
+
+
+/* DATOS PERSONALES */
+
+
+"acepto_las"=>"Acepto las",
+
+"politicas"=>"politicas de uso",
 
 
 

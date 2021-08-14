@@ -34,12 +34,12 @@ function getEdades(){
     
     
     }
-   /* function setPrestador($nombre, $rSocial, $documento, $telefono, $email, $observaciones, $direccion, $latitud, $longitud){
+ function setEdad($valor){
 
 
         require("conexion.php");
-        $data=["nombre"=> $nombre, "rSocial"=>$rSocial, "documento"=>$documento, "telefono"=>$telefono, "email"=> $email, "observaciones"=> $observaciones,"direccion"=>$direccion, "latitud"=>$latitud,"longitud"=>$longitud];
-        $consulta = "INSERT INTO prestadores (nombre, razonSocial, documento, telefono, email, observaciones,direccion, latitud, longitud) VALUES (:nombre, :rSocial, :documento,:telefono,:email,:observaciones,:direccion, :latitud, :longitud) ";
+        $data=["valor"=> $valor];
+        $consulta = "INSERT INTO edades (valor) VALUES (:valor) ";
         
         $comando = $pdo->prepare($consulta);
         
@@ -53,7 +53,7 @@ function getEdades(){
         return $id;
         
         
-        }
+        }  /* 
 
         
 function borraPrestador($idPrestador){

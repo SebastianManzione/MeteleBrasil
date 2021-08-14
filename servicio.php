@@ -19,6 +19,13 @@ require("admin/classes/servicio_opiniones.php");
 require("admin/classes/texto_miniaturas.php"); 
 
 
+require("admin/classes/destinos.php"); 
+
+require("admin/classes/paises.php"); 
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 
@@ -56,9 +63,8 @@ require("admin/classes/texto_viajeros.php");
 
                  $CantOpinionesServicio=count($OpinionesServicio);
 
-
-
-                
+$destino=getDestino($servicio["idDestino"]);
+     $pais=getPais($destino[0]["idPais"]);           
 
      }
 
@@ -236,7 +242,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <h2 class="py-4 text-primary" name="desc"><?=$lang["ingresa_tu_email_para_recibir_novedades"]?><?=$lang["que_se_visita"]?></h2>
+        <h2 class="py-4 text-primary" name="desc"><?=$lang["que_se_visita"]?></h2>
 
 
 
@@ -272,7 +278,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-         <h2 class="py-4 text-primary"><?=$lang["importante"]?></h2></h2>
+         <h2 class="py-4 text-primary"> <?=$lang["importante"]?></h2></h2>
 
 
 
@@ -316,7 +322,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-         <h2 class="py-4 text-primary"><?=$lang["precio"]?></h2>
+         <h2 class="py-4 text-primary"> <?=$lang["precio"]?></h2>
 
 
 
@@ -326,7 +332,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
              <div class="col-lg-3 col-12 my-auto">
 
-               <p class="popular text-center mb-0 "><i class="fa fa-star"></i><?=$lang["mas_populas"]?></p>
+               <p class="popular text-center mb-0 "><i class="fa fa-star"></i> <?=$lang["mas_populas"]?></p>
 
                <p><strong></strong></p>
 
@@ -370,17 +376,17 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <h2 class="py-4 text-primary"><?=$lang["detalles_"]?></h2>
+        <h2 class="py-4 text-primary"> <?=$lang["detalles_"]?></h2>
 
 
 
-        <h5 class="semibold"><i class="fa fa-hourglass-half"></i><?=$lang["duracion_"]?></h5>
+        <h5 class="semibold"><i class="fa fa-hourglass-half"> </i> <?=$lang["duracion_"]?></h5>
 
         <p class="mx-4" id="txtDuracion">  </p>
 
 
 
-        <h5 class="semibold"><i class="fa fa-language"></i><?=$lang["idioma_"]?></h5>
+        <h5 class="semibold"><i class="fa fa-language"></i> <?=$lang["idioma_"]?></h5>
 
 
 
@@ -390,7 +396,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <h5 class="semibold"><i class="fa fa-exclamation-triangle"></i><?=$lang["incluido_"]?></h5>
+        <h5 class="semibold"><i class="fa fa-exclamation-triangle"> </i><?=$lang["incluido_"]?></h5>
 
         <ul class="" id="ulIncluidos">
 
@@ -407,8 +413,8 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-
-        <h5 class="semibold"><i class="fa fa-exclamation-triangle"></i><?=$lang["no_incluido"]?></h5>
+<div id="divNoIncluidosCuerpo">
+        <h5 class="semibold"><i class="fa fa-exclamation-triangle"></i> <?=$lang["no_incluido"]?></h5>
 
         <ul class="" id="ulNoIncluidos">
 
@@ -423,32 +429,28 @@ for ($i=0; $i < count($fotos); $i++) {
         </ul>
 
 
+</div>
+        <h5 class="semibold" name="documentacionViajero"><i class="fas fa-passport"></i> <?=$lang["documentacion_para_el_viajero"]?></h5>
 
-        <h5 class="semibold" name="documentacionViajero"><i class="fas fa-passport"></i><?=$lang["documentacion_para_el_viajero"]?></h5>
-
-        <ul class="" >
-
-          
-
-                <?= $servicio['documentacionViajero']; ?>
+        <ul class="" > <?= $servicio['documentacionViajero']; ?>
 
         </ul>
 
-        <h5 class="semibold"><i class="fa fa-calendar-alt"></i><?=$lang["cuando_reservar"]?></h5>
+        <h5 class="semibold"><i class="fa fa-calendar-alt"> </i><?=$lang["cuando_reservar"]?></h5>
 
-        <p class="mx-4"><?=$lang["reserva_cuanto_antes_para"]?></p>
+        <p class="mx-4"> <?=$lang["reserva_cuanto_antes_para"]?></p>
 
-        <p  class="mx-4"><?=$lang["se_permiten_reservas_hasta_las_23"]?></p>
-
-
-
-        <h5 class="semibold"><i class="fa fa-file"></i><?=$lang["justificante"]?></h5>
-
-        <p class="mx-4"><?=$lang["te_enviaremos_un_email"]?></p>
+        <p  class="mx-4"> <?=$lang["se_permiten_reservas_hasta_las_23"]?></p>
 
 
 
-        <h5 class="semibold"><i class="fa fa-question-circle mb-4"></i><?=$lang["preguntas_frecuentes"]?></h5>
+        <h5 class="semibold"> <i class="fa fa-file"></i><?=$lang["justificante"]?></h5>
+
+        <p class="mx-4"> <?=$lang["te_enviaremos_un_email"]?></p>
+
+
+
+        <h5 class="semibold"> <i class="fa fa-question-circle mb-4"></i><?=$lang["preguntas_frecuentes"]?></h5>
 
 
 
@@ -466,7 +468,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
                 <a  class=" btn-faq" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
 
-                 <strong><?=$lang["viajeros"]?></strong>
+                 <strong> <?=$lang["viajeros"]?></strong>
 
                  <?=$lang["es_posible_organizar"]?>
 
@@ -480,7 +482,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
               <div class="card-body">
 
-                <p class="mx-4"><strong>Metelebrasil</strong><?=$lang["si_la_visita_puede_ser"]?></p>
+                <p class="mx-4"> <strong>Metelebrasil</strong><?=$lang["si_la_visita_puede_ser"]?></p>
 
               </div>
 
@@ -494,14 +496,24 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <h5><i class="fa fa-wheelchair"></i><?=$lang["accesibilidad_"]?></h5>
+        <h5><i class="fa fa-wheelchair"></i> <?=$lang["accesibilidad_"]?></h5>
 
-        <p class="mx-4"><?=$lang["si_nuestras_actividades"]?></p>
-
-
+        <p class="mx-4"> <?=$lang["si_nuestras_actividades"]?></p>
 
 
+ <!-- CONTENEDOR CANCELACION-->
 
+          <div > 
+
+            <h2 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h2>
+
+<div id="divCancelaciones" name="cancelaciones"></div>
+
+                          
+
+          </div>
+
+           <!--FIN CONTENEDOR CANCELACION-->
 
 
         <!--FIN TEXTO DETALLE-->
@@ -522,6 +534,13 @@ for ($i=0; $i < count($fotos); $i++) {
 
           </div>
 
+
+
+
+
+
+
+
            <!--FIN COL INFORMACION-->
 
           <div class="col-lg-4">
@@ -534,9 +553,10 @@ for ($i=0; $i < count($fotos); $i++) {
 
                     <h2 class="text-primary" style="font-size:60px;"><span style="font-size:60px;"  id="precioTotal0"></span> </h2>
 
-                    <p><?=$lang["sin_sobreprecios"]?></p>
+                    <p> <?=$lang["sin_sobreprecios"]?></p>
 
-                    <p class="text-success"><b><?=$lang["cancelacion_gratuita_"]?></b></p>
+                    <p class="text-success" id="textoCancelacionGratuita" style="display: none;"><b> <?=$lang["cancelacion_gratuita_"]?></b></p>
+
 
                  </div>
 
@@ -814,7 +834,7 @@ function cupon(texto){
 
              <!--ACORDEON PERSONA-->
 
-             <div class="accordion mb-2" id="Seleccionar_personas">
+             <div class="accordion mb-2" id="Seleccionar_personas_div">
 
                  <div class="card card-accordion">
 
@@ -964,6 +984,7 @@ function cupon(texto){
 
 <section>
 
+
   <div class="container" style="display: none;">
 
     <div class="row">
@@ -1025,7 +1046,7 @@ function cupon(texto){
              <!--FIN MAPA-->
 
   
-
+          
   <div class="container" >
 
          <div class="row">
@@ -1034,19 +1055,6 @@ function cupon(texto){
 
           
 
-           <!-- CONTENEDOR CANCELACION-->
-
-          <div > 
-
-            <h2 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h2>
-
-<div id="divCancelaciones"></div>
-
-                          
-
-          </div>
-
-           <!--FIN CONTENEDOR CANCELACION-->
 
 
 
@@ -1323,23 +1331,36 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
           </div>
 
            <!--FIN CONTENEDOR OPINIONES-->
+<br><br>
 
+<!--botones de compartir whatsapp y facebook-->
 
+<div>
 
+<div class="row" style="margin-right: 3%; margin-left: 3%;">
+    <div class="col fb-share-button" data-href="https://www.metelebrasil.com/servicio?id=<?=$idServicio?>" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse" class="btn btn-primary btn-lg active btn-block"><i class="fab fa-facebook-f"></i>  <?=$lang["compartir_en_facebook"];?></a>
+    </div>
+    <div class="col">
+     <a class="btn btn-success btn-lg active btn-block" href="whatsapp://send?text=Metelebrasil%20https://www.metelebrasil.com/servicio?id=<?=$idServicio;?>"><i class="fab fa-whatsapp"></i>  <?=$lang["compartir_en_whatsapp"];?></a>
+  </div>
 
+</div>
 
             <!--CARDS DE INTERES-->
 
+<br><br>
 
+      
 
-            <h2 class="text-center mb-4"><?=$lang["tambien_te_puede_interesar"]?></h2>
 
             <div class="container mb-5">
+
+               <h2 class="text-center mb-4"><?=$lang["tambien_te_puede_interesar"]?></h2>
 
               <div class="row">
 
 
-
+     
 
 
 

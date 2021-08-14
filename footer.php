@@ -126,7 +126,9 @@
                     <div id="politica" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOnePolitica-de-uso">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-                    <li><a href="condiciones"><?=$lang["politica_de_uso"]?></a></li>
+                                 <!-- Aqui condiciones generales fueron escondidos porque necesita ser hecho en ES PT EN con un dead line 25/6/2021
+                                  <li><a href="condiciones"><?=$lang["condiciones_generales"]?></a></li> -->
+
                     <li><a href="aviso"><?=$lang["aviso_legal"]?></a></li>
                     <li><a href="privacy"><?=$lang["politica_de_privacidad"]?></a></li>
                     <li><a href="cookies"><?=$lang["cookies"]?></a></li>
@@ -149,8 +151,10 @@
                     <div id="trabajo" class="collapse div-btn-footer py-3" aria-labelledby="headingOne" data-parent="#headingOneTrabajo">
                      <div class="container">
                       <ul class="footer-ul mb-0">
-            <li><a href="contact"><?=$lang["venta_freelance"]?></a></li>
-            <li><a href="contact"><?=$lang["agencias_de_viajes"]?></a></li>
+                        <li><a href="prestadores"><?=$lang["prestadores_de_servicio"]?></a></li>
+                        <li><a href="freelancers"><?=$lang["venta_freelance"]?></a></li>
+                        <li><a href="agencias"><?=$lang["agencias_de_viajes"]?></a></li>
+                        <li><a href="operadoresMaioristas"><?=$lang["operadores_mayoristas"]?></a></li>
                    
                 </ul> 
                      </div>
@@ -182,7 +186,7 @@
                   </div>
            </div> -->
     <!--acordeon #5-->
-     <!--acordeon #5-->
+     <!--ACORDEON DE MONEDAS acordeon #5-->
     <div class="accordion" >
                  <div class="card card-accordion">
                     <div class="" id="headingOneMonedaFooter">
@@ -217,7 +221,7 @@
 
         <!-- Footer Location -->
         <div class="col-lg-3 mb-5 mb-lg-0 d-md-block d-none ">
-          <h4 class="text-uppercase mb-4">METELEBRASIL</h4>
+          <h4 class="text-uppercase mb-4"> METELE BRASIL</h4>
           <ul class="footer-ul">
             <li><a href="acercaDe"><?=$lang["quienes_somos"]?></a></li>
             <li><a href="categorias"><?=$lang["destinos"]?></a></li>
@@ -239,9 +243,13 @@
 
         <!-- Footer About Text -->
         <div class="col-lg-3 d-md-block d-none">
-          <h4 class="text-up percase mb-4"><?=$lang["politica_de_uso"]?></h4>
+          <h4 class="text-up percase mb-4"><?=$lang["politica_de_uso_"]?></h4>
           <ul class="footer-ul">
-            <li><a href="condiciones"><?=$lang["condiciones_generales"]?></a></li>
+
+             <!-- Aqui condiciones generales fueron escondidos porque necesita ser hecho en ES PT EN con un dead line 25/6/2021
+                                  <li><a href="condiciones"><?=$lang["condiciones_generales"]?></a></li> -->
+
+
             <li><a href="aviso"><?=$lang["aviso_legal"]?></a></li>
             <li><a href="privacy"><?=$lang["politica_de_privacidad"]?></a></li>
             <li><a href="cookies"><?=$lang["cookies"]?></a></li>
@@ -251,8 +259,11 @@
         <div class="col-lg-3 d-md-block d-none">
           <h4 class="text-uppercase mb-4"><?=$lang["trabaja_con_nosotros"]?></h4>
           <ul class="footer-ul">
-            <li><a href="contact"><?=$lang["venta_freelance"]?></a></li>
-            <li><a href="contact"><?=$lang["agencias_de_viajes"]?></a></li>
+            <li><a href="prestadores"><?=$lang["prestadores_de_servicio"]?></a></li>
+            <li><a href="freelancers"><?=$lang["venta_freelance"]?></a></li>
+            <li><a href="agencias"><?=$lang["agencias_de_viajes"]?></a></li>
+            <li><a href="operadoresMaioristas"><?=$lang["operadores_mayoristas"]?></a></li>
+            
             <!--<li><a href="#">Empleo</a></li>-->
           </ul>
         </div>
@@ -303,7 +314,7 @@
       <div class="row">
         <div class="col-lg-4"></div>
         <div class="col-lg-2">
-         <p class="text-gris text-center"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
+         <p class="text-gris text-center"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
         </div>
         <div class="col-lg-2 col-4">
           <img src="img/paypal-2.png" class="img-fluid img-foter">
@@ -322,7 +333,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-8 col-12">
-          <h4 class="text-left"><small><span>METELEBRASIL</span><?=$lang["es_una_marca_registrada_de_reservate_sl"]?></small></h4>
+          <h4 class="text-left"><small><span> <img src="img/favicon.png" sizes="20x20" style=" width: 25px; height: 28px border: 5px", />  METELE BRASIL</span><?=$lang["es_una_marca_registrada_de_reservate_sl"]?></small></h4>
         </div>
         <div class="col-lg-4 col-md-4 col-12 d-md-block d-none">
            <a class="btn btn-outline-light btn-social mx-1" target="_blank" href="https://www.facebook.com/Metele-Brasil-2731641913727960/">
@@ -342,15 +353,7 @@
     </div>
   </section>
 
-<script type="text/javascript">/*
-    window._mfq = window._mfq || [];
-    (function() {
-        var mf = document.createElement("script");
-        mf.type = "text/javascript"; mf.defer = true;
-        mf.src = "//cdn.mouseflow.com/projects/d61eb028-0fb2-4c1a-9231-79e964b71285.js";
-        document.getElementsByTagName("head")[0].appendChild(mf);
-    })();*/
-</script>
+
 <!-- Start of  Zendesk Widget script -->
 <!-- Start of turismoenbrasilvendas Zendesk Widget script -->
 <script >

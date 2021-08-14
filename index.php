@@ -322,6 +322,9 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
 
 
      </div>
+<?php if (count(getCategoriasLimit6())>6) {
+  ?>
+
 
             <!--BUCLE MAS-->
             <div class="col-lg-12 text-center ">
@@ -330,6 +333,9 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
           </button>
        </div>
     <!--FIN COLUMNA VER MAS-->
+      <?php
+  // code...
+} ?>
 
    </div>
  </section>
@@ -491,6 +497,8 @@ $puntuacion=round($acum/$CantOpinionesServicio, 1);
 $servicios=getServiciosLimit612();
  
     for ($i=0; $i < count($servicios); $i++) { 
+      if ($i<12) {
+        
     $idServicio=$servicios[$i]["idServicio"];
       $fecha=date("Y-m-d");
   
@@ -569,7 +577,7 @@ $servicios=getServiciosLimit612();
        <!--EL BUCLE DEBES TERMINARLO ACA--> 
 
     	<?php
-    }}
+    }}}
 
  ?>
 
@@ -577,14 +585,20 @@ $servicios=getServiciosLimit612();
 
   
   </div>
-   <!--EL BUCLE VER MAS--> 
 
+  <?php   if (count(getServiciosLimit612())>0) {
+   ?>
+
+
+<!-- BUCLE VER MAS--> 
 
        <div class="col-lg-12 text-center py-5">
          <button class="btn  btn-white" type="button" id="alternar-panel-oculto-2" data-toggle="collapse" data-target="#VerMasActividades-d" aria-expanded="false" aria-controls="VerMasActividades-d">
             <?=$lang["ver_mas"];?>
           </button>
        </div>
+          <?php
+  } ?>   <!--FIN BUCLE VER MAS--> 
      </div>
    </div>
  </section>

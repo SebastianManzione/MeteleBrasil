@@ -13,6 +13,7 @@ require("classes/reserva.php");
 require("classes/salidas.php");
 require("classes/servicio.php");
 require("classes/destinos.php");
+require("classes/paises.php");
 require("classes/convierte_monedas.php");
 
 
@@ -28,10 +29,12 @@ if (!$_SESSION["login"]["rol"]==1) {
 
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
-
+print_r($_POST);
   if (isset($_POST["addDestino"])) {
-    $textoDestino=$_POST["textoDestino"];
-    $resuDestino=setDestino($textoDestino);
+    $ciudad=$_POST["ciudad"];
+        $idPais=$_POST["idPais"];
+         $estado=$_POST["estado"];
+    $resuDestino=setDestino($ciudad,$estado, $idPais);
 
     if ($resuDestino>0) {
   alertar("Destino guardado con éxito","success");
@@ -116,8 +119,20 @@ $destinos=getDestinos();
                                             <form method="post">
                                               <div class="form-group">
                                                 
-                                                  <label for="recipient-name" class="col-form-label">Destino:</label>
-                                                  <input type="text" class="form-control" name="textoDestino">
+                                                  <label for="recipient-name" class="col-form-label">ciudad:</label>
+                                                  <input type="text" class="form-control" name="ciudad">
+                                                    <label for="recipient-name" class="col-form-label">estado:</label>
+                                                  <input type="text" class="form-control" name="estado">
+                                                  <select name="idPais">
+                                                    <?php 
+                                                      $paises=getPaises();
+                                                    for ($i=0; $i < count($paises); $i++) { 
+                                                      ?>
+                                                      <option value="<?=$paises[$i]['idPais'];?>"><?=$paises[$i]["nombre"];?></option>
+                                                      <?php
+                                                    } ?>
+                                                  
+                                                  </select>
                                              </div>
                                                   
                                             
@@ -144,7 +159,9 @@ $destinos=getDestinos();
                               <thead>
                                 <tr>
                        
-                                   <th scope="col">Destino</th>              
+                                   <th scope="col">Ciudad</th>     
+                                      <th scope="col">Estado</th>           
+                                   <th scope="col">Pais</th>  
                                    <th scope="col">Accion</th>
 
                                 </tr>
@@ -152,14 +169,17 @@ $destinos=getDestinos();
                   
                            <tbody>
 <?php for ($i=0; $i < count($destinos); $i++) { 
+
   $idDestino=$destinos[$i]["idDestino"];
+  $pais=getPais($destinos[$i]["idPais"]);
 ?>
 
 
                              <tr>
                       
                                 <td><?=$destinos[$i]["nombre"];?></td>
-                                  
+                                 <td><?=$destinos[$i]["estado"];?></td>
+                                  <td><?=$pais[0]["nombre"];?></td>
                                 <td>
                                  <form method="post" id="borra<?=$idDestino;?>">
   <input type="hidden" name="eliminarDestino" value="<?=$idDestino;?>" >

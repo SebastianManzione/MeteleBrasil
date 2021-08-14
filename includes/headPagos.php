@@ -1,7 +1,36 @@
 <?php
-
+ session_start();
 include("admin/classes/parametros.php");
  $parametros=getParametros();
+
+// verificamos la sesion creada
+
+if(isset($_SESSION['idioma'])){
+
+  // si es true, se crea el require y la variable lang
+
+  $lang = $_SESSION["idioma"];
+
+
+
+  require "admin/lang/".$lang.".php";
+
+
+
+  // si no hay sesion por default se carga el lenguaje espanol
+
+}else{
+
+  $_SESSION["idioma_bandera"]='img/countries/Brazil-icon.png';
+
+   $_SESSION["idioma"]="PT";
+
+  require "admin/lang/PT.php";
+
+}
+
+
+ 
  ?>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -15,12 +44,12 @@ include("admin/classes/parametros.php");
    <title>MeteleBrasil.com</title>
   
     <meta name="title" content="MeteleBrasil.com" />
-    <meta name="description" content="Actividades, traslados, entradas, visitas guiadas y excursiones en español en todo el mundo. Reserva online con precio mínimo garantizado." />
+    <meta name="description" content="Actividades, traslados, entradas, visitas guiadas y excursiones en español en todo el mundo. Reserva online com precio mínimo garantizado." />
     <meta name="keywords" content="excursiones, visitas guiadas, tours, actividades, traslados, transfers, circuitos, guias turísticas, guias de viaje" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-     <link rel="icon" href="img/favicon.png" sizes="32x32">
+     <link rel="icon" href="img/favicon.ico" sizes="32x32">
    
   <!-- ESTILOS NECESARIOS -->
     

@@ -1,35 +1,57 @@
 <?php
 
-$totalEbanx=ConvierteMoneda($monedaNativa,188, $totalAPagar);
-$idOperacion=$idReserva;
-$country="ar";
-// abrimos la sesión cURL
+
+function url_ebanx($codigoAmigable, $total_reales){
+
+include($_SERVER['DOCUMENT_ROOT']."/admin/pasarelas/ebanx/configEbanx.php");
+
+
+
+/*
+
+
 $ch = curl_init();
-
-// definimos la URL a la que hacemos la petición
-curl_setopt($ch, CURLOPT_URL,"https://sandbox.ebanxpay.com/ws/request");
-// indicamos el tipo de petición: POST
-curl_setopt($ch, CURLOPT_POST, TRUE);
-// definimos cada uno de los parámetros
-curl_setopt($ch, CURLOPT_POSTFIELDS, "integration_key=test_ik_BSWornvqoXPL1wFfy89olQ&name=value2&email=adsads@asdasd.com&country=".$country."&payment_type_code=_all&merchant_payment_code=".$idOperacion."&currency_code=USD&amount=".$totalEbanx);
- 
-
- 
-// recibimos la respuesta y la guardamos en una variable
+$post = [
+    'integration_key' => $integration_key,
+ 'hash' => '610864c37f16cf3320c2b8bb3203bbd3e7db0a35501c14d2',
+ "description"=> "Order did not arrive",
+"merchant_refund_code"=> 787653
+];
+curl_setopt($ch, CURLOPT_URL,"https://sandbox.ebanxpay.com/ws/refundOrCancel");
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-$remote_server_output = curl_exec ($ch);
- 
-// cerramos la sesión cURL
+$server_output = curl_exec($ch);
+print_r($server_output);
 curl_close ($ch);
- 
-// hacemos lo que queramos con los datos recibidos
-// por ejemplo, los mostramos
-$remote_server_output=json_decode($remote_server_output,true);
-$urlEbanxs=$remote_server_output["redirect_url"];
+*/
 
-//echo ('<script> 
-  // window.location.href="'.$urll.'"</script>');
+
+//echo "**************************************************************<br>**********************************************************";
 
 
 
- ?>
+
+
+$ch = curl_init();
+$post = [
+    'integration_key' => $integration_key,
+    'payment_type_code' => '_all',    
+    'merchant_payment_code' => $codigoAmigable,
+    'currency_code'   => 'BRL',
+    'amount'=> $total_reales
+];
+curl_setopt($ch, CURLOPT_URL,"https://sandbox.ebanxpay.com/ws/request");
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+$server_output = curl_exec($ch);
+//print_r($server_output);
+curl_close ($ch);
+$resultado= json_decode($server_output, true);
+return ($resultado['redirect_url']);
+
+}
+
+
+?>

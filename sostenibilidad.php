@@ -93,102 +93,82 @@ include("includes/navbar.php");
                  
             <div class="o-container-work-us">
         
-            <h1 class="a-title-empleo"><?=$lang["sostenibilidad"]?></h1>
+         <br>
 
             <span class="py-4 text-primary"></span>
 
-            <p><?=$lang["el_presente_sitio"]?><i>“<b>METELEBRASIL</b>”</i><?=$lang["con_cnpj"]?></p>
+            <p><b>METELEBRASIL </b><?=$lang["es_una_plataforma_de_reservas"]?></p>
 
-            <p>METELEBRASIL <?=$lang["se_toma_muy_enserio"]?></p>
+            
+            <p><?=$lang["integramos_en_una_plataforma"]?></p>
 
-            <p><?=$lang["la_presente"]?></p>
+       
 
-            <p><?=$lang["si_desea_ponerse"]?><a href="mailto:dpo@METELEBRASIL.com">dpo@METELEBRASIL.com</a>.</p>
+            <span class="py-4 text-primary"></span>
 
-            <!-- ---------------------------------------------------------------------------------------------------------- -->
+            <p><?=$lang["resolvemos_todos_los_esquemas"]?></p>
 
-            <span class="py-4 text-primary"><?=$lang["2_porque_metelebrasil"]?></span>
 
-            <p><?=$lang["los_datos_de_los"]?></p>
+     <!-- ---------------------------------------------------------------------------------------------------------- -->
 
-            <p><?=$lang["de_conformidad_con"]?></p>
+           
 
-            <!-- ---------------------------------------------------------------------------------------------------------- -->
-
-            <span class="py-4 text-primary"><?=$lang["3_procedimento_de_dados"]?></span>
-
-            <p>METELEBRASIL <?=$lang["podra_recabar_datos"]?></p>
-
-            <ol>
-            <li><?=$lang["la_prestacion_de_servicios"]?></li>
-            <li><?=$lang["enviar_comunicaciones_comerciales"]?></li>
-            </ol>
-
-            <p><?=$lang["asimismo_el_usuario"]?></p>
-
-            <p><?=$lang["igualmente_y_por_motivos"]?></p>
-            <!-- ---------------------------------------------------------------------------------------------------------- -->
-
-            <span class="py-4 text-primary"><?=$lang["4_caracter_obligatorio"]?></span>
-
-            <p><?=$lang["el_usuario_garantiza"]?></p>
-
-            <p><?=$lang["se_recomienda_tener"]?></p>
 
             <!-- ---------------------------------------------------------------------------------------------------------- -->
 
-            <span class="py-4 text-primary"><?=$lang["practicas_no_permitidas"]?></span>
+           <h3><span class="py-4 text-primary"><b><?=$lang["impacto_socio_ambiental"]?></b></span></h3>
 
-            <p>METELEBRASIL <?=$lang["anulara_el_registro"]?>
+            <p><?=$lang["nuestro_sistema_integrado"]?>
 
-            <b>(i)</b><?=$lang["incluyan_o_promocionen"]?>
-            <b>(ii)</b><?=$lang["promocionen_cualquier_tipo"]?>
-            <b>(iii)</b><?=$lang["remitan_bulk"]?>
-            <b>(iv)</b><?=$lang["inclumplan_algun_derecho"]?></p>
 
-            <p><?=$lang["los_datos_personales_proporcionados"]?></p>
+           <br>
+            <li><?=$lang["nuestro_sistema_soluciona"]?>
 
-            <!-- ---------------------------------------------------------------------------------------------------------- -->
+<br><br>
 
-            <span class="py-4 text-primary"><?=$lang["6_derechos_del_usuario"]?></span>
+            <h3><span class="py-4 text-primary"><b><?=$lang["impacto_economico"]?></b></span></h3>
 
-            <p><?=$lang["el_usuario_tiene_derecho"]?><b>(i)</b><?=$lang["acceder_a_sus_datos"]?><b>(ii)</b><?=$lang["solicitar_la_rectificacion"]?><b>(iii)</b><?=$lang["solicitar_su_supresion"]?><b>(iv)</b><?=$lang["solicitar_la_limitacion"]?><b>(v)</b><?=$lang["opomerse_al_tratamiento"]?><b>(vi)</b><?=$lang["ejercitar_el_derecho"]?><b>(vii)</b><?=$lang["solicitar_su_portabilidad"]?></p>
 
-            <p><?=$lang["para_ejercer_dichos_derechos"]?></p>
 
-            <p><?=$lang["el_usuario_puede_ejercer"]?><a href="mailto:METELEBRASIL@METELEBRASIL.com">METELEBRASIL@METELEBRASIL.com</a><?=$lang["indicando_el_motivo"]?></p>
+            <?=$lang["nuestro_impacto_en_el_turismo"]?></p>
 
-            <p><?=$lang["el_usuario_puede_tambien"]?></p>
+            <p></p>
 
-            <p><b>METELEBRASIL TOURS S.L.</b></p>
+                        <p><?=$lang["en_nuestro_ecosistema"]?>
 
-            <p>calle Rua Mil 110 , Balneário Camboriú</p>
-
-            <p>Brasil.</p>
-
-            <p><?=$lang["sin_prejuicio"]?></p>
+            <i>“<b></b>”</i><?=$lang["cualquier_turista"]?></p>
 
             <!-- ---------------------------------------------------------------------------------------------------------- -->
 
-            <span class="py-4 text-primary"><?=$lang["7_seguridad"]?></span>
+            <h3><span class="py-4 text-primary"><b><?=$lang["metas_objetivos"]?></b></span></h3>
 
-            <p><?=$lang["la_proteccion_de_la_privacidad"]?></p>
+            <?=$lang["podemos_generar_mas_trabajo"]?>
+            <br><br>
 
-            <p>METELEBRASIL <?=$lang["mantiene_los_niveles"]?></p>
+            <li><?=$lang["los_operadores_tendran_la_posibilidad"]?><?=$lang["ejemplo_una_agencia"]?>
+            <br> <br>
+            <li><?=$lang["nuestro_principal_objetivo_es_vender"]?>
+            <br><br>
+             <p><b><?=$lang["creemos_que_de_esta_manera"]?></b></p>
 
-            <p>METELEBRASIL <?=$lang["se_compromete_a_cumplir"]?></p>
+             <?=$lang["este_sistema_esta_implementado"]?>
+<br><br>
+             <b><?=$lang["si_estas_interesado"]?></b>
 
+
+
+            
+
+           
+
+       <a href="mail : COMERCIAL@METELEBRASIL.com">comercial@METELEBRASIL.com</a>
+
+           
             <!-- ---------------------------------------------------------------------------------------------------------- -->
 
-            <span class="py-4 text-primary"><?=$lang["8_perguntas"]?></span>
+            <br><br><br>
 
-            <p><?=$lang["si_tiene_alguna_pregunta"]?><a href="mailto:METELEBRASIL@METELEBRASIL.com">METELEBRASIL@METELEBRASIL.com</a>.</p>
 
-            <!-- ---------------------------------------------------------------------------------------------------------- -->
-
-            <span class="py-4 text-primary"><?=$lang["9_aceptacion_y_concentimiento"]?></span>
-
-            <p><?=$lang["el_usuario_declara_haber"]?></p>
 
 
                 </div>

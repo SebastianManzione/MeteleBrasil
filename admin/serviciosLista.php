@@ -21,7 +21,7 @@ require("classes/accesibilidad.php");
 require("classes/idiomas.php");
 
 require("classes/edades.php");
-
+require("classes/destinos.php");
  //$moneda=getMoneda($_SESSION["nuevoServicio"]["selMoneda"]);
 
 //print_r($_POST); 
@@ -158,7 +158,7 @@ habilitarServicio($_POST["habilitarServicio"]);
                       <th>Nombre</th>
 
                       <th>Fecha Alta</th>
-
+                      <th>Destino</th>
                       <th>Foto</th>
 
                            <?php  if($_SESSION["login"]["rol"]==1){ ?> <th scope="col">¿Habilitado?</th>       <?php  } ?>
@@ -181,7 +181,7 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                       $fotos=getFotosServicio($idServicio);
 
-                                      
+                              $destino=getDestino($servicios[$i]["idDestino"]);        
 
                       $fechaAlta=$servicios[$i]["fechaAlta"];
 
@@ -189,12 +189,12 @@ habilitarServicio($_POST["habilitarServicio"]);
 
     <tr><a ></a>
 
-               
+               <td><?=$servicios[$i]["nombre_servicio"]?></td>
 
-                    <td><?=$servicios[$i]["nombre_servicio"]?></td>
+                    
 
                      <td><?=date("d-m-Y", strtotime($fechaAlta))?></td>
-
+<td><?=$destino[0]["nombre"]?></td>
                       
 
             <td><img style="width: 100px;"src="classes/imgServicio/<?=$fotos[0]['ruta']?>"></td>

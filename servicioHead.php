@@ -2,7 +2,7 @@
 
  <!--SECCION HEADER-->
 
-<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgServicio/<?=$fotos[0]["ruta"];?>');" >
+<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgServicio/<?=$fotos[0]["ruta"];?>'); " >
 
   <div class="container d-md-block d-none">
 
@@ -13,8 +13,18 @@
           
 
           <!--BUCLE DE LOS RESULTADOS AQUI--> 
-
-        <div class="badge badge-primary badge-ciudad"><?=$lang["brasil"]?></div>
+<?php if($servicio["idCategoria_servicio"] == 4){ //si es paquete
+  $origen=getDestino($servicio["idDestino"]);
+     $paisOrigen=getPais($origen[0]["idPais"]); 
+?>
+  <div class="badge badge-primary badge-ciudad"><?=$origen[0]["nombre"]?>, <?=$origen[0]["estado"]?>, <?=$paisOrigen[0]["nombre"]?> | <?=$destino[0]["nombre"]?>, <?=$pais[0]["nombre"]?></div>
+<?php
+} else{
+  ?>
+  <div class="badge badge-primary badge-ciudad"><?=$destino[0]["nombre"]?>, <?=$destino[0]["estado"]?>, <?=$pais[0]["nombre"]?></div>
+  <?php
+} ?>
+      
 
          <!--FIN BUCLE DE LOS RESULTADOS AQUI-->
 
@@ -76,7 +86,7 @@
 
 
 
-          <h2 class="semibold" ><?=$estrellasServicio;?>/10 <small><?=count($OpinionesServicio);?> opiniones</small></h2>
+          <h2 class="semibold"><?=$estrellasServicio;?>/10 <small><?=count($OpinionesServicio);?><?=$lang["opiniones"]?></small></h2>
 
           <p class="mb-0"> <?= substr($opinionAleatoria[0]['opinion'], 0, 150);?>...</p>
 
@@ -136,11 +146,11 @@
 
           <ul class="lista-visitas text-white">
 
-            <li id="pIdiomasNav"><i class="fa fa-comment"></i> </li>
+            <ul id="LiIdiomasNav"><i class="fa fa-comment"></i><small id="pIdiomasNav">  </small> 
 
-            <li><i class="fa fa-hourglass-half"></i>
+            <i class="fa fa-hourglass-half"></i>
 
-             <?= $duracion["duracionMinima"];?> - <?= $duracion["duracionMaxima"];?></li>
+             <?= $duracion["duracionMinima"];?> - <?= $duracion["duracionMaxima"];?></ul>
 
           </ul>
 
@@ -178,7 +188,7 @@
 
                   <div class="card card-body">
 
-                      <a class="btn btn-outline-light btn-social facebook mx-1 mb-2" href="http://www.facebook.com/sharer.php?u=http://www.metelebrasil.com/sistema/metelebrasil/verServicio.php?id=<?=$id;?>" target="_BLANK">
+                      <a class="btn btn-outline-light btn-social facebook mx-1 mb-2" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse">
 
                     <i class="fab fa-fw fa-facebook-f"></i>
 
@@ -250,7 +260,7 @@
 
           <li class="nav-item nav-visita px-2 ">
 
-            <a class="nav-link  text-gris  px-0   js-scroll-trigger" href="#cancelaciones"><?=$lang["cancelaciones"]?></a>
+            <a class="nav-link  text-gris  px-0   js-scroll-trigger" href="#cancelaciones"><?=$lang["cancelaciones_"]?></a>
 
           </li>
 
@@ -284,7 +294,7 @@
 
                   <div class="card card-body">
 
-                     <a class="btn btn-outline-light btn-social facebook mx-1 mb-2" href="http://www.facebook.com/sharer.php?u=http://www.metelebrasil.com/sistema/metelebrasil/verServicio.php?id=<?=$id;?>" target="_BLANK">
+                     <a class="btn btn-outline-light btn-social facebook mx-1 mb-2" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse">
 
                     <i class="fab fa-fw fa-facebook-f"></i>
 

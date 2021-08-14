@@ -612,7 +612,7 @@ $clientesListClass=" ";
 
 $treeviewClientes="   ";
 
-if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" ) {
+if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="solicitudes.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" || $archivo_actual=="edades.php" || $archivo_actual=="cancelaciones.php") {
 
 $treeviewClientes=" menu-open ";
 
@@ -678,8 +678,82 @@ $treeviewClientes=" menu-open ";
 
       <!-- individual-->
 
+              <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+
+ if ($archivo_actual=="solicitudes.php" ) {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="solicitudes" class="nav-link <?=$clientesClass?>">
+
+                <i class="fa fa-address-book" aria-hidden="true"></i>
+
+                  <p>Solicitudes</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
+    <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+
+ if ($archivo_actual=="edades.php" ) {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="edades" class="nav-link <?=$clientesClass?>">
+
+                <i class="fas fa-user" aria-hidden="true"></i>
+
+                  <p>Edades</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
 
 
+ <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+
+ if ($archivo_actual=="cancelaciones.php" ) {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="cancelaciones" class="nav-link <?=$clientesClass?>">
+
+           <i class="fas fa-user-times"></i>
+                  <p>Textos Cancelaciones</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
 
 
 

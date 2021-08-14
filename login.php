@@ -1,13 +1,5 @@
-
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <?php 
- 
-include("navbar.php");
-include($GLOBALS['path'].'/conectar.php');
-
-
-
+<?php
+include("includes/navbar.php"); 
 
 ?>
 

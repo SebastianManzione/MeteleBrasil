@@ -9,7 +9,7 @@ if (isset($_GET["idReserva"])) {
 
 <head>
 
-   <title>MeteleBrasil.com</title>
+   <title>Metele Brasil</title>
   
     <meta name="title" content="MeteleBrasil.com" />
     <meta name="description" content="Actividades, traslados, entradas, visitas guiadas y excursiones en español en todo el mundo. Reserva online con precio mínimo garantizado." />
@@ -17,7 +17,7 @@ if (isset($_GET["idReserva"])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
-     <link rel="icon" href="img/favicon.png" sizes="32x32">
+     <link rel="icon" href="img/favicon.ico" sizes="32x32">
    
   <!-- ESTILOS NECESARIOS -->
     
@@ -61,10 +61,10 @@ if (isset($_GET["idReserva"])) {
   <div class="container">
     <div class="row">
       <div class="col-lg-2 col-6">
-         <a class="navbar-brand text-white" href="#page-top"><h3>METELEBRASIL</h3></a>
+         <a class="navbar-brand text-white" href="#page-top"><h3>METELE BRASIL</h3></a>
       </div>
       <div class="col-lg-10 col-6">
-        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i> PAGO SEGURO</p>
+        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i> <?=$lang["pago_seguro"]?></p>
       </div>
     </div>
   </div>
@@ -97,8 +97,8 @@ if (isset($_GET["idReserva"])) {
         <div class=" py-3">
              <div class="card card-visitas">
               <div class="card-body">
-                <h5 class="mb-4">Reservacion</h5>
-                  <li class="active-success"><span><i class="fa fa-check"></i></span> <strong>Pago de la reserva nro<?=$_GET["external_reference"];?> aceptado correctamente!!</strong></li>
+                <h5 class="mb-4"><?=$lang["reserva"]?></p></h5>
+                  <li class="active-success"><span><i class="fa fa-check"></i></span> <strong><?=$lang["pago_de_la_reserva"]?></p><?=$_GET["external_reference"];?><?=$lang["aceptado_correctamente"]?></p></strong></li>
               </div>
             </div>
           </div>
@@ -113,7 +113,7 @@ if (isset($_GET["idReserva"])) {
       <div class="row">
         <div class="col-lg-8 col-md-8"></div>
         <div class="col-lg-4 col-md-4 col-12 text-right">
-          <a href="index.php" class="btn btn-primary btn-lg btn-radius" style="width: 100% !important;">Regresar</a>
+          <a href="index.php" class="btn btn-primary btn-lg btn-radius" style="width: 100% !important;"><?=$lang["pago_seguro"]?></p><?=$lang["regresar"]?></a>
         </div>
       </div>
     </div>

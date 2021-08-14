@@ -9,7 +9,7 @@
                     <div class="" id="headingOne-Descripcion">
                       <h5 class="mb-0">
                         <a class="btn btn-accordion bg-white border-top btn-accordion-dark-show " id="btn-descripcion" href="#" data-toggle="collapse" data-target="#descripcion-movil" aria-expanded="true" aria-controls="collapseOne">
-                          Descripcion <i class="fa fa-sort-down text-primary float-right"></i>
+                          <?=$lang["descripcion"]?> <i class="fa fa-sort-down text-primary float-right"></i>
                         </a>
                       </h5>
                     </div>
@@ -63,18 +63,18 @@
               </div>
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Previous</span>
+                  <span class="sr-only"><?=$lang["anterior"]?></span>
                 </a>
                 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="sr-only">Next</span>
+                  <span class="sr-only"><?=$lang["Proxima"]?></span>
                 </a>
            </div>
         <!--FIN SLIDER-->
 
         <!--TEXTO VISITA-->
 
-        <h4 class="py-4 text-primary"> ¿Qué se visita?</h4>
+        <h4 class="py-4 text-primary"><?=$lang["que_se_visita"]?></h4>
 
         <p class=""><?php echo DescripcionServicio($id); ?>.</p>
 
@@ -98,9 +98,9 @@
 
         <!--TEXTO RECOGIDA-->
 
-        <h4 class="py-4 text-primary">Recogida en el hotel</h4>
+        <h4 class="py-4 text-primary"><?=$lang["recogida_en_el_hotel"]?></h4>
 
-       <p>Opcionalmente, podes reservar la recogida en por el hotel. La recogida es una hora antes de la hora de inicio del tour e incluye todos los alojamientos en un radio de 8 kilómetros desde el punto de encuentro.</p>
+       <p><?=$lang["opcionalmente_podes_reservar_la_recogida"]?></p>
 
   
         <!--FIN TEXTO RECOGIDA-->  
@@ -124,7 +124,7 @@
                     <div class="" id="headingOne-Precio">
                       <h5 class="mb-0">
                         <a class="btn btn-accordion bg-white border-top  " id="btn-precio" href="#" data-toggle="collapse" data-target="#precio-movil" aria-expanded="true" aria-controls="collapseOne">
-                          Precio <i class="fa fa-sort-down text-primary float-right"></i>
+                          <?=$lang["precio"]?> <i class="fa fa-sort-down text-primary float-right"></i>
                         </a>
                       </h5>
                     </div>
@@ -142,29 +142,29 @@
          <div class="container">
         <div class="row">
              <div class="col-lg-3 col-12 my-auto">
-               <p class="popular text-center mb-0 "><i class="fa fa-star"></i> MÁS POPULAR</p>
+               <p class="popular text-center mb-0 "><i class="fa fa-star"></i> <?=$lang["mas_popular"]?></p>
                <p><strong></strong></p>
              </div>
              <div class="col-lg-2 col-5">
-               <p class="text-center ">Adultos</p>
+               <p class="text-center "><?=$lang["adultos"]?></p>
                <div class="circulo-b">
                  <p class="text-center text-primary"><?= $sym." ".PrecioSugeridoServicio2($id, $money, $impuestosPais); ?></p>
                </div>
              </div>
               <div class="col-lg-2 col-5">
-               <p class="text-center ">M> 12 años</p>
+               <p class="text-center "><?=$lang["menores_12_anos"]?></p>
                <div class="circulo-b">
                  <p class="text-center text-primary"><?= $sym." ".PrecioSugeridoServicio12($id, $money, $impuestosPais); ?></p>
                </div>
              </div>
              <div class="col-lg-2 col-5">
-               <p class="text-center ">M> 5 años</p>
+               <p class="text-center "><?=$lang["menores_5_anos"]?></p>
                <div class="circulo-b">
                  <p class="text-center text-primary"><?= $sym." ".PrecioSugeridoServicio5($id, $money, $impuestosPais); ?></p>
                </div>
              </div>
                  <div class="col-lg-2 col-5">
-               <p class="text-center ">M> 3 años</p>
+               <p class="text-center "><?=$lang["menores_3_anos"]?></p>
                <div class="circulo-b">
                  <p class="text-center text-primary"><?= $sym." ".PrecioSugeridoServicio3($id, $money, $impuestosPais); ?></p>
                </div>
@@ -217,7 +217,7 @@
         <div class="" id="headingOne">
           <h5 class="mb-0">
             <a class="btn btn-accordion bg-white border-top  "  data-toggle="modal" data-target="#modalhorario-movil">
-              Elegí la Fecha <i class="fa fa-sort-down text-primary float-right"></i>
+              <?=$lang["elegi_la_fecha"]?><i class="fa fa-sort-down text-primary float-right"></i>
             </a>
           </h5>
         </div>
@@ -235,7 +235,7 @@
                     <div class="" id="headingOne-Detalles">
                       <h5 class="mb-0">
                         <a class="btn btn-accordion bg-white border-top" id="btn-detalles" href="#" data-toggle="collapse" data-target="#detalles-movil" aria-expanded="true" aria-controls="collapseOne">
-                          Detalles <i class="fa fa-sort-down text-primary float-right"></i>
+                          <?=$lang["detalles_"]?><i class="fa fa-sort-down text-primary float-right"></i>
                         </a>
                       </h5>
                     </div>
@@ -249,15 +249,15 @@
         <div id="detalles">
           <!--TEXTO DETALLE-->
 
-        <h4 class="py-4 text-primary">Detalles</h4>
+        <h4 class="py-4 text-primary"><?=$lang["detalles_"]?></h4>
 
-        <h5 class="semibold"><i class="fa fa-hourglass"></i> Duración</h5>
+        <h5 class="semibold"><i class="fa fa-hourglass"></i><?=$lang["duracion_"]?></h5>
         <p class="mx-4"> <?= DuracionServicio($id)[0];?> - <?= DuracionServicio($id)[1];?></p>
 
-        <h5 class="semibold"><i class="fa fa-language"></i> Idioma </h5>
-        <p class="mx-4"> El tour se realiza en español, ingles y portugués.</p>
+        <h5 class="semibold"><i class="fa fa-language"></i><?=$lang["idioma"]?></h5>
+        <p class="mx-4"><?=$lang["el_tour_se_realiza_en"]?></p>
 
-        <h5 class="semibold"><i class="fa fa-exclamation-circle"></i> Incluido </h5>
+        <h5 class="semibold"><i class="fa fa-exclamation-circle"></i><?=$lang["incluido_"]?></h5>
         <ul class="">
           
     
@@ -276,7 +276,7 @@ for ($i=0; $i < count(svAdicionalesIncluidos($id)); $i++) {
 
         </ul>
 
-        <h5 class="semibold"><i class="fa fa-exclamation-triangle"></i> No incluido </h5>
+        <h5 class="semibold"><i class="fa fa-exclamation-triangle"></i><?=$lang["no_incluido"]?></h5>
         <ul class="">
           
 <?php
@@ -301,14 +301,15 @@ for ($i=0; $i < $registros ; $i++) {
 
         </ul>
 
-        <h5 class="semibold"><i class="fa fa-calendar-alt"></i> ¿Cuándo reservar? </h5>
-        <p class="mx-4">Reserva cuanto antes para garantizar la disponibilidad, especialmente en puentes y festivos.</p>
-        <p  class="mx-4">Se permiten reservas hasta las 23:00 horas del día anterior (Horario de brasilia) siempre que queden plazas</p>
+        <h5 class="semibold"><i class="fa fa-calendar-alt"></i><?=$lang["cuando_reservar"]?></h5>
+        <p class="mx-4"><?=$lang["reserva_cuanto_antes_para"]?></p>
 
-        <h5 class="semibold"><i class="fa fa-file"></i> Justificante</h5>
-        <p class="mx-4">Te enviaremos un email con un bono que podrás imprimir o llevar en tu móvil a la actividad.</p>
+        <p  class="mx-4"><?=$lang["se_permiten_reservas_hasta_las_23"]?></p>
 
-        <h5 class="semibold"><i class="fa fa-question-circle mb-4"></i> Preguntas frecuentes</h5>
+        <h5 class="semibold"><i class="fa fa-file"></i><?=$lang["justificante"]?></h5>
+        <p class="mx-4"><?=$lang["te_enviaremos_un_email"]?></p>
+
+        <h5 class="semibold"><i class="fa fa-question-circle mb-4"></i> <?=$lang["preguntas_frecuentes"]?></h5>
 
         <!--PREGUNTAS FRECUENTES-->
 
@@ -317,13 +318,13 @@ for ($i=0; $i < $registros ; $i++) {
             <div class="card-header" id="headingOne">
               <h5 class="mb-0">
                 <a href="#" class=" btn-faq" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                <strong>Viajero</strong> - ¿Es posible organizar una visita con grupos familiares de todas las edades?
+                <strong><?=$lang["viajero"]?></strong><?=$lang["es_posible_organizar"]?>
                 </a>
               </h5>
             </div>
             <div id="collapseOne" class="collapse " aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
-             <p class="mx-4"><strong>Metelebrasil</strong> - Sí. La visita puede ser realizada por grupos familiares y personas de todas las edades, incluyendo menores de 3 años.</p>
+             <p class="mx-4"><strong>Metelebrasil</strong><?=$lang["si_la_visita_puede_ser"]?></p>
               </div>
             </div>
           </div>
@@ -354,9 +355,13 @@ for ($i=0; $i < $registros ; $i++) {
             <!--FIN ACORDEON DETALLES-->
 
 
-             <!--ACORDEON PUNTOS DE ENCUENTRO-->
+             <!--
            
                  <div class="card card-accordion">
+                    
+
+
+
                     <div class="" id="headingOne-Encuentros">
                       <h5 class="mb-0">
                         <a class="btn btn-accordion bg-white border-top  " id="btn-encuentro" href="#" data-toggle="collapse" data-target="#encuentros-movil" aria-expanded="true" aria-controls="collapseOne">
@@ -364,6 +369,8 @@ for ($i=0; $i < $registros ; $i++) {
                         </a>
                       </h5>
                     </div>
+
+                    ACORDEON PUNTOS DE ENCUENTRO-->
 
                     <div id="encuentros-movil" class="collapse " aria-labelledby="headingOne-Encuentros" data-parent="#accordionExample-movil">
                       <div class="container py-2">
@@ -786,7 +793,7 @@ $texto=OpinionesDeServicioTexto($OpinionesServicio[$i][5]);
                              <div class="container py-3">
                               <div class="row">
                                   <div class="col-md-12">
-                                      <p class="counter-label mb-2 text-left">Menores de 12 años</p>
+                                      <p class="counter-label mb-2 text-left">Menores de 12 anos</p>
                                   </div>
                                   <div class="col-md-3 col-3">
                 <span class="counter-label_span"><label id=pMen12Mov></label></span>
@@ -811,7 +818,7 @@ $texto=OpinionesDeServicioTexto($OpinionesServicio[$i][5]);
                             <div class="container py-3">
                               <div class="row">
                                   <div class="col-md-12">
-                                      <p class="counter-label mb-2 text-left">Menores de 5 años</p>
+                                      <p class="counter-label mb-2 text-left">Menores de 5 anos</p>
                                   </div>
                                   <div class="col-md-3 col-3">
                 <span class="counter-label_span"><label id=pMen5Mov></label></span>
@@ -835,7 +842,7 @@ $texto=OpinionesDeServicioTexto($OpinionesServicio[$i][5]);
                             <div class="container py-3">
                               <div class="row">
                                   <div class="col-md-12">
-                                      <p class="counter-label mb-2 text-left">Menores de 3 años</p>
+                                      <p class="counter-label mb-2 text-left">Menores de 3 anos</p>
                                   </div>
                                   <div class="col-md-3 col-3">
                                      <span class="counter-label_span"><label id=pMen3Mov></label></span>

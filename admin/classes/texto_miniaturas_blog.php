@@ -17,11 +17,11 @@ function getTextosMiniaturasBlog(){
     
     }
 
-    function getTextoMiniaturaBlog($idTextoMiniaturas){
+    function getTextoMiniaturaBlog($idTextoMiniaturasBlog){
 
     require("conexion.php");
-    $data=["idTextoMiniaturas"=>$idTextoMiniaturas];
-    $consulta = "select * from texto_miniaturas_blog WHERE idTextoMiniaturas=:idTextoMiniaturas";
+    $data=["idTextoMiniaturasBlog"=>$idTextoMiniaturasBlog];
+    $consulta = "select * from texto_miniaturas_blog WHERE idTextoMiniaturasBlog=:idTextoMiniaturasBlog";
     
     $comando = $pdo->prepare($consulta);
     

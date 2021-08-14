@@ -50,12 +50,31 @@ function getIdiomas(){
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
     // Imprimir en pantalla
     $idiomas=Array();
+
     for ($i=0; $i < count($resultado); $i++) { 
-        $idiomaTmp=getIdioma($resultado[$i]['idIdioma']);
-        array_push($idiomas,  $idiomaTmp[0]['nombre']);
+$idiomaTmp=getIdioma($resultado[$i]['idIdioma']);
+        switch ($_SESSION['idioma']) {
+    case 'PT':
+         array_push($idiomas,  " ".$idiomaTmp[0]['nombre_PT']);
+        break;
+        case 'ES':
+         array_push($idiomas,  " ".$idiomaTmp[0]['nombre']);
+        break;
+            case 'EN':
+         array_push($idiomas,  " ".$idiomaTmp[0]['nombre_EN']);
+        break;
+    default:
+        // code...
+        break;
+}
+        
+
+       
       
         
     }
+   
+
     return $idiomas;
     
     

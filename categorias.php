@@ -1,5 +1,8 @@
 <?php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
  include('includes/navbar.php'); 
@@ -159,17 +162,29 @@ $consultaQuery="SELECT * FROM servicio sv
 } */
 
 $busqueda="";
+$cantidad_por_pagina=5;
+      $desde=0;
+if (isset($_GET['pagina'])) {
+  $pagina=$_GET['pagina'];
+  if ( $pagina==0) {
+     $desde=0;
+  }
+  else{
+     $desde=($pagina-1)*$cantidad_por_pagina;
+  }}
 
-if (isset($_GET["idCategoria"])) {
+if (isset($_GET["idCategoria"]) && $_GET['idCategoria']>0) {
 
 
 
 $idCategoria=$_GET["idCategoria"];
 
 $categorias=getCategoria($idCategoria);
+ 
 
-$servicios=getServiciosidCategoria_servicio($idCategoria);
 
+$servicios=getServiciosidCategoria_servicioPaginado($idCategoria,$desde, $cantidad_por_pagina);
+$cantidad_servicios_categoria=count(getServiciosidCategoria_servicio($idCategoria));
  
 
   $nViajeros=$categorias[0]["nViajeros"];
@@ -194,9 +209,9 @@ $busqueda=$_GET["buscar"];
 
 
 
-  $servicios=getServiciosBusqueda($_GET["buscar"]);
+  $servicios=getServiciosBusquedaPaginada($_GET["buscar"], $desde, $cantidad_por_pagina);
 
- 
+ $cantidad_servicios_categoria=count(getServiciosBusqueda($_GET["buscar"]));
 
 
 
@@ -204,7 +219,7 @@ $busqueda=$_GET["buscar"];
 
  $nViajeros=rand(690,1200); 
 
-$nombre_categoria=" Todas Las Categorías";
+$nombre_categoria="todas_las_categorias";
 
 $opiniones_categoria=array();
 
@@ -223,18 +238,31 @@ $opiniones_categoria=array();
 else{
 
   $idCategoria=0;
-
-  $servicios=getServicios();
-
+      $desde=0;
+if (isset($_GET['pagina'])) {
+  $pagina=$_GET['pagina'];
+  if ($pagina==1) {
+     $desde=0;
+  }
+  else{
+     $desde=($pagina-1)*$cantidad_por_pagina;
+  }
  
 
+}
+  $servicios=getServicios();
+  $cantidad_servicios_categoria=count(getServicios());
 
+  $servicios=getServiciosPaginado($desde, $cantidad_por_pagina);
 
+;
+
+$cantidad_servicios_categoria=count(getServicios());
  $categorias=getCategorias();
 
  $nViajeros=rand(690,1200); 
 
-$nombre_categoria=" Todas Las Categorías";
+$nombre_categoria="todas_las_categorias";
 
 $opiniones_categoria=array();
 
@@ -248,7 +276,7 @@ $opiniones_categoria=array();
 
 
 
-$cantidad_servicios_categoria=count($servicios);
+
 
 
 
@@ -278,7 +306,7 @@ $cantidad_servicios_categoria=count($servicios);
 
           <!--TITULO-->
 
-        <h1 class="text-white titulo-categoria py-2 bold texto-shadow"><?=$nombre_categoria; ?></h1>
+        <h1 class="text-white titulo-categoria py-2 bold texto-shadow"><?=$lang[$nombre_categoria];?></h1>
 
          <!--TITULO-->
 
@@ -328,7 +356,7 @@ $cantidad_servicios_categoria=count($servicios);
 
           <h2 class="title-numeros mb-0 bold"><?= $cantidad_servicios_categoria; ?></h2>
 
-          <p class="text-d-number"><?= $nombre_categoria ?></p>
+          <p class="text-d-number"> <?=$lang[$nombre_categoria];?></p>
 
       </div>
 
@@ -876,13 +904,13 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
               <input type="hidden" name="idCategoria" value="<?= $id;?>">
 
-            <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?><?= $nombre_categoria; ?></h4>
+            <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?> <?=$lang[$nombre_categoria];?></h4>
 
             <a class="text-white">
 
               <img src="admin/img/categoria_servicio/<?=$fotos;?>" class="img-fluid img-guia">
 
-              <button class="submit btn btn-primary"><?= $nombre_categoria; ?></button>
+              <button class="submit btn btn-primary">  <?=$lang[$nombre_categoria];?></button>
 
             </a>
 
@@ -1204,7 +1232,7 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
             
 
-            <p class="text-left text-filtrar"><?=$cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?><?= $nombre_categoria; ?></p>
+            <p class="text-left text-filtrar"><?=$cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?> <?=$lang[$nombre_categoria];?></p>
 
           </div>
 
@@ -1214,7 +1242,7 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
 
 
- <p class="text-left d-md-block d-none " style="font-size: 30px;"><?= $cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?><?= $nombre_categoria; ?></p>
+ <p class="text-left d-md-block d-none " style="font-size: 30px;"><?= $cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?> <?=$lang[$nombre_categoria];?></p>
 
 
 
@@ -1259,9 +1287,20 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
 
 
+ $cancelaciones=getTipoCancelaciones($tarifas[0]['idCancelaciones']);
 
+   $cancelacion="";
+switch ($cancelaciones[0]["idCancelacion"]) {
+  case 1:
+    case 3:
+      case 7:
+   $cancelacion="gratís!";
+    break;
   
-
+  default:
+    // code...
+    break;
+}
 
 
 
@@ -1334,7 +1373,7 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
                     </ul>
 
-                    <h4 class="text-success text-cancelacion  float-left d-md-none semibold"><?=$lang["cancelacion_gratuita"]?></h4>
+                    <h4 class="text-success text-cancelacion  float-left d-md-none semibold"><?=$cancelacion?></h4>
 
                     <p class="float-right d-md-none semibold"><?=$precioSugerido;?></p>
 
@@ -1362,7 +1401,7 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
                   <div class="col-lg-4 col-12">
 
-                    <h4 class="text-success text-cancelacion semibold"><?=$lang["cancelacion_gratuita"]?></h4>
+                    <h4 class="text-success text-cancelacion semibold"><?=$cancelacion;?></h4>
 
                   </div>
 
@@ -1441,22 +1480,39 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
 
    
+<?php 
+
+$cantidad_de_paginas=$cantidad_servicios_categoria/$cantidad_por_pagina;
+if($cantidad_servicios_categoria%$cantidad_por_pagina>0){
+  $cantidad_de_paginas+=1;
+}
+if ($cantidad_de_paginas>1) {
+
+
+
+?>
+
+
 
     <li class="page-item flechas">
 
-                <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina-1).'" aria-label="Previous">
+              <!--  <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina-1).'" aria-label="Previous"> -->
 
-                  <span aria-hidden="true">&laquo;</span>
-
-                  <span class="sr-only"><?=$lang["anterior"]?>Anterior</span>
 
                 </a>
 
               </li>
 
+<?php 
 
 
- <li ><a class="page-link" href="categorias.php?id='.$id.'&pagina='.$contadorr.'">0</a></li>
+for ($i=1; $i < $cantidad_de_paginas; $i++) { 
+?>
+ <li ><a class="page-link" href="categorias.php?idCategoria=<?=$idCategoria?>&pagina=<?=$i?>"><?=$i;?></a></li>
+<?php
+ } ?>
+
+
 
 
 
@@ -1464,11 +1520,9 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
        <li class="page-item flechas">
 
-                <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina+1).'" aria-label="Next">
+             <!--   <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina+1).'" aria-label="Next"> -->
 
-                  <span aria-hidden="true">&raquo;</span>
-
-                  <span class="sr-only"><?=$lang["Proxima"]?></span>
+           
 
                 </a>
 
@@ -1478,6 +1532,8 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
   </ul>
 
+<?php
+} ?>
         </nav>
 
 
@@ -1576,7 +1632,7 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
 
 
-       <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?><?= $nombre_categoria; ?></h4>
+       <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?> <?=$lang[$nombre_categoria];?></h4>
 
             <a href="#" class="text-white">
 
@@ -1584,11 +1640,11 @@ $fotos_servicio=$fotos_servicio[0]["ruta"];
 
               <img src="admin/img/categoria_servicio/<?= $fotos; ?>" class="img-fluid img-guia mx-auto d-block">
 
-              <h4 class="text-guia2"><?= $nombre_categoria; ?></h4>
+              <h4 class="text-guia2"> <?=$lang[$nombre_categoria];?></h4>
 
             </a>
 
-             <button class="submit btn btn-primary"><?= $nombre_categoria; ?></button>
+             <button class="submit btn btn-primary"> <?=$lang[$nombre_categoria];?></button>
 
            </form>
 

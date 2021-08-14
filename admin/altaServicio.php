@@ -5,6 +5,8 @@
         include("includes/sidebar.php");
         require("classes/functions.php");
         require("classes/categoria.php");
+             require("classes/paises.php");
+                require("classes/destinos.php");
         require("classes/texto_miniaturas.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['txtNomEvt'])) {
@@ -13,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['txtNomEvt'])) {
 
     //$idUsuario=$_SESSION['login']['idUsuario'];
     $idUsuario=1;
-$idServicio=altaServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['txtDescripcion'],  $_POST['txtDescripcionCorta'],  $_POST['txtDocumentacionViajero'],  $_POST['txtObservaciones'],  $_POST['idTextoMiniatura'],$idUsuario );
+$idServicio=altaServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['txtDescripcion'],  $_POST['txtDescripcionCorta'],  $_POST['txtDocumentacionViajero'],  $_POST['txtObservaciones'],  $_POST['idTextoMiniatura'],$idUsuario, $_POST['idOrigen'],$_POST['idDestino'] );
 
 $_SESSION["altaServicio"] = $idServicio;
 
@@ -139,6 +141,43 @@ exit();
                                    
                                     	
                                     	<?php } ?>          
+                                        
+                                       </select>
+                                    </div>
+                                </div>
+             <div class="col-md-6">
+                                    <div class="form-group">
+                                             <label>Origen</label>
+                                       <select name="idOrigen" id="idOrigen" class="form-control" required>
+                                            <?php 
+                                        $destinos= getDestinos();
+                                        for ($i=0; $i < count($destinos); $i++) { 
+                                            $pais=getPais($destinos[$i]["idPais"]);
+                                            ?>
+                                                                         <option value="<?=$destinos[$i]["idDestino"];?>">
+                                                        <?=$destinos[$i]["nombre"];?>, <?=$destinos[$i]["estado"];?>, <?=$pais[0]["nombre"]?></option>;
+                                   
+                                        
+                                        <?php } ?>          
+                                        
+                                       </select>
+                                    </div>
+                                </div>
+
+                                         <div class="col-md-6">
+                                    <div class="form-group">
+                                             <label>Destino</label>
+                                       <select name="idDestino" id="idDestino" class="form-control" required>
+                                            <?php 
+                                        $destinos= getDestinos();
+                                        for ($i=0; $i < count($destinos); $i++) { 
+
+                                            ?>
+                                                                         <option value="<?=$destinos[$i]["idDestino"];?>">
+                                                       <?=$destinos[$i]["nombre"];?>, <?=$destinos[$i]["estado"];?>, <?=$pais[0]["nombre"]?></option>;
+                                   
+                                        
+                                        <?php } ?>          
                                         
                                        </select>
                                     </div>
