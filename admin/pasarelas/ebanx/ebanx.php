@@ -1,11 +1,9 @@
 <?php
 
 
-function url_ebanx($codigoAmigable, $total_reales){
+function url_ebanx($codigoAmigable, $total_dolares){
 
 include($_SERVER['DOCUMENT_ROOT']."/admin/pasarelas/ebanx/configEbanx.php");
-
-
 
 /*
 
@@ -25,31 +23,33 @@ $server_output = curl_exec($ch);
 print_r($server_output);
 curl_close ($ch);
 */
-
-
 //echo "**************************************************************<br>**********************************************************";
-
-
-
-
 
 $ch = curl_init();
 $post = [
     'integration_key' => $integration_key,
     'payment_type_code' => '_all',    
+   "country"=> $_SESSION['geo']['countryCode'],
     'merchant_payment_code' => $codigoAmigable,
-    'currency_code'   => 'BRL',
-    'amount'=> $total_reales
+    'currency_code'   => 'PEN',
+    'amount'=> $total_dolares
 ];
-curl_setopt($ch, CURLOPT_URL,"https://sandbox.ebanxpay.com/ws/request");
+curl_setopt($ch, CURLOPT_URL, $url_ebanx);
+
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 $server_output = curl_exec($ch);
-//print_r($server_output);
+
 curl_close ($ch);
 $resultado= json_decode($server_output, true);
-return ($resultado['redirect_url']);
+//print_r($resultado);
+if (isset($resultado['redirect_url'])) {
+    return ($resultado['redirect_url']);
+}
+else{
+    return (-5);
+}
 
 }
 

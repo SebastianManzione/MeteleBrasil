@@ -37,6 +37,7 @@ function getSolicitudes(){
    function setSolicitud($idTipoSolicitud, $email, $password, $nombre_agencia,$descripcion_agencia, $tipo_de_agencia, $nombre, $cargo, $whatsapp, $estado, $ciudad, $destino_que_opera){
 
 
+
         require("conexion.php");
         $data=["idTipoSolicitud"=> $idTipoSolicitud, "email"=>$email, "password"=>$password, "nombre_agencia"=>$nombre_agencia, "descripcion_agencia"=>$descripcion_agencia, "tipo_de_agencia"=> $tipo_de_agencia, "nombre"=> $nombre,"cargo"=>$cargo, "whatsapp"=>$whatsapp,"estado"=>$estado, "ciudad"=>$ciudad, "destino_que_opera"=>$destino_que_opera];
         $consulta = "INSERT INTO solicitudes (idTipoSolicitud, email, password, nombre_agencia,descripcion_agencia, tipo_de_agencia, nombre,cargo, whatsapp, estado, ciudad, destino_que_opera) VALUES (:idTipoSolicitud, :email, :password,:nombre_agencia,:descripcion_agencia,:tipo_de_agencia,:nombre,:cargo, :whatsapp, :estado, :ciudad, :destino_que_opera) ";
@@ -49,6 +50,7 @@ function getSolicitudes(){
         $cuenta_col = $comando->columnCount();
         $cuenta_row = $comando->rowCount();
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
 
         return $id;
         

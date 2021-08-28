@@ -2,11 +2,6 @@
 
 <?php 
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 
 include("includes/headPagos.php");
 include("admin/classes/salidas.php");
@@ -17,7 +12,6 @@ include("admin/classes/idiomas.php");
 
 include("admin/classes/servicio.php");
 
-include("admin/classes/functions.php");
   include("admin/classes/comisiones.php");
 
     include("admin/classes/edades.php");
@@ -33,7 +27,6 @@ include("admin/classes/comprobantes.php");
 include("admin/classes/moneda.php");
 
 include("admin/classes/convierte_monedas.php");
-
 
 
 if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["merchant_payment_code"])) {
@@ -68,54 +61,11 @@ $idReserva=$reserva["idReserva"];
 if (count($reserva)<1) {
   alertar("La Reserva con el codigo ".$codigoAmigable." no existe","error");
   redireccionarLento("index");
+  exit();
 }
 
 
  ?>
-
-
-
-
-
-
-
-
-
-
-<!--HEADER PAGO SEGURO-->
-
-
-
-<section class="py-2 bg-primary">
-
-
-
-  <div class="container">
-
-    <div class="row">
-
-      <div class="col-lg-2 col-6">
-
-         <a href="index" class="navbar-brand text-white" ><h3>METELE BRASIL</h3></a>
-
-      </div>
-
-      <div class="col-lg-10 col-6">
-
-        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-
-<!--FIN HEADER PAGO SEGURO-->
-
 
 
 <!--PASOS PARA RESERVA-->
@@ -130,7 +80,7 @@ if (count($reserva)<1) {
 
         <ul class="lista-pasos-form">
 
-      <li class="active"> <strong></i><?=$lang["consulta_de_reserva"]?><?= $codigoAmigable;?></strong></li>
+      <li class="active"> <strong></i><?=$lang["consulta_de_reserva"]?> <?= $codigoAmigable;?></strong></li>
 
         </ul>
 
@@ -466,7 +416,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
   <script
 
-    src="https://www.paypal.com/sdk/js?client-id=AbVzfexjVQ8bKuBQEkVem15h-IbQI4liLK_L9COokXJJvBdmj_JFReUBSOROn2DTxauOqRpmyvJVm6l9"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
+    src="https://www.paypal.com/sdk/js?client-id=AcfLam9LvePwGz5ICPiLrSw-s3gdr5BVbq-YpwoYGQwTKOuu8Ai8llIdY5LAl0jnUULO85QkJ4rVGqcZ"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
 
   </script>
 
@@ -616,14 +566,20 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
                       </label>
 <?php 
-
-
-
-
+//echo "string";
 include("admin/pasarelas/ebanx/ebanx.php");
- $url_ebanx=url_ebanx($codigoAmigable, $totalReales);
+$_SESSION['geo']['countryCode'] = 'PE';
+
+$reales=convierteMoneda($idMonedaSel,225,$reserva["total"]);
+ $url_ebanx=url_ebanx($codigoAmigable, $totalMercadopagoArgentina);
+ //print_r($_SESSION['geo']['countryCode']);
+if (true) { //$_SESSION['geo']['countryCode']!='BR' && $url_ebanx!=(-5)
+  // code...
+
+//print_r($url_ebanx);
  ?>
  <label class="btn btn-primary paymentMethod" id="ebanx" style="display:none">
+  
 <a href="<?=$url_ebanx;?>">
                      <div class="method paypal"> </div>
 
@@ -644,7 +600,7 @@ include("admin/pasarelas/ebanx/ebanx.php");
 </a>
                       </label>
 
-
+<?php } ?>
 
         <label class="btn btn-primary paymentMethod" id="paypal"  style="display:none">
 
@@ -847,7 +803,11 @@ return true;
 
 
  <div class="col">
-          <a href="#" class="btn btn-secondary btn-lg btn-radius" id="btnPagar" style="width: 100% !important;"><?=$lang["detalles_reserva"];?></a>
+  <form method="post" action="voucherCarrito">
+    
+ <button type="submit" name="codigoAmigable" value="<?=$codigoAmigable;?>" class="btn btn-secondary btn-lg btn-radius" style="width: 100% !important;"><?=$lang["detalles_reserva"];?></button>
+  </form>
+         
 
 </div>
 
@@ -855,7 +815,7 @@ return true;
 
 
 <div class="col">
-          <a href="#" class="btn btn-primary btn-lg btn-radius" id="btnPagar" style="width: 100% !important;"><?=$lang["volver_al_site"];?></a>
+          <a href="https://metelebrasil.com" class="btn btn-primary btn-lg btn-radius" id="btnPagar" style="width: 100% !important;"><?=$lang["volver_al_site"];?></a>
        
 
 
@@ -1055,7 +1015,7 @@ if ($comprobantes<$total_dolares) {
       $("#mercadopago").css('display','none');
 
       $("#mercadopagoBrasil").css('display','block');
-      $("#ebanx").css('display','block');
+      $("#ebanx").css('display','none');
       
 
       $("#reales").css('background',' #029ce2'); //pinta
@@ -1085,7 +1045,7 @@ if ($comprobantes<$total_dolares) {
       $("#mercadopago").css('display','none');
 
       $("#mercadopagoBrasil").css('display','none');
-       $("#ebanx").css('display','none');
+       $("#ebanx").css('display','block');
 
       $("#dolar").css('background',' #029ce2'); //pinta
 
@@ -1115,7 +1075,7 @@ var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
       $("#mercadopago").css('display','block');
 
             $("#mercadopagoBrasil").css('display','none');
-               $("#ebanx").css('display','none');
+               $("#ebanx").css('display','block');
 
       $("#paypal").css('display','none');
 

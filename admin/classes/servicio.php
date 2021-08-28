@@ -34,6 +34,52 @@ function getAllServicios(){
 
     }
 
+function getAllServiciosPrestador($idPrestador){
+
+
+
+    require("conexion.php");
+
+     require_once("salidas.php");
+
+    $consulta = "select * from servicio";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute();
+
+    $cuenta_col = $comando->columnCount();
+
+       $retorno=Array();
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+foreach ($resultado as $key => $value) {
+  
+   $idServicio=($value['idServicio']);
+   $salidas=getSalidasServicioIdPrestador($idServicio);
+
+   if(count($salidas)>0){
+
+
+array_push($retorno, $value);
+
+   }
+}
+
+
+
+    return $retorno;
+
+    
+
+    
+
+    }
+
 
 
 function getServicios(){
@@ -81,6 +127,45 @@ function getServiciosPaginado($desde, $hasta){
 
 
     $consulta = "select * from servicio  WHERE habilitado=1 LIMIT :desde, :hasta";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+$comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+$comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    
+
+    $comando->execute();
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+
+    return $resultado;
+
+    
+
+    
+
+    }
+
+
+
+
+function getServiciosPaginadoNuevo($desde, $hasta){
+
+
+
+    require("conexion.php");
+
+
+
+    $consulta = "SELECT DISTINCT * from servicio sv LEFT JOIN servicio_salidas ss ON sv.idServicio = ss.idServicio WHERE sv.habilitado=1 LIMIT :desde, :hasta";
 
     
 

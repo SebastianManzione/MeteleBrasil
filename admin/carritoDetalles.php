@@ -90,8 +90,6 @@ $idReserva=$_POST["detallesCarrito"];
 
 $reserva=getReservaId($idReserva);
 
-echo "string";
-
 $codigo_telefonico=gerCodigoTelefonico($reserva[0]["idCountry"]);
 
 $nombre_pais=$codigo_telefonico[0]['nicename'];

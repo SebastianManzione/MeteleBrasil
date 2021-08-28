@@ -296,7 +296,7 @@ for ($i=0; $i <  count($fotos); $i++) {
         <div class="col-12 form-inline">
 
           <form method="post" action="altaSalidas" style="padding: 3px;"><button name="idServicio" value="<?=$idServicio;?>" class="btn btn-info">Agregar Salidas </button></form>
-
+<?php if ($_SESSION['login']["idUsuario"]==1) { ?>
          <form method="post" action="servicioOpiniones">
           <button name="idServicio" value="<?=$idServicio;?>" class="btn btn-success">Opiniones</button></form>
 
@@ -304,7 +304,7 @@ for ($i=0; $i <  count($fotos); $i++) {
 <input type="hidden" name="eliminarServicio"  value="<?=$idServicio;?>">
             <a  class="btn btn-danger" name="eliminarServicio" value="<?=$idServicio;?>" onclick="confirm1()">Eliminar servicio</a></form>
 
-
+<?php } ?>
 
 <script type="text/javascript">
 
@@ -413,7 +413,7 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
 
             <button class="btn btn-primary" type="button" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">Ver<i></i></button>
 
-            <button class="btn btn-danger">Eliminar salida</button>
+            <button class="btn btn-danger" style="display: none;">Eliminar salida</button>
 
               <form method="post" action="pasajerosLista" >
 

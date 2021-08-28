@@ -628,13 +628,7 @@ $rowCount = $comando->rowCount();
 
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
-   echo "\nPDO::errorInfo():\n";
-    print_r($comando->errorInfo());
-
-
-
-
-
+ 
 
 // Imprimir en pantalla
 

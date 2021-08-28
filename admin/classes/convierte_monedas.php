@@ -131,4 +131,64 @@ case 271:
  
 }
 
+function getCotizacionMonedas(){
+
+    require("conexion.php");
+  
+    $consulta = "select * from moneda_cambio ";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute();
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
+    function updateCotizacionMonedas($pesoArg, $rs, $guarani, $pesoCh, $euro){
+
+
+
+require("conexion.php");
+
+
+
+ $data=[
+
+"pesoArg"=>$pesoArg, "rs"=>$rs, "guarani"=>$guarani, "pesoCh"=>$pesoCh, "euro"=>$euro ];
+
+$consulta = "UPDATE moneda_cambio SET pesoArg=:pesoArg, rs=:rs, guarani=:guarani, pesoCh=:pesoCh, euro=:euro WHERE idMonedaCambio = 1 ";
+
+
+
+$comando = $pdo->prepare($consulta);
+
+
+
+$comando->execute($data);
+
+$cuenta_col = $comando->columnCount();
+
+
+
+$resultado = $comando->rowCount();
+
+
+
+
+
+
+
+return $resultado;
+
+
+
+
+
+}
+
  ?>

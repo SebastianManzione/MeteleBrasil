@@ -1,28 +1,18 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
-	
 
   include("includes/headPagos.php");
 
-include("admin/classes/functions.php");
-
 include("admin/classes/comprobantes.php");
-
-
-
 include("admin/classes/reserva.php");
-
+//include("admin/classes/reservaEmail.php");
 include("admin/classes/moneda.php");
-
 include("admin/classes/usuario.php");
 include("admin/classes/convierte_monedas.php");
-
+include("admin/classes/generador_aleatorio.php");
 
 
 $site=($parametros[0]["site"]);
@@ -37,7 +27,11 @@ $idUsuario=$_SESSION["login"]["idUsuario"];
 
 $total=$_POST["dinero"];
 $total_dolares= ConvierteMoneda($idMoneda,188, $total);
-$comprobante=insertaComprobante($idReserva, $total, 6, $idMoneda, $idUsuario, $total_dolares);
+do {
+ $aleatorio= GeneradorAleatorio(3,6);
+$comprobante=insertaComprobante($idReserva, $total, 6, $idMoneda, $aleatorio, $total_dolares, $idUsuario);  // code...
+} while ($comprobante==0);
+
 
 
 if ($comprobante>0) {
@@ -59,7 +53,7 @@ $usuario=getUsuario($idUsuario);
 $nombre_cobrador=($usuario[0]["usuario"]);
 
 include("admin/classes/email_pago_recibido.php");
-include("admin/classes/reservaEmail.php");
+
 $cuerpo=getCuerpoEmailPagoRecibido($codigoAmigable, $nombre_cobrador);
 
 
@@ -69,6 +63,8 @@ $resumail=enviaMail($reserva[0]["emailResponsable"], "Recibimos Su pago correcta
 
 
   alertar("Cobro Realizado con exito","success");
+  redireccionarLento('consultaReserva?reserva='.$codigoAmigable);
+  exit();
 
 }}
 

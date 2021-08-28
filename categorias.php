@@ -1,8 +1,5 @@
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 
  include('includes/navbar.php'); 
@@ -23,143 +20,7 @@ error_reporting(E_ALL);
 
 require("admin/classes/texto_miniaturas.php");
 
-/*
-
-
-
-  include($GLOBALS['path'].'/conectar.php');
-
-$ordenar=" ";
-
-if (isset($_GET["priceMin"])) {
-
-  $ordenar="ORDER BY sv.precioSugerido ASC";
-
-}
-
-if (isset($_GET["priceMax"])) {
-
-  $ordenar="ORDER BY sv.precioSugerido DESC";
-
-}
-
-if (isset($_GET['id'])&&is_numeric($_GET['id'])&&$_GET['id']>0) {
-
-   $id=$_GET['id'];
-
-$consulta="WHERE idCategoria_servicio=".$id ;
-
-$fotoSrv=DevuelveFotosCategoria($id)[0];
-
-
-
-$OpinionesCategoria=OpinionesCategoria($id);
-
-$CantOpinionesCategoria=count($OpinionesCategoria);
-
-  
-
-// header("location: ./index.php");
-
-}else if(isset($_GET["buscar"])&&is_string($_GET["buscar"])){
-
-  $buscar=  $_GET["buscar"];
-
-   $_GET["buscar"] = preg_replace('/\&(.)[^;]*;/', '\\1', $_GET["buscar"]);
-
-$precioMin=10;
-
- $id="-1";
-
-  $consulta=" WHERE sv.nombre_servicio LIKE '%".$_GET["buscar"]."%' 
-
-    OR sv.descripcion_servicio LIKE '%".$_GET["buscar"]."%' OR sv.descripcion_corta LIKE '%".$_GET["buscar"]."%' OR csv.nombre_categoria_servicio LIKE '%".$_GET["buscar"]."%' ".$ordenar;
-
-
-
-} 
-
-else{
-
-   $id="0";
-
-  $consulta=" ".$ordenar;
-
-
-
-}
-
-
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-           
-
-            ".$consulta;
-
-
-
-$hoy= date("Y-m-d");
-
-if(isset($_GET["hoy"])){
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-            LEFT JOIN horarios hss ON sv.idServicio=hss.servicioId
-
-            LEFT JOIN horarios_paquetes hsp ON sv.idServicio=hsp.servicioId
-
-
-
-            ".$consulta." WHERE hss.fechaIn='".$hoy."'
-
-           ".$ordenar;
-
-
-
-}
-
-if(isset($_GET["manana"])){
-
-
-
-$manana= date("Y-m-d",strtotime($hoy."+ 1 days"));
-
-  $ordenar=" sv.idServicio ";
-
- if(isset($_GET["price"])){
-
-  $ordenar=" sv.pAdulto ";
-
- }  
-
-$consultaQuery="SELECT * FROM servicio sv
-
-            INNER JOIN categoria_servicio csv ON sv.idCategoria_servicio = csv.idCatSrv  
-
-            INNER JOIN usuario us ON sv.operador_alta = us.idUsuario
-
-            LEFT JOIN horarios hss ON sv.idServicio=hss.servicioId
-
-            LEFT JOIN horarios_paquetes hsp ON sv.idServicio=hsp.servicioId
-
-
-
-            ".$consulta." WHERE hss.fechaIn='".$manana."'
-
-            ".$ordenar;
-
-
-
-} */
+ 
 
 $busqueda="";
 $cantidad_por_pagina=5;
@@ -255,7 +116,7 @@ if (isset($_GET['pagina'])) {
 
   $servicios=getServiciosPaginado($desde, $cantidad_por_pagina);
 
-;
+
 
 $cantidad_servicios_categoria=count(getServicios());
  $categorias=getCategorias();
@@ -748,15 +609,14 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
  <form action="categorias.php" style="display: none;">
 
-                            <input type="hidden" name="priceMin"></input>
-
+                            <input type="hidden" name="priceMin">
                           <button type="submit" class="<?=$btnMenorPrecio;?>"><?= $lang["menor_precio"];?></button>
 
                         </form>
 
                                    <form action="categorias.php">
 
-                            <input type="hidden" name="priceMax"></input>
+                            <input type="hidden" name="priceMax">
 
                           <button type="submit" class="<?=$btnMayorPrecio;?>">"mayor_precio"];?></button>
 
@@ -1291,8 +1151,8 @@ $btnMayorPrecio="btn btn-primary-selected btn-size";
 
    $cancelacion="";
 switch ($cancelaciones[0]["idCancelacion"]) {
-  case 1:
-    case 3:
+      case 1:
+      case 3:
       case 7:
    $cancelacion="gratís!";
     break;
@@ -1705,24 +1565,192 @@ for ($i=1; $i < $cantidad_de_paginas; $i++) {
 
 
               <div name="buscadorOPT">
+              <div>
 
                 <form class="form-buscar mb-5 " action="categorias.php" method="get">
 
-            <label class="sr-only" for="s"><?=$lang["que_hacemos"]?></label>
+            <label class="sr-only" for="s"><?= $lang["que_hacemos"]; ?></label>
 
           <div class="input-group">
 
-            <input class="field form-control form-control-search" name="buscar" type="text" placeholder="¿Que hacemos?" value="">
+            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="<?= $lang["que_hacemos"]; ?>" value="<?=$busqueda?>">
 
             <span class="input-group-append">
 
-              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?=$lang["buscar"]?><i class="fa fa-arrow-right"></i></button>
+              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
 
             </span>
 
           </div>
 
 </form>
+
+        </div>
+
+            <div class="accordion" id="Disponibilidad" style="display: none;">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["disponibilidad"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
+
+                      <div class="card-body">
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                          <?php 
+
+
+
+$btnHoy="btn btn-primary btn-size";
+
+$btnManana="btn btn-primary btn-size";           
+
+if (isset($_GET["hoy"]))
+
+ {
+
+$btnHoy="btn btn-primary-selected btn-size";
+
+   }
+
+   if (isset($_GET["manana"]))
+
+ {
+
+$btnManana="btn btn-primary-selected btn-size";
+
+   }
+
+
+
+
+
+
+
+                           ?>
+
+                          <form action="categorias.php" style="display: none;">
+
+                            <input type="hidden" name="hoy">
+
+                          <button type="submit" class="<?=$btnHoy;?>"><?= $lang["hoy"];?></button>
+
+                        </form>
+
+                         <form action="categorias.php" style="display: none;">
+
+                          <input type="hidden" name="manana">
+
+                          <button type="submit" class="<?= $btnManana;?>"><?= $lang["manana"];?></button>
+
+                            </form>
+
+                       
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne"><?= $lang["categoria"];?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="categorias" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <?php 
+
+                       $todas_las_categorias=getCategorias();
+
+                        for ($i=0; $i < count($todas_las_categorias); $i++) { 
+
+                          $idCategoria_todas=$todas_las_categorias[$i]["idCategoria_servicio"];
+
+                          $nombre_categoria_servicio_todas=$todas_las_categorias[$i]["nombre_categoria_servicio"];
+
+$checked="";
+
+$type="";
+
+
+
+                          if($idCategoria==$idCategoria_todas){
+
+                           $checked="checked";
+
+                           $type="radio";
+
+                          }
+
+                         echo '    
+
+<a href="categorias?idCategoria='.$idCategoria_todas.'">
+
+                         <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
+
+                          <label class="custom-control-label" for="">'.$nombre_categoria_servicio_todas.'</label>
+
+                        </div></a>';
+
+                        }
+
+                      ?>
+
+                       
+
+                    
+
+                      
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
 
         </div>
 

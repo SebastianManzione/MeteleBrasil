@@ -7,11 +7,10 @@ include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
 require("classes/functions.php");
-require("classes/categoria.php");
+require("classes/reserva.php");require("classes/salidas.php");
+require("classes/convierte_monedas.php");
+$idPrestador=($_SESSION['login']['idPrestador']);
 
-
-
-$categorias=getCategorias();
 
 
  ?>
@@ -65,22 +64,61 @@ $categorias=getCategorias();
                                     <th scope="col">Dia del Evento</th>
                                     <th scope="col">C.ServContratados</th>
                                     <th scope="col">Valor Total</th>
-                                    <th scope="col">Acción</th>
+                      
                                  </tr>
                               </thead>
                     <tbody>
+<?php
+
+$reservas=getReservasConfirmadas($idPrestador);
+  $hoy=strtotime(date('Y-m-d'));
+
+ for ($i=0; $i < count($reservas); $i++) { 
+
+  $idReserva=$reservas[$i]['idReserva'];
+  $horarios=getReservaHorarios($idReserva);
+  for ($j=0; $j < count($horarios); $j++) { 
+ 
+              $idReservaHorarios=$horarios[$j]["idReservaHorarios"];
+              $salida=getSalida($horarios[$j]["idServicioSalidas"]);
+                 $fechaEvento=strtotime($salida[0]['fecha']);
+                   $tarifas=getReservaTarifas($idReservaHorarios);
+                   for ($k=0; $k < count($tarifas); $k++) { 
+                
+                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                       $cantidad=($tarifas[0]["cantidad"]);
+                        $totalTarifa=$valorSinIva*$cantidad;
+$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                     
+
+                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento>=$hoy || $_SESSION['login']['idUsuario']==1 && $fechaEvento>=$hoy ) {
+                      // code...
+                   
+                     
+  
+?>
+
+
 
                                  <tr>
-                                    <td>Nombre</td>
-                                    <td>GVR298</td>
-                                    <td>12/10/2019</td>
-                                    <td>21/12/2020</td>
-                                    <td>2</td>
-                                    <td>R$ 1450</td>
-                                    <td><form method="post"><input type="hidden" name="idCategoria_servicio" value="<?=$idCategoria_servicio;?>"><button type="submit" class="btn btn-danger" name="eliminarAdicional" value="<?=$habilitados[$i]['idServiciosAdicionalesCategoria'];?>">Quitar</button></form>
-                                    </td>
+                                    <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
+                                    <td><?=$reservas[$i]["codigoAmigable"]?></td>
+                                    <td> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
+                                    <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
+                                    <td><?=count($tarifas);?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"></button></form></td>
+                             
 
                              </tr>
+
+                             <?php
+                                          }     }
+  }
+
+} ?>
                         </tbody>
                       </table>
                     </div>
@@ -88,6 +126,10 @@ $categorias=getCategorias();
              </div>
           </div>
      </div>
+
+<?php if ($_SESSION['login']['idUsuario']==1) {
+  ?>
+
 
 
 
@@ -104,8 +146,7 @@ $categorias=getCategorias();
         <h3>Lista de reservas pendientes</h3> 
             <div class="row">
                   <div class="table-responsive">   
-                            
-                            <table class="table" id="tablaCarrito">
+                                     <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
@@ -114,22 +155,60 @@ $categorias=getCategorias();
                                     <th scope="col">Dia del Evento</th>
                                     <th scope="col">C.ServContratados</th>
                                     <th scope="col">Valor Total</th>
-                                    <th scope="col">Acción</th>
+                      
                                  </tr>
                               </thead>
                     <tbody>
+<?php
+
+$reservas=getReservasPendientes($idPrestador);
+   $hoy=strtotime(date('Y-m-d'));
+ for ($i=0; $i < count($reservas); $i++) { 
+
+  $idReserva=$reservas[$i]['idReserva'];
+  $horarios=getReservaHorarios($idReserva);
+  for ($j=0; $j < count($horarios); $j++) { 
+ 
+              $idReservaHorarios=$horarios[$j]["idReservaHorarios"];
+              $salida=getSalida($horarios[$j]["idServicioSalidas"]);
+          
+                   $tarifas=getReservaTarifas($idReservaHorarios);
+                   for ($k=0; $k < count($tarifas); $k++) { 
+                
+                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                       $cantidad=($tarifas[0]["cantidad"]);
+                        $totalTarifa=$valorSinIva*$cantidad;
+$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                     $fechaEvento=strtotime($salida[0]['fecha']);
+
+                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento>=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento>=$hoy) {
+
+                      // code...
+                   
+                     
+  
+?>
+
+
 
                                  <tr>
-                                    <td>Nombre</td>
-                                    <td>GVR298</td>
-                                    <td>12/10/2019</td>
-                                    <td>21/12/2020</td>
-                                    <td>2</td>
-                                    <td>R$ 1450</td>
-                                    <td><form method="post"><input type="hidden" name="idCategoria_servicio" value="<?=$idCategoria_servicio;?>"><button type="submit" class="btn btn-danger" name="eliminarAdicional" value="<?=$habilitados[$i]['idServiciosAdicionalesCategoria'];?>">Quitar</button></form>
-                                    </td>
+                                    <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
+                                    <td><?=$reservas[$i]["codigoAmigable"]?></td>
+                                    <td> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
+                                    <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
+                                    <td><?=count($tarifas);?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                             
 
                              </tr>
+
+                             <?php
+                                          }     }
+  }
+
+} ?>
                         </tbody>
                       </table>
                     </div>
@@ -137,52 +216,8 @@ $categorias=getCategorias();
              </div>
     </div>
   </div>
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-danger btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i class="fas fa-calendar-times"></i> 
-          Canceladas
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-        <h3>Lista de reservas canceladas</h3> 
-            <div class="row">
-                  <div class="table-responsive">   
-                            
-                            <table class="table" id="tablaCarrito">
-                              <thead>
-                                <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cod-Carrito</th>
-                                    <th scope="col">Fecha de contratacion</th>
-                                    <th scope="col">Dia del Evento</th>
-                                    <th scope="col">C.ServContratados</th>
-                                    <th scope="col">Valor Total</th>
-                                    <th scope="col">Acción</th>
-                                 </tr>
-                              </thead>
-                    <tbody>
-
-                                 <tr>
-                                    <td>Nombre</td>
-                                    <td>GVR298</td>
-                                    <td>12/10/2019</td>
-                                    <td>21/12/2020</td>
-                                    <td>2</td>
-                                    <td>R$ 1450</td>
-                                    <td><form method="post"><input type="hidden" name="idCategoria_servicio" value="<?=$idCategoria_servicio;?>"><button type="submit" class="btn btn-danger" name="eliminarAdicional" value="<?=$habilitados[$i]['idServiciosAdicionalesCategoria'];?>">Quitar</button></form>
-                                    </td>
-
-                             </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                 </div>
-             </div>
-    </div>
-  </div>
+  <?php
+} ?>
   <div class="card">
     <div class="card-header" id="headingThree">
       <h5 class="mb-0">
@@ -191,13 +226,15 @@ $categorias=getCategorias();
         </button>
       </h5>
     </div>
+    <?php if ($_SESSION['login']['idUsuario']==1) {
+  ?>
     <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-        <h3>Lista de reservas pasadas</h3> 
+        <h3>Lista de reservas pasadas pendientes</h3> 
             <div class="row">
                   <div class="table-responsive">   
                             
-                            <table class="table" id="tablaCarrito">
+                                              <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
                                     <th scope="col">Nombre</th>
@@ -206,22 +243,136 @@ $categorias=getCategorias();
                                     <th scope="col">Dia del Evento</th>
                                     <th scope="col">C.ServContratados</th>
                                     <th scope="col">Valor Total</th>
-                                    <th scope="col">Acción</th>
+                      
                                  </tr>
                               </thead>
                     <tbody>
+<?php
+
+$reservas=getReservasPendientes($idPrestador);
+   $hoy=strtotime(date('Y-m-d'));
+ for ($i=0; $i < count($reservas); $i++) { 
+
+  $idReserva=$reservas[$i]['idReserva'];
+  $horarios=getReservaHorarios($idReserva);
+  for ($j=0; $j < count($horarios); $j++) { 
+ 
+              $idReservaHorarios=$horarios[$j]["idReservaHorarios"];
+              $salida=getSalida($horarios[$j]["idServicioSalidas"]);
+          
+                   $tarifas=getReservaTarifas($idReservaHorarios);
+                   for ($k=0; $k < count($tarifas); $k++) { 
+                
+                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                       $cantidad=($tarifas[0]["cantidad"]);
+                        $totalTarifa=$valorSinIva*$cantidad;
+$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                     $fechaEvento=strtotime($salida[0]['fecha']);
+
+                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento<=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento<=$hoy) {
+
+                      // code...
+                   
+                     
+  
+?>
+
+
 
                                  <tr>
-                                    <td>Nombre</td>
-                                    <td>GVR298</td>
-                                    <td>12/10/2019</td>
-                                    <td>21/12/2020</td>
-                                    <td>2</td>
-                                    <td>R$ 1450</td>
-                                    <td><form method="post"><input type="hidden" name="idCategoria_servicio" value="<?=$idCategoria_servicio;?>"><button type="submit" class="btn btn-danger" name="eliminarAdicional" value="<?=$habilitados[$i]['idServiciosAdicionalesCategoria'];?>">Quitar</button></form>
-                                    </td>
+                                    <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
+                                    <td><?=$reservas[$i]["codigoAmigable"]?></td>
+                                    <td> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
+                                    <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
+                                    <td><?=count($tarifas);?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                             
 
                              </tr>
+
+                             <?php
+                                          }     }
+  }
+
+} ?>
+                        </tbody>
+                      </table>
+                    </div>
+                 </div>
+             </div>
+    </div>
+  <?php } ?>
+        <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+      <div class="card-body">
+        <h3>Lista de reservas pasadas Confirmadas</h3> 
+            <div class="row">
+                  <div class="table-responsive">   
+                            
+                                              <table class="table" id="tablaCarrito">
+                              <thead>
+                                <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Cod-Carrito</th>
+                                    <th scope="col">Fecha de contratacion</th>
+                                    <th scope="col">Dia del Evento</th>
+                                    <th scope="col">C.ServContratados</th>
+                                    <th scope="col">Valor Total</th>
+                      
+                                 </tr>
+                              </thead>
+                    <tbody>
+<?php
+
+$reservas=getReservasConfirmadas($idPrestador);
+   $hoy=strtotime(date('Y-m-d'));
+ for ($i=0; $i < count($reservas); $i++) { 
+
+  $idReserva=$reservas[$i]['idReserva'];
+  $horarios=getReservaHorarios($idReserva);
+  for ($j=0; $j < count($horarios); $j++) { 
+ 
+              $idReservaHorarios=$horarios[$j]["idReservaHorarios"];
+              $salida=getSalida($horarios[$j]["idServicioSalidas"]);
+          
+                   $tarifas=getReservaTarifas($idReservaHorarios);
+                   for ($k=0; $k < count($tarifas); $k++) { 
+                
+                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                       $cantidad=($tarifas[0]["cantidad"]);
+                        $totalTarifa=$valorSinIva*$cantidad;
+$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                     $fechaEvento=strtotime($salida[0]['fecha']);
+
+                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento<=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento<=$hoy) {
+
+                      // code...
+                   
+                     
+  
+?>
+
+
+
+                                 <tr>
+                                    <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
+                                    <td><?=$reservas[$i]["codigoAmigable"]?></td>
+                                    <td> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
+                                    <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
+                                    <td><?=count($tarifas);?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                             
+
+                             </tr>
+
+                             <?php
+                                          }     }
+  }
+
+} ?>
                         </tbody>
                       </table>
                     </div>

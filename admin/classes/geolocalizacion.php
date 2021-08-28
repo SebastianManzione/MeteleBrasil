@@ -1,5 +1,21 @@
 <?php 
+function getUrlGeoUser(){
+if ( !is_bot($_SERVER['HTTP_USER_AGENT']) ) {
+$theip = $_SERVER["REMOTE_ADDR"];
+if (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
 
+    $theip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+
+}
+if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
+    $theip = $_SERVER["HTTP_CLIENT_IP"];
+}
+$realip = substr($theip, 0, 250);
+$url='http://www.geoplugin.net/php.gp?ip=' . $realip;
+$_SESSION["realIP"]=$realip;
+return($url);
+  }
+}
 
 function geoLocalizacionIp($url, $option, $cCode)
 {

@@ -119,7 +119,7 @@
 
           <!--TEXTO DESTACADO-->
 
-          <p><?=$servicio["descripcion_corta"];?>.</p>
+          <p><?=$servicio["descripcion_corta"];?></p>
 
           <!--FIN TEXTO DESTACADO-->
 
@@ -245,7 +245,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-        <p class=""><?=$servicio["descripcion_servicio"];?></p>
+        <p><?=$servicio["descripcion_servicio"];?></p>
 
 
 

@@ -70,6 +70,150 @@ function getReservas(){
 
     }
 
+    function getReservasConfirmadas($idPrestador){
+
+
+    require("conexion.php");
+include_once('convierte_monedas.php');
+include_once('comprobantes.php');
+    $data=["idPrestador"=>$idPrestador];
+
+    $consulta = "select * from reservas WHERE 1";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute();//$data
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+$retorno=array();
+foreach ($resultado as $key => $value) {
+  
+$horarios=getReservaHorariosInnerHorarios($value['idReserva']);
+$envia=false;
+$idReserva=$value["idReserva"];
+$monedaSel=$value["monedaSel"];
+$total=$value["total"];
+$impuestos=$value["impuestos"];
+$precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $total);
+$totalComprobantes=getComprobantesIdReserva($idReserva);
+$diferenciaComprobantesPrecio=$precio-$totalComprobantes;
+
+   for ($i=0; $i < count($horarios); $i++) { 
+
+
+
+
+
+
+       if ($horarios[$i]["idPrestador"]==$idPrestador && $diferenciaComprobantesPrecio <=0 || $_SESSION['login']['idUsuario']==1 && $diferenciaComprobantesPrecio <=0) {
+        $envia=true; 
+
+
+
+
+       }
+   }
+   if ($envia) {
+        array_push($retorno, $value);
+   }
+
+
+
+
+}
+    // Imprimir en pantalla
+
+    return $retorno;
+
+    
+
+    
+
+    }
+
+
+
+
+    function getReservasPendientes($idPrestador){
+
+
+    require("conexion.php");
+include_once('convierte_monedas.php');
+include_once('comprobantes.php');
+    $data=["idPrestador"=>$idPrestador];
+
+    $consulta = "select * from reservas WHERE 1";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute();//$data
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+$retorno=array();
+foreach ($resultado as $key => $value) {
+  
+$horarios=getReservaHorariosInnerHorarios($value['idReserva']);
+$envia=false;
+$idReserva=$value["idReserva"];
+$monedaSel=$value["monedaSel"];
+$total=$value["total"];
+$impuestos=$value["impuestos"];
+$precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $total);
+$totalComprobantes=getComprobantesIdReserva($idReserva);
+$diferenciaComprobantesPrecio=$precio-$totalComprobantes;
+
+   for ($i=0; $i < count($horarios); $i++) { 
+
+
+
+
+
+
+       if ($horarios[$i]["idPrestador"]==$idPrestador && $diferenciaComprobantesPrecio >=0 || $_SESSION['login']['idUsuario']==1 && $diferenciaComprobantesPrecio >=0) {
+        $envia=true; 
+       
+
+
+
+       }
+   }
+   if ($envia) {
+        array_push($retorno, $value);
+   }
+
+
+
+
+}
+    // Imprimir en pantalla
+
+    return $retorno;
+
+    
+
+    
+
+    }
+
+
+
+
     function getReservaId($idReserva){
 
 
@@ -449,7 +593,72 @@ return $resultado;
     
 
     }
+ function getReservaHorariosIdServicioSalidas($idServicioSalidas){
 
+
+
+    require("conexion.php");
+
+    $data=["idServicioSalidas"=>$idServicioSalidas];
+
+    $consulta = "select * from reserva_horarios WHERE idServicioSalidas=:idServicioSalidas ";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
+    function getReservaHorariosInnerHorarios($idReserva){
+
+
+
+    require("conexion.php");
+
+    $data=["idReserva"=>$idReserva];
+
+    $consulta = "select * from reserva_horarios RH INNER JOIN servicio_salidas SS ON RH.idServicioSalidas = SS.idServicioSalidas WHERE idReserva=:idReserva ORDER BY idServicioSeleccionado";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
 
 
     function getReservaHorariosId($idReservaHorarios){
@@ -558,7 +767,7 @@ return $resultado;
 
     }
 
-
+/*
 
 function getHorariosReservados($idPrestador){
 
@@ -587,7 +796,7 @@ function getHorariosReservados($idPrestador){
     return $resultado;
 
 }
-
+*/
 
 
 function getTarifasReservadas($idServicioSalidas){

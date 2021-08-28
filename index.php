@@ -63,7 +63,7 @@ Visitante($visitante);
   
     <section class="div-absolute">
       <div class="container"> 
-        <div class="row">
+        <div class="row" >
           
           <div class="col-lg-6 offset-lg-3 mb-5 mb-15">
              <h1 class="text-white text-uppercase titulo" >
@@ -123,10 +123,11 @@ for ($i=0; $i < count($categorias); $i++) {
               
             </form>
 
+
           </div>  
           <!--EMPIEZA FOOTER DEL BANNER-->
-          <div class="col-lg-12 text-center text-white div-bottom">
-              <div class="container">
+           <div class="col-lg-12 text-center text-white div-bottom" >
+              <div class="container" >
               <div class="row">
                 <div class="col-lg-3 col-md-3 col-3">
                  <i class="text-white fa fa-calendar-check fa-2x "></i>
@@ -147,6 +148,7 @@ for ($i=0; $i < count($categorias); $i++) {
               </div>
             </div>
           </div>
+
           <!--FIN FOOTER DEL BANNER-->
           
         </div>
@@ -226,6 +228,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
            </div>
            
            <h3 class="title-categoria text-uppercase texto-shadow text-white"><?=$lang[$categorias[$i]['nombre_categoria_servicio']];?></h3>
+  
          </a>
 
        </div>

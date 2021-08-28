@@ -53,7 +53,7 @@ $reserva=getReserva($merchant_payment_code);
 $idReserva=$reserva[0]["idReserva"];
 
 $total_dolares=ConvierteMoneda(283,188, $total);
-$insert=insertaComprobante($idReserva, $total, 5, 283, $data["hash_codes"], $total_dolares);
+$insert=insertaComprobante($idReserva, $total, 5, 283, $data["hash_codes"], $total_dolares, 1);
 if (strlen($bodyy)<1) {
 redireccionar("../../../consultaReserva?reserva=".$merchant_payment_code);
 }

@@ -24,6 +24,11 @@
 
         require("classes/texto_miniaturas_blog.php");
 
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+exit();
+}
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" ) {

@@ -9,6 +9,7 @@
 
 
 
+
 include("admin/classes/salidas.php");
 
 include("admin/classes/tarifas.php");
@@ -32,14 +33,12 @@ include("admin/classes/convierte_monedas.php");
     include("admin/classes/servicios_adicionales.php");
 
     include("admin/classes/reserva.php");
-
-
+  include("admin/classes/prestador.php");
 
         include("includes/headPagos.php");
 
        
 
-    include ("admin/classes/functions.php"); 
 
     alertar("Su reserva esta siendo guardada", "success");
 

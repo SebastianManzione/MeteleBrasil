@@ -12,7 +12,7 @@ require("admin/classes/parametros.php");
 
   require("admin/classes/fotos_servicio.php");
 
-
+include("admin/classes/geolocalizacion.php");
 $parametros=getParametros();
 
 
@@ -54,39 +54,12 @@ if ( !is_bot($_SERVER['HTTP_USER_AGENT']) ) {
 
  
 
-$theip = $_SERVER["REMOTE_ADDR"];
 
-
-
-if (!empty($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-
-    $theip = $_SERVER["HTTP_X_FORWARDED_FOR"];
-
-
-
-}
-
-
-
-if (!empty($_SERVER["HTTP_CLIENT_IP"])) {
-
-    $theip = $_SERVER["HTTP_CLIENT_IP"];
-
-
-
-}
-
-
-
-$realip = substr($theip, 0, 250);
-
-
-
-$url='http://www.geoplugin.net/php.gp?ip=' . $realip;
+$url=getUrlGeoUser();
 
 //$url='http://www.geoplugin.net/php.gp?ip='.'179.36.137.63';
 
-include("admin/classes/geolocalizacion.php");
+
 
 $geo=(geoLocalizacionIp($url,0,0));
 
@@ -96,11 +69,11 @@ $langd=$geo["lang"];
 
 
 
-$_SESSION["realIP"]=$realip;
+
 
 $idPais=$geo["idPais"];
 
-
+$_SESSION['geo']=$geo;
 
 include("admin/classes/impuestos_pais.php");
 
@@ -150,6 +123,11 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 
 <?php
 
+
+
+}
+
+
 $version = date('Y-m-d H:i:s');
 
 if (isset($_SESSION['reserva'])) {
@@ -167,19 +145,9 @@ else{
 }
 
 
-
-
-
 //print_r($carrito);
 
 $cantCarrito=count($carrito);
-
-
-
-}
-
-
-
 
 
 ?>
@@ -767,7 +735,7 @@ if (strlen($_SESSION['login']['foto']>3)) {
 
         
 
-          $.post('ctrlLogin.php', {
+          $.post('ctrlLogin', {
 
     logout:{    'data' : 2 }
 
@@ -877,7 +845,7 @@ else{  ?>
 
                 <p><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"];?></p>
 
-                <form action="ctrlLogin.php" method="post" class="form-group">
+                <form action="ctrlLogin" method="post" class="form-group">
 
                   <div class="form-group  ">
 
@@ -1477,9 +1445,12 @@ for ($i=0; $i < count($monedas); $i++) {
 
     <li>
 
-      <a  class="text-white color-w cursor-size cursor"  role="button"  id="txtIdiomaSelMovil"><img class="nav-item mx-0 mx-lg-1 dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px; margin-left: 70px;">    <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span></a>
+      <a  class="text-white color-w cursor-size cursor"  type="button"  id="txtIdiomaSelMovil"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img class="nav-item mx-0 mx-lg-1 dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px; margin-left: 70px;">   
 
-        <div class="dropdown-menu collapse" aria-labelledby="navbarDropdownMenuLink" id="idioma">
+         <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span></a>
+
+        <div class="dropdown-menu collapse" aria-labelledby="txtIdiomaSelMovil" id="idioma">
 
 		  <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
 
@@ -1687,7 +1658,7 @@ $precioTotalCarrito=0;
                </a>
                      <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink" >
 
-                      <form action="ctrlLogin.php" method="post" class="">
+                      <form action="ctrlLogin" method="post" class="">
 
                       <input type="hidden" name="login" value="0">
 
@@ -1740,7 +1711,7 @@ $precioTotalCarrito=0;
 
       <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink" id="divMonedaSel">
 
-                      <form action="ctrlLogin.php" method="post" class="">
+                      <form action="ctrlLogin" method="post" class="">
 
                       <input type="hidden" name="login" value="0">
 
@@ -1776,7 +1747,7 @@ else{
 
                 <p><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"];?></p>
 
-                <form action="ctrlLogin.php" method="post" class="">
+                <form action="ctrlLogin" method="post" class="">
 
                   <div class="form-group">
 

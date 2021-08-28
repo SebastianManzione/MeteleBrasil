@@ -21,7 +21,7 @@ include("includes/navbar.php");
          <!--FIN BUCLE DE LOS RESULTADOS AQUI-->
          
           <!--TITULO-->
-        <h1 class="text-white texto-shadow py-2 bold" style=" text-align: center;text-shadow: -1px 0px 6px #000000;">Falemos!</h1>
+        <h1 class="text-white texto-shadow py-2 bold" style=" text-align: center;text-shadow: -1px 0px 6px #000000;"><?=$lang["hablemos"];?></h1>
          <!--TITULO-->
         
       
@@ -96,14 +96,16 @@ include("includes/navbar.php");
                  
             <div class="o-container-work-us">
 
-              <h1 class="a-title-empleo afiliados" style="text-align: center;">Equipo de ayuda al usuario<?=$lang["contacto"]?></h1>
+              <h1 class="a-title-empleo afiliados" style="text-align: center;"><?=$lang["equipo_de_ayuda_al_usuario"];?></h1>
 
         <form class="form-buscar" style="padding-top: 30px;margin-left: 10%;margin-right: 10%">
 
-          <p class="py-4 text-primary" style="text-align: center;"><?=$lang["si_le_quedan_dudas_respecto"]?></p>
+          
 
-        <p style="text-align: center;">¿Como estas? ¿Necesitas ayuda? ¿Tenes algo para decirnos? Estamos dispuestos a escucharte siempre.<?=$lang["si_usted_continua_con_dudas_"]?>
+        <p style="text-align: center;"><?=$lang["como_estas_necesitas_ayuda"];?> <?=$lang["responderemos_a_la_brevedad"]?>
            </p>
+
+           <p class="py-4 text-primary" style="text-align: center;"><?=$lang["si_le_quedan_dudas_respecto"]?></p>
 
         <div class="col-lg-12 py-2 d-md-block d-none">
 
@@ -113,7 +115,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["nombre"]?></h5>
           
                   <div class="input-group">
-                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="Escribe tu nombre" value="">
+                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="<?=$lang["complete_con_su_nombre"];?>" value="">
               </div>
             
         </div>
@@ -121,7 +123,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["email"]?></h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="email" name="email" type="text" placeholder="Escribe tu mail" value="">
+                <input class="field form-control" id="email" name="email" type="text" placeholder="<?=$lang["completa_con_tu_correo_electronico"];?>" value="">
               </div>
            
         </div>
@@ -129,7 +131,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["telefono"]?></h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="phone" name="phone" type="text" placeholder="Escribe tu teléfono" value="">
+                <input class="field form-control" id="phone" name="phone" type="text" placeholder="<?=$lang["tu_telefono_de_contacto"];?>" value="">
               </div>
             
         </div>
@@ -137,7 +139,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["mensaje"]?></h5>
          
               <div class="input-group">
-                <textarea class="field form-control" id="mensaje" name="mensaje">
+                <textarea class="field form-control" id="mensaje" name="mensaje" placeholder="<?=$lang["describa_su_consulta_aqui"];?>">
                 
                 </textarea>
               </div>
@@ -145,7 +147,7 @@ include("includes/navbar.php");
         </div>
 <br>
       <div class="col-lg-12 py-2 d-md-block" style="text-align: center;">
-        <button class="btn btn-info" name="registro">Enviar</button>
+        <button class="btn btn-info" name="registro"><?=$lang["enviar"];?></button>
         </div>
 
         </form>
@@ -163,19 +165,22 @@ include("includes/navbar.php");
 <div class="container py-2">
                           <div class="row">
                               <div class="col-12">
-<h1 class="a-title-empleo afiliados" style="text-align: center;"> <?=$lang["contacto"]?></h1>
-<span class="py-4 text-primary"><?=$lang["si_le_quedan_dudas_respecto"]?></span>
+ <h1 class="a-title-empleo afiliados" style="text-align: center;"><?=$lang["equipo_de_ayuda_al_usuario"];?></h1>
+
+
+<br>
+
+        <span class=""><?=$lang["como_estas_necesitas_ayuda"];?> <?=$lang["responderemos_a_la_brevedad"]?>
+           </span>
 
 <br><br>
-
-        <span class="">¿Como estas? ¿Necesitas ayuda? ¿Tenes algo para decirnos? Estamos dispuestos a escucharte siempre.<?=$lang["si_usted_continua_con_dudas_"]?>
-           </span>
+           <span class="py-4 text-primary"><?=$lang["si_le_quedan_dudas_respecto"]?></span>
         <form class="form-buscar" style="padding-top: 30px; margin-left: 5%;margin-right: 5%;">
         
           <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["nombre"]?></h5>
           
                   <div class="input-group">
-                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="Escribe tu nombre" value="">
+                <input class="field form-control" id="nombre" name="nombre" type="text" placeholder="<?=$lang["complete_con_su_nombre"];?>" value="">
               </div>
             
         
@@ -183,7 +188,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["email"]?></h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="email" name="email" type="text" placeholder="Escribe tu mail" value="">
+                <input class="field form-control" id="email" name="email" type="text" placeholder="<?=$lang["completa_con_tu_correo_electronico"];?>" value="">
               </div>
            
         
@@ -191,7 +196,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["telefono"]?></h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="phone" name="phone" type="text" placeholder="Escribe tu teléfono" value="">
+                <input class="field form-control" id="phone" name="phone" type="text" placeholder="<?=$lang["tu_telefono_de_contacto"];?>" value="">
               </div>
             
         
@@ -199,13 +204,13 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center; padding-top: 10px;"><?=$lang["mensaje"]?></h5>
          
               <div class="input-group">
-                <textarea class="field form-control" id="mensaje" name="mensaje">
+                <textarea class="field form-control" id="mensaje" name="mensaje" placeholder="<?=$lang["describa_su_consulta_aqui"];?>">
                 
                 </textarea>
               </div>
             <br>
         <div class="col-lg-12 py-2 d-md-block" style="text-align: center;">
-        <button class="btn btn-info" name="registro">Evnviar</button>
+        <button class="btn btn-info" name="registro"><?=$lang["enviar"];?></button>
         </div>
 
         </form>

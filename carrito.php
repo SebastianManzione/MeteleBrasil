@@ -1,8 +1,8 @@
 <?php 
 
-session_start();
 
 
+include("includes/headPagos.php");
 
 include("admin/classes/salidas.php");
 
@@ -70,16 +70,6 @@ $_SESSION['reserva'] = array_values($_SESSION['reserva']);
 
 $totalCarrito=0;
 
-
-
-include ("admin/classes/functions.php");
-
-
-
-
-
-
-
 $carrito=$_SESSION['reserva'];
 
 
@@ -111,7 +101,6 @@ location.href="index.php";
 }
 
 
-include("includes/headerPagos.php");
 ?>
 
 
@@ -244,12 +233,16 @@ $totalDescuentos=0;
       $cantidad=$reserva[$j]['cantidad'];
 
 
+        $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
+
+        $salida=getSalida($tarifa[0]['idServicioSalidas'] );
+
+  $fecha=strtotime($salida[0]['fecha']);
 
       $cantidadPasajeros+=$reserva[$j]['cantidad']; 
 
   
 
-        $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
 
 
 
@@ -262,6 +255,8 @@ $totalDescuentos=0;
             ?>
 
             <li><?=$servicio[0]["nombre_servicio"];?><li>
+              <li> <?=date("d-m-Y", strtotime($salida[0]['fecha']));?> <?=$salida[0]['horaCheckIn'];?></li>
+          
 
             <?php
 
@@ -283,9 +278,7 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
       }
 
-      
-
-if ($_SESSION["login"]["idVendedor"]>0) {
+if ($_SESSION["login"]["idUsuario"]==1) {
 
   echo("<li>comision Vendedor: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
 
@@ -479,7 +472,7 @@ $precioTotalCarrito=0;
 
                           <h4 class="text-left titulo-card-destinos text-primary  mb-4"><?=$servicio[0]["nombre_servicio"];?>  </h4>
 
-                          <div class="d-md-block d-none">
+                          <div class="d-md-block ">
 
                             <div class="row no-gutters text-center ">
 

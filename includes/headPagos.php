@@ -1,6 +1,9 @@
 <?php
- session_start();
+session_start();
+include("admin/classes/functions.php");
 include("admin/classes/parametros.php");
+include("admin/classes/geolocalizacion.php");
+include("admin/classes/impuestos_pais.php");
  $parametros=getParametros();
 
 // verificamos la sesion creada
@@ -30,7 +33,43 @@ if(isset($_SESSION['idioma'])){
 }
 
 
- 
+
+$url=getUrlGeoUser();
+
+
+
+$geo=(geoLocalizacionIp($url,0,0));
+
+$langd=$geo["lang"];
+
+
+$idPais=$geo["idPais"];
+
+$_SESSION['geo']=$geo;
+
+
+$impuestos_pais=getImpuestosPais($idPais);
+
+//echo "impuestos_pais".$impuestos_pais;
+
+
+
+$_SESSION['impuestos_pais']=$impuestos_pais;
+
+if (!isset($_SESSION["moneda_sel"])) {
+
+   $_SESSION['moneda_sel']=283;
+
+$_SESSION['moneda_sel_sym']='R$';
+
+ $monedaSelSym='R$';
+
+}
+
+
+
+
+
  ?>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -82,8 +121,46 @@ if(isset($_SESSION['idioma'])){
    <!-- FUENTES-->
    
   <!-- ESTILOS NECESARIOS -->
-<?= $parametros[0]["head"]?>
+<?php // $parametros[0]["head"]?>
 
 </head>
-<body>
-   <?= $parametros[0]["body"]?>
+<body id="page-top">
+
+  <div id="bodyCarga"></div>
+
+<div id="body">
+
+<!--HEADER PAGO SEGURO-->
+
+
+<section class="py-2 bg-primary">
+
+
+
+  <div class="container">
+
+
+    <div class="row">
+             
+ <div>
+
+<img src="img/favicon.png">
+</div>
+      <div class="col-lg-3 col-6">
+
+
+        <a href="index" class="navbar-brand text-white"><h3>METELE BRASIL </h3></a>
+
+      </div>
+
+      <div class="col-lg col-6">
+
+        <p class="text-white text-pagos mb-0"> <i class="fa fa-lock mx-2 "></i><?=$lang["pago_seguro"]?></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>

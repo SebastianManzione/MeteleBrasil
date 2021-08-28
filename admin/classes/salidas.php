@@ -178,7 +178,48 @@ function getSalidas(){
     }
 
 
+        function getSalidasIdPrestadorHoy(){
 
+ $fechaHoy =date("Y-m-d");
+
+    require("conexion.php");
+
+    $idPrestador=$_SESSION["login"]["idPrestador"];
+$hoy=date('Y-m-d');
+
+if ($_SESSION['login']['idUsuario']==1) {
+        $data=["hoy"=>$hoy];
+    $consulta = "select * from servicio_salidas WHERE fecha=:hoy";
+}
+else{
+    $data=["idPrestador"=>$idPrestador, "hoy"=>$hoy];
+    $consulta = "select * from servicio_salidas WHERE idPrestador= :idPrestador AND fecha=:hoy";
+}
+   
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
 
 
    function getSalidasFechaLuegoIdServicio($fecha,$idServicio){

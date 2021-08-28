@@ -1,4 +1,7 @@
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 
@@ -173,7 +176,13 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                   <tbody>
 
-                    <?php $servicios=getAllServicios();
+                    <?php 
+
+                   if($_SESSION["login"]["rol"]==1){
+                    $servicios=getAllServicios();}
+                    else{
+                      $servicios=getAllServiciosPrestador($_SESSION["login"]["idPrestador"]);
+                    }
 
                     for ($i=0; $i < count($servicios); $i++) { 
 

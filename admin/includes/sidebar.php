@@ -230,7 +230,7 @@ if ($archivo_actual=="prestadores.php") {
 
 
 
-   if(true){ //$_SESSION["login"]["rol"]==1
+   if($_SESSION["login"]["rol"]==1){ //
 
 
 
@@ -476,7 +476,7 @@ if ($archivo_actual=="blogLista.php") {
 
 
 
-     <?php  if($_SESSION["login"]["rol"]==1){ ?>
+     <?php  if($_SESSION["login"]["rol"]==1 || $_SESSION["login"]["idPrestador"]>0){ ?>
 
 <!--COMIENZA-->
 
@@ -501,7 +501,6 @@ $treeviewClientes=" menu-open ";
               
 
              }
-
 
 
 if ($archivo_actual=="carritosLista.php"||$archivo_actual=="carritoDetalles.php") {
@@ -534,7 +533,9 @@ if ($archivo_actual=="carritosLista.php"||$archivo_actual=="carritoDetalles.php"
 
             <ul class="nav nav-treeview ">
 
+<?php if ($_SESSION["login"]["rol"]==1 ) {
 
+ ?>
 
  <li class="nav-item">
 
@@ -548,7 +549,7 @@ if ($archivo_actual=="carritosLista.php"||$archivo_actual=="carritoDetalles.php"
 
               </li>
 
-
+<?php } ?>
 
 <?php $clientesClass=" ";
 

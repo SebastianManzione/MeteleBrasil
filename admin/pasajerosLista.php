@@ -2,36 +2,19 @@
 
 <?php 
 
-
-
-
-
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 require("classes/prestador.php");
-
 require("classes/usuario.php");
-
 require("classes/edades.php");
-
 require("classes/servicio.php");
-
 require("classes/reserva.php");
-
 require("classes/salidas.php");
-
 require("classes/tarifas.php");
-
 require("classes/comprobantes.php");
-
 require("classes/cancelaciones.php");
-
 require("classes/convierte_monedas.php");
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
@@ -184,7 +167,7 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
                                                     <td><?= $horaCheckIn ?></td>
 
-                                                    <td>2785,00</td>
+                                                    <td></td>
 
                                                 
 
@@ -267,7 +250,7 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
                                                     <th>Tipo de tarifa</th>
 
                                                     <th>Estado</th>
-
+  <th>Voucher</th>
                                                     <th>Comentario</th>
 
                                                   
@@ -299,8 +282,8 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
                             $toEdad=getEdad($tarifas[$i]['idToEdad'])[0]["valor"];
 
                             $idReservaTarifas=$tarifas[$i]['idReservaTarifas'];
-
-      $horario=getReservaHorariosId($tarifas[$i]['idReservaHorarios']);
+$idReservahorarios=$tarifas[$i]['idReservaHorarios'];
+      $horario=getReservaHorariosId($idReservahorarios);
 
   
 
@@ -345,9 +328,9 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
                                        $claseBoton="btn btn-warning";
 
                                         $textoBoton="Pendiente";
-
+                                          $confirmada=false;
                                         if ($diferenciaComprobantesPrecio<1 && $totalReserva > 0) {
-
+                                          $confirmada=true;
                                          $claseBoton="btn btn-success";
 
                                           $textoBoton="Confirmada";
@@ -390,9 +373,6 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
 
                               <td>Pax Responsable</td> 
 
-                               <td>Pais</td> 
-
-                                <td>Idioma</td> 
 
                             </tr>
 
@@ -402,9 +382,7 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
 
                                 <td><?=$reserva[0]["nombreResponsable"]?> <?=$reserva[0]["apellidoResponsable"]?> </td>
 
-                                 <td>?????no tenemos este dato todavia </td>
-
-                                  <td>????no tenemos este dato todavia</td>
+                        
 
                       
 
@@ -479,6 +457,11 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
                     <td class="details-control"><?=$cancelacion;?></td>
 
                     <td> <button type="button" class="<?= $claseBoton;?>"><?= $textoBoton;?></button></td> 
+                    <td><?php if ($confirmada) {
+                     ?>
+<form method="post" action="voucherPrestador" ><button type="submit" name="idReservaHorarios" value="<?=$idReservahorarios;?>"> Voucher</button></form>
+                     <?php
+                    } ?> </td>
 
                     <td class="details-control"><?= $horario[0]['comentario']?></td>
 

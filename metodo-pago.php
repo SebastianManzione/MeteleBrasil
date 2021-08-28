@@ -61,7 +61,7 @@ include("includes/headerPagos.php");
 <!--SECCION DATOS PERSONALES-->
 <!--SECCION DATOS PERSONALES-->
 <section>
-  <?php print_r($_SESSION); ?>
+
   <div class="container">
     <div class="row">
 

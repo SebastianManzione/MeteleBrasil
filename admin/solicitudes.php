@@ -21,7 +21,7 @@ if (!$_SESSION["login"]["rol"]==1) {
   alertar("Usted no tiene acceso a esta seccion del software", "error");
 
   redireccionarLento("index");
-
+exit();
 }
 
 
@@ -134,7 +134,7 @@ if (!$_SESSION["login"]["rol"]==1) {
                     <th>T.Solicitud</th>
 
                     <th>Email </th>        
-
+      <th>Password </th>  
                     <th>nombre_agencia</th> 
 
                     <th>descripcion</th>  
@@ -177,6 +177,7 @@ for($i=0;$i < count($solicitudes); $i++){
 
 $tipo_solicitud=getTipoSolicitud($solicitudes[$i]["idTipoSolicitud"]);
 $email=$solicitudes[$i]["email"];
+$password=$solicitudes[$i]["password"];
 $nombre_agencia=$solicitudes[$i]["nombre_agencia"];
 $descripcion_agencia=$solicitudes[$i]["descripcion_agencia"];
 $tipo_de_agencia=$solicitudes[$i]["tipo_de_agencia"];
@@ -211,6 +212,7 @@ $fecha_alta=$solicitudes[$i]["fecha_alta"];
 
 
    <td> <?= $email; ?> </td>
+      <td> <?= $password; ?> </td>
   <td> <?= $nombre_agencia; ?> </td>
     <td> <?= $descripcion_agencia; ?> </td>
       <td> <?= $tipo_de_agencia; ?> </td>

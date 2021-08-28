@@ -21,7 +21,7 @@ $descripcion_agencia=$_POST["descripcion"];
 
 $resu=setSolicitud($idTipoSolicitud, $email, $password, $nombre_agencia, $descripcion_agencia, $tipo_de_agencia, $nombre, $cargo_empresa, $whatsapp, $estado, $ciudad, $destino_que_opera);
 if($resu>0){
-  alertar("Su solicitud se envio correctamente, nos comunicaremos con usted por email", "success");
+  alertar("Sua solicitação foi enviada corretamente, entraremos em contato por e-mail", "success");
   redireccionarLento("index");
 }
 }

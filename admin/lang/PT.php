@@ -5,9 +5,9 @@ $lang = array(
 
 /* Index + navbar */
 
-	"crea_tu_viaje"=>"Crie sua viagem",
-	"excursiones_en_brasil" => "EXCURSÕES NO BRASIL",
-	"que_hacemos"=>"O que fazer?",
+	"crea_tu_viaje"=>"AS MELHORES EXCURSÕES DO BRASIL",
+	"excursiones_en_brasil" => "Escolha sua diversão favorita",
+	"que_hacemos"=>"Para onde vamos?",
 	"buscar"=>"Procurar",
 	"las_mejores_actividades"=>"As melhores atividades",
 	"atencion_al_cliente_247"=>"Suporte ao cliente 24/7",
@@ -16,7 +16,8 @@ $lang = array(
 	"principales_actividades"=>"Atividades principais",
 	"ver_mas"=> "Ver mais",
 	"opiniones"=>"Opiniões",
-	"viajeros_ya_lo_han_disfrutado"=>"os viajantes já gostaram",
+	"viajeros_ya_lo_han_disfrutado"=>"viajantes que já gostaram",
+    "Actividades"=>"Atividades",
 	"servicios"=>"Serviços",
 	"Paseo de barco"=>"Passeios de barco",
 	"Hospedaje"=>"Hospedagem",
@@ -112,7 +113,7 @@ $lang = array(
     "Proxima"=> "Próximo",
     "anterior"=>"Anterior",
     "conoce_nuestra_guia_de"=>"Conheça nosso guia para",
-    "que_hacemos"=>"O que fazemos?",
+    "que_hacemos"=>"O que fazemos então ?",
     "buscar"=>"Pesquisar",
     "top_actividades"=>"Principais atividades",
      "filtrar"=>"Filtrar",
@@ -837,17 +838,31 @@ $lang = array(
 
 /* contato */
 
+   "hablemos"=>"Vamos conversar!",
+
+   "equipo_de_ayuda_al_usuario"=>"Seja Bem-vindo ao time de suporte ao usuário",
+
+   "como_estas_necesitas_ayuda"=>"Como vai? Precisa de ajuda? Tem algo a nos contar? Estamos sempre dispostos a ouvi-lo.",
+
    "si_le_quedan_dudas_respecto" => "Se você tiver dúvidas sobre nossos serviços, use nosso formulário de contato.",
 
-   "si_usted_continua_con_dudas_" => "Responderemos em breve.",
+
+
+   "responderemos_a_la_brevedad" => "Responderemos em breve.",
 
    "nombre" => "Nome",
 
    "email" => "Email",
 
+    "completa_con_tu_correo_electronico"=>"Preencha com seu e-mail ",
+
    "telefono" => "Telefone",
 
+   "tu_telefono_de_contacto"=>"Seu telefone de contato",
+
    "mensaje" => "Mensagem",
+
+     "describa_su_consulta_aqui"=>"Descreva sua consulta aqui!",
 
 
 
@@ -887,7 +902,7 @@ $lang = array(
 
    "te_enviaremos_un_email" => "Enviaremos um e-mail com um voucher que você poderá imprimir ou levar em seu celular para a atividade.",
 
-   "viajeros" => "Viaja nte",
+   "viajeros" => "Viajante",
 
    "es_posible_organizar" => "- É possível organizar uma visita com grupos familiares de todas as idades?",
 
@@ -1075,7 +1090,7 @@ $lang = array(
 
 "observaciones"=>" Observações ",
 
-"donde_vamos"=> "Vamos para onde?",
+"donde_vamos"=> "O que fazemos então?",
 
 "quiero_comentar"=> "Quero comentar",
 
@@ -1264,7 +1279,7 @@ $lang = array(
 
 "valoramos_cada_agencia"=>"Valorizamos cada agência",
 
-"valoramos_cada_prestador"=>"Valoramos cada prestador",
+"valoramos_cada_prestador"=>"Valorizamos cada prestador",
 
 "valoramos_cada_operador"=>"Valorizamos cada operadora de atacado",
 

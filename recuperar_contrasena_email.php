@@ -1,5 +1,7 @@
 
 <?php
+
+
 include("includes/navbar.php");
 include("admin/classes/usuario.php"); 
 include("admin/classes/generador_aleatorio.php");
@@ -7,15 +9,16 @@ include("admin/classes/generador_aleatorio.php");
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
  
   $email=$_GET['email'];
-$codigoGet=$_GET["codigo"];
+$codigoGet=trim($_GET["codigo"]);
+
 $usuario=getUsuarioEmail($email);
 
-if (count($usuario)==1 && $codigoGet==$usuario[0]['codigoRecuperacion'] && $usuario[0]['codigoRecuperacion']>0) {
+if (count($usuario)==1 && $codigoGet==$usuario[0]['codigoRecuperacion'] && strlen($usuario[0]['codigoRecuperacion'])>0) {
 
 }
 else{
   alertar("El codigo expiro intente nuevamente", "warning");
-  redireccionarLento("recuperar_contrasena");
+ // redireccionarLento("recuperar_contrasena");
   exit();
 }
 

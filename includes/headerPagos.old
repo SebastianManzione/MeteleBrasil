@@ -26,6 +26,29 @@ if(isset($_SESSION['idioma'])){
 }
 
 
+$realip = substr($theip, 0, 250);
+
+
+
+$url='http://www.geoplugin.net/php.gp?ip=' . $realip;
+
+//$url='http://www.geoplugin.net/php.gp?ip='.'179.36.137.63';
+
+include("admin/classes/geolocalizacion.php");
+
+$geo=(geoLocalizacionIp($url,0,0));
+
+$langd=$geo["lang"];
+
+//print_r($_SESSION);
+
+
+
+$_SESSION["realIP"]=$realip;
+
+$idPais=$geo["idPais"];
+
+$_SESSION['geo']=$geo;
  ?>
 <!DOCTYPE html>
 

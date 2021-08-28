@@ -24,6 +24,7 @@ $lang = array(
 	"ver_mas"=>"Ver Mas",
 	"opiniones"=>"Opiniones",
 	"viajeros_ya_lo_han_disfrutado"=>"viajeros ya lo han disfrutado",
+    "Actividades"=>"Actividades",
 	"servicios"=>"Servicios",
 	"Paseo de barco"=>"Paseos en barco",
 	"Hospedaje"=>"Hospedaje",
@@ -848,17 +849,32 @@ $lang = array(
 
   /*contact*/
 
+  "hablemos"=>"Hablemos!",
+
+  "equipo_de_ayuda_al_usuario"=>"Bienvenido al equipo de ayuda al usuario",
+
+"como_estas_necesitas_ayuda"=>"¿Como estas? ¿Necesitas ayuda? ¿Tenes algo para decirnos? Estamos dispuestos a escucharte siempre.",
+
   "si_le_quedan_dudas_respecto"=>"Si le quedán dudas respecto a nuestros servicios utilice nuestro formulario de contacto.",
 
-  "si_usted_continua_con_dudas_"=>"Responderemos a la Brevedad.",
+
+  "responderemos_a_la_brevedad"=>"Responderemos a la Brevedad.",
 
   "nombre"=>"Nombre",
 
   "email"=>"Email",
 
+  "completa_con_tu_correo_electronico"=>"Completa con tu correo electronico",
+
   "telefono"=>"Teléfono",
 
+  "tu_telefono_de_contacto"=>"Tu telefono de contacto",
+
   "mensaje"=>"Mensaje",
+
+  "describa_su_consulta_aqui"=>"Describa su consulta aqui!",
+
+
 
 
 
@@ -1513,6 +1529,8 @@ $lang = array(
 
 
 
+
+/* CONTACTO */
 
 
 

@@ -18,6 +18,7 @@ $lang = array(
 	"ver_mas"=>"See More",
 	"opiniones"=>"Opinions",
 	"viajeros_ya_lo_han_disfrutado"=>"travelers have already enjoyed it",
+    "Actividades"=>"Activities",
 	"servicios"=>"Services",
 	"Paseo de barco"=>"Boat Trips",
 	"Hospedaje"=>"Lodging",
@@ -775,17 +776,30 @@ $lang = array(
 
 /* contact */
 
+   "hablemos"=>"Let's talk",
+
+   "equipo_de_ayuda_al_usuario"=>"User support team",
+
+   "como_estas_necesitas_ayuda"=>"How are you? Need help? Do you have something to tell us? We are always ready to listen to you.",
+
    "si_le_quedan_dudas_respecto" => "If you have questions about our services, use our contact form.",
 
-   "si_usted_continua_con_dudas_" => "We will respond to the brevity.",
+   "responderemos_a_la_brevedad" => "We will respond to the brevity.",
 
    "nombre" => "Name",
 
    "email" => "Email",
 
+ "completa_con_tu_correo_electronico"=>"Complete with your email",
+
    "telefono" => "Phone",
 
+ "tu_telefono_de_contacto"=>"Your contact phone",
+
+
    "mensaje" => "Message",
+
+   "describa_su_consulta_aqui"=>"Describe your query here!",
 
 
 
@@ -1487,6 +1501,7 @@ $lang = array(
 
 
 
+/* CONTACTO */
 
 
 

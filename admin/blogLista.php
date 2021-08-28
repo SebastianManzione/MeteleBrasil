@@ -32,6 +32,11 @@ require("classes/destinos.php");
  require("classes/fotos_servicio.php"); 
 
 
+if (!$_SESSION["login"]["rol"]==1) {
+  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  redireccionarLento("index");
+exit();
+}
 
 
 

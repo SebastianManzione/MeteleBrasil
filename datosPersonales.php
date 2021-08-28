@@ -1,7 +1,7 @@
 <?php 
 
-session_start();
 
+include("includes/headPagos.php");
 
 
 include("admin/classes/salidas.php");
@@ -25,15 +25,6 @@ include("admin/classes/servicio.php");
     include("admin/classes/codigos_telefonicos.php");
 
 $totalCarrito=0;
-
-
-
-include ("admin/classes/functions.php");
-
-
-
-
-
 
 
 $carrito=$_SESSION['reserva'];
@@ -67,7 +58,7 @@ location.href="carrito";
 }
 
 */
-include("includes/headerPagos.php");
+
 ?>
 
 
@@ -112,8 +103,7 @@ include("includes/headerPagos.php");
 
 
 
-
-    if($('#customControlAutosizing').prop('checked')){
+    if($('#politicasPC').prop('checked')){
 
   $('#body').css('display','none');
 
@@ -134,6 +124,7 @@ include("includes/headerPagos.php");
       return false;
 
     }
+ return false;
 
   }
 
@@ -183,7 +174,7 @@ include("includes/headerPagos.php");
 
                    
 
-                          <p style="font-size: 20px;"> <?= $cantCarrito ?><?=$lang["actividades"]?></p>
+                          <p style="font-size: 20px;"> <?= $cantCarrito ?>  <?=$lang["servicios"]?></p>
 
                         
 
@@ -242,6 +233,9 @@ $totalDescuentos=0;
   
 
         $tarifa=calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],$reserva[$j]["cantidad"]);
+   $salida=getSalida($tarifa[0]['idServicioSalidas'] );
+
+  $fecha=strtotime($salida[0]['fecha']);
 
           $totalDescuentos+=$tarifa[0]["totalDescuentos"];
 
@@ -252,7 +246,7 @@ $totalDescuentos=0;
             ?>
 
             <li><?=$servicio[0]["nombre_servicio"];?><li>
-
+          <li> <?=date("d-m-Y", strtotime($salida[0]['fecha']));?> <?=$salida[0]['horaCheckIn'];?></li>
             <?php
 
           }
@@ -275,7 +269,7 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
       
 
-if ($_SESSION["login"]["idVendedor"]>0) {
+if ($_SESSION["login"]["idusuario"]==1) {
 
   echo("<li>comision Vendedor: ". $_SESSION['moneda_sel_sym']."".$tarifa[0]["comisionVendedor"].'</li>');
 
@@ -561,7 +555,7 @@ if ($totalDescuentos>0) {
 
                           <h4 class="text-left titulo-card-destinos text-primary  mb-4"><?=$servicio[0]["nombre_servicio"];?> </h4>
 
-                          <div class="d-md-block d-none">
+                          <div class="d-md-block">
 
                             <div class="row no-gutters text-center ">
 
@@ -872,9 +866,9 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 
                   <div class="custom-control custom-checkbox mr-sm-2">
 
-                    <input type="checkbox" class="custom-control-input" id="customControlAutosizing" >
+                    <input type="checkbox" class="custom-control-input" id="politicasPC" >
 
-                    <label class="custom-control-label" for="customControlAutosizing"><?=$lang["acepto_las"];?> <a href="aviso" target="_BLANK"><?=$lang["politicas"]?></a> <a data-toggle="modal" data-target="#politicas"><i class="fa fa-exclamation-circle"></i> </a><?=$lang["y_las_condiciones_generales"]?> </label>
+                    <label class="custom-control-label" for="politicasPC"><?=$lang["acepto_las"];?> <a href="aviso" target="_BLANK"><?=$lang["politicas"]?></a> <a data-toggle="modal" data-target="#politicas"><i class="fa fa-exclamation-circle"></i> </a><?=$lang["y_las_condiciones_generales"]?> </label>
 
                   </div>
 

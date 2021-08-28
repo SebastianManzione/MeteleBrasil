@@ -30,12 +30,12 @@
     $('.navbar-collapse').collapse('hide');
   });
   
-  
+  /*
   $("#txtIdiomaSelMovil").click(function(){
     $("#idioma").css('display','block');
     $("#moneda").css('display','none');
   });
-
+*/
 
   $("#clickLoginMovil").click(function(){
     if ($("#usuario-movil").css('display')=="none"){
@@ -50,11 +50,11 @@
   });
 
 
-  $("#txtMonedaSelMovil").click(function(){
+ /* $("#txtMonedaSelMovil").click(function(){
     $("#moneda").css('display','block');
     $("#idioma").css('display','none');
   });
-
+*/
   // Activate scrollspy to add active class to navbar items on scroll
   $('body').scrollspy({
     target: '#mainNav',

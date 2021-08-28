@@ -54,13 +54,18 @@
 
     <div class="row">
 
-      <div class="col-lg-6">
+      <div class="col-lg-8">
 
         <div class="img-azul"></div>
 
       </div>
 
-      <div class="col-lg-6"></div>
+       <div class="col-lg-8">
+
+      
+
+      </div>
+
 
     </div>
 
@@ -182,11 +187,13 @@
 
       <div class="col-6">
 
-          <a  data-toggle="collapse" class="btn-reservar" href="#compartir" role="button" aria-expanded="false" aria-controls="collapseExample" ><i class="text-dark fa fa-share-alt"></i></a>
+      
 
                  <div class="collapse" id="compartir">
 
                   <div class="card card-body">
+
+    <a  data-toggle="collapse" class="btn-reservar" href="#compartir" role="button" aria-expanded="false" aria-controls="collapseExample" ><i class="text-dark fa fa-share-alt"></i></a>
 
                       <a class="btn btn-outline-light btn-social facebook mx-1 mb-2" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse">
 
@@ -270,7 +277,14 @@
 
           </li>
 
+
+
         </ul>
+
+                 <a class="btn btn-primary btn-nav-visita btn-lg" id="btn-reservar-nav" onclick="enviar()"><?=$lang["reservar"]?></a>  
+                 <div>
+
+                 <a  data-toggle="collapse" id="btn-share" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" > <?=$lang["compartir"]?> <i class=" fa fa-share-alt text-gris"> </i> </a></div>
 
         <form class="form-inline ">
 
@@ -278,15 +292,14 @@
 
              <div class="col-lg-6">
 
- <a class="btn btn-primary btn-nav-visita btn-lg" id="btn-reservar-nav" onclick="enviar()"><?=$lang["reservar"]?></a>
-
+ 
              <p id="precio-nav" class="h2 text-primary bold mb-0" style="display: none;" ><?=$lang["precio"]?></p>
 
              </div>
 
              <div class="col-lg-6 text-center">
 
-                 <a  data-toggle="collapse" id="btn-share" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" ><?=$lang["compartir"]?> <i class=" fa fa-share-alt text-gris"></i></a>
+               
 
                  <a  data-toggle="collapse" style="display: none;" id="btn-share-nav" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" ><i class=" fa fa-share-alt text-gris"></i></a>
 

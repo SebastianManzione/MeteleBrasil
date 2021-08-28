@@ -1,4 +1,4 @@
- <?php
+<?php
 
 
 
@@ -22,12 +22,6 @@ require("admin/classes/texto_miniaturas.php");
 require("admin/classes/destinos.php"); 
 
 require("admin/classes/paises.php"); 
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 
 
 
@@ -278,7 +272,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-         <h2 class="py-4 text-primary"> <?=$lang["importante"]?></h2></h2>
+         <h2 class="py-4 text-primary"> <?=$lang["importante"]?></h2>
 
 
 
@@ -503,7 +497,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
  <!-- CONTENEDOR CANCELACION-->
 
-          <div > 
+          <div> 
 
             <h2 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h2>
 
@@ -958,12 +952,14 @@ function cupon(texto){
 
    <button class="btn btn-primary btn-reservar-calendar btn-lg h-100" onclick="enviar()"><?=$lang["reservar"]?></button>
 
-         
 
+
+          
+   
             </div>
 
         <!--FIN DE CALENDARIO-->
-
+ 
         </div> 
 
            </div>
@@ -974,13 +970,13 @@ function cupon(texto){
 
           </div>
 
-          
+   
 
       </div>
 
-  </div>
 
-</section>
+</section> 
+
 
 <section>
 
@@ -1343,6 +1339,8 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
     <div class="col">
      <a class="btn btn-success btn-lg active btn-block" href="whatsapp://send?text=Metelebrasil%20https://www.metelebrasil.com/servicio?id=<?=$idServicio;?>"><i class="fab fa-whatsapp"></i>  <?=$lang["compartir_en_whatsapp"];?></a>
   </div>
+         </div>
+
 
 </div>
 
@@ -1419,7 +1417,7 @@ for ($i=0; $i < 3; $i++) {
 
                    <div class="card card-destacadas mb-5 shadow ">
 
-                   <img src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="img-fluid img-card-top img-destacada " >
+                   <img src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="img-fluid img-card-top img-destacada">
 
                    <div class="destacado">
 
@@ -1431,13 +1429,14 @@ for ($i=0; $i < 3; $i++) {
 
                      <h3><a href="servicio?id=<?=$idServicioRelacionado?>"><?=$serviciosRelacionados[$i]["nombre_servicio"];?></a></h3>
 
-                     <p class="text-primary"><strong><?=$estrellasServicio;?>/10</strong> <span class="text-gris"><?= count($OpinionesServicio);?> opiniones</span></p>
+                     <p class="text-primary"><strong><?=$estrellasServicio;?>/10</strong> <span class="text-gris"><?= count($OpinionesServicio);?><?=$lang["opiniones"];?></span></p>
 
                      <p><?=$serviciosRelacionados[$i]["descripcion_corta"];?></p>
 
                      <h3 class="text-primary"><?=$precioSugerido;?></h3>
 
                    </div>
+
 
                    <a href="servicio?id=<?=$idServicioRelacionado?>" class="btn-reserva-destacada"><?=$lang["reservar"]?></a>
 
@@ -1489,13 +1488,15 @@ for ($i=0; $i < 3; $i++) {
 
 
 
-       </div>
 
    </div>
 
 </div>
 
-  </section>
+</div>
+
+
+
 
 
 
@@ -1567,11 +1568,11 @@ for ($i=0; $i < 3; $i++) {
 
 
 
-<!--NOSE QUE ES ESTO lo iba a borrar pero te puede servir si no lo encontra para sebi de lucas-->
+<!--NOSE QUE ES ESTO lo iba a borrar pero te puede servir si no lo encontra para sebi de lucas
 
             <small>55 US$</small>
 
-            <h2 class="text-primary"><span>49</span> US$</h2>
+            <h2 class="text-primary"><span>49</span> US$</h2>-->
 
 <!--Finaliza esto -->
 
@@ -2239,6 +2240,9 @@ traigoDiaPorClase.style.borderRadius = "50%";
 
 </div>
 
+</div>
+
+
 
 
 <!--MODAL HORARIO-->
@@ -2259,7 +2263,7 @@ cupon("'.$_GET["cupon"].'");
 
 } ?>
 
-
+</section>
 
 <!--BOTON RESERVA MOVIL-->
 
@@ -2273,7 +2277,7 @@ cupon("'.$_GET["cupon"].'");
 
             <div class="col-6 py-2 bg-white">
 
-              <p class="mb-0 text-center mb-0 text-primary" style="font-size:25px;"><small class="text-gris"><?=$lang["desde"]?></small> <span class="bold" id="precioTotalFooterNavCelular"><?=$lang["precio_"]?></span></p>
+              <p class="mb-0 text-center mb-0 text-primary" style="font-size:25px;"><small class="text-gris"><?=$lang["desde"]?></small> <span class="bold" id="precioTotalFooterNavCelular"></span></p>
 
             </div>
 
@@ -2281,7 +2285,7 @@ cupon("'.$_GET["cupon"].'");
 
               <p  class="mb-0 text-center" style="font-size:28px;">
 
-                <button class= "bnt btn-primary"data-toggle="modal" data-target="#modalhorario-movil" class="text-white bold">
+                <button class= "bnt btn-primary" data-toggle="modal" data-target="#modalhorario-movil" class="text-white bold">
 
                 <?=$lang["reservar"]?>
                </button>

@@ -79,7 +79,7 @@ $idReserva=$respuestas['external_reference'];
 $total=$respuestas['transaction_amount'];
 $total_dolares=ConvierteMoneda(283,188, $total)
 
-insertaComprobante($idReserva, $total, 1, 283, $id, $total_dolares);
+insertaComprobante($idReserva, $total, 1, 283, $id, $total_dolares, 1);
 
 exit();
 

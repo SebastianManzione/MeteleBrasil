@@ -163,7 +163,7 @@ $cuerpo='
                             <tr>
                               <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                 <div style="color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;line-height:21px;text-align:center;">
-                                  Sua reserva no metelebrasil.com foi realizada com sucesso! Com o código'.$codigoAmigable.'.
+                                  Sua reserva Com o código '.$codigoAmigable.'. foi realizada com sucesso! 
                                 </div>
                               </td>
                             </tr>

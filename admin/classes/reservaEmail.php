@@ -8,7 +8,7 @@ function enviaMail($receptor, $asunto, $cuerpo, $site){
 
     $direccion_remitente='mails@metelebrasil.com';
 
-require($_SERVER['DOCUMENT_ROOT'].'/admin/email/PHPMailerAutoload.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/admin/email/PHPMailerAutoload.php');
 
 $mail = new PHPMailer;
 
