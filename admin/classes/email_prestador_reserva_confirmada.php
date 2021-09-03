@@ -194,7 +194,7 @@ $cuerpo='
                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                           <tr>
                             <td align="center" bgcolor="029ce2" role="presentation" style="background-color:#029ce2;border:none;border-radius:5px;cursor:auto;padding:10px 25px;" valign="middle">
-                              <a href="'.$site.'/consultaReserva?reserva='.$codigoAmigable.'" style="background:#029ce2;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;" target="_blank">
+                              <a href="'.$site.'/admin/voucherPrestador?idSalida='.$codigoAmigable.'" style="background:#029ce2;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;">
                                VER RESERVA 
                               </a>
   

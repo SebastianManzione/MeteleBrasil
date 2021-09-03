@@ -58,11 +58,11 @@ $cuerpo=getCuerpoEmailPagoRecibido($codigoAmigable, $nombre_cobrador);
 
 
 
-$resumail=enviaMail($reserva[0]["emailResponsable"], "Recibimos Su pago correctamente", $cuerpo, $parametros[0]["site"]);
+$resumail=enviaMail($reserva[0]["emailResponsable"], $lang["si_recibimos_su_pago_correctamente"], $cuerpo, $parametros[0]["site"]);
 
 
 
-  alertar("Cobro Realizado con exito","success");
+  alertar($lang["si_tu_cobro_se_realizo"],"success");
   redireccionarLento('consultaReserva?reserva='.$codigoAmigable);
   exit();
 
@@ -72,7 +72,7 @@ else
 
 {
 
-  alertar("No es usted un usuario que puede cobrar","warning");
+  alertar($lang["ups_infelizmente_su_usuario"],"warning");
 
 }
 

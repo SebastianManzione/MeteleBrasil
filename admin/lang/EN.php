@@ -1507,4 +1507,245 @@ $lang = array(
 
 
 
+/* Alertas */
+
+"cerrar_sesion"=>" Sign off",
+
+"sea_bienvenido"=>"Welcome",
+
+"usuario_contrasena_incorrectos"=>"Incorrect username or password",
+
+
+"bienvenido_a_metelebrasil"=>"Welcome to Metele Brasil",
+
+"gracias_por_usar"=>"Thank you for using Reservate services",
+
+"el_post_no_existe"=>"the post does not exist",
+
+"error"=>"error",
+
+"la_reserva_con_el_codigo"=>"The reservation with the code",
+
+"no_existe"=> "does not exist",
+
+"gracias_por_confiar_en_metele_brasil"=>"Thank you for trusting Metele Brasil. ",
+
+"el_pago_de_paypal"=>"Payment by Paypal may take time to impact the system. We will send the confirmation to your e-mail.",
+
+"el_metodo_seleccionado_no_puede_cobrar"=>"The selected method cannot charge in the selected country (Ebanx)",
+
+"estamos_guardando_su_reserva"=>"We are saving your reservation",
+
+"si_tu_cobro_se_realizo"=>"Yes! your payment was successful",
+
+"ups_infelizmente_su_usuario"=>"Ups, infelizmente su usuario no puede realizar el cobro. Comuniquese con el soporte",
+
+"si_recibimos_su_pago_correctamente"=>"Yhea! We received your payment correctly",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Alta de salida */
+
+
+"carga_de_tarifas"=>"Departure load",
+
+"inicio"=>"Home",
+
+"nuevo_periodo_para"=>"Time frame for", 
+
+"nombre_del_periodo"=>"Period name",
+
+"indique_el_nombre_del_periodo"=>"Indicate the name of the period that you are going to load into the service.",
+
+"inicio_periodo"=>"Start of period",
+
+"final_periodo"=>"End of period",
+
+"seleccione_los_dias_de_la_semana"=>"Select the days of the week that the activity takes place",
+
+"lunes"=>"Monday",
+
+"martes"=>"Tuesday",
+
+"miercoles"=>"Wednesday",
+
+"jueves"=>"Thursday",
+
+"viernes"=>"Friday",
+
+"sabado"=>"Saturday",
+
+"domingo"=>"Sunday",
+
+"desea_agregar_una_palabra"=>"Do you want to add a word that identifies and accompanies the departure time?",
+
+"ejemplo_centro"=>"Example: Center, Embarcação 1, Van of 15 places, Minibus, Departure Center",
+
+"hora_de_salida_del_servicio"=>"Service Start Time:",
+
+"hora_de_llegada"=>"Service Arrival Time: ",
+
+"cuantos_lugares_disponibles_para_la_venta"=>"How many places available for sale does this departure have?",
+
+"duracion_minima_de_la_actividad"=>"Minimum duration of the activity",
+
+"minutos"=>"Minutes",
+
+"horas"=>"Hours",
+
+"dias"=>"Days",
+
+"duracion_maxima"=>"Maximum duration of the activity",
+
+"anticipacion_de_reserva"=>"Anticipation of reservation",
+
+"indique_el_horario_de_check_in"=>"Indicate the Check In Time:",
+
+"idiomas_del_servicio"=>"Languages ​​to offer the service",
+
+"nota_de_salida"=>"Note of departure",
+
+"escriba_detalles_y_topicos"=> "Write DETAILS and TOPICS to take into account of this output",
+
+"prestador"=>"Provider",
+
+"moneda_del_servicio"=>"Currency of the Service",
+
+"indique_la_moneda"=>"Indicate the currency in which you charge this service",
+
+"indique_el_punto_de_salida"=>"Indicate the service exit point ",
+
+"direccion"=>"Address",
+
+"latitud"=>"Latitude",
+
+"longitud"=>"Length",
+
+"tipos_de_pax"=>"Types of Pax",
+
+"origen"=>"Origin",
+
+"nombre_tarifa"=>"Tariff name",
+
+"desde_anos"=>"Since years",
+
+"hasta_anos"=>"Until years",
+
+"tipo_de_tarifa"=>"Type of rate",
+
+"precio_"=>"Price",
+
+"pago_minimo"=>"Minimum payment",
+
+"tipo_de_cancelacion"=>"Cancellation type",
+
+"comision"=>"Does this rate generate commission?",
+
+"guardar"=>"Save",
+
+"salir"=>"Exit",
+
+
+
+
+
+
+/*Sidebar*/
+
+
+"prestadores_"=>" Providers ",
+
+"lista_de_prestadores"=>"List of providers",
+
+"alta_prestador"=>"Ative Provider",
+
+"lista_de_articulo"=>"List of Articles",
+
+"alta_articulo"=>"Upload post",
+
+"servicios"=>"Services",
+
+"alta_servicio"=>"Upload service",
+
+"lista_de_servicios"=>"Services",
+
+"lista_carritos"=>"Cart list",
+
+"reservas"=>"Reservations",
+
+"estado_reservas"=>"Status of Reservations",
+
+"administracion"=>"Administration",
+
+"usuarios"=>"Users",
+
+"solicitudes"=>"Requests",
+
+"edades"=>"Ages",
+
+"textos_cancelaciones"=>"Texts Cancellations",
+
+"moneda"=>"Currency",
+
+"editor_de_textos"=>"Text editor Thumbnails",
+
+"editor_de_textos_accesibilidad"=>"Text Editor Accessibility",
+
+"editor_de_destinos"=>"Editor of Destinations",
+
+"editor_de_servicios_adicionales"=>"Editor of Additional Services",
+
+"editor_de_textos_miniatura_blog"=>"Text editor Miniatures Blog",
+
+"editor_de_comiciones"=>"Editor commissions",
+
+"editor_de_categorias"=>"Category editor",
+
+"editor_parametros"=>"Editor parameters",
+
+"financiero"=>"Financial",
+
+"comprovantes"=>"Ticket and Vouchers",
+
+"comisiones"=>"Commissions",
+
+
+
+
+
+
+
+
+
+
+
+
+
 	);

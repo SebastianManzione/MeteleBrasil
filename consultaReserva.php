@@ -28,7 +28,6 @@ include("admin/classes/moneda.php");
 
 include("admin/classes/convierte_monedas.php");
 
-
 if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["merchant_payment_code"])) {
 $codigoAmigable=$_GET["merchant_payment_code"];
 
@@ -59,7 +58,7 @@ $idReserva=$reserva["idReserva"];
 
 }
 if (count($reserva)<1) {
-  alertar("La Reserva con el codigo ".$codigoAmigable." no existe","error");
+  alertar($lang["la_reserva_con_el_codigo"].$codigoAmigable.$lang["no_existe"]);
   redireccionarLento("index");
   exit();
 }
@@ -314,8 +313,95 @@ if ($comprobantes<$total_dolares) {
 
         <!--METODOS DE PAGO-->
 
-        <div class=" py-3">
 
+
+<?php 
+   $countryEbanx='';
+   $currencyEbanx='';
+   $habilita_pesos_arg='';
+   $habilita_reales='';
+   $habilita_pesos_ch='';
+  $habilita_guaranies='';
+  $habilita_dolares='';
+    $habilita_soles_peruanos='';
+
+
+     $habilita_ebanx='';
+switch ($_SESSION['geo']['countryCode']) {
+  case 'AR':
+   $habilita_reales=false;
+   $habilita_pesos_arg=true;
+   $habilita_pesos_ch=false;
+   $countryEbanx='AR';
+   $currencyEbanx='ARS';
+   $habilita_ebanx=true;
+     $_SESSION['geo']['nombre_pais']="Argentina";
+   $totalEbanx=convierteMoneda($idMonedaSel,270,$reserva["total"]);
+
+
+    break;
+    case 'BR':
+   $habilita_reales=true;
+   $habilita_pesos_arg=false;
+   $habilita_pesos_ch=false;
+   $countryEbanx='BR';
+   $currencyEbanx='BRL';
+
+   $totalEbanx=convierteMoneda($idMonedaSel,283,$reserva["total"]);
+   $habilita_ebanx=false;
+  $_SESSION['geo']['nombre_pais']='Brasil';
+
+    break;
+    case 'CL':
+   $habilita_reales=false;
+   $habilita_pesos_arg=false;
+   $habilita_pesos_ch=true;
+   $countryEbanx='CL';
+   $currencyEbanx='CLP';
+   $totalEbanx=convierteMoneda($idMonedaSel,271,$reserva["total"]);
+   $habilita_ebanx=true;
+  $_SESSION['geo']['nombre_pais']='Chile';
+
+    break;
+
+  case 'UY':
+   $habilita_dolares=true;
+   $countryEbanx='UY';
+   $currencyEbanx='USD';
+   $totalEbanx=convierteMoneda($idMonedaSel,188,$reserva["total"]);
+   $habilita_ebanx=true;
+  $_SESSION['geo']['nombre_pais']='Uruguay';
+
+    break;
+  case 'PE':
+ $habilita_dolares=true;
+   $countryEbanx='PE';
+   $currencyEbanx='USD';
+   $totalEbanx=convierteMoneda($idMonedaSel,188,$reserva["total"]);
+   $habilita_ebanx=true;
+  $_SESSION['geo']['nombre_pais']='Peru';
+
+    break;  
+
+    case 'PY':
+  
+   $habilita_guaranies=true;
+   $countryEbanx='PY';
+   $currencyEbanx='USD';
+   $totalEbanx=convierteMoneda($idMonedaSel,225,$reserva["total"]);
+   $habilita_ebanx=true;
+  $_SESSION['geo']['nombre_pais']='Paraguay';
+
+    break;
+  default:
+    // code...
+    break; }?>
+
+
+             
+
+        <div class=" py-3">
+    <b class="mb-4">Pago desde <?=$_SESSION['geo']['nombre_pais']?> <a href="monedasPago?reserva=<?=$codigoAmigable?>" class="btn">Cambiar Pais</a></b>
 
 
 
@@ -325,13 +411,6 @@ if ($comprobantes<$total_dolares) {
 
 
               <div class="card-body">
-
-
-
-
-
-                 <h5 class="mb-4" id="textoMetodoDePago">Divisa</h5>
-
                  <!--FORM DE PAGO-->
 
                 <form class="datos-p" id="divMetodosDePago">
@@ -345,16 +424,18 @@ if ($comprobantes<$total_dolares) {
                     <!--AQUI VA LA CARGA DE DIVISA-->
 
                     <?php 
+                     
+
 
 $reales=convierteMoneda($idMonedaSel,283,$reserva["total"]);
-
 $pesos_argentinos=convierteMoneda($idMonedaSel,270,$reserva["total"]);
-
+$pesos_chilenos=convierteMoneda($idMonedaSel,271,$reserva["total"]);
 $dolares=convierteMoneda($idMonedaSel,188,$reserva["total"]);
-
+$guaranies=convierteMoneda($idMonedaSel,225,$reserva["total"]);
                      ?>
+<?php if($habilita_reales){ ?>
 
-                      <label class="btn btn-primary paymentMethod texto-moneda  " id="reales">
+         <label class="btn btn-primary paymentMethod texto-moneda  " id="reales">
 
                       <i class="fa fa-dollar-sign"> </i>
 
@@ -364,6 +445,34 @@ $dolares=convierteMoneda($idMonedaSel,188,$reserva["total"]);
 
                       </label>
 
+  <?php } ?>
+       <?php if($habilita_soles_peruanos){ ?>
+                      <label class="btn btn-primary paymentMethod texto-moneda" id="pesos">
+
+                        
+
+                        <i class="fa fa-dollar-sign"></i>
+
+                        <small> Soles Peruanos</small>
+
+                          <?=$soles_peruanos;?>
+
+                      </label>
+<?php } ?>  
+     <?php if($habilita_pesos_ch){ ?>
+                      <label class="btn btn-primary paymentMethod texto-moneda" id="pesos">
+
+                        
+
+                        <i class="fa fa-dollar-sign"></i>
+
+                        <small> Pesos CH</small>
+
+                          <?=$pesos_chilenos;?>
+
+                      </label>
+<?php } ?>        
+<?php if($habilita_pesos_arg){ ?>
                       <label class="btn btn-primary paymentMethod texto-moneda" id="pesos">
 
                         
@@ -375,7 +484,22 @@ $dolares=convierteMoneda($idMonedaSel,188,$reserva["total"]);
                           <?=$pesos_argentinos?>
 
                       </label>
+<?php } ?>
 
+<?php if($habilita_guaranies){ ?>
+                      <label class="btn btn-primary paymentMethod texto-moneda" id="pesos">
+
+                        
+
+                        <i class="fa fa-dollar-sign"></i>
+
+                        <small> Guaranies</small>
+
+                          <?=$guaranies?>
+
+                      </label>
+<?php } ?>
+<?php if($habilita_dolares){ ?>
                       <label class="btn btn-primary paymentMethod texto-moneda" id="dolar">
 
                        <i class="fa fa-dollar-sign"></i>
@@ -385,7 +509,7 @@ $dolares=convierteMoneda($idMonedaSel,188,$reserva["total"]);
                           <?=$dolares;?>
 
                       </label>
-
+<?php } ?>
                       <!--FIN AQUI VA LA CARGA DE DIVISA-->
 
                       </div>        
@@ -431,12 +555,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
     var codigoAmigable = '<?=$codigoAmigable ?>';
 
     
-
-
-
     $("#textoMetodoDePago").html("Divisa");
-
-
 
 
 
@@ -474,7 +593,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
         // This function shows a transaction success message to your buyer.
 
-             alert('Gracias por pagar en metelebrasil '+ details.payer.name.given_name+' el pago de paypal puede demorar unos segundos en impactar en el sistema, Gracias');
+             alert('<?$lang["gracias_por_confiar_en_metele_brasil"]?>'+ details.payer.name.given_name+'<?$lang["el_pago_de_paypal"]?>');
 
         window.location='./consultaReserva.php?reserva='+codigoAmigable;
 
@@ -511,72 +630,45 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
                     <!--FIN AQUI VA LA CARGA DE METODOS DE PAGO-->
 
                 
-
-                      <label class="btn btn-primary paymentMethod" id="mercadopago" style="display:none">
-<a href="<?= $preference->init_point; ?>">
+<?php if($habilita_pesos_arg){ ?>
+        <label class="btn btn-primary paymentMethod"  style="">
+          <a href="<?= $preference->init_point; ?>">
                      <div class="method paypal">
-
               <div class="method mercadopagoArgentina" >
-
-
-
-
-
-            </div>
-
-</a>
-
-       
-
-
-
-
-
-                        </div>
-
-                      </label>
-
+              </div>
+                    </div>
+            </a>
+         </label>
+<?php } ?>
                    
 
 
 
 
-
-        <label class="btn btn-primary paymentMethod" id="mercadopagoBrasil" style="display:none">
+<?php if($habilita_reales){ ?>
+        <label class="btn btn-primary paymentMethod" id="mercadopagoBrasil" style="">
 <a href="<?= $preferenceBr->init_point;?>">
                      <div class="method paypal">
 
               <div class="method mercadopagoArgentina" >
 
 
-
-
-
-            </div>
-
-
-
+            </div>  
+          </div>
        </a>
-
-
-
-
-
-                        </div>
-
-                      </label>
+        </label>
+        <?php } ?>
 <?php 
-//echo "string";
+
+if ($habilita_ebanx) { //$_SESSION['geo']['countryCode']!='BR' && $url_ebanx!=(-5)
+
 include("admin/pasarelas/ebanx/ebanx.php");
-$_SESSION['geo']['countryCode'] = 'PE';
-
-$reales=convierteMoneda($idMonedaSel,225,$reserva["total"]);
- $url_ebanx=url_ebanx($codigoAmigable, $totalMercadopagoArgentina);
- //print_r($_SESSION['geo']['countryCode']);
-if (true) { //$_SESSION['geo']['countryCode']!='BR' && $url_ebanx!=(-5)
-  // code...
-
-//print_r($url_ebanx);
+ $url_ebanx=url_ebanx($codigoAmigable, $currencyEbanx, $countryEbanx, $totalEbanx);
+ if ($url_ebanx==(-5)) {
+   alertar($lang["el_metodo_seleccionado_no_puede_cobrar"],$lang["error"]);
+ }
+ $url_ebanx_dolares=url_ebanx($codigoAmigable, 'USD', $countryEbanx, $totalPayPal);
+ 
  ?>
  <label class="btn btn-primary paymentMethod" id="ebanx" style="display:none">
   
@@ -584,59 +676,28 @@ if (true) { //$_SESSION['geo']['countryCode']!='BR' && $url_ebanx!=(-5)
                      <div class="method paypal"> </div>
 
               <div class="method ebanxs" ></div>
-
-
-            
-
-
-
-       
-
-
-
-
-
-                       
+                        
 </a>
                       </label>
 
 <?php } ?>
 
-        <label class="btn btn-primary paymentMethod" id="paypal"  style="display:none">
+ <label class="btn btn-primary paymentMethod" id="ebanxDolares" style="display:none">
+  
+<a href="<?=$url_ebanx_dolares;?>">
+                     <div class="method paypal"> </div>
 
-                       
+              <div class="method ebanxs" ></div>
+                        
+</a>
+                      </label>
 
 
 
-                          
-
-          <div class="method paypal">
+        <label class="btn btn-primary paymentMethod" id=""  style="">
+   <div class="method paypal">
 
  <div id="paypal-button-container"></div>  
-
-
-
-
-
-
-
-      
-
-                    
-
-                      <!--FIN AQUI VA LA CARGA DE METODOS DE PAGO-->
-
-
-
-
-
-
-
-
-
-
-
-
 
           </div> 
 
@@ -1045,8 +1106,8 @@ if ($comprobantes<$total_dolares) {
       $("#mercadopago").css('display','none');
 
       $("#mercadopagoBrasil").css('display','none');
-       $("#ebanx").css('display','block');
-
+       $("#ebanxDolares").css('display','block');
+  $("#ebanx").css('display','none');
       $("#dolar").css('background',' #029ce2'); //pinta
 
       $("#dolar").css('color',' #fff '); //pinta
@@ -1076,7 +1137,7 @@ var mercadoPagoLinkBrasil= '<?= $preferenceBr->init_point;?>';
 
             $("#mercadopagoBrasil").css('display','none');
                $("#ebanx").css('display','block');
-
+  $("#ebanxDolares").css('display','none');
       $("#paypal").css('display','none');
 
 

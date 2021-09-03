@@ -60,7 +60,7 @@ function getAllServiciosPrestador($idPrestador){
 foreach ($resultado as $key => $value) {
   
    $idServicio=($value['idServicio']);
-   $salidas=getSalidasServicioIdPrestador($idServicio);
+   $salidas=getComisionesPrestadorServicioIdPrestadorIdServicio($idServicio, $idPrestador);
 
    if(count($salidas)>0){
 
@@ -316,7 +316,118 @@ $busqueda="%".$busqueda."%";
     
 
     } 
+   function getServiciosLimit6Nuevo($idCategoria_servicio,$desde, $hasta, $busqueda){
 
+   require("conexion.php");
+/*
+  
+*/
+
+
+ 
+if ($idCategoria_servicio>0 && $desde!=(-5)) {
+    echo "string";
+   $consulta = "select * from servicio WHERE idCategoria_servicio=:idCategoria_servicio AND habilitado=1 LIMIT :desde, :hasta";
+    $comando = $pdo->prepare($consulta);
+    $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+    $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    $comando->bindParam(":idCategoria_servicio", $idCategoria_servicio, PDO::PARAM_INT);
+}
+if ($idCategoria_servicio>0 && $desde==(-5)) {
+    echo "string2";
+   $consulta = "select * from servicio WHERE idCategoria_servicio=:idCategoria_servicio AND habilitado=1 ";
+    $comando = $pdo->prepare($consulta);
+
+    $comando->bindParam(":idCategoria_servicio", $idCategoria_servicio, PDO::PARAM_INT);
+}
+/*else{
+      $consulta = "select distinct * from servicio S WHERE S.habilitado=1 "; //LIMIT 6
+
+    
+
+    $comando = $pdo->prepare($consulta); 
+}*/
+if ($idCategoria_servicio==(-5)) {
+    echo "string4";
+    $busqueda="%".$busqueda."%";
+
+    $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
+
+    OR descripcion_servicio LIKE :busqueda  AND habilitado=1
+
+    OR descripcion_corta LIKE :busqueda AND habilitado=1 LIMIT :desde, :hasta";
+
+
+
+    $comando = $pdo->prepare($consulta);
+    $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+    $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
+    $comando->bindParam(":busqueda", $busqueda, PDO::PARAM_STR );
+}
+
+
+ 
+
+    
+
+    $comando->execute();
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $servicios = $comando->fetchAll(PDO::FETCH_ASSOC);
+$retorno=array();
+
+    for ($i=0; $i < count($servicios); $i++) { 
+        $idServicio=$servicios[$i]["idServicio"];
+      $fecha=date("Y-m-d");
+  
+        $salidas=getSalidasFechaLuegoIdServicio($fecha,$idServicio);
+    if (count($salidas )>0) {
+      # code...
+   
+  $idMoneda=$salidas[0]['idMoneda'];
+      $idServicioSalidas=$salidas[0]['idServicioSalidas'];
+      $tarifas=getTarifas($idServicioSalidas);
+
+   $tarifa=calculaTarifa($tarifas[0]['idServicioSalidasTarifas'],
+1);
+      $precioSugerido=($tarifa[0]["valorSym"]);
+      $valor=$tarifa[0]["valor"];
+$valorSym=$tarifa[0]["valorSym"];
+ $cancelaciones=getTipoCancelaciones($tarifas[0]['idCancelaciones']);
+
+       }
+       else{
+        $precioSugerido="AGOTADO!!!";
+              $valor="AGOTADO!!!";
+$valorSym="AGOTADO!!!";
+$cancelaciones='';
+$tarifa='';
+$tarifas='';
+       }
+
+        $OpinionesServicio=GetOpinionesServicio($idServicio);
+        $estrellasServicio=GetEstrellasServicio($idServicio);
+        $textoMiniatura=getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"];
+      $fotos=getFotosServicio($idServicio);
+
+$nombre_servicio=$servicios[$i]["nombre_servicio"];
+
+$duracion_servicio=getDuracionServicio($idServicio);
+$descripcion_corta=$servicios[$i]["descripcion_corta"];
+
+array_push($retorno, ["idServicio"=>$idServicio,"nombre_servicio"=>$nombre_servicio,"descripcion_corta"=>$descripcion_corta ,"valor"=>$valor, "valorSym"=>$valorSym, "salidas"=>$salidas,'opinionesServicio'=>$OpinionesServicio, "estrellasServicio"=>$estrellasServicio, "textoMiniatura"=>$textoMiniatura, "fotos"=>$fotos,"tarifas"=>$tarifas, "tarifa"=>$tarifa, "precioSugerido"=> $precioSugerido, "fecha"=>$fecha, "cancelaciones"=>$cancelaciones, "duracion_servicio"=>$duracion_servicio]);
+
+  
+
+    
+}
+   
+array_multisort(array_column($retorno, 'valor'), SORT_ASC, $retorno);
+  return $retorno;
+    } 
  function getServiciosLimit612(){
 
 
@@ -619,7 +730,7 @@ $retorno["duracionMaxima"] ='N/D';
 
         $data=["nombre_servicio"=> $nombre_servicio, "idCategoria_servicio"=>$idCategoria_servicio, "descripcion_servicio"=>$descripcion_servicio, "descripcion_corta"=>$descripcion_corta, "documentacionViajero"=> $documentacionViajero, "observaciones"=> $observaciones,"idTextoMiniaturas"=>$idTextoMiniaturas,"idOrigen"=>$idOrigen, "idDestino"=>$idDestino, "idServicio"=>$idServicio];
 
-        $consulta = "UPDATE INTO servicio SET (nombre_servicio= :nombre_servicio, idCategoria_servicio=:idCategoria_servicio, descripcion_servicio=:descripcion_servicio, descripcion_corta=:descripcion_corta, documentacionViajero=:documentacionViajero, observaciones=:observaciones,idTextoMiniaturas=:idTextoMiniaturas,idOrigen=:idOrigen, idDestino=:idDestino)     WHERE idServicio=:idServicio ";
+        $consulta = "UPDATE servicio SET nombre_servicio= :nombre_servicio, idCategoria_servicio=:idCategoria_servicio, descripcion_servicio=:descripcion_servicio, descripcion_corta=:descripcion_corta, documentacionViajero=:documentacionViajero, observaciones=:observaciones,idTextoMiniaturas=:idTextoMiniaturas,idOrigen=:idOrigen, idDestino=:idDestino WHERE idServicio=:idServicio ";
 
         
 
@@ -639,8 +750,7 @@ $retorno["duracionMaxima"] ='N/D';
 
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
-
-        return $id;
+        return $cuenta_row;
 
         
 

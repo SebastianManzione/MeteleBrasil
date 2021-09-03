@@ -118,7 +118,7 @@ if (count($fotos)<1) {
 
 
 
-              alertar("el post no existe", "error");
+              alertar($lang["el_post_no_existe"],$lang["error"]);
 
 
 

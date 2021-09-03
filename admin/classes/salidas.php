@@ -447,12 +447,6 @@ else{
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
 
-
-   echo "\nPDO::errorInfo():\n";
-    print_r($comando->errorInfo());
-
-
-
         return $id;
 
         
@@ -557,6 +551,43 @@ return $resultado;
 
 }
 
+
+
+   function updateSalida($idServicioSalidas, $nombre, $fecha, $horaSalida, $horaCheckIn, $anticipacionReserva, $duracionMinima, $duracionMaxima, $cantLugares, $nota_salida, $idAccesibilidad){
+
+
+require("conexion.php");
+
+ $data=[
+
+"idServicioSalidas"=>$idServicioSalidas, "nombre"=>$nombre,"fecha"=>$fecha, "horaSalida"=>$horaSalida, "horaCheckIn"=>$horaCheckIn, "anticipacionReserva"=>$anticipacionReserva,"duracionMinima"=>$duracionMinima, "duracionMaxima"=>$duracionMaxima, "disponibilidad"=>$cantLugares, "nota_salida"=>$nota_salida, "idAccesibilidad"=>$idAccesibilidad];
+
+$consulta = "UPDATE servicio_salidas SET nombre=:nombre, fecha=:fecha, horaSalida=:horaSalida, horaCheckIn=:horaCheckIn, anticipacionReserva=:anticipacionReserva, duracionMinima=:duracionMinima, duracionMaxima=:duracionMaxima, disponibilidad=:disponibilidad, nota_salida=:nota_salida, idAccesibilidad=:idAccesibilidad WHERE idServicioSalidas = :idServicioSalidas ";
+
+
+
+$comando = $pdo->prepare($consulta);
+
+
+
+$comando->execute($data);
+
+$cuenta_col = $comando->columnCount();
+
+
+
+$resultado = $comando->rowCount();
+
+
+
+
+return $resultado;
+
+
+
+
+
+}
 
 
           /*

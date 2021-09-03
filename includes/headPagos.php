@@ -37,18 +37,18 @@ if(isset($_SESSION['idioma'])){
 $url=getUrlGeoUser();
 
 
-
-$geo=(geoLocalizacionIp($url,0,0));
-
-$langd=$geo["lang"];
-
-
-$idPais=$geo["idPais"];
-
+if (!isset($_SESSION['geo'])) {
+  $geo=(geoLocalizacionIp($url,0,0));
 $_SESSION['geo']=$geo;
+$langd=$geo["lang"];
+$idPais=$geo["idPais"];
+}
 
 
-$impuestos_pais=getImpuestosPais($idPais);
+
+
+
+$impuestos_pais=getImpuestosPais($_SESSION['geo']['idPais']);
 
 //echo "impuestos_pais".$impuestos_pais;
 

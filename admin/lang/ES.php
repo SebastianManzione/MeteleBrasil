@@ -1535,5 +1535,246 @@ $lang = array(
 
 
 
+/* Alertas */
+
+"cerrar_sesion"=>" Cerrar sesión",
+
+"sea_bienvenido"=>"Sea bienvenido",
+
+"iniciar_extranet"=>"Iniciar extranet",
+
+"usuario_contrasena_incorrectos"=>"Usuario o contraseña incorrectos!",
+
+"bienvenido_a_metelebrasil"=>"Bienvenido a Metele Brasil",
+
+"gracias_por_usar"=>"Gracias por usar los servicios de Reservate",
+
+"el_post_no_existe"=>"El posto no existe",
+
+"error"=>"error",
+
+"la_reserva_con_el_codigo"=>"La reserva con el codigo",
+
+"no_existe"=> "no existe",
+
+"gracias_por_confiar_en_metele_brasil"=>"Gracias por confiar en Metele Brasil. ",
+
+"el_pago_de_paypal"=>"El pago por Paypal puede demorar en impactar en el sistema. Enviaremos la confirmación a su e-mail.",
+
+"el_metodo_seleccionado_no_puede_cobrar"=>"EL metodo seleccionado no puede cobrar en su país (Ebanx)",
+
+"estamos_guardando_su_reserva"=>"Estamos guardando su reserva",
+
+"si_tu_cobro_se_realizo"=>"Si! tu cobro se realizo con exito",
+
+"ups_infelizmente_su_usuario"=>"Ups, infelizmente su usuario no puede realizar el cobro. Comuniquese con el soporte",
+
+"si_recibimos_su_pago_correctamente"=>"Si! Recibimos su pago correctamente",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Alta de salida */
+
+
+"carga_de_tarifas"=>"Carga de salida",
+
+"inicio"=>"Inicio",
+
+"nuevo_periodo_para"=>"Nuevo periodo para", 
+
+"nombre_del_periodo"=>"Nombre del período",
+
+"indique_el_nombre_del_periodo"=>"Indique el nombre del periodo que va a cargar en el servicio.",
+
+"inicio_periodo"=>"Inicio del período",
+
+"final_periodo"=>"Final del período",
+
+"seleccione_los_dias_de_la_semana"=>"Seleccione los dias de la Semana que se realiza la actividad",
+
+"lunes"=>"Lunes",
+
+"martes"=>"Martes",
+
+"miercoles"=>"Miércoles",
+
+"jueves"=>"Jueves",
+
+"viernes"=>"Viernes",
+
+"sabado"=>"Sábado",
+
+"domingo"=>"Domingo",
+
+"desea_agregar_una_palabra"=>"¿Desea agregar una palabra que identifique y que acompañe el horario de salida?",
+
+"ejemplo_centro"=>"Ejemplo: Centro, Embarcação 1, Van de 15 lugares, Minibus, Salida Centro",
+
+"hora_de_salida_del_servicio"=>"Hora de Salida del Servico: ",
+
+"hora_de_llegada"=>"Hora de Llegada del Servicio: ",
+
+"cuantos_lugares_disponibles_para_la_venta"=>"¿Cuantos lugares disponibles para la venta tiene esta Salida?",
+
+"duracion_minima_de_la_actividad"=>"Duración mínima de la actividad ",
+
+"minutos"=>"Minutos",
+
+"horas"=>"Horas",
+
+"dias"=>"Días",
+
+"duracion_maxima"=>"Duración máxima de la actividad ",
+
+"anticipacion_de_reserva"=>"Anticipación de reserva",
+
+"indique_el_horario_de_check_in"=>"Indique el Horario de Check In: ",
+
+"idiomas_del_servicio"=>"Idiomas que ofrecer el servicio",
+
+"nota_de_salida"=>"Nota de salida",
+
+"escriba_detalles_y_topicos"=>"Escriba DETALLES y TÓPICOS a tener en cuenta de esta salida",
+
+"prestador"=>"Prestador",
+
+"moneda_del_servicio"=>"Moneda del Servicio",
+
+"indique_la_moneda"=>"Indique la moneda en la que usted cobra este servicio",
+
+"indique_el_punto_de_salida"=>"Indique el Punto de salida del servicio",
+
+"direccion"=>"Dirección",
+
+"latitud"=>"Latitud",
+
+"longitud"=>"Longitud",
+
+"tipos_de_pax"=>"Tipos de Pax",
+
+"origen"=>"Origen",
+
+"nombre_tarifa"=>"Nombre de Tarifa",
+
+"desde_anos"=>"Desde años",
+
+"hasta_anos"=>"Hasta años",
+
+"tipo_de_tarifa"=>"Tipo de tarifa",
+
+"precio_"=>"Precio", 
+
+"pago_minimo"=>"Pago minimo",
+
+"tipo_de_cancelacion"=>"Tipo de Cancelación",
+
+"comision"=>"¿Genera comisión esta tarifa?",
+
+"guardar"=>"Guardar",
+
+"salir"=>"Salir",
+
+
+
+
+
+
+/*Sidebar*/
+
+
+"prestadores_"=>"Prestadores",
+
+"lista_de_prestadores"=>"Lista de Prestadores",
+
+"alta_prestador"=>"Alta Prestador",
+
+"lista_de_articulo"=>"Lista de Articulos",
+
+"alta_articulo"=>"Alta Articulo",
+
+"servicios"=>"Servicios",
+
+"alta_servicio"=>"Alta Servicios",
+
+"lista_de_servicios"=>"Lista de servicios",
+
+"lista_carritos"=>"Lista carritos",
+
+"reservas"=>"Reservas",
+
+"estado_reservas"=>"Estado de Reservas",
+
+"administracion"=>"Administracion",
+
+"usuarios"=>"Usuarios",
+
+"solicitudes"=>"Solicitudes",
+
+"edades"=>"Edades",
+
+"textos_cancelaciones"=>"Textos Cancelaciones",
+
+"moneda"=>"Moneda",
+
+"editor_de_textos"=>"Editor de textos Miniaturas",
+
+"editor_de_textos_accesibilidad"=>"Editor de Textos Accesiblidad",
+
+"editor_de_destinos"=>"Editor de Destinos",
+
+"editor_de_servicios_adicionales"=>"Editor de Servicios Adicionales",
+
+"editor_de_textos_miniatura_blog"=>"Editor de textos Miniaturas Blog",
+
+"editor_de_comiciones"=>"Editor de comisiones",
+
+"editor_de_categorias"=>"Editor de categorías",
+
+"editor_parametros"=>"Editor parametros",
+
+"financiero"=>"Financiero",
+
+"comprovantes"=>"Comprobantes",
+
+"comisiones"=>"Comisiones",
+
 
 );  

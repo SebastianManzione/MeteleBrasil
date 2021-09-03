@@ -3,54 +3,31 @@
 
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 require("classes/categoria.php");
-
 require("classes/texto_miniaturas.php");
-
 require("classes/tipos_tarifa.php");
-
 require("classes/cancelaciones.php");
-
 require("classes/accesibilidad.php");
-
 require("classes/idiomas.php");
-
-
-
+require("classes/prestador.php");
+require("classes/comision_prestador.php");
 require("classes/edades.php");
-
 require("classes/salidas.php");
-
 require("classes/tarifas.php");
-
 require("classes/tarifas_ubicacion.php");
-
 require("classes/salidas_comisiones.php");
-
 require("classes/servicio_salidas_pack.php");
-
 require("classes/servicio.php");
-
 require("classes/fotos_servicio.php"); //$moneda=getMoneda($_SESSION["nuevoServicio"]["selMoneda"]);
-
-
 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idServicio"]) ) {
 
 $idServicio=$_POST["idServicio"];
-
-
-
-
 
 }
 
@@ -72,7 +49,9 @@ $idServicio=$idServicio;
 
 $fotos=getFotosServicio($idServicio);
 
-
+$prestador=getPrestador($_SESSION['login']['idPrestador']);
+$idPrestador=$_SESSION['login']['idPrestador'];
+$comisiones=getComisionesPrestadorServicioIdPrestadorIdServicio($idServicio, $idPrestador);
 
 
 
@@ -268,20 +247,17 @@ $sinHorarioTexto=$_POST["sinHorarioTexto"];
          $altaTarifaUbicacion= altaTarifaUbicacion($altaTarifa, $_POST['txtDireccion'][$j], $_POST['txtLatitud'][$j],  $_POST['txtLongitud'][$j]);
 
       
+       
 
-        
-
-  $comisionVenta=$_POST['commision_venta'];
+                $comisionVenta=$comisiones[0]['comisionVendedor'];
 
               $comisionSalida=setComisionServicioSalidasTarifas($altaTarifa, $comisionVenta, 1);
 
-           $comisionSistema=$_POST['commision_sistema'];
+           $comisionSistema=$comisiones[0]['comisionSistema'];
 
              $comisionSalida=setComisionServicioSalidasTarifas($altaTarifa,$comisionSistema, 2);
 
-          
-
-             $comisionCompensatoria=$_POST['commision_compensatoria'];
+                       $comisionCompensatoria=$_POST['commision_compensatoria'];
 
                $comisionSalida=setComisionServicioSalidasTarifas($altaTarifa, $comisionCompensatoria, 3);
 
@@ -306,7 +282,7 @@ $sinHorarioTexto=$_POST["sinHorarioTexto"];
  
 
  redireccionar("altaServiciosAdicionales");
-
+exit();
 }
 
 
@@ -331,7 +307,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                 <div class="col-sm-6">
 
-                    <h1 class="m-0 text-dark">Carga de Tarifas <?= $servicio[0]['nombre_servicio']?></h1>
+                    <h1 class="m-0 text-dark"><?=$lang["carga_de_tarifas"];?></p><?= $servicio[0]['nombre_servicio']?></h1>
 
 
 
@@ -341,9 +317,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                     <ol class="breadcrumb float-sm-right">
 
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#"><?=$lang["inicio"];?></a></li>
 
-                        <li class="breadcrumb-item active">Carga de Tarifas</li>
+                        <li class="breadcrumb-item active"><?=$lang["carga_de_tarifas"];?></li>
 
                     </ol>
 
@@ -373,7 +349,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                     <div class="card-header">
 
-                        <h3 class="card-title">Nuevo Periodo para <?= $servicio[0]['nombre_servicio']?> <img src="classes/imgServicio/<?=$fotos[0]['ruta']?>" style="width: 50px; border-radius: 100%;">
+                        <h3 class="card-title"><?=$lang["nuevo_periodo_para"];?> <?= $servicio[0]['nombre_servicio']?> <img src="classes/imgServicio/<?=$fotos[0]['ruta']?>" style="width: 50px; border-radius: 100%;">
 
              
 
@@ -407,27 +383,36 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label-default"> Nombre del Periodo</label>
+                                        <label class="label-default"> <?=$lang["nombre_del_periodo"];?></label>
+
+                                        <p><?=$lang["indique_el_nombre_del_periodo"];?></p>
 
                                         <input name="nombre_periodo" class="form-control select2bs4" style="width: 100%;" value="(Enero, Febrero, Alta Temproada, Baja temporada) ">
 
                                     </div>
 
-                                </div>  <div class="col-md-12">
+                                </div>  
 
-                               <div class="form-inline">
 
-                                 <div class="form-group">
+                                <div class="col-md-12">
 
-                                        <label class="label-default"> Inicio del periodo</label>
+                               <div class="form-inline">   
+
+                                        <label class="label-default"> <?=$lang["inicio_periodo"];?></label>
+
+                                    <div class="form-group">
 
                                         <input class="form-control" name="inicio_periodo" type="date" value="<?= $hoy;?>" min="<?= $hoy;?>"> 
 
                                     </div>
 
-                            <div class="form-group">
 
-                                        <label class="label-default"> Final del periodo</label>
+
+                            
+
+                                        <label class="label-default"> <?=$lang["final_periodo"];?></label>
+
+                                   <div class="form-group">     
 
                                         <input class="form-control" name="fin_periodo" type="date" value="<?= $mesQueViene;?>" min="<?= $hoy;?>">
 
@@ -439,9 +424,11 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                            </div>
 
+                           <br>
+
                                 <div class="col-md-6">
 
-                                    <label class="label-default">Seleccione los dias de la Semana que se realiza la actividad</label>
+                                    <label class="label-default"><?=$lang["seleccione_los_dias_de_la_semana"];?></label>
 
                                     <div class="form-inline">
 
@@ -449,7 +436,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             <span class="label label-default">
 
-                                                <input type="checkbox" class="form-check-input" name="lun" value="1" > Lun 
+                                                <input type="checkbox" class="form-check-input" name="lun" value="1"> <?=$lang["lunes"];?> 
 
                                             </span>
 
@@ -459,7 +446,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             <span class="label-default">
 
-                                                <input type="checkbox" class="form-check-input" name="mar" value="2" > Mar 
+                                                <input type="checkbox" class="form-check-input" name="mar" value="2" > <?=$lang["martes"];?> 
 
                                             </span>
 
@@ -469,7 +456,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             <span class="label-default">
 
-                                                <input type="checkbox" class="form-check-input" name="mie" value="3" > Mie 
+                                                <input type="checkbox" class="form-check-input" name="mie" value="3" > <?=$lang["miercoles"];?> 
 
                                             </span>
 
@@ -479,7 +466,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             <span class="label-default">
 
-                                                <input type="checkbox" class="form-check-input" name="jue" value="4" > Jue 
+                                                <input type="checkbox" class="form-check-input" name="jue" value="4" > <?=$lang["jueves"];?> 
 
                                             </span>
 
@@ -489,7 +476,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             <span class="label-default">
 
-                                                <input type="checkbox" class="form-check-input" name="vie" value="5" > Vie 
+                                                <input type="checkbox" class="form-check-input" name="vie" value="5" > <?=$lang["viernes"];?> 
 
                                             </span>
 
@@ -501,7 +488,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                                 <input type="checkbox" class="form-check-input" name="sab" value="6" checked="true">
 
-                                                <strong> Sab </strong>
+                                                <strong> <?=$lang["sabado"];?> </strong>
 
                                             </span>
 
@@ -513,7 +500,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                                 <input type="checkbox" class="form-check-input" name="dom" value="0" checked="true">
 
-                                                <strong> Dom </strong>
+                                                <strong> <?=$lang["domingo"];?> </strong>
 
                                             </span>
 
@@ -522,17 +509,25 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
                                     </div>
 
                                 </div>
+
+<br>
+
 <div class="col-12">
-       <label>¿Sin horario?</label><input type="checkbox" name="sinHorario">
+       <label><?=$lang["desea_agregar_una_palabra"];?></label><input type="checkbox" name="sinHorario">
+       <p> <?=$lang["ejemplo_centro"];?> </p>
+
        <input type="text" name="sinHorarioTexto">
 </div>
+
+
+<br>
+
+
                                 <div class="form-inline">
-<div class="form-group">
-       
-</div>
+
                                      <div class="form-group">
 
-                                        <label for="appt" class="label label-warning"> Hora de Salida del Servico: </label>
+                                        <label for="appt" class="label label-warning"> <?=$lang["hora_de_salida_del_servicio"];?></label>
 
                                         <input type="time" id="appt" name="hSalida" class="form-control" min="00:00" max="24:00" value="10:00">
 
@@ -541,7 +536,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                      <div class="form-group">
 
-                                        <label for="appt" class="label label-warning"> Hora de Llegada del Servicio: </label>
+                                        <label for="appt" class="label label-warning"> <?=$lang["hora_de_llegada"];?></label>
 
                                         <input type="time" id="appt" name="hLlegada"  class="form-control" min="00:00" max="24:00" value="18:00">
 
@@ -549,7 +544,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 </div>
 
-                               
+                               <br>
 
                             
 
@@ -557,7 +552,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label label-warning">¿Cuantos lugares disponibles para la venta tiene esta Salida?</label>
+                                        <label class="label label-warning"><?=$lang["cuantos_lugares_disponibles_para_la_venta"];?></label>
 
                                         <input name="cantLugares" class="form-control select2bs4" style="width: 100%;" placeholder="DISPONIBILIDAD TOTAL DE PAX" value="40">
 
@@ -565,24 +560,26 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 </div>
 
+                                <br>
+
                                 <div class="col-md-6">
 
-                                    <label>Duración mínima de la actividad</label>
+                                    <label><?=$lang["duracion_minima_de_la_actividad"];?></label>
 
                                     <div class="form-group  form-inline">
 
                                         <input type="number" step="0.01" name="duracionMinima" id="duracionMinima" class="form-control" placeholder="Duracion minima de la actividad: (Ejemplo: 3 horas)" style="width: 40%;" value="4">
 
-                                        <label style="margin-left:5px">Minutos</label>
+                                        <label style="margin-left:5px"><?=$lang["minutos"];?></label>
 
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMinima" value="minutos" >
 
 
-                                        <label style="margin-left:5px">Horas</label>
+                                        <label style="margin-left:5px"><?=$lang["horas"];?></label>
 
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMinima" value="horas" checked>
 
-                                        <label style="margin-left:5px"> Días</label>
+                                        <label style="margin-left:5px"> <?=$lang["dias"];?></label>
 
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMinima" value="dias">
 
@@ -590,31 +587,31 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 </div>
 
+
+
+
                                 <div class="col-md-6">
 
-                                    <div class="form-group  form-inline">
+                          
 
-                                        <label>Duración máxima de la actividad</label>
-
-                                        <div class="form-group  form-inline">
-                                    
-                                   
+                                        <label><?=$lang["duracion_maxima"];?></label>
+                                  
+                                             <div class="form-group  form-inline">
 
                                         <input type="number" step="0.01" name="duracionMaxima" id="duracionMaxima" class="form-control" placeholder="Duracion maxima de la actividad: (Ejemplo: 3 dias)" style="width: 40%;" required value="4">
-                                   <label style="margin-left:5px">Minutos</label>
+                                   <label style="margin-left:5px"><?=$lang["minutos"];?></label>
                                         
 
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMaxima" value="minutos" >
-<label style="margin-left:5px">Horas</label>
+<label style="margin-left:5px"> <?=$lang["horas"];?></label>
                                            
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMaxima" value="horas" checked>
- <label style="margin-left:5px"> Días</label>
+ <label style="margin-left:5px"> <?=$lang["dias"];?></label>
 
                                   
 
                                         <input type="radio" style="margin-left:5px" name="modoHsDuracionMaxima" value="dias">
 
-                                    </div>
 
                                     </div>
 
@@ -626,7 +623,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label label-warning"> Accesibilidad</label>
+                                        <label class="label label-warning"> <?=$lang["accesibilidad_"];?></label>
 
                                         <select class="form-control" name="accesibilidad">
 
@@ -658,7 +655,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 <div class="col-md-12">
 
-                                    <label>Anticipación de reserva</label>
+                                    <label><?=$lang["anticipacion_de_reserva"];?></label>
 
                                     <div class="form-group form-inline">
                                         
@@ -666,15 +663,15 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
                                         
                                         <input type="number" step="0.01" name="horasAnticipacion" class="form-control"style="width: 65%;" value="4">
 
-                                       <label style="margin-left:5px">Minutos</label>
+                                       <label style="margin-left:5px"><?=$lang["minutos"];?></label>
 
                                         <input type="radio" style="margin-left:5px" id="modoHsAnticipacion" name="modoHsAnticipacion" value="minutos" >
 
-                                        <label style="margin-left:5px">Horas</label> 
+                                        <label style="margin-left:5px"><?=$lang["horas"];?></label> 
 
                                         <input type="radio" style="margin-left:5px" id="modoHsAnticipacion" name="modoHsAnticipacion" value="horas" checked>
 
-                                       <label style="margin-left:5px"> Días</label>
+                                       <label style="margin-left:5px"> <?=$lang["dias"];?></label>
 
                                         <input type="radio" style="margin-left:5px" id="modoDiasAnticipacion" value="dias" name="modoHsAnticipacion">
 
@@ -686,7 +683,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label label-default">Indique el Horario de Check In:</label>
+                                        <label class="label label-default"><?=$lang["indique_el_horario_de_check_in"];?></label>
 
                                         <input type="time" id="appt" name="horaCheckIn" class="form-control" min="09:00" max="18:00" value="09:55">
 
@@ -698,7 +695,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label label-default">Idiomas</label>  
+                                        <label class="label label-default"><?=$lang["idiomas_del_servicio"];?></label>
+
+
 
                                         <select name="idiomas[]" id="idiomas"  class=" form-control"  multiple required>
 
@@ -724,9 +723,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label-default ">Nota de salida</label>
+                                        <label class="label-default "><?=$lang["nota_de_salida"];?></label>
 
-                                        <textarea name="nota_salida" class="form-control select2bs4" style="width: 100%;" placeholder="">Escriba DETALLES y TÓPICOS a tener en cuenta de esta salida</textarea>
+                                        <textarea name="nota_salida" class="form-control select2bs4" style="width: 100%;" placeholder="<?=$lang['escriba_detalles_y_topicos'];?>"></textarea>
 
                                     </div>
 
@@ -738,25 +737,40 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label label-default">Prestador</label>
+                                        <label class="label label-default"><?=$lang["prestador"];?></label>
+<?php if ($_SESSION["login"]["rol"]==1) {
+?>
+          <select name="selPrestador" id="selPrestador" class="form-control"  placeholder="Prestador">
+<?php
+$prestadores=getPrestadores();
+ for ($i=0; $i < count($prestadores); $i++) { 
+   
+?>
 
-                                        <a style="" class="btn-sm btn-success" target="_blank" href="../admin/altaPrestador.php">Nuevo Prestador</a>
-
-                                        <select name="selPrestador" id="selPrestador" onfocus="getPrestadores();" class="form-control"  placeholder="Prestador">
-
-                                            <option value="0" selected="">Sin Prestador</option>
-
-                                            <option value="0"  disabled=""></option>
-
-                                            <option value="0"  disabled=""></option>
-
-                                            <option value="0"  disabled=""></option>
-
-                                            <option value="0"  disabled=""></option>
-
-                                            
+ <option value="<?=$prestadores[$i]["idPrestador"];?>" selected><?=$prestadores[$i]["nombre"];?></option>
+<?php
+} ?>
+                                           
+                                                                          
 
                                         </select>
+<?php
+} else{
+
+    ?>
+          <select name="selPrestador" id="selPrestador" class="form-control"  placeholder="Prestador">
+
+                                            <option value="<?=$prestador[0]["idPrestador"];?>" selected><?=$prestador[0]["nombre"];?></option>
+                                                                          
+
+                                        </select>
+
+    <?php
+} ?>
+
+
+
+                                
 
                                     </div>
 
@@ -770,7 +784,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             
 
-                                        <label>Moneda Del Servicio</label>
+                                        <label><?=$lang["moneda_del_servicio"];?></label>
+
+                                        <p><?=$lang["indique_la_moneda"];?></p>
 
                                         <select name="selMoneda" class="form-group form-control" id="selMoneda"
 
@@ -806,65 +822,14 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
 
 
-   <div class="col-md-12">
-
-    <div class="form-inline">
-
-
-
-
-
-                                       
-
-                                     <div class="col-md-3"  style="width: 30%;">
-
-                                   
-
-                                        <label class="label label-default">Comisión Sistema %</label>
-
-                                        <input type="number" name="commision_sistema" class="form-control select2bs4"   required>
-
-                                  
-
-                                </div>
-
-                                <div class="col-md-3" style="width: 30%;">
-
-                                  
-
-                                        <label class="label label-default">Comisión de Venta %</label>
-
-                                        <input type="number" name="commision_venta" class="form-control select2bs4"  required>
-
-                                 
-
-                                </div>
-
-                                <div class="col-md-3"  style="width: 30%;">
-
-                                    
-
-                                        <label class="label label-default">Comisión Compensatoria %</label>
-
-                                        <input type="number" name="commision_compensatoria" class="form-control select2bs4" required>
-
-                                   
-
-                                </div>
-
-                                        </div>
-
-                                        </div>
-
- 
-
+  
 
 
 <div class="col-md-12" style="padding-top: 30px;" id="searchBoxDIV">
 
                                     <h5 >
 
-                                        <label class="m-0 text-dark">Indique el Punto de Salida del Servicio</label>
+                                        <label class="m-0 text-dark"><?=$lang["indique_el_punto_de_salida"];?></label>
 
                                     </h5>
 
@@ -894,7 +859,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                        <div class="form-group"> 
 
-                                        <label class="label-default ">Dirección</label>
+                                        <label class="label-default "><?=$lang["direccion"];?></label>
 
                                         <input type="text" class="form-control" placeholder="Direccion" id="txtDireccion2" readonly>
 
@@ -902,7 +867,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                      <div class="form-group">
 
-                                        <label class="label-default ">Latitud</label>
+                                        <label class="label-default "><?=$lang["latitud"];?></label>
 
                                         <input type="text" name="txtLatitud" id="txtLatitud" class="form-control" placeholder="Latitud" readonly>
 
@@ -910,7 +875,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                         <div class="form-group">
 
-                                        <label class="label-default ">Longitud</label>
+                                        <label class="label-default "><?=$lang["longitud"];?></label>
 
                                         <input type="text" name="txtLongitud" id="txtLongitud" class="form-control" placeholder="Longitud" readonly>
 
@@ -924,7 +889,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 <div class="col-md-12">
 
-                                    <label class="control-label">Tipos de Pax</label>
+                                    <label class="control-label"><?=$lang["tipos_de_pax"];?></label>
 
                                     <div class="table-responsive">
 
@@ -936,23 +901,23 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                                 <tr>
 
-                                                      <th style="width: 20%;">Origen</th>
+                                                      <th style="width: 20%;"><?=$lang["origen"];?></th>
 
-                                                    <th >Nombre Tarifa</th>
+                                                    <th ><?=$lang["nombre_tarifa"];?></th>
 
-                                                    <th >Desde Anos</th>
+                                                    <th ><?=$lang["desde_anos"];?></th>
 
-                                                    <th >Hasta Anos </th>
+                                                    <th ><?=$lang["hasta_anos"];?></th>
 
-                                                    <th style="width: 20%;"> Tipo de Tarifa</th>
+                                                    <th style="width: 20%;"> <?=$lang["tipo_de_tarifa"];?></th>
 
-                                                    <th > Precio</th> 
+                                                    <th > <?=$lang["precio_"];?></th> 
 
-                                                    <th > Pago Minimo</th>
+                                                    <th > <?=$lang["pago_minimo"];?></th>
 
-                                                    <th > Tipo de Cancelacion</th>
+                                                    <th > <?=$lang["tipo_de_cancelacion"];?></th>
 
-                                                     <th > Comision?</th>
+                                                     <th > <?=$lang["comision"];?></th>
 
                                                     <th > </th>
 
@@ -1182,49 +1147,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                 
 
-                                <script type="text/javascript">
-
-                                	            function getPrestadores() {
-
-                                    	
-
-                                        var parametros = {
-
-                                            "getPrestadores": "-5"
-
-                                        };
-
-                                        $.post("./ctrl/ctrl_prestador.php", parametros,
-
-                                            function(data, status) {
-
-
-
-                                                data = JSON.parse(data);
-
-                                                if (true) {
-
-                                                    $("#selPrestador").empty();
-
-                                                    $.each(data, function(key, value) {
-
-                                                        $("#selPrestador").append('<option value="' + value[
-
-                                                                "idPrestador"] + '">' + value["nombre"] +
-
-                                                            '</option>');
-
-                                                    }); // close each()
-
-
-
-                                                }
-
-                                            });
-
-                                    }
-
-                                </script>
+                 
 
                                 <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aul14kGJkus4tWL4PAZly9XkZ14uTOQ9PbJ9fHG4lEFmQKmVPjR38_O0kDsRTuOv' async defer></script>
 
@@ -1310,13 +1233,13 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                             class="btn btn-success btn-sm">
 
-                                            <i class="fa fa-floppy-o" aria-hidden="true"></i>Guardar
+                                            <i class="fa fa-floppy-o" aria-hidden="true"></i> <?=$lang["guardar"];?>
 
                                         </button>
 
                                         <a href="index.php" class="btn btn-danger btn-sm">
 
-                                            <i class="fa fa-times" aria-hidden="true"></i> Salir
+                                            <i class="fa fa-times" aria-hidden="true"></i> <?=$lang["salir"];?>
 
                                         </a>
 

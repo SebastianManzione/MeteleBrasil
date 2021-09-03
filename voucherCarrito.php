@@ -19,6 +19,8 @@ include("admin/classes/comprobantes.php");
 include("admin/classes/moneda.php");
 include("admin/classes/accesibilidad.php");
 include("admin/classes/convierte_monedas.php");
+
+
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["codigoAmigable"])) {
 
 $codigoAmigable=$_POST["codigoAmigable"];
@@ -211,7 +213,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
                       <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
             
-                      <td><?=$valorDelIva;?></td>
+                      <td><?=$_SESSION["moneda_sel_sym"].$valorDelIva;?></td>
                       <td>
                         <?php if ($j==0) { ?>
                         <form method="post" action="voucherSalida">

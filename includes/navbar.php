@@ -701,13 +701,15 @@ if (strlen($_SESSION['login']['foto']>3)) {
 
       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 
-<?php if($_SESSION["login"]['idVendedor']>0 || $_SESSION["login"]['idCobrador']>0 || $_SESSION["login"]['idPrestador']>0 ) { echo '<a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> Iniciar Extranet </a> '; } ?> 
+<?php if($_SESSION["login"]['idVendedor']>0 || $_SESSION["login"]['idCobrador']>0 || $_SESSION["login"]['idPrestador']>0 ) { ?>
+
+  <a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> <?=$lang["iniciar_extranet"]?> </a> <?php } ?> 
 
    
 
                    
 
-                    <button onclick="logout();" class="dropdown-item" ><i class="fas fa-sign-out-alt"></i> Cerrar sesión </button>
+                    <button onclick="logout();" class="dropdown-item" ><i class="fas fa-sign-out-alt"></i><?=$lang["cerrar_sesion"]?></button>
 
                     
 
@@ -745,7 +747,7 @@ if (strlen($_SESSION['login']['foto']>3)) {
 
  if (response==1) { }
 
-    Swal.fire('Reservate','Gracias por utilizar los servicios de Reservate','success');
+    Swal.fire('Reservate','<?=$lang["gracias_por_usar"]?>','success'); //gracias por usar reservate
 
   
 
@@ -935,7 +937,7 @@ console.log(response);
 
  if (response==1) { }
 
-    Swal.fire('Bienvenido '+profile.getName()+' a Metelebrasil','','success');
+    Swal.fire('Oi, bem-vindo '+profile.getName()+' no Metelebrasil','','success');
 
   
 
@@ -1654,7 +1656,7 @@ $precioTotalCarrito=0;
                <?php if (isset($_SESSION["login"]["active"])){
                 ?>
   <a  class="nav-link text-white " data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Bienvenido <?=$_SESSION["login"]["usuario"]?>
+                 <?=$lang["sea_bienvenido"]?>  <?=$_SESSION["login"]["usuario"]?>
                </a>
                      <div class="dropdown-menu menu-civa" aria-labelledby="navbarDropdownMenuLink" >
 
@@ -1662,11 +1664,13 @@ $precioTotalCarrito=0;
 
                       <input type="hidden" name="login" value="0">
 
-                      <?php if($_SESSION["login"]['rol']==1 || $_SESSION["login"]['rol']==5) { echo '<a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> Iniciar Extranet </a> '; } ?> 
+                      <?php if($_SESSION["login"]['rol']==1 || $_SESSION["login"]['rol']==5) { ?>
+
+                        <a class="dropdown-item" href="admin/"><i class="fa fa-unlock" aria-hidden="true"></i> <?=$lang["iniciar_extranet"]?> </a> <?php } ?> 
 
                       
 
-                    <button class="dropdown-item" ><i class="fas fa-sign-out-alt"></i><?=$lang["cerrar_sesion"];?></button>
+                    <button class="dropdown-item" ><i class="fas fa-sign-out-alt"></i> <?=$lang["cerrar_sesion"];?></button>
 
                       </form>
 
@@ -1715,7 +1719,8 @@ $precioTotalCarrito=0;
 
                       <input type="hidden" name="login" value="0">
 
-                      <?php if($_SESSION['rol']==1 || $_SESSION['rol']==5) { echo '<a class="dropdown-item" href="sistema/"><i class="fa fa-unlock" aria-hidden="true"></i> Iniciar Extranet </a> '; } ?> 
+                      <?php if($_SESSION['rol']==1 || $_SESSION['rol']==5) { ?>
+                        <a class="dropdown-item" href="sistema/"><i class="fa fa-unlock" aria-hidden="true"></i> <?=$lang["iniciar_extranet"]?> </a> <?php } ?> 
 
                       
 

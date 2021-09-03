@@ -250,7 +250,7 @@ $prestador=getPrestador($salida[0]['idPrestador']);
 $nombrePrestador=($prestador[0]['nombre']);
 
 
-$cuerpo=getCuerpoEmailPrestadorReservaConfirmada($reserva[0]["codigoAmigable"], "metelebrasil.com", $nombrePrestador);
+$cuerpo=getCuerpoEmailPrestadorReservaConfirmada($value['idServicioSalidas'], "metelebrasil.com", $nombrePrestador);
 $resumail=enviaMail($prestador[0]['email'], "voce recebeu uma nova reserva! ", $cuerpo, "metelebrasil.com");  
 
 }

@@ -500,7 +500,7 @@ $puntuacion=round($acum/$CantOpinionesServicio, 1);
 $servicios=getServiciosLimit612();
  
     for ($i=0; $i < count($servicios); $i++) { 
-      if ($i<12) {
+      if ($i<6) {
         
     $idServicio=$servicios[$i]["idServicio"];
       $fecha=date("Y-m-d");

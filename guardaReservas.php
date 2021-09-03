@@ -40,7 +40,7 @@ include("admin/classes/convierte_monedas.php");
        
 
 
-    alertar("Su reserva esta siendo guardada", "success");
+    alertar($lang["estamos_guardando_su_reserva"], "success");
 
 ?>
 

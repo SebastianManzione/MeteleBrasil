@@ -152,7 +152,7 @@ if ($archivo_actual=="prestadores.php") {
 
                                         <p>
 
-                                           Prestadores
+                                           <?=$lang["prestadores_"];?>
 
                                           <i class="right fas fa-angle-left"></i>
 
@@ -170,7 +170,7 @@ if ($archivo_actual=="prestadores.php") {
 
                                         <i class="fas fa-id-card"></i>
 
-                                          <p>Lista de Prestadores</p>
+                                          <p><?=$lang["lista_de_prestadores"];?></p>
 
                                         </a>
 
@@ -202,7 +202,7 @@ if ($archivo_actual=="prestadores.php") {
 
                                     <i class="fas fa-plus"></i>
 
-                                      <p>Alta Prestador</p>
+                                      <p><?=$lang["alta_prestador"];?></p>
 
                                     </a>
 
@@ -294,7 +294,7 @@ if ($archivo_actual=="blogLista.php") {
 
                                         <i class="fas fa-id-card"></i>
 
-                                          <p>Lista de Articulos</p>
+                                          <p><?=$lang["lista_de_articulo"];?></p>
 
                                         </a>
 
@@ -326,7 +326,7 @@ if ($archivo_actual=="blogLista.php") {
 
                                     <i class="fas fa-plus"></i>
 
-                                      <p>Alta Articulo</p>
+                                      <p><?=$lang["alta_articulo"];?></p>
 
                                     </a>
 
@@ -406,7 +406,7 @@ if ($archivo_actual=="blogLista.php") {
 
                                           <p>
 
-                                             Servicios
+                                             <?=$lang["servicios"];?>
 
                                             <i class="right fas fa-angle-left"></i>
 
@@ -426,7 +426,7 @@ if ($archivo_actual=="blogLista.php") {
 
                                               <i class="fa fa-plus" aria-hidden="true"></i>
 
-                                              <p>Alta Servicios</p>
+                                              <p><?=$lang["alta_servicio"];?></p>
 
                                               </a>
 
@@ -460,7 +460,7 @@ if ($archivo_actual=="blogLista.php") {
 
                                      <i class="fa fa-file-alt" aria-hidden="true"></i>
 
-                                     <p>Lista de servicios</p>
+                                     <p><?=$lang["lista_de_servicios"];?></p>
 
                                     </a>
 
@@ -523,7 +523,7 @@ if ($archivo_actual=="carritosLista.php"||$archivo_actual=="carritoDetalles.php"
 
               <p>
 
-                 Reservas
+                 <?=$lang["reservas"];?>
 
                 <i class="right fas fa-angle-left"></i>
 
@@ -543,7 +543,7 @@ if ($archivo_actual=="carritosLista.php"||$archivo_actual=="carritoDetalles.php"
 
                 <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
 
-                  <p>Lista de Carritos</p>
+                  <p><?=$lang["lista_carritos"];?></p>
 
                 </a>
 
@@ -569,7 +569,7 @@ if ($archivo_actual=="reservasEstado.php") {
 
                 <i class="fa fa-compact-disc" aria-hidden="true"></i>
 
-                  <p>Estado de Reservas</p>
+                  <p><?=$lang["estado_reservas"];?></p>
 
                 </a>
 
@@ -639,7 +639,7 @@ $treeviewClientes=" menu-open ";
 
               <p>
 
-               Administracion
+               <?=$lang["administracion"];?>
 
                 <i class="right fas fa-angle-left"></i>
 
@@ -671,7 +671,7 @@ $treeviewClientes=" menu-open ";
 
                 <i class="fa fa-address-book" aria-hidden="true"></i>
 
-                  <p>Usuarios</p>
+                  <p><?=$lang["usuarios"];?></p>
 
                 </a>
 
@@ -697,7 +697,7 @@ $treeviewClientes=" menu-open ";
 
                 <i class="fa fa-address-book" aria-hidden="true"></i>
 
-                  <p>Solicitudes</p>
+                  <p><?=$lang["solicitudes"];?></p>
 
                 </a>
 
@@ -722,7 +722,7 @@ $treeviewClientes=" menu-open ";
 
                 <i class="fas fa-user" aria-hidden="true"></i>
 
-                  <p>Edades</p>
+                  <p><?=$lang["edades"];?></p>
 
                 </a>
 
@@ -748,7 +748,7 @@ $treeviewClientes=" menu-open ";
                 <a href="cancelaciones" class="nav-link <?=$clientesClass?>">
 
            <i class="fas fa-user-times"></i>
-                  <p>Textos Cancelaciones</p>
+                  <p><?=$lang["textos_cancelaciones"];?>T</p>
 
                 </a>
 
@@ -777,7 +777,7 @@ if ($archivo_actual=="monedaAdmin.php") {
 
                 <i class="fa fa-file-invoice-dollar" aria-hidden="true"></i>
 
-                  <p>Moneda</p>
+                  <p><?=$lang["moneda"];?></p>
 
                 </a>
 
@@ -804,7 +804,7 @@ if ($archivo_actual=="textoMiniaturaLista.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de textos Miniaturas</p>
+                  <p><?=$lang["editor_de_textos"];?>Editor de textos Miniaturas</p>
 
                 </a>
 
@@ -832,7 +832,7 @@ if ($archivo_actual=="textosAccesibilidad.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de Textos Accesiblidad</p>
+                  <p><?=$lang["editor_de_textos_accesibilidad"];?></p>
 
                 </a>
 
@@ -859,7 +859,7 @@ if ( $archivo_actual=="destinosAlta.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de Destinos</p>
+                  <p><?=$lang["editor_de_destinos"];?></p>
 
                 </a>
 
@@ -887,7 +887,7 @@ if ($archivo_actual=="serviciosAdicionalesAlta.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de Servicios Adicionales</p>
+                  <p><?=$lang["editor_de_servicios_adicionales"];?></p>
 
                 </a>
 
@@ -914,7 +914,7 @@ if ($archivo_actual=="textoMiniaturaBlogLista.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de textos Miniaturas Blog</p>
+                  <p><?=$lang["editor_de_textos_miniatura_blog"];?></p>
 
                 </a>
 
@@ -942,7 +942,7 @@ if ($archivo_actual=="comisionesEditor.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p>Editor de comisiones</p>
+                  <p><?=$lang["editor_de_comiciones"];?></p>
 
                 </a>
 
@@ -970,7 +970,7 @@ if ($archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServicio
 
                 <i class="fa fa-calendar-day" aria-hidden="true"></i>
 
-                  <p>Editor de categorías</p>
+                  <p><?=$lang["editor_de_categorias"];?>Editor de categorías</p>
 
                 </a>
 
@@ -995,7 +995,7 @@ if ($archivo_actual=="parametros.php") {
 
                 <i class="fa fa-calendar-day" aria-hidden="true"></i>
 
-                  <p>Editor parametros</p>
+                  <p><?=$lang["editor_parametros"];?>Editor parametros</p>
 
                 </a>
 
@@ -1065,7 +1065,7 @@ $treeviewClientes=" menu-open ";
 
               <p>
 
-               Financiero
+               <?=$lang["financiero"];?>
 
                 <i class="right fas fa-angle-left"></i>
 
@@ -1097,7 +1097,7 @@ $treeviewClientes=" menu-open ";
 
                 <i class="fa fa-check-square" aria-hidden="true"></i>
 
-                  <p>Comprobantes</p>
+                  <p><?=$lang["comprovantes"];?></p>
 
                 </a>
 
@@ -1129,7 +1129,7 @@ if ($archivo_actual=="comisionesLista.php") {
 
                 <i class="fa fa-handshake" aria-hidden="true"></i>
 
-                  <p>Comisiones</p>
+                  <p><?=$lang["comisiones"];?></p>
 
                 </a>
 

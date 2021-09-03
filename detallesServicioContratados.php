@@ -51,7 +51,7 @@ $idReserva=$reserva["idReserva"];
 
 }
 if (count($reserva)<1) {
-  alertar("La Reserva con el codigo ".$codigoAmigable." no existe","error");
+  alertar($lang["la_reserva_con_el_codigo"].$codigoAmigable. $lang["no_existe"],$lang["error"]);
   redireccionarLento("index");
 }
 
@@ -509,7 +509,7 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
         // This function shows a transaction success message to your buyer.
 
-             alert('Gracias por pagar en metelebrasil '+ details.payer.name.given_name+' el pago de paypal puede demorar unos segundos en impactar en el sistema, Gracias');
+             alert(<?=$lang["gracias_por_confiar_en_metele_brasil"];?> + details.payer.name.given_name+<?=$lang["el_pago_de_paypal"];?>);
 
         window.location='./consultaReserva.php?reserva='+codigoAmigable;
 

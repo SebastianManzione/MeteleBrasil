@@ -1,7 +1,4 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 include("configEbanx.php");
 include("../../classes/functions.php");
@@ -34,7 +31,7 @@ $post = [
     'hash' => $data["hash_codes"]
 ];
  $ch = curl_init();
- curl_setopt($ch, CURLOPT_URL,"https://sandbox.ebanxpay.com/ws/query");
+ curl_setopt($ch, CURLOPT_URL,$url_ebanxQuery);
 //curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -48,13 +45,13 @@ $total=$server_output["payment"]["amount_ext"];
 $status=$server_output["payment"]["status"];
 
 $merchant_payment_code=$server_output["payment"]["merchant_payment_code"];
-
-$reserva=getReserva($merchant_payment_code);
+$user_value_1=$server_output["payment"]["user_value_1"];
+$reserva=getReserva($user_value_1);
 $idReserva=$reserva[0]["idReserva"];
 
 $total_dolares=ConvierteMoneda(283,188, $total);
 $insert=insertaComprobante($idReserva, $total, 5, 283, $data["hash_codes"], $total_dolares, 1);
 if (strlen($bodyy)<1) {
-redireccionar("../../../consultaReserva?reserva=".$merchant_payment_code);
+redireccionar("../../../consultaReserva?reserva=".$user_value_1);
 }
  ?>

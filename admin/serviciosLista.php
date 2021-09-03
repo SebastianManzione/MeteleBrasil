@@ -20,7 +20,7 @@ require("classes/texto_miniaturas.php");
 require("classes/tipos_tarifa.php");
 
 require("classes/accesibilidad.php");
-
+require("classes/comision_prestador.php");
 require("classes/idiomas.php");
 
 require("classes/edades.php");
@@ -178,9 +178,13 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                     <?php 
 
+
+
                    if($_SESSION["login"]["rol"]==1){
                     $servicios=getAllServicios();}
                     else{
+                   
+                   
                       $servicios=getAllServiciosPrestador($_SESSION["login"]["idPrestador"]);
                     }
 

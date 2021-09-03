@@ -7,27 +7,20 @@
 
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 include("classes/salidas.php");
-
 include("classes/tarifas.php");
-
 include("classes/idiomas.php");
 include("classes/servicio.php");
-
 include("classes/comisiones.php");
 include("classes/edades.php");
 include("classes/cancelaciones.php");
+include("classes/tarifas_ubicacion.php");
 include("classes/servicios_adicionales.php");
 include("classes/reserva.php");
 include("classes/comprobantes.php");
-
 include("classes/prestador.php");
 include("classes/accesibilidad.php");
 include("classes/convierte_monedas.php");
@@ -35,7 +28,7 @@ include("classes/destinos.php");
 
 
 
-
+/*
 
 if (!$_SESSION["login"]["rol"]==1) {
 
@@ -44,7 +37,7 @@ if (!$_SESSION["login"]["rol"]==1) {
   redireccionarLento("index");
   exit();
 
-}
+}*/
       $totalIva=0;
           $totalCarrito=0;
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idReservaHorarios"])) {
@@ -67,6 +60,16 @@ $idServicioSalidas=($horarios[0]['idServicioSalidas']);
 $salida=getSalida($idServicioSalidas)[0];
 $idiomasSalida=getIdiomasSalida($idServicioSalidas);
 $prestador=getPrestador($salida["idPrestador"])[0];
+
+if (  $salida["idPrestador"]!=$_SESSION['login']['idPrestador']) {
+  if ($_SESSION["login"]["rol"]!=1) {
+    alertar("Você não tem acesso a esta seção do software", "error");
+
+  redireccionarLento("index");
+  exit();
+  }
+    
+}
 $horaSalida=$salida['horaSalida'];
 $horaCheckIn=$salida['horaCheckIn'];
 $destino=getDestino($servicio[0]['idDestino']);
@@ -191,13 +194,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
               <!-- /.row -->
 
 
-<div class="callout callout-info" >
-              <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
-              <br>
-              <br>
-             <br>
-             <br>
-            </div>
+
 <h4><i class="fas fa-info"></i> Servicio 1: <?=$servicio[0]["nombre_servicio"];?></h4>
               <!-- Table row -->
               <div class="row">
@@ -223,6 +220,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                   $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
             $idReservaTarifas=$reservaTarifas[$j]["idReservaTarifas"];
             $tarifaOrigi=getTarifa($idServicioSalidasTarifas);
+            $ubicacion=getUbicacionIdTarifa($idServicioSalidasTarifas);
             $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
 
 if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
@@ -303,7 +301,16 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
   
                 <!-- /.col -->
               </div>
-          
+          <div class="callout callout-info" >
+              <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
+             
+             <div class="google-maps" style="width: 100%;">
+
+              <iframe style="width: 100%;" src = "https://maps.google.com/maps?q=<?=$ubicacion[0]['latitud']?>,<?=$ubicacion[0]['longitud']?>&hl=es;z=14&amp;output=embed"></iframe>
+
+                  </div>
+            
+            </div>
               <!-- /.row -->
      
               <div class="row">

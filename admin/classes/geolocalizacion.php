@@ -60,7 +60,7 @@ if ($option==(-5)) {
          $geoLocalizacionIp["langFunny"] ="PORTUGUES";
         break;
       
-        case 'PY':
+       /* case 'PY':
       $geoLocalizacionIp['nombre_pais'] ="Paraguay";
       $geoLocalizacionIp['idPais'] = 225;
       $geoLocalizacionIp['sym'] = "G$"; 
@@ -68,7 +68,7 @@ if ($option==(-5)) {
       $geoLocalizacionIp["countryCode"] = $countryCode; 
         $geoLocalizacionIp["lang"] ="GU";
          $geoLocalizacionIp["langFunny"] ="GUARANI";
-        break;
+        break; */
 
         case 'CL':
       $geoLocalizacionIp['nombre_pais'] ="Chile";

@@ -68,15 +68,15 @@ $_SESSION["login"]['idCobrador']=$resultado[0]['idCobrador'];
 
 $_SESSION["login"]['idPrestador']=$resultado[0]['idPrestador'];
 
-		alertar("Bienvenido a Metelebrasil ".$_SESSION["login"]['usuario'],"success");
-	redireccionarLento('index.php');
+		alertar($lang["bienvenido_a_metelebrasil"].$_SESSION["login"]['usuario'],"success");
+	redireccionar('index.php');  //bienvenido a metele
 		exit();
 
 			}
 
 			else{
 
-			alertar("Usuario o Contraseña incorrectos!!!","warning");
+			alertar($lang["usuario_contrasena_incorrectos"],"warning"); //usuario contrasenha incorrectos
 
 				  session_destroy();
 
@@ -210,7 +210,7 @@ $_SESSION["login"]['idPrestador']=$resultado[0]['idPrestador'];
 
 session_destroy();
 
-alertar("Gracias por utilizar metelebrasil.com","success");
+alertar($lang["gracias_por_usar"],"success"); //gracias por usar reservate
 
   redireccionar("index.php");
 

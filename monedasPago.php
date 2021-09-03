@@ -23,41 +23,15 @@ include("admin/classes/servicio.php");
         include("admin/classes/convierte_monedas.php");
 
     include("admin/classes/codigos_telefonicos.php");
+$codigoAmigable=$_GET['reserva'];
 
-$totalCarrito=0;
+if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["pais"]) && isset($_GET["reserva"])) {
+  $_SESSION['geo']['countryCode']=$_GET['pais'];
 
-
-$carrito=$_SESSION['reserva'];
-
-
-
-//print_r($carrito);
-
-$cantCarrito=count($carrito);
-
-
-
-
-
-
-
-/*
-
-if ($cantCarrito<1) {
-
-echo '
-
-<script>
-
-location.href="carrito";
-
-</script>
-
-';
-
+redireccionar('consultaReserva.php?reserva='.$codigoAmigable);
 }
 
-*/
+
 
 ?>
 
@@ -73,12 +47,12 @@ location.href="carrito";
 
 
 <!--FIN PASOS PARA RESERVA-->
-
+<form method="post">
  <div class="row ">
 
 <div class="col-lg-4 col-md-6 col-12 mb-4">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=AR" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/argentina.png)">
               
@@ -120,7 +94,7 @@ location.href="carrito";
 
 <div class="col-lg-4 col-md-6 col-12 mb-4">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=UY" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/uruguay.png)">
               
@@ -160,9 +134,9 @@ location.href="carrito";
        </div>
 
 
-<div class="col-lg-4 col-md-6 col-12 mb-4">
+<div class="col-lg-4 col-md-6 col-12 mb-4" style="display: none;">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=PY" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/paraguay.png)">
               
@@ -207,13 +181,13 @@ location.href="carrito";
 
 
         </div>
-
+</form>
 
 <div class="row ">
 
 <div class="col-lg-4 col-md-6 col-12 mb-4">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=PE" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/peru.png)">
               
@@ -255,7 +229,7 @@ location.href="carrito";
 
 <div class="col-lg-4 col-md-6 col-12 mb-4">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=USA" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/estados_unidos.png)">
               
@@ -297,7 +271,7 @@ location.href="carrito";
 
 <div class="col-lg-4 col-md-6 col-12 mb-4">
 
-         <a href="#" class="imagen">
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=CL" class="imagen">
              
            <div class="img-c" style="background-image: url(img/countries/chile.png)">
               
@@ -332,7 +306,7 @@ location.href="carrito";
            </div>
            
   <div class="shadow-none p-3 mb-5 
-            bg-light rounded">fffff</div><h3 class="title-categoria text-uppercase texto-shadow text-white"></h3>
+            bg-light rounded"></div><h3 class="title-categoria text-uppercase texto-shadow text-white"></h3>
          </a>
 
        </div>

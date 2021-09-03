@@ -109,7 +109,7 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
                                     <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
                                     <td><?=count($tarifas);?></td>
                                     <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
-                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"></button></form></td>
+                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>">Voucher Prestador</button></form></td>
                              
 
                              </tr>

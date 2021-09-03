@@ -4,15 +4,13 @@
 
 include("includes/headPagos.php");
 include("admin/classes/salidas.php");
-
 include("admin/classes/tarifas.php");
-
 include("admin/classes/idiomas.php");
 include("admin/classes/servicio.php");
-
 include("admin/classes/comisiones.php");
 include("admin/classes/edades.php");
 include("admin/classes/cancelaciones.php");
+include("admin/classes/tarifas_ubicacion.php");
 include("admin/classes/servicios_adicionales.php");
 include("admin/classes/reserva.php");
 include("admin/classes/comprobantes.php");
@@ -21,7 +19,7 @@ include("admin/classes/prestador.php");
 include("admin/classes/accesibilidad.php");
 include("admin/classes/convierte_monedas.php");
 include("admin/classes/destinos.php");
-      $totalIva=0;
+          $totalIva=0;
           $totalCarrito=0;
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idReservaHorarios"])) {
 $idReservaHorarios=$_POST['idReservaHorarios'];
@@ -35,12 +33,11 @@ $emailResponsable=$reserva['emailResponsable'];
 $totalReserva=$reserva["total"];
 $impuestos=$reserva["impuestos"];
 $monedaSel=$reserva["monedaSel"];
-
 $precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $totalReserva);
-     $servicio= getServicio($horarios[0]["idServicioSeleccionado"]);
+$servicio= getServicio($horarios[0]["idServicioSeleccionado"]);
 $idServicioSalidas=($horarios[0]['idServicioSalidas']);
-
 $salida=getSalida($idServicioSalidas)[0];
+
 $idiomasSalida=getIdiomasSalida($idServicioSalidas);
 $prestador=getPrestador($salida["idPrestador"])[0];
 $horaSalida=$salida['horaSalida'];
@@ -150,13 +147,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
               <!-- /.row -->
 
 
-<div class="callout callout-info" >
-              <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
-              <br>
-              <br>
-             <br>
-             <br>
-            </div>
+
 <h4><i class="fas fa-info"></i> Servicio 1: <?=$servicio[0]["nombre_servicio"];?></h4>
               <!-- Table row -->
               <div class="row">
@@ -182,6 +173,8 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                   $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
             $idReservaTarifas=$reservaTarifas[$j]["idReservaTarifas"];
             $tarifaOrigi=getTarifa($idServicioSalidasTarifas);
+            $ubicacion=getUbicacionIdTarifa($idServicioSalidasTarifas);
+         
             $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
 
 if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
@@ -211,7 +204,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 ?>
                     <tr>
                       <td> <?=$pasajeros[$k]["nombrePasajero"];?> <?=$pasajeros[$k]["apellidoPasajero"];?></td>
-                      <td><?=$cantidad?> <?=$reservaTarifas[$j]["nombre"];?> </td>
+                      <td><?=$reservaTarifas[$j]["nombre"];?> </td>
                       <td><?= $edadFrom[0]["valor"]?> A <?= $edadTo[0]["valor"]?> Anos</td>
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
                       <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
@@ -262,7 +255,19 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
   
                 <!-- /.col -->
               </div>
-          
+          <div class="callout callout-info" >
+              <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
+              <br>
+<div class="google-maps" >
+
+              <iframe src = "https://maps.google.com/maps?q=<?=$ubicacion[0]['latitud']?>,<?=$ubicacion[0]['longitud']?>&hl=es;z=14&amp;output=embed"></iframe>
+
+                  </div>
+           
+              <br>
+             <br>
+             <br>
+            </div>
               <!-- /.row -->
      
               <div class="row">

@@ -134,7 +134,7 @@ if(isset($_SESSION['idioma'])){
 
 }else{
 
-  $_SESSION["idioma_bandera"]='img/countries/Brazil-icon.png';
+  $_SESSION["idioma_bandera"]='../img/countries/Brazil-icon.png';
 
    $_SESSION["idioma"]="PT";
 

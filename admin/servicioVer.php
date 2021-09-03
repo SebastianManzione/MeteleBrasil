@@ -3,51 +3,26 @@
 setlocale(LC_TIME, "es_ES");
 
 
-
-
-
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 require("classes/categoria.php");
-
 require("classes/texto_miniaturas.php");
-
 require("classes/tipos_tarifa.php");
-
 require("classes/accesibilidad.php");
-
 require("classes/idiomas.php");
 require("classes/reserva.php");
-
-
-
 require("classes/edades.php");
-
 require("classes/salidas.php");
-
 require("classes/tarifas.php");
-
 require("classes/tarifas_ubicacion.php");
-
 require("classes/prestador.php");
-
 require("classes/servicio.php"); 
-
 require("classes/cancelaciones.php"); 
-
 require("classes/fotos_servicio.php"); 
-
 require("classes/servicios_adicionales.php");
-
 require("classes/convierte_monedas.php");
-
-
 
 
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
@@ -297,14 +272,26 @@ for ($i=0; $i <  count($fotos); $i++) {
 
           <form method="post" action="altaSalidas" style="padding: 3px;"><button name="idServicio" value="<?=$idServicio;?>" class="btn btn-info">Agregar Salidas </button></form>
 <?php if ($_SESSION['login']["idUsuario"]==1) { ?>
-         <form method="post" action="servicioOpiniones">
+         <form method="post" action="servicioOpiniones"  style="padding: 3px;">
           <button name="idServicio" value="<?=$idServicio;?>" class="btn btn-success">Opiniones</button></form>
-
-          <form method="post" id="borraServicio" >
-<input type="hidden" name="eliminarServicio"  value="<?=$idServicio;?>">
-            <a  class="btn btn-danger" name="eliminarServicio" value="<?=$idServicio;?>" onclick="confirm1()">Eliminar servicio</a></form>
+         <form method="get" action="altaServicio.php"  style="padding: 3px;">
+<input type="hidden" name="idServicio"  value="<?=$idServicio;?>">
+            <button  class="btn btn-primary"type="submit">Editar servicio</button></form>
+       
 
 <?php } ?>
+
+<?php if ($_SESSION['login']["idUsuario"]==1) {
+ ?>
+<form method="post" action="servicioComisionPrestador"  style="padding: 3px;">
+  <button type="submit" class="btn btn-info" name="idServicio" value="<?=$idServicio?>">Comision Inicial Prestador</button>
+</form>
+
+   <form method="post" id="borraServicio"   style="padding: 3px;">
+<input type="hidden" name="eliminarServicio"  value="<?=$idServicio;?>">
+            <a  class="btn btn-danger" name="eliminarServicio" value="<?=$idServicio;?>" onclick="confirm1()">Eliminar servicio</a></form>
+ <?php
+} ?>
 
 <script type="text/javascript">
 
@@ -418,6 +405,12 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
               <form method="post" action="pasajerosLista" >
 
                <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-secondary">Lista de Pasajeros</button>
+
+               </form>
+
+ <form method="post" action="salidasEditar" >
+
+               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-info">Edita Salida</button>
 
                </form>
 

@@ -610,19 +610,12 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-         <?php /*if(Accesibilidad($id)){
 
-          echo '<h5><i class="fa fa-wheelchair"></i> Accesibilidad </h5>
+        <h5><i class="fa fa-wheelchair"></i> <?=$lang["accesibilidad_"]?> </h5>
 
-        <p class="mx-4">Si (nuestras actividades son aptas personas de movilidad reducida, y carritos de bebé).</p>';
-
-        }
-
-*/
+        <p class="mx-4"><?=$accesibilidad[0]['texto'];?></p>
 
 
-
-        ?>
 
 
 

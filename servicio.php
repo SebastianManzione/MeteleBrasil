@@ -23,6 +23,7 @@ require("admin/classes/destinos.php");
 
 require("admin/classes/paises.php"); 
 
+require("admin/classes/accesibilidad.php"); 
 
 
 require("admin/classes/texto_viajeros.php");
@@ -52,6 +53,9 @@ require("admin/classes/texto_viajeros.php");
                   $duracion=getDuracionServicio($idServicio);
 
                  $salidas=getSalidasServicio($idServicio);
+                 $idAccesibilidad=$salidas[0]['idAccesibilidad'];
+              
+$accesibilidad=getAccesibilidad($idAccesibilidad);
 
                  $eventArray=GetEventosArray($idServicio);
 
@@ -492,7 +496,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
         <h5><i class="fa fa-wheelchair"></i> <?=$lang["accesibilidad_"]?></h5>
 
-        <p class="mx-4"> <?=$lang["si_nuestras_actividades"]?></p>
+        <p class="mx-4"> <?=$accesibilidad[0]['texto'];?></p>
 
 
  <!-- CONTENEDOR CANCELACION-->
@@ -1394,7 +1398,6 @@ for ($i=0; $i < 3; $i++) {
       $idServicioSalidas=$salidas[0]['idServicioSalidas'];
 
       $tarifas=getTarifas($idServicioSalidas);
-
 
 
    $tarifa=calculaTarifa($tarifas[0]['idServicioSalidasTarifas'],
