@@ -56,7 +56,7 @@ function getArticulosBlog(){
 
     $cuenta_col = $comando->columnCount();
 
-    
+    $cuenta_row = $comando->rowCount();
 
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
@@ -173,12 +173,6 @@ function getArticulosBlog(){
 
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
-   echo "\nPDO::errorInfo():\n";
-
-    print_r($comando->errorInfo());
-
-
-
         return $id;
 
         
@@ -187,9 +181,7 @@ function getArticulosBlog(){
 
         }
 
-
-
-    /*function habilitarCategoria($idCategoria_servicio){
+function updatePostBlog($idPost, $titulo, $idDestino, $descripcionCorta, $contenido, $tipsYConsejos, $observaciones, $idTextoMiniaturasBlog){
 
 
 
@@ -197,10 +189,10 @@ function getArticulosBlog(){
 
         require("conexion.php");
 
-        $data=["idCategoria_servicio"=> $idCategoria_servicio];
+             $data=["idPost"=>$idPost, "titulo"=> $titulo, "idDestino"=>$idDestino, "descripcionCorta"=>$descripcionCorta, "contenido"=>$contenido, "tipsYConsejos"=>$tipsYConsejos, "observaciones"=>$observaciones, "idTextoMiniaturasBlog"=>$idTextoMiniaturasBlog];
 
         $consulta = "UPDATE categoria_servicio SET habilitado=1 WHERE idCategoria_servicio=:idCategoria_servicio ";
-
+     $consulta = "UPDATE blog SET titulo=:titulo, idDestino=:idDestino, descripcionCorta=:descripcionCorta, contenido=:contenido, tipsYConsejos=:tipsYConsejos, observaciones=:observaciones, idTextoMiniaturasBlog=:idTextoMiniaturasBlog WHERE idPost=:idPost ";
         
 
         $comando = $pdo->prepare($consulta);
@@ -221,13 +213,15 @@ function getArticulosBlog(){
 
 
 
-        return $id;
+        return $cuenta_row;
 
         
 
         
 
         }
+
+    /*
 
             function desHabilitarCategoria($idCategoria_servicio){
 

@@ -7,7 +7,7 @@
 
   .div-absolute {
 
-    top: 40%;
+    top: 10%;
 
 }
 .badge-destacado {
@@ -91,11 +91,11 @@ text-align:center !important;
 }
 
 .page-section-heading{
-     font-size:20px !important;
+     font-size:22px !important;
 }
 
 .titulo{
-  font-size:20px !important;
+  font-size:28px !important;
 }
 
 .lista-pasos-form li{

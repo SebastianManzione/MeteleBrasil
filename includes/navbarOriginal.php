@@ -1383,40 +1383,17 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
 
 
-<div class="col-6  text-right" style="padding-right: 0px;">
+<div class="col-6  text-right">
 
   <ul class="lista-iconos">
 
-   
+    <li id="esconder">
 
-    
+      <a class="cursor" data-toggle="modal" data-target="#modalbuscar">
 
+        <i class="fa fa-search  text-white"></i>
 
-
-
-
-    <li>
-
-      <a  class="text-white color-w cursor-size cursor"  type="button"  id="txtIdiomaSelMovil"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <img class="nav-item mx-0 mx-lg-1 dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px; margin-left: 70px;">   
-
-         <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span></a>
-
-        <div class="dropdown-menu collapse" aria-labelledby="txtIdiomaSelMovil" id="idioma">
-
-		  <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
-
-              <a class="dropdown-item" onclick="cambiaIdioma('EN');"><img src="img/countries/United-States-of-Americ-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["ingles"];?></a>
- <!--  <a class="dropdown-item" onclick="cambiaIdioma('IT');"><img src="img/countries/italy-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["italiano"];?></a>---------------------------------------------------------------------------------------------------------- -->
-             
-
-              <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["portugues"];?></a>
-
- <!--    <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;<?=$lang["frances"];?></a>---------------------------------------------------------------------------------------------------------- -->
-
-           
-
-        </div>
+      </a>
 
     </li>
 
@@ -1463,6 +1440,35 @@ for ($i=0; $i < count($monedas); $i++) {
                     </div>
 
           </li>
+
+
+
+
+
+    <li>
+
+      <a  class="text-white color-w cursor-size cursor"  type="button"  id="txtIdiomaSelMovil"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <img class="nav-item mx-0 mx-lg-1 dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px; margin-left: 70px;">   
+
+         <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span></a>
+
+        <div class="dropdown-menu collapse" aria-labelledby="txtIdiomaSelMovil" id="idioma">
+
+		  <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
+
+              <a class="dropdown-item" onclick="cambiaIdioma('EN');"><img src="img/countries/United-States-of-Americ-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["ingles"];?></a>
+ <!--  <a class="dropdown-item" onclick="cambiaIdioma('IT');"><img src="img/countries/italy-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["italiano"];?></a>---------------------------------------------------------------------------------------------------------- -->
+             
+
+              <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["portugues"];?></a>
+
+ <!--    <a class="dropdown-item" onclick="cambiaIdioma('FR');"><img src="img/countries/France-icon.png"  style="height: 20px; width: 20px;"> &nbsp;<?=$lang["frances"];?></a>---------------------------------------------------------------------------------------------------------- -->
+
+           
+
+        </div>
+
+    </li>
 
     
 

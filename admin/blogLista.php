@@ -1,36 +1,18 @@
 <?php 
 
-
-
-
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 require("classes/categoria.php");
-
 require("classes/texto_miniaturas.php");
-
 require("classes/tipos_tarifa.php");
-
 require("classes/accesibilidad.php");
-
 require("classes/idiomas.php");
-
 require("classes/edades.php");
-
 require("classes/destinos.php");
-
-
-
- require("classes/blog.php"); 
-
- require("classes/fotos_servicio.php"); 
-
+require("classes/blog.php"); 
+require("classes/fotos_servicio.php"); 
 
 if (!$_SESSION["login"]["rol"]==1) {
   alertar("Usted no tiene acceso a esta seccion del software", "error");
@@ -157,7 +139,7 @@ exit();
                       <th>Fecha</th>
 
                       <th>Acciones</th>
-
+                      <th></th>
                        <!-- /.Descripcion corta -->
 
                   </tr>
@@ -220,6 +202,9 @@ exit();
 
                     <td><a href="../articuloBlog.php?post=<?=$idPost;?>" class="btn btn-success">Ver</a></td> 
 
+                        <td><form method="post" action="blogAlta">
+                          <button name="editaPost" value="<?=$idPost;?>" class="btn btn-info">Editar</button>
+                        </form></td> 
 
 
                   

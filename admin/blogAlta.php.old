@@ -1,108 +1,87 @@
 <?php 
 
-include("includes/header.php");
-include("includes/navbar.php");
-include("includes/sidebar.php");
-require("classes/functions.php");
-require("classes/categoria.php");
-require("classes/destinos.php");
-require("classes/blog.php");
-require("classes/fotos_blog.php");
-require("classes/texto_miniaturas_blog.php");
+
+
+
+
+
+
+        include("includes/header.php");
+
+        include("includes/navbar.php");
+
+        include("includes/sidebar.php");
+
+        require("classes/functions.php");
+
+        require("classes/categoria.php");
+
+         require("classes/destinos.php");
+
+                  require("classes/blog.php");
+
+                             require("classes/fotos_blog.php");
+
+        require("classes/texto_miniaturas_blog.php");
 
 if (!$_SESSION["login"]["rol"]==1) {
   alertar("Usted no tiene acceso a esta seccion del software", "error");
   redireccionarLento("index");
 exit();
 }
- $editar=0;
-    $idPost='';
-    $articulo='';
-    $titulo='';
-    $idDestino='';
-    $descripcionCorta='';
-    $contenido='';
-    $tipsYConsejos='';
-    $observaciones='';
-    $idTextoMiniaturasBlog='';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
 
-
-
-    if (isset($_POST['guardaEditaPost'])) {
-$idPost=$_POST["guardaEditaPost"];
-$editar=1;
 $titulo=$_POST["titulo"];
+
 $idDestino=$_POST["idDestino"];
+
 $descripcionCorta=$_POST["descripcionCorta"];
+
 $contenido=$_POST["contenido"];
+
 $tipsYConsejos=$_POST["tipsYConsejos"];
+
 $observaciones=$_POST["observaciones"];
+
 $idTextoMiniaturasBlog=$_POST["idTextoMiniaturasBlog"];
 
-        $resul=updatePostBlog($idPost, $titulo, $idDestino, $descripcionCorta, $contenido, $tipsYConsejos, $observaciones, $idTextoMiniaturasBlog);
-        if ($resul>0) {
 
-             alertar("Articulo actualizado correctamente...","success");
-        }
-      
 
-    }
 
-if (isset($_POST["editaPost"])) {
 
-       $idPost=$_POST["editaPost"];
-   $editar=1;
+ $idPost=   setArticuloBlog($titulo, $idDestino, $descripcionCorta, $contenido, $tipsYConsejos, $observaciones, $idTextoMiniaturasBlog);
 
-  $articulo=getArticuloBlog($idPost)[0];
- 
-    $titulo=$articulo['titulo'];
-    $idDestino=$articulo['idDestino'];
-    $descripcionCorta=$articulo['descripcionCorta'];
-    $contenido=$articulo['contenido'];
-    $tipsYConsejos=$articulo['tipsYConsejos'];
-    $observaciones=$articulo['observaciones'];
-    $idTextoMiniaturasBlog=$articulo['idTextoMiniaturasBlog'];
-if (isset($_FILEs)) {
-      $fotos=altaFotosBlog($_FILES, $idPost);
-}
+
+
+
+
+if ($idPost>0) {
+
+   alertar("Articulo dado de alta correctamente...","success");
+
+
+
+$fotos=altaFotosBlog($_FILES, $idPost);
+
+
+
+  redireccionar("blogLista.php");
+
 }
 
+else{
 
+    alertar("Error","error");
 
-
-    if (isset($_POST['altaPost'])) {
-
-        
-    $titulo=$_POST['titulo'];
-    $idDestino=$_POST['idDestino'];
-    $descripcionCorta=$_POST['descripcionCorta'];
-    $contenido=$_POST['contenido'];
-    $tipsYConsejos=$_POST['tipsYConsejos'];
-    $observaciones=$_POST['observaciones'];
-    $idTextoMiniaturasBlog=$_POST['idTextoMiniaturasBlog'];
-         $idPost=setArticuloBlog($titulo, $idDestino, $descripcionCorta, $contenido, $tipsYConsejos, $observaciones, $idTextoMiniaturasBlog);
-        if ($idPost>0) {
-
-    alertar("Articulo dado de alta correctamente...","success");
-    $fotos=altaFotosBlog($_FILES, $idPost);
-    redireccionar("blogLista.php");
-        }
-        else{
-            alertar("Error","error");
-        }
-        exit();
-    }
- 
+}
 
 
 
 
 
-
-
-
+exit();
 
 }
 
@@ -192,7 +171,7 @@ if (isset($_FILEs)) {
 
                                         <label>Titulo del Articulo</label>
 
-                                        <input name="titulo" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="¿Como se llama el articulo?" value="<?=$titulo;?>" required>
+                                        <input name="titulo" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="¿Como se llama el articulo?" required>
 
                                     </div>
 
@@ -215,16 +194,12 @@ if (isset($_FILEs)) {
                                             $destinos=getDestinos();
 
                                         for ($i=0; $i < count($destinos); $i++) { 
-                                            $selected='';
-                                            if ($destinos[$i]['idDestino']==$idDestino) {
-                                                $selected='selected';
-                                            }
 
                                             ?>
 
                                            
 
-                                             <option value="<?= $destinos[$i]['idDestino']?>" <?=$selected?> ><?= $destinos[$i]["nombre"]?></option>                   
+                                             <option value="<?= $destinos[$i]['idDestino']?>"><?= $destinos[$i]["nombre"]?></option>                   
 
                                               <?php } ?>                                                     
 
@@ -248,7 +223,7 @@ if (isset($_FILEs)) {
 
                                         <label>Breve descripcion del Articulo</label>
 
-                                        <textarea name="descripcionCorta"  placeholder="Ejemplo: (Cena Show con Orquesta y cantantes de Tango en vivo...)"> <?=$descripcionCorta;?> </textarea>
+                                        <textarea name="descripcionCorta"  placeholder="Ejemplo: (Cena Show con Orquesta y cantantes de Tango en vivo...)"></textarea>
 
                                     </div>
 
@@ -260,7 +235,7 @@ if (isset($_FILEs)) {
 
                                         <label>Articulo</label>
 
-                                        <textarea rows="5" name="contenido" id="txtDescripcion"><?=$contenido?></textarea>
+                                        <textarea rows="5" name="contenido" id="txtDescripcion"></textarea>
 
                                     </div>
 
@@ -272,7 +247,7 @@ if (isset($_FILEs)) {
 
                                         <label>Tips y cosejos</label>
 
-                                        <textarea rows="5" name="tipsYConsejos" id="txtDocumentacionViajero" class="form-control"> <?=$tipsYConsejos?> </textarea>
+                                        <textarea rows="5" name="tipsYConsejos" id="txtDocumentacionViajero" class="form-control"></textarea>
 
                                     </div>
 
@@ -284,7 +259,7 @@ if (isset($_FILEs)) {
 
                                         <label>Observaciones</label>
 
-                                        <textarea rows="5" name="observaciones" id="txtObservaciones" class="form-control"> <?=$observaciones?> </textarea>
+                                        <textarea rows="5" name="observaciones" id="txtObservaciones" class="form-control"></textarea>
 
                                     </div>
 
@@ -311,19 +286,14 @@ if (isset($_FILEs)) {
                                      		 <label>Texto de la Miniatura Blog</label>
 
                                 
-  
+     <select name="idTextoMiniaturasBlog" class="form-control" required>  
                                        		<?php 
 
                                     	$textMiniaturas= getTextosMiniaturasBlog();
 
-                                    	for ($i=0; $i < count($textMiniaturas); $i++) {
-                                        $selected='';
-                                        if ($textMiniaturas[$i]["idTextoMiniaturasBlog"]==$idTextoMiniaturasBlog) {
-                                           $selected='selected';
-                                        }
-                                         ?>
-    <select name="idTextoMiniaturasBlog" class="form-control" required> 
-                                <option value="<?=$textMiniaturas[$i]["idTextoMiniaturasBlog"];?>" <?=$selected?>>
+                                    	for ($i=0; $i < count($textMiniaturas); $i++) { ?>
+
+                                <option value="<?=$textMiniaturas[$i]["idTextoMiniaturasBlog"];?>">
 
                                                         <?=$textMiniaturas[$i]["texto"];?></option>
 
@@ -350,30 +320,16 @@ if (isset($_FILEs)) {
                         <div class="card-footer">
 
                             <div align="center">
-<?php if ($editar) {
-?>
-   <button type="submit" id="uploadFiles" name="guardaEditaPost" value="<?=$idPost?>" class="btn btn-success">
 
-                                    <i class="fa fa fa-save" aria-hidden="true"></i> Guardar
+                                <button type="submit" id="uploadFiles" value="Crear servicio" class="btn btn-success">
 
-                                </button>
-
-<?php
-}else{
-    ?>
-
-                      <button type="submit" id="uploadFiles" value="Crear servicio" name="altaPost" class="btn btn-success">
-
-                                    <i class="fa fa-save" aria-hidden="true"></i> Guardar
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Guardar
 
                                 </button>
-    <?php
-} ?>
-                              
 
-                                <a href="blogLista.php" class="btn btn-danger">
+                                <a href="servicios.php" class="btn btn-danger">
 
-                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver
+                                    <i class="fa fa-times" aria-hidden="true"></i> Salir sin guardar
 
                                 </a>
 
@@ -395,7 +351,7 @@ if (isset($_FILEs)) {
 
             <script type="text/javascript">
 
-               
+                CKEDITOR.replace('txtDescripcionCorta');
 
                 CKEDITOR.replace('txtDocumentacionViajero');
 

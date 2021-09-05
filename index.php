@@ -28,7 +28,10 @@ Visitante($visitante);
 */
 ?>
 
-
+<style> 
+#capa1{ position:absolute; z-index:1; }
+ #capa2{ position:absolute; z-index:0; }
+</style>
  <!-- header -->
  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
@@ -61,11 +64,11 @@ Visitante($visitante);
     <span class="sr-only">Next</span>
   </a>
   
-    <section class="div-absolute">
+    <section class="div-absolute" id="capa2">
       <div class="container"> 
         <div class="row" >
           
-          <div class="col-lg-6 offset-lg-3 mb-5 mb-15">
+          <div class="col-lg-6 offset-lg-3 mb-5">
              <h1 class="text-white text-uppercase titulo" >
       
               <span class="semibold"><?= $lang["crea_tu_viaje"]; ?></span> <br>
@@ -79,6 +82,9 @@ Visitante($visitante);
               <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
             </span>
           </div>
+
+
+
               <!--EMPIEZA DESPLEGABLE DEL BANNER-
               <div class="form-group">
                <div class="container">
