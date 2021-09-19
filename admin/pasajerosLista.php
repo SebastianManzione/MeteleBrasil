@@ -61,7 +61,7 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
           <div class="col-sm-6">
 
-            <h1 class="m-0 text-dark">Lista de pasajeros</h1>
+            <h1 class="m-0 text-dark"><?=$lang["lista_de_pasajeros"];?></h1>
 
           </div><!-- /.col -->
 
@@ -69,9 +69,9 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
             <ol class="breadcrumb float-sm-right">
 
-              <li class="breadcrumb-item"><a href="#">Reservas</a></li>
+              <li class="breadcrumb-item"><a href="#"><?=$lang["reservas"];?></a></li>
 
-              <li class="breadcrumb-item active">Lista de pasajeros</li>
+              <li class="breadcrumb-item active"><?=$lang["lista_de_pasajeros"];?></li>
 
             </ol>
 
@@ -99,7 +99,7 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
           <div class="card-header">
 
-            <h3 class="card-title">Fecha del Servicio <?=$fechaSalida;?></h3>
+            <h3 class="card-title"><?=$lang["fecha_del_servicio"];?><?=$fechaSalida;?></h3>
 
 
 
@@ -141,15 +141,15 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
                                                     
 
-                                                    <th>Servicio</th>
+                                                    <th><?=$lang["servicio"];?></th>
 
-                                                    <th>Fecha de Salida</th>
+                                                    <th><?=$lang["fecha_de_salida"];?></th>
 
-                                                    <th>Horario de Salida</th>
+                                                    <th><?=$lang["horario_de_salida"];?></th>
 
-                                                    <th>Horario de Check In</th>
+                                                    <th><?=$lang["horario_de_check_in"];?></th>
 
-                                                    <th>COBRO PENDIENTE</th>
+                                                    <th><?=$lang["cobro_pendiente"];?></th>
 
                                                      
 
@@ -195,7 +195,7 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
                                                   <tr align="center">
 
-                                                       <th>Notas de salida:</th>
+                                                       <th><?=$lang["notas_de_salida"];?></th>
 
                                                   </tr>
 
@@ -233,25 +233,25 @@ $horaCheckIn=$salida[0]["horaCheckIn"];
 
 
 
-                  	                                <th>Nombre pax</th>
+                  	                                <th><?=$lang["nombre_de_pasajeiro"];?></th>
 
-                                                    <th>Tipo de pax</th>
+                                                    <th><?=$lang["tipo_de_pasajegeiro"];?></th>
 
-                                                    <th>Codigo carrito</th>
+                                                    <th><?=$lang["codigo"];?></th>
 
-                                                    <th>Telefono</th>
+                                                    <th><?=$lang["telefono"];?></th>
 
-                                                    <th>TOTAL</th>
+                                                    <th><?=$lang["total"];?></th>
 
-                                                    <th>PAGO</th>
+                                                    <th><?=$lang["valor_ya_pago"];?></th>
 
-                                                    <th>Resta pagar</th>
+                                                    <th><?=$lang["resta_pagar"];?></th>
 
-                                                    <th>Tipo de tarifa</th>
+                                                    <th><?=$lang["tipo_de_tarifa"];?></th>
 
-                                                    <th>Estado</th>
+                                                    <th><?=$lang["estado_"];?></th>
   <th>Voucher</th>
-                                                    <th>Comentario</th>
+                                                    <th><?=$lang["comentario_del_pasajero"];?></th>
 
                                                   
 
@@ -459,7 +459,7 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
                     <td> <button type="button" class="<?= $claseBoton;?>"><?= $textoBoton;?></button></td> 
                     <td><?php if ($confirmada) {
                      ?>
-<form method="post" action="voucherPrestador" ><button type="submit" name="idReservaHorarios" value="<?=$idReservahorarios;?>"> Voucher</button></form>
+<form method="post" action="voucherPrestador" ><button type="submit" name="idReservaHorarios" value="<?=$idReservahorarios;?>"><?=$lang["voucher"];?></button></form>
                      <?php
                     } ?> </td>
 
@@ -507,11 +507,11 @@ $diferenciaComprobantesPrecio=$totalReserva-$totalComprobantes;
 
                  <!-- tengo este archivo de invoice-print.html --> 
 
-                 <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> Imprimir</a>
+                 <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-success"><i class="fas fa-print"></i> <?=$lang["imprimir"];?></a>
 
                   <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
 
-                    <i class="fas fa-download"></i> Generar PDF </button>
+                    <i class="fas fa-download"></i> <?=$lang["generar_pdf"];?></button>
 
                 </div>
 

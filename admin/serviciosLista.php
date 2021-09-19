@@ -1,36 +1,18 @@
 <?php 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
-
 require("classes/functions.php");
-
 require("classes/categoria.php");
-
 require("classes/texto_miniaturas.php");
-
 require("classes/tipos_tarifa.php");
-
 require("classes/accesibilidad.php");
 require("classes/comision_prestador.php");
 require("classes/idiomas.php");
-
 require("classes/edades.php");
 require("classes/destinos.php");
- //$moneda=getMoneda($_SESSION["nuevoServicio"]["selMoneda"]);
-
-//print_r($_POST); 
-
  require("classes/servicio.php"); 
-
  require("classes/fotos_servicio.php"); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["desHabilitarServicio"]) ) {
@@ -69,7 +51,7 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                 <div class="col-sm-6">
 
-                    <h1 class="m-0 text-dark">Lista de Servicios</h1>
+                    <h1 class="m-0 text-dark"><?=$lang["lista_de_servicios"];?></h1>
 
 
 
@@ -79,9 +61,9 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                     <ol class="breadcrumb float-sm-right">
 
-                        <li class="breadcrumb-item"><a href="#">Servicios</a></li>
+                        <li class="breadcrumb-item"><a href="#"><?=$lang["servicios"];?></a></li>
 
-                        <li class="breadcrumb-item active">Lista de Servicios</li>
+                        <li class="breadcrumb-item active"><?=$lang["lista_de_servicios"];?></li>
 
                     </ol>
 
@@ -113,7 +95,7 @@ habilitarServicio($_POST["habilitarServicio"]);
 
  <div class="card-header">
 
-                <h3 class="card-title">Lista de Servicios</h3>
+                <h3 class="card-title"><?=$lang["lista_de_servicios"];?></h3>
 
 
 
@@ -158,15 +140,15 @@ habilitarServicio($_POST["habilitarServicio"]);
                   <tr>
 
                   
-                      <th>Nombre</th>
+                      <th><?=$lang["nombre"];?></th>
 
-                      <th>Fecha Alta</th>
-                      <th>Destino</th>
-                      <th>Foto</th>
+                      <th><?=$lang["fecha_alta"];?></th>
+                      <th><?=$lang["destino"];?></th>
+                      <th><?=$lang["foto"];?></th>
 
-                           <?php  if($_SESSION["login"]["rol"]==1){ ?> <th scope="col">¿Habilitado?</th>       <?php  } ?>
+                           <?php  if($_SESSION["login"]["rol"]==1){ ?> <th scope="col"><?=$lang["acción"];?></th><?php  } ?>
 
-                      <th>Acciones</th>
+                      <th><?=$lang["detalles"];?></th>
 
                        <!-- /.Descripcion corta -->
 
@@ -192,7 +174,7 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                       $idServicio=$servicios[$i]["idServicio"];
 
-                      $fotos=getFotosServicio($idServicio);
+                      $fotos=getFotoMiniaturaServicio($idServicio);
 
                               $destino=getDestino($servicios[$i]["idDestino"]);        
 
@@ -218,7 +200,7 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                                 if($servicios[$i]["habilitado"]==0){ ?>
 
-                                <button class="btn btn-sm btn-success" name="habilitarServicio" value="<?=$idServicio?>">Habilitar</button>
+                                <button class="btn btn-sm btn-success" name="habilitarServicio" value="<?=$idServicio?>"><?=$lang["habilitar"];?></button>
 
                                 <?php }
 
@@ -226,13 +208,13 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                                   ?><button class="btn btn-sm btn-warning" name="desHabilitarServicio" 
 
-                                   value="<?=$idServicio;?>">Deshabilitar</button>
+                                   value="<?=$idServicio;?>"><?=$lang["deshabilitar"];?></button>
 
                                <?php }?>    </form></td>
 
 <?php  } ?>
 
-                    <td><a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-success">Ver</a></td> 
+                    <td><a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-success"><?=$lang["ver"];?></a></td> 
 
 
 
@@ -257,7 +239,7 @@ habilitarServicio($_POST["habilitarServicio"]);
    $('#tabla_servicios').DataTable({
       "paging": true,
       "stateSave": true,
-      "lengthChange": false,
+      "lengthChange": true,
       "searching": true,
       "ordering": true,
       "info": true,

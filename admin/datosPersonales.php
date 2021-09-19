@@ -263,7 +263,7 @@ $totalDescuentos=0;
 
     <li>Subtotal <?= $tarifa[0]["valorSinIvaSym"]; ?><li>
 
-      <li>ICMS <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
+      <li>ISS <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
 
       <?php
 

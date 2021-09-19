@@ -160,7 +160,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                       <th>Edad</th>
                       <th>Fecha y hora Check In</th>
                       <th>Subtotal</th>
-                       <th>ICMS</th>
+                  
                     </tr>
                     </thead>
                     <tbody>
@@ -184,16 +184,17 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                      $monedaSel=$reservaTarifas[$j]["monedaSel"];
                 $valorSinIva=$reservaTarifas[$j]["valorSinIva"];
                        $cantidad=($reservaTarifas[$j]["cantidad"]);
-                       $valorDelIva=$reservaTarifas[$j]['valorDeIva'];      
+                       $valorDelIva=$reservaTarifas[$j]['valorDeIva'];
+                           $valorDelIvaUnitario=$reservaTarifas[$j]['valorDeIva']/$cantidad;      
                    
                        $valorDelIva=ConvierteMoneda($reservaTarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
-                      
+                       $totalNetoTarifa=$valorSinIva;
                         $totalTarifa=$valorSinIva/$cantidad;
-      
+                       
                         $totalIva+= $valorDelIva;
                   
             $total=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-                   $totalCarrito+=$total;
+                   $totalCarrito+=$valorSinIva;
              $edadFrom=getEdad($reservaTarifas[$j]["idFromEdad"]);
              $edadTo=getEdad($reservaTarifas[$j]["idToEdad"]);
              $idMonedaSel=$reservaTarifas[$j]["monedaSel"];
@@ -207,8 +208,8 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                       <td><?=$reservaTarifas[$j]["nombre"];?> </td>
                       <td><?= $edadFrom[0]["valor"]?> A <?= $edadTo[0]["valor"]?> Anos</td>
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
-                      <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
-                      <td><?=$_SESSION["moneda_sel_sym"].$valorDelIva;?></td> 
+                      
+                      <td><?=$_SESSION["moneda_sel_sym"].$valorSinIva;?></td> 
                     </tr>
                 <?php } 
 
@@ -235,19 +236,23 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 <tr>
   <td colspan="4"><?=$adicionales[$k]['cantidad'];?> <?=$adicionales[$k]['nombre'];?></td>
   <td ><?= $_SESSION["moneda_sel_sym"].$precioAdicional?></td>
-    <td ><?= $_SESSION["moneda_sel_sym"].$valorIva?></td> 
+
 </tr>
 
             <?php
           } ?>
 
 
-                  <tr>
-                      <th colspan="3"></th>
-                      <th >TOTAL</th>
-                  <th><?=$_SESSION["moneda_sel_sym"].$totalCarrito;?></th>
-                  <th></th>
-                    </tr>
+                        <tr>
+                        <th colspan="3"></th>
+                        <th>ISS:</th>
+                        <td><?=$_SESSION["moneda_sel_sym"].$totalIva;?></td>
+                      </tr>  
+                       <tr>
+                        <th colspan="3"></th>
+                        <th>Total:</th>
+                        <td><?=$_SESSION["moneda_sel_sym"].($totalCarrito+$totalIva);?></td>
+                      </tr>
               
                     </tbody>
                   </table>
@@ -255,6 +260,14 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
   
                 <!-- /.col -->
               </div>
+                         <div class="callout callout-info" >
+              <h3><i class="fas fa-info"></i> Observaciones:</h3>
+              <br>
+<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" disabled><?=$salida['nota_salida'];?></textarea>
+           
+              
+             <br>
+            </div>
           <div class="callout callout-info" >
               <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
               <br>
@@ -265,11 +278,11 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                   </div>
            
               <br>
-             <br>
-             <br>
+            
             </div>
               <!-- /.row -->
-     
+    
+              <!-- /.row -->
               <div class="row">
 
 
@@ -298,7 +311,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                
                    
                          <tr>
-                        <th>ICMS:</th>
+                        <th>ISS:</th>
                         <td><?=$_SESSION["moneda_sel_sym"].$totalIva;?></td>
                       </tr>  
                        <tr>

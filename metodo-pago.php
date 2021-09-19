@@ -116,7 +116,7 @@ $monedaNativa=($salida[0]["idMoneda"]);
       ?>
     <li><?= $cantidad.' '.$tarifa[0]["nombre"].' ('.$tarifa[0]["edadFrom"].' a '.$tarifa[0]["edadTo"].' Anos)'?><li>
     <li>Subtotal <?= $tarifa[0]["valorSinIvaSym"]; ?><li>
-      <li>ICMS <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
+      <li>ISS <?= $tarifa[0]["valorDeIvaSym"]; ?><li>
       <?php
 $precioTotalCarrito+=$tarifa[0]["valor"];
 

@@ -1177,7 +1177,7 @@ $cantidad_opiniones_servicio=count($opiniones_servicio);
 
 $duracion_servicio=getDuracionServicio($idServicio);
 
-$fotos_servicio=getFotosServicio($idServicio);
+$fotos_servicio=getFotoMiniaturaServicio($idServicio);
 
 $fotos_servicio=$fotos_servicio[0]["ruta"];
 

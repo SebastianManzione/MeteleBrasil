@@ -100,12 +100,12 @@ for ($i=0; $i < count($resultado); $i++) {
 }
 
 
- function setOpinionServicio($idServicio, $nombre, $opinion, $estrellas){
+ function setOpinionServicio($idServicio, $nombre, $opinion, $estrellas, $selPasajeros, $fechaAlta){
 
 
         require("conexion.php");
-        $data=["idServicio"=> $idServicio, "nombre"=>$nombre, "opinion"=>$opinion, "estrellas"=>$estrellas];
-        $consulta = "INSERT INTO opiniones_servicio (idServicio, nombre, opinion, estrellas) VALUES (:idServicio, :nombre, :opinion,:estrellas) ";
+        $data=["idServicio"=> $idServicio, "nombre"=>$nombre, "opinion"=>$opinion, "estrellas"=>$estrellas, "selPasajeros"=>$selPasajeros, "fechaAlta"=>$fechaAlta];
+        $consulta = "INSERT INTO opiniones_servicio (idServicio, nombre, opinion, estrellas,selPasajeros, fechaAlta) VALUES (:idServicio, :nombre, :opinion,:estrellas,:selPasajeros,:fechaAlta) ";
         
         $comando = $pdo->prepare($consulta);
         

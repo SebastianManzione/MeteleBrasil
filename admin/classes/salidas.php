@@ -247,8 +247,50 @@ else{
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
     // Imprimir en pantalla
+$retorno=array();
+for ($i=0; $i < count($resultado); $i++) { 
+  //print_r($resultado[$i]);
 
-    return $resultado;
+$idServicioSalidas=$resultado[$i]["idServicioSalidas"];
+$idPrestador=$resultado[$i]["idPrestador"];
+$idServiciosSalidasPack=$resultado[$i]["idServiciosSalidasPack"];
+$nombre=$resultado[$i]["nombre"];
+$fecha=$resultado[$i]["fecha"];
+$horaSalida=$resultado[$i]["horaSalida"];
+$horaCheckIn=$resultado[$i]["horaCheckIn"];
+$anticipacionReserva=$resultado[$i]["anticipacionReserva"];
+$duracionMinima=$resultado[$i]["duracionMinima"];
+$duracionMaxima=$resultado[$i]["duracionMaxima"];
+$idAccesibilidad=$resultado[$i]["idAccesibilidad"];
+$disponibilidadOriginal=$resultado[$i]["disponibilidadOriginal"];
+$disponibilidad=$resultado[$i]["disponibilidad"];
+$idMoneda=$resultado[$i]["idMoneda"];
+$nota_salida=$resultado[$i]["nota_salida"];
+$sinHorario=$resultado[$i]["sinHorario"];
+$sinHorarioTexto=$resultado[$i]["sinHorarioTexto"];
+
+
+   $parametro=" ";
+if ($anticipacionReserva<1) {
+   $parametro=" minutes";
+   $hsAnticipacionReserva=$anticipacionReserva*60;
+}
+if ($anticipacionReserva>1) {
+   $parametro=" hour";
+   $hsAnticipacionReserva=$anticipacionReserva;
+}
+
+$fechaTimeActual = strtotime(date("d-m-Y H:i:00",time()));
+$fechaTimeSalida = strtotime($fecha." ".$horaSalida.":00"." -".$hsAnticipacionReserva.$parametro);
+
+if ($fechaTimeActual<$fechaTimeSalida) {
+array_push($retorno, $resultado[$i]);
+};
+
+
+ 
+}
+    return $retorno;
 
     
 
@@ -333,12 +375,29 @@ else{
                  $nuevaFecha=date('Y-m-d', $hoy); //el dia de hoy + 24horas
 
                 $eventos="";
-
+$eventArray="";
     // Imprimir en pantalla
 
     for ($i=0; $i < count($resultado); $i++) { 
+$anticipacionReserva=$resultado[$i]["anticipacionReserva"];
+$horaSalida=$resultado[$i]["horaSalida"];
+$fecha=$resultado[$i]["fecha"];
 
-         $eventos=$eventos."
+         $parametro=" ";
+if ($anticipacionReserva<1) {
+   $parametro=" minutes";
+   $hsAnticipacionReserva=$anticipacionReserva*60;
+}
+if ($anticipacionReserva>1) {
+   $parametro=" hour";
+   $hsAnticipacionReserva=$anticipacionReserva;
+}
+
+$fechaTimeActual = strtotime(date("d-m-Y H:i:00",time()));
+$fechaTimeSalida = strtotime($fecha." ".$horaSalida.":00"." -".$hsAnticipacionReserva.$parametro);
+
+if ($fechaTimeActual<$fechaTimeSalida) {
+     $eventos=$eventos."
 
             {
 
@@ -355,6 +414,11 @@ else{
 
 
          $eventArray="[". $eventos."]";
+   
+
+}
+
+ 
 
     }
 

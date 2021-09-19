@@ -6,26 +6,13 @@
 
 include("includes/navbar.php");
 
-
-
-
-
 require("admin/classes/categoria.php");
-
 require("admin/classes/opiniones_categoria.php");
-
 require("admin/classes/servicio_opiniones.php");
-
 require("admin/classes/texto_miniaturas.php"); 
-
-
 require("admin/classes/destinos.php"); 
-
 require("admin/classes/paises.php"); 
-
 require("admin/classes/accesibilidad.php"); 
-
-
 require("admin/classes/texto_viajeros.php");
 
      if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
@@ -49,7 +36,7 @@ require("admin/classes/texto_viajeros.php");
                     $textoMiniatura=getTextoMiniatura($servicio["idTextoMiniaturas"])[0]["texto"];
 
                     $fotos=getFotosServicio($idServicio);
-
+$fotoPortada=getFotoPortadaServicio($idServicio);
                   $duracion=getDuracionServicio($idServicio);
 
                  $salidas=getSalidasServicio($idServicio);
@@ -1110,7 +1097,7 @@ for ($i=0; $i < 1; $i++) {
 
                 <div class="col-lg-12">
 
-                  <p class="mb-4"><?=$lang["mas_populas"]?>Mostrando 1 de <?= $CantOpinionesServicio; ?><?=$lang["mas_populas"]?> opiniones</p>
+                  <p class="mb-4"><?=$lang["mas_populas"]?> Mostrando 1 de <?= $CantOpinionesServicio; ?> opiniones</p>
 
                  <!-- CARGA BUCLE OPINIONES-->
 
@@ -1124,7 +1111,7 @@ for ($i=0; $i < 1; $i++) {
 
                         <div class="row">
 
-                          <div class="col-lg-2 col-12">
+                          <div class="col-12">
 
                             <?php for ($j=0; $j < $estrellas; $j++) { 
 
@@ -1140,25 +1127,21 @@ for ($i=0; $i < 1; $i++) {
 
                           </div>
 
-                          <div class="col-lg-6 col-4 text-center">
+                          <div class="col-xs-12 col-md-8">
 
                         <p class="mb-0 title-nombre"> <?=$OpinionesServicio[$i]["opinion"];?></p>
 
                           </div> 
 
-                          <div class="col-lg-2 col-4">
+                          <div class="col-xs-6 col-md-4">
 
-      <p class="mb-0 title-nombre"><?=$OpinionesServicio[$i]["nombre"];?></p>
+      <p class="mb-0 title-nombre"><?=$OpinionesServicio[$i]["nombre"];?></p><br>
 
-                        
-
-                          </div>
-
-                          <div class="col-lg-2 col-4">
-
-                                <p class="mb-0 title-nombre"><?=$texto_viajeros['texto_viajeros'];?></p>
+        <p class="mb-0 title-nombre"><?=$texto_viajeros['texto_viajeros'];?></p>                 
 
                           </div>
+
+                 
 
                         </div>
 
@@ -1221,6 +1204,8 @@ for ($i=0; $i < 1; $i++) {
       <?php
 
 
+if (1) {
+  // code...
 
 for ($i=1; $i < $CantOpinionesServicio; $i++) { 
 
@@ -1234,15 +1219,10 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
 
               <!--Mas opiniones-->
 
-              <div class="row collapse" id="Ver-mas-opinones">
+              <div class="row ">
 
-                 <div class="col-lg-12">
+                 <div class="col-lg-12 ">
 
-                  <p class="mb-4">
-
-                    <?=$lang["mostrando"]?>
-
-                  <?=($i+1)?><?=$lang["de_"]?><?= count($OpinionesServicio);?><?=$lang["opiniones"]?></p>
 
                  <!-- CARGA BUCLE OPINIONES-->
 
@@ -1250,15 +1230,12 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
 
 
 
- <div class="card card-opiniones mb-5">
+ <div class="card card-opiniones mb-5 collapse"  id="Ver-mas-opinones">
 
                     <div class="card-body">
 
                       <div class="container">
-
-                        <div class="row">
-
-                          <div class="col-lg-2 col-12">
+          <div class="col-12">
 
                             <?php for ($j=0; $j < $estrellas; $j++) { 
 
@@ -1273,26 +1250,26 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
                             <p><?=$fecha_comentario;?></p>
 
                           </div>
+                        <div class="row">
 
-                          <div class="col-lg-6 col-4 text-center">
+                
+
+                          <div class="col-xs-12 col-md-8">
 
                         <p class="mb-0 title-nombre"> <?=$OpinionesServicio[$i]["opinion"];?></p>
 
                           </div> 
 
-                          <div class="col-lg-2 col-4">
+                          <div class="col-xs-6 col-md-4">
 
-      <p class="mb-0 title-nombre"><?=$OpinionesServicio[$i]["nombre"];?></p>
+      <p class="mb-0 title-nombre"><?=$OpinionesServicio[$i]["nombre"];?></p><br>
+ <p class="mb-0 title-nombre"><?=$texto_viajeros['texto_viajeros'];?></p>
 
                         
 
                           </div>
 
-                          <div class="col-lg-2 col-4">
-
-                                <p class="mb-0 title-nombre"><?=$texto_viajeros['texto_viajeros'];?></p>
-
-                          </div>
+                   
 
                         </div>
 
@@ -1316,7 +1293,7 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
 
                  <?php
 
-} } ?>
+} }} ?>
 
                 </div>
 
@@ -1331,26 +1308,24 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
           </div>
 
            <!--FIN CONTENEDOR OPINIONES-->
-<br><br>
 
 <!--botones de compartir whatsapp y facebook-->
-
-<div>
-
-<div class="row" style="margin-right: 3%; margin-left: 3%;">
-    <div class="col fb-share-button" data-href="https://www.metelebrasil.com/servicio?id=<?=$idServicio?>" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse" class="btn btn-primary btn-lg active btn-block"><i class="fab fa-facebook-f"></i>  <?=$lang["compartir_en_facebook"];?></a>
-    </div>
-    <div class="col">
-     <a class="btn btn-success btn-lg active btn-block" href="whatsapp://send?text=Metelebrasil%20https://www.metelebrasil.com/servicio?id=<?=$idServicio;?>"><i class="fab fa-whatsapp"></i>  <?=$lang["compartir_en_whatsapp"];?></a>
-  </div>
-         </div>
-
-
+<div class="row" style="width: 100%; padding: 2.5em;">
+  <div class="col-xs-6 col-md-3"></div>
+        <div class="col-xs-6 col-md-3">    
+               <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse" class="btn btn-primary btn-lg active btn-block"><i class="fab fa-facebook-f"></i>  <?=$lang["compartir_en_facebook"];?></a>
+        </div>
+            <div class="col-xs-6 col-md-3">
+                  <div class="col fb-share-button" data-href="https://www.metelebrasil.com/servicio?id=<?=$idServicio?>" data-layout="button_count" data-size="small">
+                  <a class="btn btn-success btn-lg active btn-block" href="whatsapp://send?text=Metelebrasil%20https://www.metelebrasil.com/servicio?id=<?=$idServicio;?>"><i class="fab fa-whatsapp"></i>  <?=$lang["compartir_en_whatsapp"];?></a>
+                   </div>
+            </div>
+  <div class="col-xs-6 col-md-3"></div>
 </div>
 
             <!--CARDS DE INTERES-->
 
-<br><br>
+
 
       
 

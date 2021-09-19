@@ -15,7 +15,7 @@ require("classes/servicio.php");
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
  if($prestador>1){
-alertar("Prestador guardado con exito", "success");
+alertar($lang["prestador_guardado_con_exito"], "success");
  }
 
 
@@ -29,12 +29,12 @@ alertar("Prestador guardado con exito", "success");
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Salidas</h1>
+            <h1 class="m-0 text-dark"><?=$lang["salidas"];?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Administración</a></li>
-              <li class="breadcrumb-item active">Salidas</li>
+              <li class="breadcrumb-item"><a href="#"><?=$lang["administracion"];?></a></li>
+              <li class="breadcrumb-item active"><?=$lang["salidas"];?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -48,7 +48,7 @@ alertar("Prestador guardado con exito", "success");
           <div class="col-12">
             <div class="card"  style="display: none;">
               <div class="card-header">
-                <h3 class="card-title">Seleccione el mes que desea explorar</h3>
+                <h3 class="card-title"><?=$lang["seleccione_el_mes_que_desea"];?></h3>
               </div>
               <div class="table-responsive">
               <div class="card-body">
@@ -138,7 +138,7 @@ alertar("Prestador guardado con exito", "success");
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Salidas</h3>
+            <h3 class="card-title"><?=$lang["salidas"];?></h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -155,15 +155,15 @@ alertar("Prestador guardado con exito", "success");
     <thead>
       <tr>
 
-                    <th scope="col">Fecha de compra</th>
-                    <th scope="col">Servicios</th>
-                    <th scope="col">COD-Servicio</th>
-                    <th scope="col">Fecha de salida</th>
-                    <th scope="col">Horario de Salida</th>
-                    <th scope="col">Horario de check in</th>
-                    <th scope="col">RESTA PAGAR</th>
-                    <th scope="col">Estado</th>
-                    <th scope="col">Detalles</th>
+                    <th scope="col"><?=$lang["fecha_de_contratacion"];?></th>
+                    <th scope="col"><?=$lang["servicios"];?></th>
+                    <th scope="col"><?=$lang["cod-servicio"];?></th>
+                    <th scope="col"><?=$lang["fecha_de_salida"];?></th>
+                    <th scope="col"><?=$lang["horario_de_salida"];?></th>
+                    <th scope="col"><?=$lang["horario_de_check_in"];?></th>
+                    <th scope="col"><?=$lang["resta_pagar"];?></th>
+                    <th scope="col"><?=$lang["estado_"];?></th>
+                    <th scope="col"><?=$lang["detalles"];?></th>
 
       </tr>
     </thead>
@@ -220,10 +220,10 @@ $dataChildValue=' <div class="table-responsive">
                                  <td><?=$reservas[$i]["codigoAmigable"]?></td>
                                  <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
                                  <td> <?=date("d-m-Y", strtotime($reservas[$i]['fecha']));?></td>
-                                 <td>22:00</td>
-                                 <td>2000</td>
-                                 <td>2000</td>
-                                 <td> <button type="button" class="btn btn-warning">Pendiente</button></td> 
+                                 <td>.....</td>
+                                 <td>.....</td>
+                                 <td>.....</td>
+                                 <td> <button type="button" class="btn btn-warning"><?=$lang["pendientes"];?></button></td> 
                                  <td class="details-control"><input id="boton" type="submit" name="proceso" class="btn btn-info" value="VER"></td>                              
 
 </tr>

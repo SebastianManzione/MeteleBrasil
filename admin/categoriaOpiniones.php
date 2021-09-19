@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idCategoria_servicio"]) 
   $idCategoria_servicio=$_POST["idCategoria_servicio"];
   if (isset($_POST["setOpinionCategoria"])) {
 
-$opinionResu=setOpinionCategoria($idCategoria_servicio, $_POST["nombre"],$_POST["opinion"], $_POST["estrellasServicio"],$_POST["pais"]);
+$opinionResu=setOpinionCategoria($idCategoria_servicio, $_POST["nombre"],$_POST["opinion"], $_POST["estrellasServicio"],$_POST["pais"],$_POST["fechaAlta"]);
 if ($opinionResu>0) {
   alertar("Opinión guardada con éxito","success");
 }
@@ -107,6 +107,13 @@ if ($opinionResu>0) {
                                                      <label class="col-form-label">Estrellas 1-5</label>
                                                        <select name="estrellasServicio" class="form-control"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
                                                             </div>
+
+                                                                 <div class="form-group">
+                                                                                                
+                                                     <label class="col-form-label">Texto Viajeros</label>
+                                                     <?php $hhoy=date('Y-m-d'); ?>
+                                                  <input type="date" name="fechaAlta" value="<?=$hhoy;?>">
+                                                            </div>
                                             <div class="form-group">
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                                             <button type="submit" name="setOpinionCategoria" class= "btn btn-primary">Agregar</button>
@@ -146,7 +153,7 @@ if ($opinionResu>0) {
                            <tbody>
 <?php for ($i=0; $i < count($opiniones); $i++) { 
   $idOpinion=$opiniones[$i]["idOpinionCategoria"];
-$fechaAlta=date("d-m-Y H:i:s", strtotime($opiniones[$i]['fechaAlta']));
+$fechaAlta=date("d-m-Y", strtotime($opiniones[$i]['fechaAlta']));
  ?>
    <tr>
                            
@@ -161,14 +168,7 @@ $fechaAlta=date("d-m-Y H:i:s", strtotime($opiniones[$i]['fechaAlta']));
 
  <?php
 } ?>
-
-                                           
-
-
-
-                                           
-                         </tbody>
-
+                     </tbody>
                          </table>
                                     </div>
                                     </div>

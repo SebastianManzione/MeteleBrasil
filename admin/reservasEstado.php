@@ -7,7 +7,8 @@ include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
 require("classes/functions.php");
-require("classes/reserva.php");require("classes/salidas.php");
+require("classes/reserva.php");
+require("classes/salidas.php");
 require("classes/convierte_monedas.php");
 $idPrestador=($_SESSION['login']['idPrestador']);
 
@@ -21,12 +22,12 @@ $idPrestador=($_SESSION['login']['idPrestador']);
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Reservas</h1>
+            <h1 class="m-0 text-dark"><?=$lang["reservas"];?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Reservas</a></li>
-              <li class="breadcrumb-item active">Estado de reservas</li>
+              <li class="breadcrumb-item"><a href="#"><?=$lang["reservas"];?></a></li>
+              <li class="breadcrumb-item active"><?=$lang["estado_de_reservas"];?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -36,7 +37,7 @@ $idPrestador=($_SESSION['login']['idPrestador']);
       <div class="container-fluid">
         <!-- SELECT2 EXAMPLE -->
       
-<button type="button" class= "btn btn-secondary btn-lg btn-block">Reservas</button>
+<button type="button" class= "btn btn-secondary btn-lg btn-block"><?=$lang["reservas"];?></button>
         
 
 <div id="accordion">
@@ -44,26 +45,26 @@ $idPrestador=($_SESSION['login']['idPrestador']);
     <div class="card-header" id="headingOne">
       <h5 class="mb-0">
         <button class="btn btn-success btn-lg btn-block" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><i class="fas fa-check-double"></i> 
-          Confirmadas
+          <?=$lang["confirmadas"];?>
         </button>
       </h5>
     </div>
 
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
       <div class="card-body">
-        <h3>Lista de reservas confirmadas</h3> 
+        <h3><?=$lang["lista_de_reservas_confirmadas"];?></h3> 
             <div class="row">
                   <div class="table-responsive">   
                             
                             <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cod-Carrito</th>
-                                    <th scope="col">Fecha de contratacion</th>
-                                    <th scope="col">Dia del Evento</th>
-                                    <th scope="col">C.ServContratados</th>
-                                    <th scope="col">Valor Total</th>
+                                    <th scope="col"><?=$lang["nombre"];?></th>
+                                    <th scope="col"><?=$lang["cod-carrito"];?></th>
+                                    <th scope="col"><?=$lang["fecha_de_contratacion"];?></th>
+                                    <th scope="col"><?=$lang["dia_del_evento"];?></th>
+                                    <th scope="col"><?=$lang["cod-servicio-contratados"];?></th>
+                                    <th scope="col"><?=$lang["valor_total"];?></th>
                       
                                  </tr>
                               </thead>
@@ -109,7 +110,7 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
                                     <td><?=date("d/m/Y", strtotime($salida[0]['fecha']))?></td>
                                     <td><?=count($tarifas);?></td>
                                     <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
-                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>">Voucher Prestador</button></form></td>
+                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
                              
 
                              </tr>
@@ -137,24 +138,24 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
     <div class="card-header" id="headingTwo">
       <h5 class="mb-0">
         <button class="btn btn-warning btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fas fa-exclamation-circle"></i> 
-          Pendientes
+          <?=$lang["pendientes"];?>
         </button>
       </h5>
     </div>
     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
       <div class="card-body">
-        <h3>Lista de reservas pendientes</h3> 
+        <h3><?=$lang["lista_de_reservas_pendientes"];?></h3> 
             <div class="row">
                   <div class="table-responsive">   
                                      <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cod-Carrito</th>
-                                    <th scope="col">Fecha de contratacion</th>
-                                    <th scope="col">Dia del Evento</th>
-                                    <th scope="col">C.ServContratados</th>
-                                    <th scope="col">Valor Total</th>
+                                    <th scope="col"><?=$lang["nombre"];?></th>
+                                    <th scope="col"><?=$lang["cod-carrito"];?></th>
+                                    <th scope="col"><?=$lang["fecha_de_contratacion"];?></th>
+                                    <th scope="col"><?=$lang["dia_del_evento"];?></th>
+                                    <th scope="col"><?=$lang["cod-servicio-contratados"];?></th>
+                                    <th scope="col"><?=$lang["valor_total"];?></th>
                       
                                  </tr>
                               </thead>
@@ -222,7 +223,7 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
     <div class="card-header" id="headingThree">
       <h5 class="mb-0">
         <button class="btn btn-secondary btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree"><i class="fas fa-clock"></i> 
-          Pasadas
+          <?=$lang["pasadas"];?>
         </button>
       </h5>
     </div>
@@ -230,19 +231,19 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
   ?>
     <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-        <h3>Lista de reservas pasadas pendientes</h3> 
+        <h3><?=$lang["lista_de_reservas_pasadas_pendientes"];?></h3> 
             <div class="row">
                   <div class="table-responsive">   
                             
                                               <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cod-Carrito</th>
-                                    <th scope="col">Fecha de contratacion</th>
-                                    <th scope="col">Dia del Evento</th>
-                                    <th scope="col">C.ServContratados</th>
-                                    <th scope="col">Valor Total</th>
+                                    <th scope="col"><?=$lang["nombre"];?></th>
+                                    <th scope="col"><?=$lang["cod-carrito"];?></th>
+                                    <th scope="col"><?=$lang["fecha_de_contratacion"];?></th>
+                                    <th scope="col"><?=$lang["dia_del_evento"];?></th>
+                                    <th scope="col"><?=$lang["cod-servicio-contratados"];?></th>
+                                    <th scope="col"><?=$lang["valor_total"];?></th>
                       
                                  </tr>
                               </thead>
@@ -306,19 +307,19 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalT
   <?php } ?>
         <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-        <h3>Lista de reservas pasadas Confirmadas</h3> 
+        <h3><?=$lang["lista_de_reservas_confirmadas_pasadas"];?></h3> 
             <div class="row">
                   <div class="table-responsive">   
                             
                                               <table class="table" id="tablaCarrito">
                               <thead>
                                 <tr>
-                                    <th scope="col">Nombre</th>
-                                    <th scope="col">Cod-Carrito</th>
-                                    <th scope="col">Fecha de contratacion</th>
-                                    <th scope="col">Dia del Evento</th>
-                                    <th scope="col">C.ServContratados</th>
-                                    <th scope="col">Valor Total</th>
+                                    <th scope="col"><?=$lang["nombre"];?></th>
+                                    <th scope="col"><?=$lang["cod-carrito"];?></th>
+                                    <th scope="col"><?=$lang["fecha_de_contratacion"];?></th>
+                                    <th scope="col"><?=$lang["dia_del_evento"];?></th>
+                                    <th scope="col"><?=$lang["cod-servicio-contratados"];?></th>
+                                    <th scope="col"><?=$lang["valor_total"];?></th>
                       
                                  </tr>
                               </thead>

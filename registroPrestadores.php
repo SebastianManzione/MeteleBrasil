@@ -236,7 +236,7 @@ if($resu>0){
             <div class="icheck-primary">
               <input type="checkbox" id="agreeTerms" name="terms" value="agree">
               <label for="agreeTerms">
-               <?=$lang["acepto_los"];?><a href="#"> <?=$lang["terminos_y_condiciones_"];?></a>
+               <?=$lang["acepto_los"];?><a href="aviso.php"> <?=$lang["terminos_y_condiciones_"];?></a>
               </label>
             </div>
           </div>

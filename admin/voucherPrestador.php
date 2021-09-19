@@ -42,6 +42,12 @@ if (!$_SESSION["login"]["rol"]==1) {
           $totalCarrito=0;
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idReservaHorarios"])) {
 $idReservaHorarios=$_POST['idReservaHorarios'];
+}
+if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["id"])) {
+$idReservaHorarios=$_GET['id'];
+}
+
+
 $horarios=getReservaHorariosId($idReservaHorarios);
 $reserva=getReservaId($horarios[0]['idReserva'])[0];
 $codigoAmigable=$reserva['codigoAmigable'];
@@ -49,6 +55,7 @@ $idReserva=$reserva['idReserva'];
 $fechaAlta=date("d/m/Y",strtotime($reserva["fechaAlta"]));
 $nombreResponsable=$reserva['nombreResponsable']." ".$reserva['apellidoResponsable'];
 $emailResponsable=$reserva['emailResponsable'];
+$telefonoResponsable=$reserva['telefonoResponsable'];
 $totalReserva=$reserva["total"];
 $impuestos=$reserva["impuestos"];
 $monedaSel=$reserva["monedaSel"];
@@ -59,7 +66,9 @@ $idServicioSalidas=($horarios[0]['idServicioSalidas']);
 
 $salida=getSalida($idServicioSalidas)[0];
 $idiomasSalida=getIdiomasSalida($idServicioSalidas);
+
 $prestador=getPrestador($salida["idPrestador"])[0];
+
 
 if (  $salida["idPrestador"]!=$_SESSION['login']['idPrestador']) {
   if ($_SESSION["login"]["rol"]!=1) {
@@ -85,7 +94,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
         
          $reservaTarifas=getReservaTarifas($idReservaHorarios);
          $adicionales=getReservaAdicionalesNoIncluidos($idReservaHorarios);
-}
+
 
 
 
@@ -159,7 +168,8 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                   Responsavél da reserva
                   <address>
                <strong><?=$nombreResponsable;?></strong><br>
-                    <b>Usuario:</b> <?=$emailResponsable; ?><br>
+                    <b>Responsavél:</b> <?=$emailResponsable; ?><br>
+                    <b>Telefone Responsavél:</b> <?=$telefonoResponsable; ?><br>
                     <b>Responsavél do pagamento:</b><?= $nombreResponsable;?><br>
                     <b>Fecha de compra:</b> <?=$fechaAlta;?><br>
                     <b>Validade do Voucher:</b> <?=$fechaCheckIn;?><br>
@@ -207,7 +217,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                       <th>Edad</th>
                       <th>Fecha y hora Check In</th>
                       <th>Subtotal</th>
-                       <th>ICMS</th>
+                      
                     </tr>
                     </thead>
                     <tbody>
@@ -219,7 +229,8 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                 $tarifaOrigi=getTarifa($idServicioSalidasTarifas);
                   $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
             $idReservaTarifas=$reservaTarifas[$j]["idReservaTarifas"];
-            $tarifaOrigi=getTarifa($idServicioSalidasTarifas);
+         
+
             $ubicacion=getUbicacionIdTarifa($idServicioSalidasTarifas);
             $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
 
@@ -231,15 +242,15 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                 $valorSinIva=$reservaTarifas[$j]["valorSinIva"];
                        $cantidad=($reservaTarifas[$j]["cantidad"]);
                        $valorDelIva=$reservaTarifas[$j]['valorDeIva'];      
-                   
+                    $valorDelIvaUnitario=$reservaTarifas[$j]['valorDeIva']/$cantidad; 
                        $valorDelIva=ConvierteMoneda($reservaTarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
-                      
+                      $totalNetoTarifa=$valorSinIva;
                         $totalTarifa=$valorSinIva/$cantidad;
       
                         $totalIva+= $valorDelIva;
                   
             $total=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-                   $totalCarrito+=$total;
+                   $totalCarrito+=$totalNetoTarifa;
              $edadFrom=getEdad($reservaTarifas[$j]["idFromEdad"]);
              $edadTo=getEdad($reservaTarifas[$j]["idToEdad"]);
              $idMonedaSel=$reservaTarifas[$j]["monedaSel"];
@@ -253,8 +264,8 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                       <td><?=$cantidad?> <?=$reservaTarifas[$j]["nombre"];?> </td>
                       <td><?= $edadFrom[0]["valor"]?> A <?= $edadTo[0]["valor"]?> Anos</td>
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
-                      <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
-                      <td><?=$_SESSION["moneda_sel_sym"].$valorDelIva;?></td> 
+                      <td><?=$_SESSION["moneda_sel_sym"].($total);?></td>
+                      
                     </tr>
                 <?php } 
 
@@ -280,21 +291,25 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
 <tr>
   <td colspan="4"><?=$adicionales[$k]['cantidad'];?> <?=$adicionales[$k]['nombre'];?></td>
-  <td ><?= $_SESSION["moneda_sel_sym"].$precioAdicional?></td>
-    <td ><?= $_SESSION["moneda_sel_sym"].$valorIva?></td> 
+  <td ><?= $_SESSION["moneda_sel_sym"].($precioAdicional+$valorIva)?></td>
+
 </tr>
 
             <?php
           } ?>
 
 
+             
+                    <tr>
+                      <th colspan="3"></th>
+                      <th>ISS</th>
+                      <th><?=$_SESSION["moneda_sel_sym"].$totalIva;?></th>
+                    </tr>
                   <tr>
                       <th colspan="3"></th>
-                      <th >TOTAL</th>
-                  <th><?=$_SESSION["moneda_sel_sym"].$totalCarrito;?></th>
-                  <th></th>
+                      <th>Total</th>
+                      <th><?=$_SESSION["moneda_sel_sym"].($totalIva+$totalCarrito);?></th>
                     </tr>
-              
                     </tbody>
                   </table>
                 </div>
@@ -302,7 +317,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                 <!-- /.col -->
               </div>
           <div class="callout callout-info" >
-              <h3><i class="fas fa-info"></i> Ponto de sáida:</h3>
+              <h3><i class="fas fa-info"></i> Ponto de sáida: <?=$ubicacion[0]['direccion']?></h3>
              
              <div class="google-maps" style="width: 100%;">
 
@@ -341,7 +356,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                
                    
                          <tr>
-                        <th>ICMS:</th>
+                        <th>ISS:</th>
                         <td><?=$_SESSION["moneda_sel_sym"].$totalIva;?></td>
                       </tr>  
                        <tr>

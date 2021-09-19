@@ -524,7 +524,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
                                             <th scope="col">Descripcion</th>
 
-                                            <th scope="col">Valor por Unidad s/ICMS</th>                
+                                            <th scope="col">Valor por Unidad s/ISS</th>                
 
                                             <th scope="col">Cantidad</th>
 

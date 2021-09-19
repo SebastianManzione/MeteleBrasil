@@ -609,30 +609,13 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
       </div>
+            <!--CAJA DE COMENTARIOS-->
 
 
 
 
 
-
-
-
-
-</section>
-
-
-
-
-
-
-
-<!--CAJA DE COMENTARIOS-->
-
-
-
-
-
- <div class="card direct-chat direct-chat-primary" style="display:none;">
+<div class="card direct-chat direct-chat-primary" style="display:none;">
 
               <div class="card-header">
 
@@ -852,19 +835,9 @@ for ($i=0; $i < count($fotos); $i++) {
 
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$lang["cancelar"];?></button>
 
-                                            <button type="submit" name="setOpinionServicio" class= "btn btn-primary"><?=$lang["comentar"];?></button>
-
-                                          </div>
-
-                                            </form>
-
-                                          </div>
-
-                                          
-
-                                        </div>
-
-                                      </div>
+                                            <button type="submit" name="setOpinionServicio" class= "btn btn-primary"></button>
+                                            </div>
+</form></div></div></div>
 
                                     </div>
 
@@ -883,10 +856,6 @@ for ($i=0; $i < count($fotos); $i++) {
               </div>
 
               <!-- /.card-footer-->
-
-            </div>
-
-
 <br>
 
 <!--botones de compartir whatsapp y facebook-->
@@ -897,10 +866,6 @@ for ($i=0; $i < count($fotos); $i++) {
     <div class="col">
      <a class="btn btn-success btn-lg active btn-block" href="whatsapp://send?text=Metelebrasil%20https://www.metelebrasil.com/servicio?id=<?=$idServicio;?>"><i class="fab fa-whatsapp"></i>  <?=$lang["compartir_en_whatsapp"];?></a>
   </div>
-
-</div>
-
-    
 
 </div>
 <br>
@@ -1279,29 +1244,6 @@ if (count($img)>0) {
 
 
 <!--MODAL HORARIO-->
-
-
-
-
-
-
-
-
-
-
-
-          
-
-
-
-</div>
-
-
-
-
-
-
-
 <!--MODAL HORARIO-->
 
 
@@ -1403,24 +1345,7 @@ if (count($img)>0) {
 
 
 <?php include "footer.php"; ?>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-  <!-- MODAL BUSCAR MOVIL-->
+<!-- MODAL BUSCAR MOVIL-->
 
 
 

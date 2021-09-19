@@ -257,7 +257,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                 <div class="col-sm-6">
 
-                    <h1 class="m-0 text-dark">Carga de Tarifas <?= $servicio[0]['nombre_servicio']?></h1>
+                    <h1 class="m-0 text-dark"><?=$lang["carga_de_tarifas"];?> <?= $servicio[0]['nombre_servicio']?></h1>
 
 
 
@@ -267,9 +267,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                     <ol class="breadcrumb float-sm-right">
 
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#"> <?=$lang["inicio"];?></a></li>
 
-                        <li class="breadcrumb-item active">Carga de Tarifas</li>
+                        <li class="breadcrumb-item active">Editor de Saída</li>
 
                     </ol>
 
@@ -299,7 +299,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                     <div class="card-header">
 
-                        <h3 class="card-title">Nuevo Periodo para <?= $servicio[0]['nombre_servicio']?> <img src="classes/imgServicio/<?=$fotos[0]['ruta']?>" style="width: 50px; border-radius: 100%;">
+                        <h3 class="card-title"> <?=$lang["nombre_del_periodo"];?><?= $servicio[0]['nombre_servicio']?> <img src="classes/imgServicio/<?=$fotos[0]['ruta']?>" style="width: 50px; border-radius: 100%;">
 
              
 
@@ -333,7 +333,9 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <label class="label-default"> Nombre del Periodo</label>
+                                         <label class="label-default"> <?=$lang["nombre_del_periodo"];?></label>
+
+                                        <p><?=$lang["indique_el_nombre_del_periodo"];?></p>
 
                                         <input name="nombre_periodo" class="form-control select2bs4" style="width: 100%;" value="<?=$nombre_periodo?>">
 
@@ -347,7 +349,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                             <div class="form-group">
 
-                                        <label class="label-default"> Fecha de salida</label>
+                                        <label class="label-default"> Data da Saída</label>
 
                                         <input class="form-control" name="fechaSalida" type="date" value="<?= $fecha_salida;?>" >
                                        
@@ -369,7 +371,9 @@ if ($salida[0]['sinHorario']==1) {
 ?>
                
 <div class="col-12">
-       <label>¿Sin horario?</label><input type="checkbox" name="sinHorario" <?=$sinHorario?>>
+    <label><?=$lang["desea_agregar_una_palabra"];?></label>
+       <p> <?=$lang["ejemplo_centro"];?> </p>
+       <label>¿Agregar palavra?</label><input type="checkbox" name="sinHorario" <?=$sinHorario?>>
        <input type="text" name="sinHorarioTexto" value="<?=$sinHorarioTexto?>">
 </div>
                                 <div class="form-inline">
@@ -378,7 +382,7 @@ if ($salida[0]['sinHorario']==1) {
 </div>
                                      <div class="form-group">
 
-                                        <label for="appt" class="label label-warning"> Hora de Salida del Servico: </label>
+                                        <label for="appt" class="label label-warning"> <?=$lang["hora_de_salida_del_servicio"];?> </label>
 
                                         <input type="time" id="appt" name="horaSalida" class="form-control" min="00:00" max="24:00" value="<?=$hora_salida;?>">
 
@@ -387,7 +391,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                     <div class="form-group">
 
-                                        <label class="label label-default">Indique el Horario de Check In:</label>
+                                        <label class="label label-default"><?=$lang["indique_el_horario_de_check_in"];?></label>
 
                                         <input type="time" id="appt" name="horaCheckIn" class="form-control" value="<?=$hora_check_in;?>">
 
@@ -408,7 +412,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                     <div class="form-group">
 
-                                        <label class="label label-warning">¿Cuantos lugares disponibles para la venta tiene esta Salida?</label>
+                                        <label class="label label-warning"><?=$lang["cuantos_lugares_disponibles_para_la_venta"];?></label>
 
                                         <input name="cantLugares" class="form-control select2bs4" type="number" step="1" style="width: 100%;" placeholder="DISPONIBILIDAD TOTAL DE PAX" value="<?=$disponibilidad;?>" min="<?=$cantidadPasajeros;?>"> Reservados: <?= $cantidadPasajeros;?>
 
@@ -418,7 +422,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                 <div class="col-md-6">
 
-                                    <label>Duración mínima de la actividad</label>
+                                    <label><?=$lang["duracion_minima_de_la_actividad"];?></label>
 
                                     <div class="form-group  form-inline">
 
@@ -445,7 +449,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                     <div class="form-group  form-inline">
 
-                                        <label>Duración máxima de la actividad</label>
+                                        <label><?=$lang["duracion_maxima"];?></label>
 
                                         <div class="form-group  form-inline">
                                     
@@ -477,7 +481,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                     <div class="form-group">
 
-                                        <label class="label label-warning"> Accesibilidad</label>
+                                        <label class="label label-warning"> <?=$lang["accesibilidad_"];?></label>
 
                                        
 
@@ -517,7 +521,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                 <div class="col-md-12">
 
-                                    <label>Anticipación de reserva</label>
+                                    <label><?=$lang["anticipacion_de_reserva"];?></label>
 
                                     <div class="form-group form-inline">
                                         
@@ -546,15 +550,15 @@ if ($salida[0]['sinHorario']==1) {
         <table class="table table-bordered table-striped">
             <thead>
                <tr>
-                    <th>Nombre</th>
-                    <th>From Edad</th>
-                    <th>To Edad</th>
+                    <th>Nome da Tarifa</th>
+                    <th>Desde Idade</th>
+                    <th>Até Idade</th>
                     <th>Tipo Tarifa</th>
                     <th>Valor</th>
                     <th>Minimo</th>
-                    <th>Cancelacion</th>
-                    <th>comision</th>
-                    <th>Accion</th>
+                    <th>Cancelamento</th>
+                    <th>comissão</th>
+                    <th>Ação</th>
                </tr>
             </thead>
             <tbody>
@@ -575,7 +579,7 @@ if ($salida[0]['sinHorario']==1) {
                      }
                    ?>
     <tr>
-                     <td><?=$tarifas[0]['nombre']?></td>
+                     <td><?=$tarifas[$i]['nombre']?></td>
                     <td><?=$edadFrom;?></td>
                     <td><?=$edadTo;?></td>
                     <td><?=$tipo_tarifa;?></td>
@@ -603,7 +607,7 @@ if ($salida[0]['sinHorario']==1) {
 
                                     <div class="form-group">
 
-                                        <label class="label-default ">Nota de salida</label>
+                                        <label class="label-default "><?=$lang["nota_de_salida"];?></label>
 
                                         <textarea name="nota_salida" class="form-control select2bs4" style="width: 100%;" placeholder=""><?=$nota_salida;?></textarea>
 
@@ -647,14 +651,14 @@ if ($salida[0]['sinHorario']==1) {
                                     <div align="right">
    <a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-info btn-sm">
 
-                                           <i class="fas fa-arrow-left"></i> Volver
+                                           <i class="fas fa-arrow-left"></i>  <?=$lang["salir"];?>
 
                                         </a>
                                         <button type="submit" onclick="upload();" value="Crear servicio"
 
                                             class="btn btn-success btn-sm">
 
-                                         <i class="fas fa-save"></i> Guardar
+                                         <i class="fas fa-save"></i> <?=$lang["guardar"];?>
 
                                         </button>
 

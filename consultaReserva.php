@@ -5,38 +5,21 @@
 
 include("includes/headPagos.php");
 include("admin/classes/salidas.php");
-
 include("admin/classes/tarifas.php");
-
 include("admin/classes/idiomas.php");
-
 include("admin/classes/servicio.php");
-
-  include("admin/classes/comisiones.php");
-
-    include("admin/classes/edades.php");
-
-    include("admin/classes/cancelaciones.php");
-
-    include("admin/classes/servicios_adicionales.php");
-
+include("admin/classes/comisiones.php");
+include("admin/classes/edades.php");
+include("admin/classes/cancelaciones.php");
+include("admin/classes/servicios_adicionales.php");
 include("admin/classes/reserva.php");
-
 include("admin/classes/comprobantes.php");
-
 include("admin/classes/moneda.php");
-
 include("admin/classes/convierte_monedas.php");
-
 if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["merchant_payment_code"])) {
 $codigoAmigable=$_GET["merchant_payment_code"];
-
-
-
 $reserva=getReserva($codigoAmigable)[0];
-
 $idReserva=$reserva["idReserva"];
-
  $moneda=getMoneda($reserva["monedaSel"])[0]["Symbol"];
 
 }
@@ -207,7 +190,7 @@ for ($i=0; $i < count($horarios); $i++) {
 
   <li>Subtotal <?= $moneda. $reservaTarifas[$j]["valorSinIva"]; ?></li>
 
-<li>ICMS <?= $moneda. $reservaTarifas[$j]["valorDeIva"]; ?><li>
+<li>ISS <?= $moneda. $reservaTarifas[$j]["valorDeIva"]; ?><li>
 
 
 
@@ -621,11 +604,11 @@ include("./admin/pasarelas/mercadopagoBrasil/procesaPago.php");
 
                   <h5 id="textoMetodoDePago"class="mb-4"></h5>
 
-                   <div class="container paymentCont mb-4">
+                   <div class="container paymentCont ">
 
                       <div class="row paymentWrap">
 
-                   <div class="btn-group col-lg-12 paymentBtnGroup " data-toggle="">
+                   <div class="list-group col-lg-12 paymentBtnGroup " data-toggle="">
 
                     <!--FIN AQUI VA LA CARGA DE METODOS DE PAGO-->
 
@@ -779,7 +762,7 @@ return true;
 
 <form method="post" action="recibePago.php" onsubmit="return validaRecibo();">
 
-<input type="number" step="0.01" name="dinero" width="5"/>
+<input type="number" step="0.01" name="dinero" width="5" max="<?=$totalReales;?>"/>
 
 <input type="hidden" name="idReserva" value="<?=$idReserva?>"/>
 
@@ -787,9 +770,6 @@ return true;
 
 <option value="283">Reales</option>
 
-<option value="270">Peso Arg</option>
-
-<option value="188">Dolares</option>
 
 </select><br><br>
 

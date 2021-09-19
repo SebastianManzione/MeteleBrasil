@@ -246,11 +246,11 @@ confirmaReserva($idReserva);
 foreach ($horariosReserva as $key => $value) {
 $salida=getSalida($value['idServicioSalidas']);
 $prestador=getPrestador($salida[0]['idPrestador']);
-
+$idReservaHorarios=$value['idReservaHorarios'];
 $nombrePrestador=($prestador[0]['nombre']);
 
 
-$cuerpo=getCuerpoEmailPrestadorReservaConfirmada($value['idServicioSalidas'], "metelebrasil.com", $nombrePrestador);
+$cuerpo=getCuerpoEmailPrestadorReservaConfirmada($idReservaHorarios, "metelebrasil.com", $nombrePrestador);
 $resumail=enviaMail($prestador[0]['email'], "voce recebeu uma nova reserva! ", $cuerpo, "metelebrasil.com");  
 
 }

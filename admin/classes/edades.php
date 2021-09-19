@@ -3,7 +3,7 @@ function getEdades(){
 
     require("conexion.php");
   
-    $consulta = "select * from edades ORDER BY 'valor'";
+    $consulta = "select * from edades ORDER BY valor";
     
     $comando = $pdo->prepare($consulta);
     

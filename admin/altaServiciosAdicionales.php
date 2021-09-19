@@ -23,7 +23,7 @@ $serviciosAdicionalesCategoria=getServiciosAdicionalesCategoria($idCategoria_ser
 }
 if (isset($_POST["idServicioSalidas"])) {
 
-  $idServicioSalidas=$_POST["idServicioSalidas"][0];
+  $idServicioSalidas=$_POST["idServicioSalidas"];
   $salidas=getSalida($idServicioSalidas);
 
   $servicio=getServicio($salidas[0]["idServicio"]);
@@ -87,7 +87,7 @@ echo "<br><br>";
   $salidaAdicionalesSalida=   setServiciosAdicionalesSalida($idServicioSalidas, $key, $precio,  $idMoneda,  $descripcion);
   if($salidaAdicionalesSalida>0){
       $idServicio=($salidas[0]["idServicio"]);
-alertar("adicionales cargados con exito", "success");
+alertar($lang["adicionales_cargado_con_exito"], "success");
 redireccionar("servicioVer?idServicio=".$idServicio);
   }
   
@@ -108,12 +108,12 @@ redireccionar("servicioVer?idServicio=".$idServicio);
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Servicios Adicionales y Opcionales</h1>
+            <h1 class="m-0 text-dark"><?=$lang["carga_de_servicios_incluidos_y_opcionales"];?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Servicios Adicionales</li>
+              <li class="breadcrumb-item"><a href="#"><?=$lang["inicio"];?></a></li>
+              <li class="breadcrumb-item active"><?=$lang["servicios_incluidos_y_opcionales"];?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -127,7 +127,10 @@ redireccionar("servicioVer?idServicio=".$idServicio);
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Indique los servicios <strong>Incluidos y Opcionales</strong> de cada Salida</h3>
+            <h3 class="card-title"><?=$lang["indique_los_servicios"];?> <strong><?=$lang["incluidos_y_opcionales"];?></strong><?=$lang["de_cada_salida"];?></h3>
+
+
+
 <form method="post" >
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -152,7 +155,11 @@ redireccionar("servicioVer?idServicio=".$idServicio);
 
 
     
-                  <label>Marque las Salidas</label>
+                  <label><?=$lang["marque_las_salidas"];?></label>
+                  <p><?=$lang["seleccione_las_salidas"];?></p>
+
+
+
                   <?php for ($i=0; $i < count($salidas); $i++) { 
                     ?>
    <br />
@@ -187,7 +194,9 @@ redireccionar("servicioVer?idServicio=".$idServicio);
                  <div class="form-group">
 
 
-<label>Servicios Adicionales Incluidos</label>
+<label><?=$lang["servicios_incluidos_y_opcionales"];?></label>
+
+                                  <p><?=$lang["seleccione_y_adicione"];?></p>
 
     <?php 
 
@@ -198,7 +207,6 @@ redireccionar("servicioVer?idServicio=".$idServicio);
 
     $svNoIncluidos=getServicioAdicionalIncluidoYNoIncluido($idServicioAdicionales,$idServicioSalidas);
 
-  
   }
 if (count($svNoIncluidos)==0) {
     # code...
@@ -208,10 +216,10 @@ if (count($svNoIncluidos)==0) {
 
 <input type="checkbox" name="svAdicionales[<?=$idServicioAdicionales;?>]" id="cbox<?=$idServicioAdicionales;?>" onclick="habilitar(<?=$serviciosAdicionalesCategoria[$i]['idServiciosAdicionales'];?>)" > <?= $serviciosAdicionalesCategoria[$i]["nombre"];?></input>
 
-<input type="checkbox" id="checkBox<?=$idServicioAdicionales;?>" onclick="free(<?=$idServicioAdicionales;?>)"  style="display: none;" checked ><label id="lbl<?=$idServicioAdicionales;?>" style="display: none;"> free</label></input>
+<input type="checkbox" id="checkBox<?=$idServicioAdicionales;?>" onclick="free(<?=$idServicioAdicionales;?>)"  style="display: none;" checked ><label id="lbl<?=$idServicioAdicionales;?>" style="display: none;">Incluido</label></input>
 
 <input type="number" name="svAdicionalesPre[<?=$idServicioAdicionales;?>]"  id="svAdicionalesPre<?=$idServicioAdicionales;?>" step="0.01" min="1" style="display: none;">
-<label id="lblDescripcion<?=$idServicioAdicionales;?>" style="display: none;">Descripción</label>
+<label id="lblDescripcion<?=$idServicioAdicionales;?>" style="display: none;"><?=$lang["descripcion"];?>z</label>
 <input type="text" name="descripcion[<?=$idServicioAdicionales;?>]"  id="descripcion<?=$idServicioAdicionales;?>" step="0.01" min="1" style="display: none;">
               </div>
       <?php
@@ -313,8 +321,8 @@ if (count($svNoIncluidos)==0) {
               </div>
               <!-- /.col -->
                <div align="right">
-            <button type="submit" id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Continuar</button> 
-            <a href="servicios.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i>Salir sin guardar</a>
+            <button type="submit" id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> <?=$lang["continuar_"];?></button> 
+            <a href="servicios.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i><?=$lang["salir_sin_guardar"];?></a>
 </div>
 
 

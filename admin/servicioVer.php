@@ -25,20 +25,27 @@ require("classes/servicios_adicionales.php");
 require("classes/convierte_monedas.php");
 
 
-if ($_SERVER["REQUEST_METHOD"]=="POST") {
+if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["eliminarServicio"])) {
 
-    alertar("Por favor espere, eliminando, no cierre esta pagina ni cancele la operación", "success");
+    alertar($lang["por_favor_espere_no_cierre"], "success");
    
 $idServicio=$_POST["eliminarServicio"];
 $reservas=getHorariosReservados_idServicioSeleccionado($idServicio);
 
 if (count($reservas)>0) { //count($reservas)>0
- alertar("No se pueden eliminar servicios mientras existan reservas del mismo o de sus salidas", "error");
+foreach ($reservas as $key => $value) {
+  $idReserva=$value['idReserva'];
+  $reserva=getReservaId($idReserva);
+ echo "Reserva con horario en este servicio: ".$reserva[0]["codigoAmigable"]."<br>";
+}
+
+
+ alertar($lang["no_se_puede_eliminar_servicios"], "error");
 }
 else{
 
   $resEliminar=eliminarServicio($idServicio);
-  alertar("Servicio eliminado con éxito", "success");
+  alertar($lang["servicio_eliminado"], "success");
   redireccionarLento("serviciosLista");
   exit();
 }
@@ -52,7 +59,7 @@ if (isset($_GET["idServicio"])) {
 
   $servicio=getServicio($idServicio)[0];
 
- $fotos=getFotosServicio($idServicio);
+ $fotos=getFotoMiniaturaServicio($idServicio);
 
   $categoria=getCategoria($servicio["idCategoria_servicio"]);
 
@@ -90,7 +97,7 @@ if (isset($_GET["idServicio"])) {
 
                     <ol class="breadcrumb float-sm-right">
 
-                        <li class="breadcrumb-item"><a href="#">Servicio <?=$servicio["nombre_servicio"];?></a></li>
+                        <li class="breadcrumb-item"><a href="#"><?=$lang["servicio"];?> <?=$servicio["nombre_servicio"];?></a></li>
 
                         <li class="breadcrumb-item active"></li>
 
@@ -126,7 +133,7 @@ if (isset($_GET["idServicio"])) {
 
         <div class="card-header">
 
-          <h3 class="card-title">Servicio <?=$servicio["nombre_servicio"];?></h3>
+          <h3 class="card-title"><?=$lang["servicio"];?> <?=$servicio["nombre_servicio"];?></h3>
 
 
 
@@ -190,7 +197,7 @@ for ($i=0; $i <  count($fotos); $i++) {
 
                       <div class="user-block">
 
-                        <span class="description">Fecha Alta: <?=date("d-m-Y", strtotime($servicio["fechaAlta"]))?></span>
+                        <span class="description"><?=$lang["fecha_alta"];?> <?=date("d-m-Y", strtotime($servicio["fechaAlta"]))?></span>
 
                       </div>
 
@@ -200,7 +207,7 @@ for ($i=0; $i <  count($fotos); $i++) {
 
 
 
-                                        Descripción de Servicio
+                                        <?=$lang["descripcion_del_servicio"];?>
 
 
 
@@ -234,13 +241,13 @@ for ($i=0; $i <  count($fotos); $i++) {
 
               <div class="text-muted">
 
-                <p class="text-sm">Categoría Del Servicio
+                <p class="text-sm"><?=$lang["categoria_del_servicio"];?>
 
                   <b class="d-block"><?=$categoria[0]["nombre_categoria_servicio"]?></b>
 
                 </p>
 
-                <p class="text-sm">Observaciones
+                <p class="text-sm"><?=$lang["observaciones"];?>
 
                   <b class="d-block"><?=$servicio["observaciones"];?></b>
 
@@ -270,28 +277,34 @@ for ($i=0; $i <  count($fotos); $i++) {
 
         <div class="col-12 form-inline">
 
-          <form method="post" action="altaSalidas" style="padding: 3px;"><button name="idServicio" value="<?=$idServicio;?>" class="btn btn-info">Agregar Salidas </button></form>
+          <form method="post" action="altaSalidas" style="padding: 3px;"><button name="idServicio" value="<?=$idServicio;?>" class="btn btn-info"><?=$lang["agregar_salida"];?> </button></form>
 <?php if ($_SESSION['login']["idUsuario"]==1) { ?>
          <form method="post" action="servicioOpiniones"  style="padding: 3px;">
-          <button name="idServicio" value="<?=$idServicio;?>" class="btn btn-success">Opiniones</button></form>
+          <button name="idServicio" value="<?=$idServicio;?>" class="btn btn-success"><?=$lang["opiniones"];?></button></form>
          <form method="get" action="altaServicio.php"  style="padding: 3px;">
 <input type="hidden" name="idServicio"  value="<?=$idServicio;?>">
-            <button  class="btn btn-primary"type="submit">Editar servicio</button></form>
+            <button  class="btn btn-primary"type="submit"><?=$lang["editar_servicio"];?></button></form>
        
 
 <?php } ?>
 
 <?php if ($_SESSION['login']["idUsuario"]==1) {
  ?>
+<form method="post" action="servicioFotos"  style="padding: 3px;">
+  <button type="submit" class="btn btn-success" name="idServicio" value="<?=$idServicio?>">Editor de fotos</button>
+</form>
+
 <form method="post" action="servicioComisionPrestador"  style="padding: 3px;">
-  <button type="submit" class="btn btn-info" name="idServicio" value="<?=$idServicio?>">Comision Inicial Prestador</button>
+  <button type="submit" class="btn btn-info" name="idServicio" value="<?=$idServicio?>"><?=$lang["comision_inicial_prestador"];?></button>
 </form>
 
    <form method="post" id="borraServicio"   style="padding: 3px;">
 <input type="hidden" name="eliminarServicio"  value="<?=$idServicio;?>">
-            <a  class="btn btn-danger" name="eliminarServicio" value="<?=$idServicio;?>" onclick="confirm1()">Eliminar servicio</a></form>
+            <a  class="btn btn-danger" name="eliminarServicio" value="<?=$idServicio;?>" onclick="confirm1()"><?=$lang["eliminar_servicio"];?></a></form>
  <?php
 } ?>
+
+
 
 <script type="text/javascript">
 
@@ -398,22 +411,32 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
 
           <div class="card-tools">
 
-            <button class="btn btn-primary" type="button" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">Ver<i></i></button>
+            <button class="btn btn-primary" type="button" data-card-widget="collapse" data-toggle="tooltip" title="Collapse"><?=$lang["ver"];?><i></i></button>
 
-            <button class="btn btn-danger" style="display: none;">Eliminar salida</button>
+            <button class="btn btn-danger" style="display: none;"><?=$lang["eliminar_salida"];?></button>
 
               <form method="post" action="pasajerosLista" >
 
-               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-secondary">Lista de Pasajeros</button>
+               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-secondary"><?=$lang["lista_de_pasajeros"];?></button>
 
                </form>
 
  <form method="post" action="salidasEditar" >
 
-               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-info">Edita Salida</button>
+               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-info"><?=$lang["editar_salida"];?></button>
+
+               </form>
+<?php if (isset($_SESSION['login']['adminManz'])) {
+  ?>
+ <form method="post" action="serviciosAdicionalesSalidaEdita" >
+
+               <button name="idServicioSalidas" value="<?=$idServicioSalidas;?>" class="btn btn-warning">Editar Adicionales</button>
 
                </form>
 
+
+               <?php
+} ?>
    
 
           </div>
@@ -438,11 +461,11 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
 
                                                   <tr>
 
-                                                    <th>Dia do Periodo</th>
+                                                    <th><?=$lang["dia_de_la_salida"];?></th>
 
-                                                    <th>Fecha de Salida</th>
+                                                    <th><?=$lang["fecha_de_salida"];?></th>
 
-                                                    <th>Disponibilidad</th>
+                                                    <th><?=$lang["disponibilidad"];?></th>
 
 
 
@@ -462,11 +485,11 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
 
                                                   <tr>
 
-                                                    <th>Horario de Salida</th>
+                                                    <th><?=$lang["horario_de_salida"];?></th>
 
-                                                    <th>Horario de Check In</th>
+                                                    <th><?=$lang["horario_de_check_in"];?></th>
 
-                                                 <th>Nota de salida</th>
+                                                 <th><?=$lang["nota_de_salida"];?></th>
 
                                                   </tr>
 
@@ -526,21 +549,21 @@ $salidas=getSalidasServicioIdPrestador($idServicio);
 
                                                 <tr>
 
-                                                      <th style="width: 20%;">Origen</th>
+                                                      <th style="width: 20%;"><?=$lang["origen"];?></th>
 
-                                                    <th >Nombre Tarifa</th>
+                                                    <th > <?=$lang["nombre_tarifa"];?></th>
 
-                                                    <th >Desde Anos</th>
+                                                    <th ><?=$lang["desde_anos"];?></th>
 
-                                                    <th >Hasta Anos </th>
+                                                    <th ><?=$lang["hasta_anos"];?></th>
 
-                                                      <th style="width: 20%;"> Tipo de Tarifa</th>
+                                                      <th style="width: 20%;"> <?=$lang["tipo_de_tarifa"];?></th>
 
-                                                    <th > Precio</th> 
+                                                    <th > <?=$lang["precio_"];?></th> 
 
-                                                    <th > Pago Minimo</th>
+                                                    <th > <?=$lang["pago_minimo"];?></th>
 
-                                                    <th > Tipo de Cancelacion</th>
+                                                    <th > <?=$lang["tipo_de_cancelacion"];?></th>
 
                                                
 
@@ -652,13 +675,13 @@ $cancelacion=getTipoCancelaciones($idCancelacion);
 
       <h5 class="mb-0">
 
-        <button class="btn btn-warning collapsed <?=$alerta;?>" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">        
+        <button class="btn btn-warning collapsed <?=$alerta;?>" type="button" data-toggle="collapse" data-target="#collapseSalidas<?=$idServicioSalidas;?>" aria-expanded="false" aria-controls="collapseSalidas<?=$idServicioSalidas;?>">        
 
         <?= $msj;?>
 
         </button>
 
-        <form method="post" action="altaServiciosAdicionales" ><button name="idServicioSalidas" value="<?=$idServicioSalidas;?>"class="btn btn-success">Agregar Servicios Adicionales</button></form>
+        <form method="post" action="altaServiciosAdicionales" ><button name="idServicioSalidas" value="<?=$idServicioSalidas;?>"class="btn btn-success"><?=$lang["agregar_servicios_adicionales"];?></button></form>
 
       </h5>
 
@@ -674,7 +697,7 @@ $cancelacion=getTipoCancelaciones($idCancelacion);
 
 
 
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+    <div id="collapseSalidas<?=$idServicioSalidas;?>" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
 
       <div class="card-body">
 
@@ -684,11 +707,11 @@ $cancelacion=getTipoCancelaciones($idCancelacion);
 
                                                 <tr>
 
-                                                      <th style="width: 20%;">Nombre</th>
+                                                      <th style="width: 20%;"><?=$lang["nombre"];?></th>
 
-                                                    <th >Descripcion</th>
+                                                    <th ><?=$lang["descripcion"];?></th>
 
-                                                    <th >Valor</th>
+                                                    <th ><?=$lang["valor"];?></th>
 
                                                     <th > </th>
 
@@ -793,9 +816,6 @@ $cancelacion=getTipoCancelaciones($idCancelacion);
       
 
   </div><!-- /.card collapsed-card del periodo-->
-
-</section>
-
 <?php } ?>
 
 

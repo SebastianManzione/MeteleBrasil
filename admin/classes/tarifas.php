@@ -301,32 +301,16 @@ require("conexion.php");
 
 
 
- $data=[
+ $data=["idServicioSalidasTarifas"=>$idServicioSalidasTarifas, "nombre"=>$nombre, "idFromEdad"=>$idFromEdad, "idToEdad"=>$idToEdad, "idTipoTarifa"=>$idTipoTarifa, "valor"=>$valor, "minimo"=>$minimo, "idCancelaciones"=>$idCancelaciones, "comisiona"=>$comisiona ];
 
-"idServicioSalidasTarifas"=>$idServicioSalidasTarifas, "nombre"=>$nombre, "idFromEdad"=>$idFromEdad, "idToEdad"=>$idToEdad, "idTipoTarifa"=>$idTipoTarifa, "valor"=>$valor, "minimo"=>$minimo, "idCancelaciones"=>$idCancelaciones, "comisiona"=>$comisiona ];
-
-$consulta = "UPDATE servicio_salidas_tarifas SET nombre=:nombre, idFromEdad=:idFromEdad, idToEdad=:idToEdad, idTipoTarifa=:idTipoTarifa, valor=:valor, minimo=:minimo, idCancelaciones=:idCancelaciones, comisiona=:comisiona WHERE idServicioSalidasTarifas = :idServicioSalidasTarifas ";
+$consulta = "UPDATE servicio_salidas_tarifas SET nombre=:nombre, idFromEdad=:idFromEdad, idToEdad=:idToEdad, idTipoTarifa=:idTipoTarifa, valor=:valor, minimo=:minimo, idCancelaciones=:idCancelaciones, comisiona=:comisiona WHERE idServicioSalidasTarifas=:idServicioSalidasTarifas";
 
 
 
 $comando = $pdo->prepare($consulta);
-
-
-
 $comando->execute($data);
-
 $cuenta_col = $comando->columnCount();
-
-
-
 $resultado = $comando->rowCount();
-
-
-
-
-
-
-
 return $resultado;
 
 

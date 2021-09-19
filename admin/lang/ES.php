@@ -1777,4 +1777,303 @@ $lang = array(
 "comisiones"=>"Comisiones",
 
 
+
+
+/*Alerta CRM ADMIN*/
+
+
+"servicio_actualizado_correctamente"=>"Servicio actualizado correctamente",
+
+"servicio_cargado_correctamente"=>"Servicio cargado correctamente",
+
+"nombre_de_la_actividad"=>"Nombre de la actividad",
+
+"debe_colocar_el_nombre_de_la_actividad"=>"Indique el nombre de la actividad en mayuscula con maximo 5 palabras",
+
+"categoria_"=>"Categoría",
+
+"indique_a_que_tipo_de_categoria"=>"Indique a que tipo de categoría correponde este servicio",
+
+"breve_descripcion"=>"Breve descripción",
+
+"describa_brevemente_entre"=>"Describa brevemente entre 15 y 25 palabras este servicio",
+
+"documentacion_para_el_viajero"=>"Documentación para el viajero",
+
+"indique_que_documentos_debe"=>"Indique que documentos debe presentar el turista a la hora de presentarse para realizar el servicio. Ejemplos: Passaporte, RG, DNI, CPF ou *.cualquier documento que tenga fotografia e nombre completo.",
+
+"observaciones_"=>"Observaciones",
+
+"indique_informaciones_importantes"=>"Indique informaciones sobre el servicio que usted considere importantes que el turista tenga conocimiento antes de contratar este sercicio.",
+
+"texto_destacado_miniatura"=>"Texto destacado",
+
+"elija_el_texto_que_destaca"=>"Seleccione el texto que destaca su servicio",
+
+"actualizar_cambios"=>"Actualizar cambios",
+
+"continuar_"=>"Continuar",
+
+"salir_sin_guardar"=>"Salir sin guardar",
+
+"volver"=>"Volver",
+
+"destino"=>"Destino",
+
+"indique_origen_y_destino"=>"Indique el origen y destino de esta actividad, en caso que se relice en el mismo origen y destino repitalo en las dos opciones.",
+
+"indique_el_origen"=>"Indique el origen desde donde comienza este servicio.",
+
+"indique_el_destino"=>"Indique el destino donde se realiza este servicio.",
+
+"usted_y_su_familia"=>"ejemplo: Usted y su familia buscan una experiencia agradable, recomendamos el paseo Full Day en Lagoa da Conceição que se encuentra entre los 5 mejores en Florianópolis.",
+
+"como_se_llama_el_servicio"=>"¿Como se llama el Servicio?",
+
+"describa_la_cronologia_del"=>"Describa la cronologia del servicio turistico (como comienza, que se visita y como finaliza el tour)",
+
+
+
+
+
+
+/*Alerta CRM ADMIN Alta de adicionales*/
+
+
+"adicionales_cargado_con_exito"=>"Adicionales cargados con éxito",
+
+"servicios_incluidos_y_opcionales"=>"Servicios incluidos y opcionales",
+
+"carga_de_servicios_incluidos_y_opcionales"=>"Carga de servicios incluidos y opcionales",
+
+"indique_los_servicios"=>"Indique los servicios",
+
+"incluidos_y_opcionales"=>"Incluidos y Opcionales",
+
+"de_cada_salida"=>" de cada salida",
+
+"seleccione_y_adicione"=>"Seleccione y adicione a las salidas servicios incluidos y opcionales.",
+
+"marque_las_salidas"=>"Marque las salidas",
+
+"seleccione_las_salidas"=>"Seleccione las salidas que desea cargarle los servicios adicionales y/o opcionales.",
+
+
+
+
+
+/*Alerta CRM ADMIN Lista de Salidas*/
+
+
+"lista_de_servicios"=>"Lista de servicios",
+
+"fecha_alta"=>"Fecha alta",
+
+"foto"=>"Foto",
+
+"acción"=>"Acción",
+
+"habilitar"=>"Habilitar",
+
+"deshabilitar"=>"Deshabilitar",
+
+"ver"=>"ver",
+
+"detalles"=>"Detalles",
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE SALIDAS*/
+
+"estado_de_reservas"=>"Estado de reservas",
+
+"confirmadas"=>"Confirmadas",
+
+"lista_de_reservas_confirmadas"=>"Lista de reservas confirmadas",
+
+"cod-carrito"=>"Cod-Carrito",
+
+"fecha_de_contratacion"=>"Fecha de contratación",
+
+"dia_del_evento"=>"Dia del Evento",
+
+"cod-servicio-contratados"=>"C.Serv. Contratados",
+
+"valor_total"=>"Valor Total",
+
+"voucher_prestador"=>"Voucher Prestador",
+
+"pendientes"=>"Pendientes",
+
+"lista_de_reservas_pendientes"=>"Lista de reservas pendientes",
+
+"pasadas"=>"Pasadas",
+
+"lista_de_reservas_pasadas_pendientes"=>"Lista de reservas pasadas pendientes",
+
+"lista_de_reservas_confirmadas_pasadas"=>"Lista de reservas pasadas confirmadas",
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE comprovantesLista*/
+
+"usted_no_tiene_acceso"=>"Usted no tiene acceso a esta seccion del software",
+
+"comprobantes_de_pagos"=>"Comprobantes de pagos",
+
+"administracion"=>"Administración",
+
+"comprobantes"=>"Comprobantes",
+
+"seleccione_el_mes_que"=>"Seleccione el mes que desea explorar",
+
+"fecha"=>"Fecha",
+
+"valor_pago"=>"Valor pago",
+
+"codigo_pasarela"=>"Codigo pasarela",
+
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE salidasLista*/
+
+
+"prestador_guardado_con_exito"=>"Prestador guardado con exito",
+
+"salidas"=>"Salidas",
+
+"seleccione_el_mes_que_desea"=>"Seleccione el mes que desea explorar",
+
+"cod-servicio"=>"COD-Servicio",
+
+"fecha_de_salida"=>"Fecha de salida",
+
+"horario_de_salida"=>"Horario de Salida",
+
+"horario_de_check_in"=>"Horario de check in",
+
+"resta_pagar"=>"RESTA PAGAR",
+
+"estado_"=>"Estado",
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE servicioVer*/
+
+
+"por_favor_espere_no_cierre"=>"Por favor espere, eliminando, no cierre esta pagina ni cancele la operación",
+
+"no_se_puede_eliminar_servicios"=>"No se pueden eliminar servicios mientras existan reservas del mismo o de sus salidas",
+
+"servicio_eliminado"=>"Servicio eliminado con éxito",
+
+"servicio"=>"Servicio",
+
+"descripcion_del_servicio"=>"Descripción del dervicio",
+
+"categoria_del_servicio"=>"Categoría del Servicio",
+
+"agregar_salida"=>"Agregar salidas", 
+
+"editar_servicio"=>"Editar servicio",
+
+"comision_inicial_prestador"=>"Comisión inicial prestador",
+
+"eliminar_servicio"=>"Eliminar servicio",
+
+"eliminar_salida"=>"Eliminar salida",
+
+"lista_de_pasajeros"=>"Lista de pasajeros",
+
+"editar_salida"=>"Editar Salida",
+
+"nota_de_salida"=>"Nota de salida",
+
+"salida_del_periodo"=>"Salida del periodo",
+
+"agregar_servicios_adicionales"=>"Agregar servicios adicionales",
+
+"valor"=>"Valor",
+
+"descripcion"=>"Descripción",
+
+"dia_de_la_salida"=>"Dia de la salida",
+
+
+
+
+/*CRM ADMIN lista de pasajeiros*/
+
+
+
+"fecha_del_servicio"=>"Fecha del Servicio ",
+
+ "cobro_pendiente"=>"Cobro pendiente",
+
+"notas_de_salida"=>"Notas de salida: ",
+
+"nombre_de_pasajeiro"=>"Nombre del pasajero",
+
+"tipo_de_pasajegeiro"=>"Tipo de pasajero",
+
+"codigo"=>"Codigo",
+
+"valor_ya_pago"=>"Valor ya pago",
+
+"imprimir"=>"Imprimir",
+
+"generar_pdf"=>"Generar PDF ",
+
+"voucher"=>"Voucher", 
+
+"comentario_del_pasajero"=>"Comentario del pasajero",
+
+
+
+
+/* REGISTRO <?=$lang["ingresa_tu_email_para_recibir_novedades"]?> */
+
+
+
+
+"registro_con_exito"=>"Registrado con exito, bienvenido a metelebrasil.com",
+
+"error_el_mail"=>"Error, el email ya esta registrado",
+
+"confirmar_registro"=>"Enviar registro",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 );  

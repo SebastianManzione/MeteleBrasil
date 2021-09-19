@@ -34,6 +34,46 @@ function getFotosServicios(){
     
     
     }
+
+
+        function getFotoMiniaturaServicio($idServicio){
+
+    require("conexion.php");
+    $data=["idServicio"=>$idServicio];
+    $consulta = "select * from servicio_img WHERE idServicio=:idServicio ORDER BY miniatura DESC";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
+
+
+    function getFotoPortadaServicio($idServicio){
+
+    require("conexion.php");
+    $data=["idServicio"=>$idServicio];
+    $consulta = "select * from servicio_img WHERE idServicio=:idServicio ORDER BY portada DESC";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    return $resultado;
+    
+    
+    }
+
   function altaFotosServicio($fotos, $idServicio){
 
 require("conexion.php");
@@ -81,12 +121,96 @@ require("conexion.php");
         
         }
 
-          /*
-function borraPrestador($idPrestador){
 
-require("conexion.php");
-    $data=["idPrestador"=> $idPrestador];
-    $consulta = "DELETE FROM prestadores WHERE idPrestador=:idPrestador ";
+    function setPortada($idImgServicio, $idServicio){
+
+        require("conexion.php");
+        $data=["idServicio"=>$idServicio];
+        $consulta = "UPDATE servicio_img SET portada=0 WHERE idServicio=:idServicio ";
+       
+
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+
+
+$data=["idImgServicio"=> $idImgServicio];
+
+        $consulta = "UPDATE servicio_img SET portada=1 WHERE idImgServicio=:idImgServicio ";
+
+        
+
+        $comando = $pdo->prepare($consulta);
+       
+
+        $comando->execute($data);
+
+        $id = $pdo->lastInsertId(); 
+        $cuenta_col = $comando->columnCount();
+        $cuenta_row = $comando->rowCount();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cuenta_row;
+
+        
+
+        
+
+        }
+    function setMiniatura($idImgServicio, $idServicio){
+
+        require("conexion.php");
+        $data=["idServicio"=>$idServicio];
+        $consulta = "UPDATE servicio_img SET miniatura=0 WHERE idServicio=:idServicio ";
+       
+
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+
+
+$data=["idImgServicio"=> $idImgServicio];
+
+        $consulta = "UPDATE servicio_img SET miniatura=1 WHERE idImgServicio=:idImgServicio ";
+
+        
+
+        $comando = $pdo->prepare($consulta);
+       
+
+        $comando->execute($data);
+
+        $id = $pdo->lastInsertId(); 
+        $cuenta_col = $comando->columnCount();
+        $cuenta_row = $comando->rowCount();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+        return $cuenta_row;
+
+        
+
+        
+
+        }
+
+       
+function borraFoto($idImgServicio){
+
+
+  require("conexion.php");
+    $data=["idImgServicio"=>$idImgServicio];
+    $consulta = "select * from servicio_img WHERE idImgServicio=:idImgServicio";
+    
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado1 = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+
+
+
+    $data=["idImgServicio"=> $idImgServicio];
+    $consulta = "DELETE FROM servicio_img WHERE idImgServicio=:idImgServicio ";
     
     $comando = $pdo->prepare($consulta);
     
@@ -96,9 +220,11 @@ require("conexion.php");
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
     
     
-    return $cuenta_row;
+
+
+    unlink("classes/imgServicio/".$resultado1[0]["ruta"]);
     
-    
-    }*/
+        return $cuenta_row;
+    }
     
 ?>

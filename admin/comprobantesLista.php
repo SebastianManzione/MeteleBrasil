@@ -17,7 +17,7 @@ require("classes/comprobantes.php");
 require("classes/convierte_monedas.php");
 require("classes/origenes_comprobantes.php");
 if (!$_SESSION["login"]["rol"]==1) {
-  alertar("Usted no tiene acceso a esta seccion del software", "error");
+  alertar($lang["usted_no_tiene_acceso"], "error");
   redireccionarLento("index");
 }
 
@@ -29,12 +29,12 @@ if (!$_SESSION["login"]["rol"]==1) {
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Comprobantes de pagos</h1>
+            <h1 class="m-0 text-dark"><?=$lang["comprobantes_de_pagos"];?></h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Administración</a></li>
-              <li class="breadcrumb-item active">Comprobantes</li>
+              <li class="breadcrumb-item"><a href="#"><?=$lang["administracion"];?></a></li>
+              <li class="breadcrumb-item active"><?=$lang["comprobantes"];?></li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -48,7 +48,7 @@ if (!$_SESSION["login"]["rol"]==1) {
           <div class="col-12">
             <div class="card"  style="display: none;">
               <div class="card-header">
-                <h3 class="card-title">Seleccione el mes que desea explorar</h3>
+                <h3 class="card-title"><?=$lang["seleccione_el_mes_que"];?></h3>
               </div>
               <div class="table-responsive">
               <div class="card-body">
@@ -138,7 +138,7 @@ if (!$_SESSION["login"]["rol"]==1) {
         <!-- SELECT2 EXAMPLE -->
         <div class="card card-default">
           <div class="card-header">
-            <h3 class="card-title">Comprobantes</h3>
+            <h3 class="card-title"><?=$lang["comprobantes"];?></h3>
 
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
@@ -155,12 +155,12 @@ if (!$_SESSION["login"]["rol"]==1) {
     <thead>
       <tr>
 
-                    <th scope="col">Fecha</th>
-                    <th scope="col">Valor pago</th>
-                    <th scope="col">COD-carrito</th>
-                    <th scope="col">Origen</th>
-                    <th scope="col">Codigo pasarela</th>
-                    <th scope="col">Detalles</th>
+                    <th scope="col"><?=$lang["fecha"];?></th>
+                    <th scope="col"><?=$lang["valor_pago"];?></th>
+                    <th scope="col"><?=$lang["cod-carrito"];?></th>
+                    <th scope="col"><?=$lang["origen"];?></th>
+                    <th scope="col"><?=$lang["codigo_pasarela"];?></th>
+                    <th scope="col"><?=$lang["detalles"];?></th>
 
       </tr>
     </thead>

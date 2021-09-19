@@ -17,11 +17,48 @@ function getServiciosAdicionales(){
     
     }
 
+ function getServicioAdicional($idServiciosAdicionales){
+
+        require("conexion.php");
+        $data=["idServiciosAdicionales"=>$idServiciosAdicionales ];
+        $consulta = "select * from servicios_adicionales WHERE idServiciosAdicionales=:idServiciosAdicionales ";
+        
+        $comando = $pdo->prepare($consulta);
+        
+        $comando->execute($data);
+        $cuenta_col = $comando->columnCount();
+        
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+ 
+        return $resultado;
+        
+        
+        }
+
  function getServicioAdicionalIncluidoYNoIncluido($idServiciosAdicionales, $idServicioSalidas){
 
         require("conexion.php");
         $data=["idServicioSalidas"=>$idServicioSalidas, "idServiciosAdicionales"=>$idServiciosAdicionales, ];
         $consulta = "select * from servicio_salidas_adicionales WHERE idServicioSalidas=:idServicioSalidas AND idServiciosAdicionales=:idServiciosAdicionales";
+        
+        $comando = $pdo->prepare($consulta);
+        
+        $comando->execute($data);
+        $cuenta_col = $comando->columnCount();
+        
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+ 
+        return $resultado;
+        
+        
+        }
+
+
+ function getServicioAdicionalIdServicioSalida($idServicioSalidas){
+
+        require("conexion.php");
+        $data=["idServicioSalidas"=>$idServicioSalidas ];
+        $consulta = "select * from servicio_salidas_adicionales WHERE idServicioSalidas=:idServicioSalidas ";
         
         $comando = $pdo->prepare($consulta);
         
@@ -70,6 +107,32 @@ function getServiciosAdicionales(){
     
     }
 
+
+
+    function getServiciosAdicionalesReservados($idServiciosAdicionales, $idServicioSalidas){
+
+    require("conexion.php");
+
+    $data=["idServiciosAdicionales"=>$idServiciosAdicionales];
+    $consulta = "select * from reserva_adicionales WHERE idServiciosAdicionales=:idServiciosAdicionales";
+    /*
+$data=["idServiciosAdicionales"=>$idServiciosAdicionales, "idServicioSalidas"=>$idServicioSalidas];
+    $consulta = "select * from reserva_adicionales WHERE idServiciosAdicionales=:idServiciosAdicionales AND idServicioSalidas=:idServicioSalidas";
+    */
+
+
+    $comando = $pdo->prepare($consulta);
+    
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    // Imprimir en pantalla
+    print_r($resultado);
+    return $resultado;
+    
+    
+    }
 
    function getServiciosAdicionalesSalidaIncluidos($idServicioSalidas){
 

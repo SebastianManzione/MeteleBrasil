@@ -2,35 +2,14 @@
 
 function getReservas(){
 
-
-
     require("conexion.php");
-
-  
-
     $consulta = "select * from reservas re inner join reserva_horarios rh ON re.idReserva = rh.idReserva";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
     // Imprimir en pantalla
-
     return $resultado;
-
-    
-
-    
 
     }
 
@@ -38,26 +17,12 @@ function getReservas(){
 
     function getReserva($codigoAmigable){
 
-
-
     require("conexion.php");
-
     $data=["codigoAmigable"=>$codigoAmigable];
-
     $consulta = "select * from reservas WHERE codigoAmigable=:codigoAmigable";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute($data);
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 
     // Imprimir en pantalla
@@ -74,8 +39,8 @@ function getReservas(){
 
 
     require("conexion.php");
-include_once('convierte_monedas.php');
-include_once('comprobantes.php');
+    include_once('convierte_monedas.php');
+    include_once('comprobantes.php');
     $data=["idPrestador"=>$idPrestador];
 
     $consulta = "select * from reservas WHERE 1";
@@ -1056,6 +1021,126 @@ return $resultado;
 
 
 }
+
+
+
+
+
+function eliminarReserva($idReserva){
+
+
+
+require("conexion.php");
+
+    $data=["idReserva"=> $idReserva];
+
+
+
+    $consulta = "select * from reserva_horarios  WHERE idReserva=:idReserva";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    $comando->execute($data);
+   $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+
+   for ($i=0; $i < count($resultado); $i++) { 
+
+$idReserva=$resultado[$i]["idReserva"];
+  $data2=["idReserva"=> $idReserva];
+
+    $consulta2 = "select * from reserva_horarios  WHERE idReserva=:idReserva";
+   
+
+    $comando2 = $pdo->prepare($consulta2);
+
+    $comando2->execute($data2);
+   $resultado2 = $comando2->fetchAll(PDO::FETCH_ASSOC);
+
+
+   for ($j=0; $j < count($resultado2); $j++) { 
+        $idReservaHorarios=$resultado2[$j]["idReservaHorarios"];
+  $data3=["idReservaHorarios"=> $idReservaHorarios];
+
+    $consulta3 = "select * from reserva_tarifas  WHERE idReservaHorarios=:idReservaHorarios";
+   
+
+    $comando3 = $pdo->prepare($consulta3);
+
+    $comando3->execute($data3);
+   $resultado3 = $comando3->fetchAll(PDO::FETCH_ASSOC);
+
+   for ($k=0; $k < count($resultado3); $k++) { 
+       $idReservaTarifas=$resultado3[$k]['idReservaTarifas'];
+  $data4=["idReservaTarifas"=> $idReservaTarifas];
+ 
+
+    $consulta4 = "DELETE FROM reserva_pasajeros WHERE idReservaTarifas=:idReservaTarifas ";
+    $comando4 = $pdo->prepare($consulta4);
+    $comando4->execute($data4);
+ 
+   }
+    $data3=["idReservaHorarios"=> $idReservaHorarios];
+
+    $consulta3 = "DELETE FROM reserva_tarifas  WHERE idReservaHorarios=:idReservaHorarios";
+   
+
+    $comando3 = $pdo->prepare($consulta3);
+
+    $comando3->execute($data3);
+   $data3=["idReservaHorarios"=> $idReservaHorarios];
+
+    $consulta3 = "DELETE FROM reserva_adicionales  WHERE idReservaHorarios=:idReservaHorarios";
+   
+
+    $comando3 = $pdo->prepare($consulta3);
+
+    $comando3->execute($data3);
+
+   }
+
+  $data2=["idReserva"=> $idReserva];
+
+    $consulta2 = "DELETE FROM reserva_horarios  WHERE idReserva=:idReserva";
+   
+
+    $comando2 = $pdo->prepare($consulta2);
+
+    $comando2->execute($data2);
+
+
+
+ 
+
+
+   }
+
+
+    $consulta = "DELETE FROM reservas  WHERE idReserva=:idReserva";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    $comando->execute($data);
+
+
+
+    
+return 1;
+    
+
+    }
+
+
+
+
+
+
+
+
 /*
 
         

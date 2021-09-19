@@ -55,12 +55,12 @@ for ($i=0; $i < count($resultado); $i++) {
 	
 }
 
- function setOpinionCategoria($idCategoria_servicio, $nombre, $opinion, $estrellas, $pais){
+ function setOpinionCategoria($idCategoria_servicio, $nombre, $opinion, $estrellas, $pais, $fechaAlta){
 
 
         require("conexion.php");
-        $data=["idCategoria_servicio"=> $idCategoria_servicio, "nombre"=>$nombre, "opinion"=>$opinion, "estrellas"=>$estrellas, "pais"=>$pais];
-        $consulta = "INSERT INTO opiniones_categoria (idCategoria_servicio, nombre, opinion, estrellas, pais) VALUES (:idCategoria_servicio, :nombre, :opinion,:estrellas, :pais) ";
+        $data=["idCategoria_servicio"=> $idCategoria_servicio, "nombre"=>$nombre, "opinion"=>$opinion, "estrellas"=>$estrellas, "pais"=>$pais, "fechaAlta"=>$fechaAlta];
+        $consulta = "INSERT INTO opiniones_categoria (idCategoria_servicio, nombre, opinion, estrellas, pais, fechaAlta) VALUES (:idCategoria_servicio, :nombre, :opinion,:estrellas, :pais, :fechaAlta) ";
         
         $comando = $pdo->prepare($consulta);
         

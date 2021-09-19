@@ -207,7 +207,7 @@ alertar("Prestador guardado con exito", "success");
                                               
                      </tr>
                      <tr class="table table-bordered">
-                     <td>ICMS</td>
+                     <td>ISS</td>
                      <td>12.2</td>
                      <td>ninguna</td>
                      <td>0</td>

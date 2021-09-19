@@ -1,7 +1,20 @@
 
 <?php
 include("includes/navbar.php");
+include("admin/classes/contacto.php");
+if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["contacto"])) {
+$nombre=$_POST["nombre"];
+$email=$_POST["email"];
+$telefono=$_POST["telefono"];
+$mensaje=$_POST["mensaje"];
+$resul=setContacto($nombre, $email, $telefono, $mensaje);
 
+
+if($resul>0){
+  alertar("Su consulta sera respondida a la brevedad", "success");
+}
+
+}
 
 
 
@@ -98,7 +111,7 @@ include("includes/navbar.php");
 
               <h1 class="a-title-empleo afiliados" style="text-align: center;"><?=$lang["equipo_de_ayuda_al_usuario"];?></h1>
 
-        <form class="form-buscar" style="padding-top: 30px;margin-left: 10%;margin-right: 10%">
+        <form method="post" class="form-buscar" style="padding-top: 30px;margin-left: 10%;margin-right: 10%">
 
           
 
@@ -131,7 +144,7 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["telefono"]?></h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="phone" name="phone" type="text" placeholder="<?=$lang["tu_telefono_de_contacto"];?>" value="">
+                <input class="field form-control" id="phone" name="telefono" type="text" placeholder="<?=$lang["tu_telefono_de_contacto"];?>" value="">
               </div>
             
         </div>
@@ -139,15 +152,13 @@ include("includes/navbar.php");
           <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["mensaje"]?></h5>
          
               <div class="input-group">
-                <textarea class="field form-control" id="mensaje" name="mensaje" placeholder="<?=$lang["describa_su_consulta_aqui"];?>">
-                
-                </textarea>
+                <textarea class="field form-control" id="mensaje" name="mensaje" placeholder="<?=$lang["describa_su_consulta_aqui"];?>"></textarea>
               </div>
             
         </div>
 <br>
       <div class="col-lg-12 py-2 d-md-block" style="text-align: center;">
-        <button class="btn btn-info" name="registro"><?=$lang["enviar"];?></button>
+        <button class="btn btn-info" name="contacto"><?=$lang["enviar"];?></button>
         </div>
 
         </form>

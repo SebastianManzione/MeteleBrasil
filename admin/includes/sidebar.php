@@ -613,7 +613,7 @@ $clientesListClass=" ";
 
 $treeviewClientes="   ";
 
-if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="solicitudes.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" || $archivo_actual=="edades.php" || $archivo_actual=="cancelaciones.php") {
+if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="solicitudes.php"||$archivo_actual=="contacto.php" ||$archivo_actual=="cupones.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" || $archivo_actual=="edades.php" || $archivo_actual=="cancelaciones.php") {
 
 $treeviewClientes=" menu-open ";
 
@@ -704,6 +704,60 @@ $treeviewClientes=" menu-open ";
               </li>
 
       <!-- individual-->
+
+              <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+
+ if ($archivo_actual=="contacto.php" ) {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="contacto" class="nav-link <?=$clientesClass?>">
+
+                <i class="fa fa-address-book" aria-hidden="true"></i>
+
+                  <p>Contacto</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
+
+
+              <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+
+ if ($archivo_actual=="cupones.php" ) {
+
+               $clientesClass="active";
+
+               $clientesIcon="fas";
+
+             } ?>
+
+ <li class="nav-item">
+
+                <a href="cupones" class="nav-link <?=$clientesClass?>">
+<i class="fas fa-percent"></i>
+
+                  <p>Cupones</p>
+
+                </a>
+
+              </li>
+
+      <!-- individual-->
+
+
     <!-- individual Usuarios-->
 
 <?php  $clientesClass=" ";
@@ -748,7 +802,7 @@ $treeviewClientes=" menu-open ";
                 <a href="cancelaciones" class="nav-link <?=$clientesClass?>">
 
            <i class="fas fa-user-times"></i>
-                  <p><?=$lang["textos_cancelaciones"];?>T</p>
+                  <p><?=$lang["textos_cancelaciones"];?></p>
 
                 </a>
 
@@ -804,7 +858,7 @@ if ($archivo_actual=="textoMiniaturaLista.php") {
 
                 <i class="fa fa-hand-holding-usd" aria-hidden="true"></i>
 
-                  <p><?=$lang["editor_de_textos"];?>Editor de textos Miniaturas</p>
+                  <p><?=$lang["editor_de_textos"];?></p>
 
                 </a>
 
@@ -970,7 +1024,7 @@ if ($archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServicio
 
                 <i class="fa fa-calendar-day" aria-hidden="true"></i>
 
-                  <p><?=$lang["editor_de_categorias"];?>Editor de categorías</p>
+                  <p><?=$lang["editor_de_categorias"];?></p>
 
                 </a>
 
@@ -995,7 +1049,7 @@ if ($archivo_actual=="parametros.php") {
 
                 <i class="fa fa-calendar-day" aria-hidden="true"></i>
 
-                  <p><?=$lang["editor_parametros"];?>Editor parametros</p>
+                  <p><?=$lang["editor_parametros"];?></p>
 
                 </a>
 

@@ -11,7 +11,7 @@ require("classes/functions.php");
 require("classes/servicio.php");
 
 require("classes/servicio_opiniones.php");
-
+require("classes/texto_viajeros.php");
 if ($_SERVER["REQUEST_METHOD"]=="GET" &&isset($_GET["idServicio"]) && is_numeric($_GET["idServicio"]))
   $idServicio=$_GET["idServicio"];
 
@@ -21,7 +21,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["idServicio"]) && is_nume
   $idServicio=$_POST["idServicio"];
   if (isset($_POST["setOpinionServicio"])) {
 
-$opinionResu=setOpinionServicio($idServicio, $_POST["nombre"],$_POST["opinion"], $_POST["estrellasServicio"]);
+$opinionResu=setOpinionServicio($idServicio, $_POST["nombre"],$_POST["opinion"], $_POST["estrellasServicio"],$_POST["selPasajeros"],$_POST["fechaAlta"]);
+
 if ($opinionResu>0) {
   alertar("Opinión guardada con éxito","success");
 }
@@ -93,6 +94,34 @@ $nombre_servicio=$servicio["nombre_servicio"];
                                              
                                                      <label class="col-form-label">Estrellas 1-5</label>
                                                        <select name="estrellasServicio" class="form-control"><option>1</option><option>2</option><option>3</option><option>4</option><option selected>5</option></select>
+                                                            </div>   
+                                                   <div class="form-group">
+                                                    
+                                             
+                                                     <label class="col-form-label">Texto Viajeros</label>
+                                                      <select name="selPasajeros" class="form-control">
+                                                       <?php 
+
+                                                        $textosViajeros=getTextosViajeros();
+                                                       for ($i=0; $i < count($textosViajeros); $i++) { 
+                                                        
+                                                         $texto_viajeros=$textosViajeros[$i]["texto_viajeros"];
+
+                                                         $idTextoViajeros=$textosViajeros[$i]["idTextoViajeros"];
+                                                         ?>
+                                                          <option value="<?=$idTextoViajeros?>"><?=$texto_viajeros?></option>
+                                                         <?php
+                                                       } ?>
+                                                      
+
+                                                       </select>
+                                                            </div>    
+
+                                                      <div class="form-group">
+                                                                                                
+                                                     <label class="col-form-label">Texto Viajeros</label>
+                                                     <?php $hhoy=date('Y-m-d'); ?>
+                                                  <input type="date" name="fechaAlta" value="<?=$hhoy;?>">
                                                             </div>
                                             <div class="form-group">
                                               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -122,7 +151,8 @@ $nombre_servicio=$servicio["nombre_servicio"];
                                    <th scope="col">Nombre</th>
                                    <th scope="col">Comentario</th>
                                    <th scope="col">Estrellas</th>
-                                          
+                                    <th scope="col">Texto Viajeros</th>      
+                                     <th scope="col">Fecha</th> 
                                    <th scope="col">Acción</th>
 
                                 </tr>
@@ -132,12 +162,17 @@ $nombre_servicio=$servicio["nombre_servicio"];
                            <tbody>
 <?php for ($i=0; $i < count($opiniones); $i++) { 
 $idOpinion=$opiniones[$i]["idOpinionServicio"];
+$idTextoViajeros=$opiniones[$i]["selPasajeros"];
+$textoViajero=getTextoViajeros($idTextoViajeros);
+$fecha=date("d-m-Y", strtotime($opiniones[$i]['fechaAlta']))
  ?>
    <tr>
                            
                                 <td><?=$opiniones[$i]["nombre"];?></td>
                                 <td><?=$opiniones[$i]["opinion"];?></td>
-                                <td><?=$opiniones[$i]["estrellas"];?></td>
+                                <td><?=$opiniones[$i]["estrellas"];?></td> 
+                                <td><?=$textoViajero[0]["texto_viajeros"]; ?></td>
+                                 <td><?=$fecha; ?></td>
                                 <td><button type="button"  onclick="borrar(<?=$idOpinion;?>)" class="btn btn-danger">Eliminar</button>
 </td>
                              </tr>   

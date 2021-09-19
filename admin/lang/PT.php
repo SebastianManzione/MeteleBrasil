@@ -2857,7 +2857,7 @@ $lang = array(
 
 
 
-"nuestros_partners_se_comunicaran"=>"Agentes de Metele Brasil se comunicaran contigo para ajustar detalles y aumentar tus reservas lo mas pronto posible.",
+"nuestros_partners_se_comunicaran"=>"Os agentes da Metele Brasil entrarão em contato com você para ajustar os detalhes e aumentar suas reservas o mais rápido possível.",
 
 
 
@@ -3034,7 +3034,7 @@ $lang = array(
 
 "gracias_por_confiar_en_metele_brasil"=>"Obrigado por confiar na Metele Brasil. ",
 
-"el_pago_de_paypal"=>"Payment by Paypal may take time to impact the system. We will send the confirmation to your e-mail.",
+"el_pago_de_paypal"=>"O pagamento por Paypal pode levar algum tempo para afetar o sistema. Enviaremos a confirmação para seu e-mail.",
 
 "el_metodo_seleccionado_no_puede_cobrar"=>"A forma de pagamento escolhida não pode cobrar em seu país (Ebanx)",
 
@@ -3244,6 +3244,301 @@ $lang = array(
 "comprovantes"=>"Comprobantes",
 
 "comisiones"=>"Comissões",
+
+
+
+
+
+
+/*Alerta CRM ADMIN*/
+
+
+"servicio_actualizado_correctamente"=>"Serviço atualizado com sucesso",
+
+"servicio_cargado_correctamente"=>"Serviço carregado corretamente",
+
+"nombre_de_la_actividad"=>"Nome da atividade",
+
+"debe_colocar_el_nombre_de_la_actividad"=>"Indique o nome da atividade em maiúscula, no máximo com 5 palavras ",
+
+"categoria_"=>"Categoria",
+
+"indique_a_que_tipo_de_categoria"=>"Indique a que tipo de categoria este serviço corresponde",
+
+"breve_descripcion"=>"Breve descrição",
+
+"describa_brevemente_entre"=>"Escreva resumidamente este serviço entre 15 e 25 palavras",
+
+"documentacion_para_el_viajero"=>"Documentação para o viajante",
+
+"indique_que_documentos_debe"=>"Indique quais os documentos que o turista deve apresentar ao se apresentar para realizar o serviço. Exemplos: Passaporte, RG, DNI, CPF ou *. Qualquer documento que contenha fotografia e nome completo.",
+
+"observaciones_"=>"Observações",
+
+"indique_informaciones_importantes"=>"Forneça informações sobre o serviço que você considera 'importante' para o turista ter conhhecimento antes de contratar este serviço.",
+
+"texto_destacado_miniatura"=>"Texto em destaque",
+
+"elija_el_texto_que_destaca"=>"Selecione o texto que destaca o seu serviço",
+
+"actualizar_cambios"=>"Atualizar mudanças",
+
+"continuar_"=>"Prosseguir",
+
+"salir_sin_guardar"=>"Sair sem salvar",
+
+"volver"=>"Retornar",
+
+"destino"=>"Destino",
+
+"indique_origen_y_destino"=>"Indique a origem e o destino deste serviço, no caso de ser no mesmo 'origem e destino' repita nas duas opcões. ",
+
+"indique_el_origen"=>"Indique a origem de onde este serviço começa.",
+
+"indique_el_destino"=>"Indique o destino onde este serviço é executado.",
+
+"usted_y_su_familia"=>"exemplo: Se você e sua família estão procurando por uma experiência agradável, recomendamos o passeio Full Day na Lagoa da Conceição, uns top 5 de Florianópolis.",
+
+"como_se_llama_el_servicio"=>"Qual é o nome do Serviço? ",
+
+"describa_la_cronologia_del"=>"Descreva a cronologia do serviço turístico (como começa, o que é visitado e como termina o roteiro)",
+
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN Alta de adicionales*/
+
+
+"adicionales_cargado_con_exito"=>"Adicional carregado com sucesso ",
+
+"servicios_incluidos_y_opcionales"=>"Serviços incluídos e opcionais",
+
+"carga_de_servicios_incluidos_y_opcionales"=>"Carregamento de serviços incluídos e opcionais",
+
+"indique_los_servicios"=>"Indique os serviços",
+
+"incluidos_y_opcionales"=>"Incluído e opcional",
+
+"de_cada_salida"=>" de cada saída",
+
+"seleccione_y_adicione"=>"Selecione e adicione serviços incluídos e opcionais às saídas.",
+
+"marque_las_salidas"=>"Marque as saídas",
+
+"seleccione_las_salidas"=>"Selecione as partidas às quais deseja cobrar os serviços adicionais e / ou opcionais.",
+
+
+
+
+
+/*Alerta CRM ADMIN ListaServicio*/
+
+
+"lista_de_servicios"=>"Lista de serviços",
+
+"fecha_alta"=>"Data alta",
+
+"foto"=>"Foto",
+
+"acción"=>"Ação",
+
+"habilitar"=>"Ativar",
+
+"deshabilitar"=>"Desativar",
+
+"ver"=>"ver",
+
+"detalles"=>"Detalhes",
+
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE SALIDAS*/
+
+"estado_de_reservas"=>"Estado de reservas",
+
+"confirmadas"=>"Confirmadas",
+
+"lista_de_reservas_confirmadas"=>"Lista de reservas confirmadas",
+
+"cod-carrito"=>"Cod-Carrinho",
+
+"fecha_de_contratacion"=>"Data de contratação",
+
+"dia_del_evento"=>"Dia do evento",
+
+"cod-servicio-contratados"=>"C.Serv. Contratados",
+
+"valor_total"=>"Valor Total",
+
+"voucher_prestador"=>"Voucher Prestador",
+
+"pendientes"=>"Pendentes",
+
+"lista_de_reservas_pendientes"=>"Lista de reservas pendentes",
+
+"pasadas"=>"Pasadas",
+
+"lista_de_reservas_pasadas_pendientes"=>"Lista de reservas pasadas pendentes",
+
+"lista_de_reservas_confirmadas_pasadas"=>"Lista de reservas pasadas confirmadas",
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE comprovantesLista*/
+
+"usted_no_tiene_acceso"=>"Você não tem acesso a esta seção do software",
+
+"comprobantes_de_pagos"=>"Vouchers de pagamento",
+
+"administracion"=>"Administração",
+
+"comprobantes"=>"Comprovantes",
+
+"seleccione_el_mes_que"=>"Selecione o mês que deseja explorar",
+
+"fecha"=>"Data",
+
+"valor_pago"=>"Valor já pago",
+
+"codigo_pasarela"=>"Código de gateway",
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE salidasLista*/
+
+
+"prestador_guardado_con_exito"=>"Provedor salvo com sucesso",
+
+"salidas"=>"Saídas",
+
+"seleccione_el_mes_que_desea"=>"Selecione o mês que deseja explorar",
+
+"cod-servicio"=>"COD-Service",
+
+"fecha_de_salida"=>"Data de partida",
+
+"horario_de_salida"=>"Horário de partida",
+
+"horario_de_check_in"=>"Horário de check-in",
+
+"resta_pagar"=>"RESTA PAGAR",
+
+"estado_"=>"Estado",
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE servicioVer*/
+
+
+"por_favor_espere_no_cierre"=> "Aguarde, excluindo, não feche esta página ou cancele a operação",
+
+"no_se_puede_eliminar_servicios"=> "Você não pode excluir serviços enquanto houver reservas para os mesmos ou suas partidas",
+
+"servicio_eliminado"=>"Serviço removido com sucesso",
+
+"servicio"=> "Serviço",
+
+"descripcion_del_servicio"=> "Descrição do serviço",
+
+"categoria_del_servicio"=>  "Categoria de serviço",
+
+"agregar_salida"=>"Adicionar saídas", 
+
+"editar_servicio"=>"Editar serviço",
+
+"comision_inicial_prestador"=>"Provedor de comissão inicial",
+
+"eliminar_servicio"=>"Remover serviço",
+
+"eliminar_salida"=>"Excluir saída",
+
+"lista_de_pasajeros"=>"Lista de passageiros",
+
+"editar_salida"=>"Editar saída",
+
+"nota_de_salida"=>"Nota da saída",
+
+"salida_del_periodo"=>"Saída do periodo",
+
+"agregar_servicios_adicionales"=>"Adicionar serviços adicionais",
+
+"valor"=>"Valor",
+
+"descripcion"=>"Descrição",
+
+"dia_de_la_salida"=>"Dia da saída",
+
+
+
+
+
+/*CRM ADMIN lista de pasajeiros*/
+
+
+
+"fecha_del_servicio"=> "Data do serviço ",
+
+"cobro_pendiente"=>"Cobrança pendente",
+
+"notas_de_salida"=>"Notas de saída:",
+
+"nombre_de_pasajeiro"=>"Nome do passageiro",
+
+"tipo_de_pasajegeiro"=>"Tipo de passageiro",
+
+"codigo"=>"Codigo",
+
+"valor_ya_pago"=>"Valor já pago",
+
+"imprimir"=>"Imprimir",
+
+"generar_pdf"=>"Gerar PDF ",
+
+"voucher"=>"Voucher", 
+
+"comentario_del_pasajero"=>"Comment do passageiro",
+
+
+
+
+/* REGISTRO */
+
+"registro_con_exito"=>"Cadastro com sucesso, bem-vindo ao metelebrasil.com",
+
+"error_el_mail"=>"Ups! deu erro, o email já está cadastrado",
+
+"confirmar_registro"=>"Enviar cadastro",
+
+
+
+
+
+
+
+
+
 
 
 

@@ -149,7 +149,7 @@ if ($comprobantes<$total_dolares){
                       <th>Tipo de tarifa</th>
                       <th>Check in</th>
                       <th>Subtotal</th>
-                       <th>Icms</th> 
+                   
                       <th></th>
                     </tr>
                     </thead>
@@ -213,7 +213,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
                       <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
             
-                      <td><?=$_SESSION["moneda_sel_sym"].$valorDelIva;?></td>
+                 
                       <td>
                         <?php if ($j==0) { ?>
                         <form method="post" action="voucherSalida">
@@ -240,7 +240,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 <tr>
   <td colspan="4"><?=$adicionales[$k]['cantidad'];?> <?=$adicionales[$k]['nombre'];?></td>
   <td ><?= $_SESSION["moneda_sel_sym"].$precioAdicional?></td>
-    <td ><?= $_SESSION["moneda_sel_sym"].$valorIva?></td> 
+
 </tr>
 
             <?php
@@ -289,7 +289,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                         <td><?=$_SESSION["moneda_sel_sym"].$totalIva;?></td>
                       </tr>
 
-                      <?php if(isset($_SESSION['login']) &&  $_SESSION['login']['idVendedor']>0 || isset($_SESSION['login']) &&  $_SESSION['login']['idPrestador']>0 ){ ?>
+                      <?php if(isset($_SESSION['login']['idVendedor']) &&  $_SESSION['login']['idVendedor']>0 || isset($_SESSION['login']['idPrestador']) &&  $_SESSION['login']['idPrestador']>0 ){ ?>
                       <tr>
                         <th>Comissão/(nao mostrar para cliente final) :</th>
                         <td>---</td>

@@ -932,80 +932,53 @@ $prestadores=getPrestadores();
                                             <tbody id="rate_table_body" id="tipos_pax_body">
 
 															<tr>
-
                                                                 <td>
-
                                                                      <input type="text" name="txtDireccion" id="txtDireccion" class="form-control" placeholder="Origen" readonly></input>
-
                                                                 </td>
 
-                                                                           <td > 
+                                                                <td> 
 
-                                                                <div class="form-group"> 
-
-                                                                   
-
-                                                                         <input type="text" class="form-control" id="nombre_tarifa_txt" required/>
-
-                                          
-
-                                                                     
-
-                                                                 
-
-                                                                </div>
-
+                                                                    <div class="form-group"> 
+                                                                         <input type="text" class="form-control-sm" id="nombre_tarifa_txt" required/>
+                                                                    </div>
                                                              </td>
 
-                                                            <td > 
-
+                                                            <td> 
                                                                 <div class="form-group"> 
+                                                                         <select class="form-select" id="from_edades_txt" required>
 
-                                                                   
-
-                                                                         <select class="form-control" id="from_edades_txt" required>
-
-                                                                      	<?php $edades=getEdades();
-
-                                    
+                                                                     	<?php $edades=getEdades();
 
                                         for ($i=0; $i < count($edades); $i++) { 
-
-                                        
-
                                       ?>
-
                                           <option value="<?=$edades[$i]['idEdad'];?>" ><?=$edades[$i]['valor'];?></option><?php
-
                                          } ?>  
-
-                                                                                                                                                        
-
-                                                                    </select>      
-
-                                                                 
-
+                                                                                                                                                       
+                                                                        </select>      
                                                                 </div>
-
-                                                             </td>
+                                                            </td>
 
         												           <td>
 
                                                                 <div class="form-group">
 
-                                                                    <select class="form-control" id="to_edades_txt" required>
+                                                                    <select class="form-select" id="to_edades_txt" required>
 
                                                                       	<?php $edades=getEdades();
 
                                     
 
-                                        for ($i=(count($edades)-1); $i > 0; $i--) { 
+                                      for ($i=0; $i < count($edades); $i++) { 
+                                            $selected="";
+                                            if (($i+1)==count($edades)) {
+                                                  $selected="selected";
+                                            }
 
                                         
 
                                       ?>
 
-                                          <option value="<?=$edades[$i]['idEdad'];?>" ><?=$edades[$i]['valor'];?></option><?php
+                                          <option value="<?=$edades[$i]['idEdad'];?>" <?=$selected?> ><?=$edades[$i]['valor'];?></option><?php
 
                                          } ?>  
 
@@ -1021,7 +994,7 @@ $prestadores=getPrestadores();
 
                                                                 <div class="form-group">
 
-                                                                    <select class="form-control" id="tipo_tarifa">
+                                                                    <select class="form-select" id="tipo_tarifa">
 
                                                                <?php $tarifas=getTiposTarifas();
 
@@ -1047,7 +1020,7 @@ $prestadores=getPrestadores();
 
                                                                 <div class="form-group">
 
-                                                                    <input id="vTarifa" class="form-control select2bs4" required>
+                                                                    <input id="vTarifa" class="form-control-sm" required>
 
                                                                 </div>
 
@@ -1059,7 +1032,7 @@ $prestadores=getPrestadores();
 
                                                                 <div class="form-group">
 
-                                                                    <input id="pago_minimo" class="form-control select2bs4" required>
+                                                                    <input id="pago_minimo" class="form-control-sm" required>
 
                                                                 </div>
 
@@ -1097,7 +1070,7 @@ $prestadores=getPrestadores();
 
                                                                    
 
-                                                                         <input type="checkbox" class="form-control" id="comisiona" required/>
+                                                                         <input type="checkbox" class="form-control readonly" id="comisiona" required checked readonly="true" onclick="return false;"/>
 
                                           
 

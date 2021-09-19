@@ -20,17 +20,18 @@ include("admin/classes/email_registro_correcto.php");
 include("admin/classes/reservaEmail.php");
 
 
-$resumail=enviaMail($email," Bem-vindo à Metele Brasil", $email_registro_correcto, $parametros[0]["site"]);
+$resumail=enviaMail($email,$lang["bienvenido_a_metelebrasil"], $email_registro_correcto, $parametros[0]["site"]);
 
 
 
 
-  alertar("registrado con exito", "success");
+  alertar($lang["registro_con_exito"], "success");
   $login=login($email, $password);
   redireccionarLento("index");
+  exit();
 }
 else{
-  alertar("Error, el email ya esta registrado", "warning");
+  alertar($lang["error_el_mail"], "warning");
 }
 }
 
@@ -125,7 +126,7 @@ else{
 
 
 
-<section class="py-5 d-md-block d-none">
+<section class="py-5 d-md-block">
   <div class="container container_r clearfix">
       <div class="row">
            <!--COL INFORMACION IZQUIERDA-->
@@ -133,12 +134,12 @@ else{
              <div id="content">
                  
             <div class="o-container-work-us">
-<h1 class="a-title-empleo afiliados" style="text-align: center;">Registrate</h1>
+<h1 class="a-title-empleo afiliados" style="text-align: center;"><?=$lang["registrate"]?></h1>
 
 
         <form class="form-buscar" method="post" onsubmit="return validarRegistro()"style="padding-top: 30px;">
   
-        <div class="col-lg-12 py-2 d-md-block d-none">
+        <div class="col-lg-12 py-2 d-md-block">
           <h5 class="text-uppercase mb-4" style="text-align: center;">Email</h5>
          
                   <div class="input-group">
@@ -147,8 +148,8 @@ else{
            
         </div>
   
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;">Nombre Y Apellido</h5>
+        <div class="col-lg-12 py-2 d-md-block ">
+          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["nombre_apellido"]?></h5>
          
                   <div class="input-group">
                 <input class="field form-control" id="nombre" name="nombre" type="text" value="" required>
@@ -156,24 +157,24 @@ else{
            
         </div>
 
-        <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;">Contraseña</h5>
+        <div class="col-lg-12 py-2 d-md-block ">
+          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["senha"]?></h5>
          
                   <div class="input-group">
                 <input class="field form-control" id="pass1" name="pass1" type="password"  value="" required>
                  </div>
            
         </div>
-    <div class="col-lg-12 py-2 d-md-block d-none">
-          <h5 class="text-uppercase mb-4" style="text-align: center;">Repetir Contraseña</h5>
+    <div class="col-lg-12 py-2 d-md-block ">
+          <h5 class="text-uppercase mb-4" style="text-align: center;"><?=$lang["repetir_contrasena"]?></h5> 
          
                   <div class="input-group">
                 <input class="field form-control" id="pass2" name="pass2" type="password"  value="" required>
                  </div>
            
         </div>
-         <div class="col-lg-12 py-2 d-md-block d-none">
-        <button class="btn btn-info" name="registro">Registrarme</button>
+         <div class="col-lg-12 py-2 d-md-block ">
+        <button class="btn btn-info" name="registro"><?=$lang["confirmar_registro"]?></button>
         </div>
         </form>
        <script type="text/javascript">

@@ -1,4 +1,4 @@
-a<?php 
+<?php 
 
 //print_r($_POST);
 
@@ -68,7 +68,7 @@ $_SESSION["login"]['idCobrador']=$resultado[0]['idCobrador'];
 
 $_SESSION["login"]['idPrestador']=$resultado[0]['idPrestador'];
 
-		alertar($lang["bienvenido_a_metelebrasil"].$_SESSION["login"]['usuario'],"success");
+		alertar($lang["bienvenido_a_metelebrasil"]." ".$_SESSION["login"]['usuario'],"success");
 	redireccionar('index.php');  //bienvenido a metele
 		exit();
 

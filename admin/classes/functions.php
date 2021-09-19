@@ -60,7 +60,7 @@ function alertar($mensaje, $tipo){
   
   echo ('<script>
   
-  setTimeout(function(){location.href="'.$url.'";} , 5000);   
+  setTimeout(function(){location.href="'.$url.'";} , 2500);   
   
   
       </script>');

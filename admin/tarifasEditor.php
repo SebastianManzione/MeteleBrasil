@@ -12,7 +12,8 @@ require("classes/cancelaciones.php");
 require("classes/salidas.php");
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['idServicioSalidasTarifas'])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTarifa'])) {
+
 
 $idServicioSalidasTarifas=$_POST['idServicioSalidasTarifas'];
 $nombre=$_POST['nombre'];
@@ -222,7 +223,7 @@ exit();
                     <label>comision</label>
                     <input type="checkbox" name="comisiona" class="form-control" <?=$comisiona?>>
 </div>
-<button class="btn-sm btn-success">Guardar</button>
+<button class="btn-sm btn-success" name="updateTarifa">Guardar</button>
 
 </form>
 <form method="post" action="salidasEditar">

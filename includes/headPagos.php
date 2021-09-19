@@ -121,7 +121,7 @@ $_SESSION['moneda_sel_sym']='R$';
    <!-- FUENTES-->
    
   <!-- ESTILOS NECESARIOS -->
-<?php // $parametros[0]["head"]?>
+<?php  $parametros[0]["head"]?>
 
 </head>
 <body id="page-top">

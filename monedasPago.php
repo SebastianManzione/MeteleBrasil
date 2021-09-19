@@ -2,27 +2,17 @@
 
 
 include("includes/headPagos.php");
-
-
 include("admin/classes/salidas.php");
-
 include("admin/classes/tarifas.php");
-
 include("admin/classes/idiomas.php");
-
 include("admin/classes/servicio.php");
+include("admin/classes/comisiones.php");
+include("admin/classes/edades.php");
+include("admin/classes/cancelaciones.php");
+include("admin/classes/servicios_adicionales.php");
+include("admin/classes/convierte_monedas.php");
+include("admin/classes/codigos_telefonicos.php");
 
-  include("admin/classes/comisiones.php");
-
-    include("admin/classes/edades.php");
-
-    include("admin/classes/cancelaciones.php");
-
-    include("admin/classes/servicios_adicionales.php");
-
-        include("admin/classes/convierte_monedas.php");
-
-    include("admin/classes/codigos_telefonicos.php");
 $codigoAmigable=$_GET['reserva'];
 
 if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["pais"]) && isset($_GET["reserva"])) {
@@ -143,6 +133,47 @@ redireccionar('consultaReserva.php?reserva='.$codigoAmigable);
              <!-- EMPIEZA LA INFO AL PASAR EL HOVER -->   
              <div class="info d-md-block d-none">
              <h3 class="headline text-uppercase semibold">Paraguay</h3>
+               <div class="container">
+                 <div class="row">
+                   <div class="col-md-6">
+                   <div class="descripcion text-white">
+                     <p class=" mb-0">
+                        <strong style="font-size:30px;"></strong> 
+                     </p>
+                      <p class="mb-0 p"></p>
+                   </div>
+                   </div>
+                    <div class="col-md-6">
+                    <div class="descrip-opinion text-white">
+                    <p class=" mb-0">
+                       <strong style="font-size:30px;"></strong> 
+                    </p>
+                    <p class="mb-0 p">
+                      
+                    </p>
+                    </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+             <!-- FIN LA INFO AL PASAR EL HOVER -->   
+             
+           </div>
+           
+  <h3 class="title-categoria text-uppercase texto-shadow text-white"></h3>
+         </a>
+
+       </div>
+
+<div class="col-lg-4 col-md-6 col-12 mb-4" >
+
+         <a href="monedasPago?reserva=<?=$codigoAmigable?>&pais=BR" class="imagen">
+             
+           <div class="img-c" style="background-image: url(img/countries/brasil.png); width: 100%; height: 100%;">
+              
+             <!-- EMPIEZA LA INFO AL PASAR EL HOVER -->   
+             <div class="info d-md-block d-none">
+             <h3 class="headline text-uppercase semibold">Brasil</h3>
                <div class="container">
                  <div class="row">
                    <div class="col-md-6">

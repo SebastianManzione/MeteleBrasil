@@ -450,3 +450,4 @@ function posicionaracordeon() {
 	   
 
 })(jQuery); // End of use strict
+

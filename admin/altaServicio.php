@@ -24,7 +24,7 @@ $idServiciodd=updateServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POS
 
 $fotos=altaFotosServicio($_FILES, $idServicio);
 if ($idServiciodd>0) {
-   alertar("Servicio actualizado correctamente...","success");
+   alertar($lang["servicio_actualizado_correctamente"],"success");
 
      
 
@@ -44,7 +44,7 @@ $idServicio=altaServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['t
 $_SESSION["altaServicio"] = $idServicio;
 
 $fotos=altaFotosServicio($_FILES, $idServicio);
-alertar("Servicio dado de alta correctamente...","success");
+alertar($lang["servicio_cargado_correctamente"],"success");
 
      
 
@@ -55,7 +55,7 @@ exit();
 }
 
 
-$textoNuevoOEditar="Nueva ";
+$textoNuevoOEditar="Destalhes do serviço ";
 $nombre_servicio='';
 $idCategoria_servicio='';
 $descripcion_corta='';
@@ -103,7 +103,7 @@ $idDestino=$servicio[0]['idDestino'];
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#"><?=$lang["inicio"];?></a></li>
                         <li class="breadcrumb-item active"><?=$textoNuevoOEditar;?></li>
                     </ol>
                 </div><!-- /.col -->
@@ -131,15 +131,17 @@ $idDestino=$servicio[0]['idDestino'];
                             <div class="row  clearfix ">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Nombre De la Actividad</label>
+                                        <label><?=$lang["nombre_de_la_actividad"];?></label>
+                                        <p><?=$lang["debe_colocar_el_nombre_de_la_actividad"];?></p>
                                         <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-                                        <input name="txtNomEvt" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="¿Como se llama la actividad?" value="<?=$nombre_servicio?>" required>
+                                        <input name="txtNomEvt" id="txtNomEvt" class="form-control select2bs4" style="width: 100%;" placeholder="<?=$lang["como_se_llama_el_servicio"];?>" value="<?=$nombre_servicio?>" required>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                     
-                                        <label>Categoría</label>
+                                        <label><?=$lang["categoria_"];?></label>
+                                        <p><?=$lang["indique_a_que_tipo_de_categoria"];?></p>
                                           <select name="selCategoria" class="form-group form-control" id="selCategoria"
                                             placeholder="Categoria" required>   
                                                	<?php 
@@ -165,15 +167,17 @@ $idDestino=$servicio[0]['idDestino'];
                                     <!-- /.form-group -->
                                 </div>
                                 <!-- /.col -->
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Breve descripción</label>
-                                        <textarea rows="3" name="txtDescripcionCorta" id="txtDescripcionCorta" placeholder="Ejemplo: (Cena Show con Orquesta y cantantes de Tango en vivo...)"><?=$descripcion_corta;?></textarea>
+                                        <label><?=$lang["breve_descripcion"];?></label>
+                                        <p><?=$lang["describa_brevemente_entre"];?></p>
+                                        <textarea rows="5" name="txtDescripcionCorta" id="txtDescripcionCorta" placeholder='<?=$lang["usted_y_su_familia"];?>'><?=$descripcion_corta;?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Itinerario</label>
+                                        <p><?=$lang["describa_la_cronologia_del"];?></p>
                                         <textarea rows="5" name="txtDescripcion" id="txtDescripcion">
                                             <?=$descripcion_servicio;?>
                                         </textarea>
@@ -181,16 +185,26 @@ $idDestino=$servicio[0]['idDestino'];
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Documentación para el viajero</label>
+                                        <label><?=$lang["documentacion_para_el_viajero"];?></label>
+                                        <p><?=$lang["indique_que_documentos_debe"];?></p>
                                         <textarea rows="5" name="txtDocumentacionViajero" id="txtDocumentacionViajero" class="form-control"><?=$documentacionViajero;?></textarea>
                                     </div>
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label>Observaciones</label>
+                                        <label><?=$lang["observaciones_"];?></label>
+                                        <p><?=$lang["indique_informaciones_importantes"];?></p>
                                         <textarea rows="5" name="txtObservaciones" id="txtObservaciones" class="form-control"><?=$observaciones;?></textarea>
                                     </div>
                                 </div>
+
+                                <br>
+
+                                <hr style="height: 5px; background-color: #007bff;">
+
+                                <br>
+
+
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input type="file" name="file[]" class="file-input form-control-file" multiple
@@ -200,7 +214,12 @@ $idDestino=$servicio[0]['idDestino'];
                                
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                     		 <label>Texto de la Miniatura</label>
+
+                                     		 <label><?=$lang["texto_destacado_miniatura"];?></label>
+
+                                              <p><?=$lang["elija_el_texto_que_destaca"];?></p>
+
+
                                        <select name="idTextoMiniatura" id="idTextoMiniatura" class="form-control" required>
                                        		<?php 
                                     	$textMiniaturas= getTextosMiniaturas();
@@ -221,9 +240,25 @@ $idDestino=$servicio[0]['idDestino'];
                                        </select>
                                     </div>
                                 </div>
+
+                                <br>
+
+                                <hr style="height: 5px; background-color: #007bff;">
+
+
              <div class="col-md-6">
                                     <div class="form-group">
-                                             <label>Origen</label>
+
+                                        <label><?=$lang["origen"];?></label> & <label><?=$lang["destino"];?></label>
+
+                                        <p><?=$lang["indique_origen_y_destino"];?></p>
+
+
+
+                                             <label><?=$lang["origen"];?></label>
+                                             <p><?=$lang["indique_el_origen"];?></p>
+
+
                                        <select name="idOrigen" id="idOrigen" class="form-control" required>
                                             <?php 
                                         $destinos= getDestinos();
@@ -247,7 +282,12 @@ $idDestino=$servicio[0]['idDestino'];
 
                                          <div class="col-md-6">
                                     <div class="form-group">
-                                             <label>Destino</label>
+
+                                             <label><?=$lang["destino"];?></label>
+                                             <p><?=$lang["indique_el_destino"];?></p>
+
+
+
                                        <select name="idDestino" id="idDestino" class="form-control" required>
                                             <?php 
                                         $destinos= getDestinos();
@@ -269,25 +309,35 @@ $idDestino=$servicio[0]['idDestino'];
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
                         <div class="card-footer">
-                            <div align="center">
+                          <div align="center">
                                 <?php   if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET['idServicio'])) { ?>
                                 <button type="submit" id="uploadFiles" value="Crear servicio" class="btn btn-info" name="actualizar">
-                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Actualizar Cambios
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> 
+
+                                    <?=$lang["actualizar_cambios"];?>
+
+
                                 </button>
                             <?php } else{ ?>
                                        <button type="submit" id="uploadFiles" value="Crear servicio" class="btn btn-success" name="guardar">
-                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> Continuar
+                                    <i class="fa fa-floppy-o" aria-hidden="true"></i> <?=$lang["continuar_"];?>
                                 </button>
                             <?php }?>
                                 <a href="servicios.php" class="btn btn-danger">
-                                    <i class="fa fa-times" aria-hidden="true"></i> Salir sin guardar
+                                    <i class="fa fa-times" aria-hidden="true"></i> 
+
+                                    <?=$lang["salir_sin_guardar"];?>
+
+
                                 </a>
                                 <?php if (isset($_GET['idServicio'])) {
                                 ?>
-                                <a href="servicioVer.php?idServicio=<?=$_GET['idServicio'];?>" class="btn btn-primary">Volver Al Servicio</a>
+                                <a href="servicioVer.php?idServicio=<?=$_GET['idServicio'];?>" class="btn btn-primary"> 
+
+                                    <?=$lang["volver"];?></a>
+
+
                                 <?php
                                 } ?>
                             </div>
@@ -306,6 +356,5 @@ $idDestino=$servicio[0]['idDestino'];
             </script>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
-    </section>
 </div>
 <?php include "includes/footer.php";?>

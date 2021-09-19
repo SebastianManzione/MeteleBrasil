@@ -368,42 +368,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
 <?php
 
 $servicios=getServiciosLimit6();
-   /* $query=mysqli_query($conection,"SELECT * FROM servicio
-     inner JOIN categoria_servicio ON servicio.idCategoria_servicio = categoria_servicio.idCatSrv 
-    LEFT JOIN usuario us ON servicio.operador_alta = us.idUsuario
-      ORDER BY idServicio DESC LIMIT 6");
-    $result=mysqli_num_rows($query);
-    if ($result > 0) {
-      while ($data = mysqli_fetch_array($query)) {
-$idServicio=$data['idServicio'];
-$idcatsrv=$data['idCatSrv'];
 
-if($idcatsrv==4){
-    $link='href="verServicioPaquete.php?id='.$idServicio.'"';
-}
-else{
-  $link='href="verServicio.php?id='.$idServicio.'"';
-}
-*/
-/*$OpinionesCategoria=OpinionesCategoria($idcatsrv);
-$CantOpinionesCategoria=count($OpinionesCategoria);
-$textoMiniatura=TextoMiniaturas($idServicio)[0][1];
-
-$OpinionesServicio=OpinionesServicio($idServicio);
-$CantOpinionesServicio=count($OpinionesServicio);
-$acum=$OpinionesServicio[$CantOpinionesServicio-1][2];
-if(!$CantOpinionesServicio==0){
-$puntuacion=round($acum/$CantOpinionesServicio, 1);
-}
-
-
-
-
-      
-        $nroFotos=count(DevuelveFotosServicio($data['idServicio']));
-        $idServicio=$data['idServicio'];
-    $fotos=DevuelveFotosServicio($idServicio);
-    $monedaServicio=MonedaServicio($idServicio);*/
     for ($i=0; $i < count($servicios); $i++) { 
     	$idServicio=$servicios[$i]["idServicio"];
       $fecha=date("Y-m-d");
@@ -422,13 +387,13 @@ $puntuacion=round($acum/$CantOpinionesServicio, 1);
 
        }
        else{
-        $precioSugerido="AGOTADO!!!";
+        $precioSugerido="AGOTADO!";
        }
 
     	$OpinionesServicio=GetOpinionesServicio($idServicio);
     	$estrellasServicio=GetEstrellasServicio($idServicio);
     	$textoMiniatura=getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"];
-	  $fotos=getFotosServicio($idServicio);
+	  $fotos=getFotoMiniaturaServicio($idServicio);
 
    
     	?>
@@ -526,7 +491,7 @@ $servicios=getServiciosLimit612();
       $OpinionesServicio=GetOpinionesServicio($idServicio);
       $estrellasServicio=GetEstrellasServicio($idServicio);
       $textoMiniatura=getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"];
-    $fotos=getFotosServicio($idServicio);
+    $fotos=getFotoMiniaturaServicio($idServicio);
    
     	?>
 

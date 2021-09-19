@@ -1748,4 +1748,304 @@ $lang = array(
 
 
 
+
+
+
+
+
+
+/*Alerta CRM ADMIN Alta de Servicio*/
+
+
+"servicio_actualizado_correctamente"=>"Service successfully updated",
+
+"servicio_cargado_correctamente"=>"Service loaded correctly",
+
+"nombre_de_la_actividad"=>"Name of the activity",
+
+"debe_colocar_el_nombre_de_la_actividad"=>"Indicate the name of the activity, maximum of 5 words ",
+
+"categoria_"=>"Category",
+
+"indique_a_que_tipo_de_categoria"=>"Indicate what type of category this service corresponds to ",
+"breve_descripcion"=>"Breve descripción",
+
+"describa_brevemente_entre"=>"Briefly describe this service between 15 and 25 words ",
+
+"documentacion_para_el_viajero"=>"Documentation for the traveler",
+
+"indique_que_documentos_debe"=>"Indicate what documents the tourist must present when presenting to perform the service. Examples: Passport, RG, DNI, CPF or *. Any document that has a photograph and full name.",
+
+"observaciones_"=>"Observations",
+
+"indique_informaciones_importantes"=>"Indicate important information about the service that you consider important that the tourist should know before hiring this service.",
+
+"texto_destacado_miniatura"=>"Featured text",
+
+"elija_el_texto_que_destaca"=>"Select the text that highlights your service",
+
+"actualizar_cambios"=>"Update changes",
+
+"continuar_"=>"Continue",
+
+"salir_sin_guardar"=>"Exit without saving",
+
+"volver"=>"Return",
+
+"destino"=>"Destiny",
+
+"indique_origen_y_destino"=>"Indicate the origin and destination of this activity, in case you carry out the activity in the same destination, enter the two options.",
+
+"indique_el_origen"=>"Indicate the origin from where this service starts.",
+
+"indique_el_destino"=>"Indicate the destination where this service is performed.",
+
+"usted_y_su_familia"=>"example: You and your family are looking for an enjoyable experience, understand why this Boat Tour in Lagoa da Conceição is among the top 5 of Florianópolis.",
+
+"como_se_llama_el_servicio"=>"What is the name of the Service?",
+
+"describa_la_cronologia_del"=>"Describe the chronology of the tourist service (how it begins, what is visited and how it ends)",
+
+
+
+
+
+/*Alerta CRM ADMIN Alta de adicionales*/
+
+
+"adicionales_cargado_con_exito"=>"Adicionales cargados con éxito",
+
+"servicios_incluidos_y_opcionales"=>"Services included and optional",
+
+"carga_de_servicios_incluidos_y_opcionales"=>"Loading of included and optional services",
+
+"indique_los_servicios"=>"Indicate the services",
+
+"incluidos_y_opcionales"=>"Included and Optional",
+
+"de_cada_salida"=>" of each exit",
+
+"seleccione_y_adicione"=>"Select and add included and optional services to the outputs.",
+
+"marque_las_salidas"=>"Mark the deperture",
+
+"seleccione_las_salidas"=>"Seleccione las salidas que desea cargarle los servicios adicionales y/o opcionales.",
+
+
+
+
+
+/*Alerta CRM ADMIN Alta de adicionales*/
+
+
+"lista_de_servicios"=>"List of services",
+
+"fecha_alta"=>"High Date",
+
+"foto"=>"Foto",
+
+"acción"=>"Action",
+
+"habilitar"=>"Enable",
+
+"deshabilitar"=>"Disable",
+
+"ver"=>"Open",
+
+"detalles"=>"Details",
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE SALIDAS*/
+
+"estado_de_reservas"=>"Status of reservations",
+
+"confirmadas"=>"Confirmed",
+
+"lista_de_reservas_confirmadas"=>"List of confirmed reservations",
+
+"cod-carrito"=>"Cod-cart",
+
+"fecha_de_contratacion"=>" Hiring date ",
+
+"dia_del_evento"=>"Day of the Event",
+
+"cod-servicio-contratados"=>"C.hired services
+",
+
+"valor_total"=>"Total value",
+
+"voucher_prestador"=>"Voucher Provider",
+
+"pendientes"=>"Pending reservations",
+
+"lista_de_reservas_pendientes"=>"Lista de reservas pendientes",
+
+"pasadas"=>"Past reservations",
+
+"lista_de_reservas_pasadas_pendientes"=>"List of past pending reservations",
+
+"lista_de_reservas_confirmadas_pasadas"=>"List of confirmed past reservations",
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE comprovantesLista*/
+
+"usted_no_tiene_acceso"=>"You do not have access to this section of the software",
+
+"comprobantes_de_pagos"=>"Payment vouchers",
+
+"administracion"=>"Administration",
+
+"comprobantes"=>"Voucher",
+
+"seleccione_el_mes_que"=>"Select the month you want to explore",
+
+"fecha"=>"Date",
+
+"valor_pago"=>"Value paid",
+
+"codigo_pasarela"=>"Gateway code",
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE salidasLista*/
+
+
+"prestador_guardado_con_exito"=>"Provider saved successfully",
+
+"salidas"=>"Departure",
+
+"seleccione_el_mes_que_desea"=>"Select the month you want to explore",
+
+"cod-servicio"=>"COD-Service",
+
+"fecha_de_salida"=>"Departure date",
+
+"horario_de_salida"=>"Departure time",
+
+"horario_de_check_in"=>"Check in time",
+
+"resta_pagar"=>"must pay",
+
+"estado_"=>"State",
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Alerta CRM ADMIN ESTADO DE servicioVer*/
+
+
+"por_favor_espere_no_cierre"=>"Please wait, deleting, do not close this page or cancel the operation",
+
+"no_se_puede_eliminar_servicios"=>"You cannot delete services while there are reservations for it or its departures",
+
+"servicio_eliminado"=>"Service removed successfully",
+
+"servicio"=>"Service",
+
+"descripcion_del_servicio"=>"Description of the service",
+
+"categoria_del_servicio"=>"Category of service",
+
+"agregar_salida"=>"Add departures", 
+
+"editar_servicio"=>"Edit service",
+
+"comision_inicial_prestador"=>"Initial commission provider",
+
+"eliminar_servicio"=>"Remove service",
+
+"eliminar_salida"=>"Remove departure",
+
+"lista_de_pasajeros"=>"List of passengers",
+
+"editar_salida"=>"Edit departure",
+
+"nota_de_salida"=>"Note of salida",
+
+"salida_del_periodo"=>"Departure of Periodic",
+
+"agregar_servicios_adicionales"=>"Agregar servicios adicionales",
+
+"valor"=>"Value",
+
+"descripcion"=>"Description",
+
+"dia_de_la_salida"=>"Day of departure",
+
+
+
+
+
+
+
+/*CRM ADMIN lista de pasajeiros*/
+
+
+
+"fecha_del_servicio"=>" Date of Service ",
+
+"cobro_pendiente"=>"Collection pending",
+
+"notas_de_salida"=>"Notes of exit: ",
+
+"nombre_de_pasajeiro"=>"Passenger name",
+
+"tipo_de_pasajegeiro"=>"Type of passenger",
+
+"codigo"=>"Code",
+
+"valor_ya_pago"=>"Value already paid",
+
+"imprimir"=>"Print",
+
+"generar_pdf"=>"Generate PDF",
+
+"voucher"=>"Voucher", 
+
+"comentario_del_pasajero"=>"Comment do passageiro",
+
+
+
+
+
+/* REGISTRO */
+
+
+"registro_con_exito"=>"Registered successfully, welcome to metelebrasil.com",
+
+"error_el_mail"=>"Error!, the email is already registered",
+
+
+"confirmar_registro"=>"Send registration",
+
+
+
+
+
+
+
+
+
+
 	);
