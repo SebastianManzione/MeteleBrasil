@@ -88,10 +88,11 @@ require("conexion.php");
                   
                 $targetPath = dirname( __FILE__ ) . $ds. $storeFolder . $ds;  //4
 
-                 $filename=$idServicio."_img". $fotos['file']['name'][$i];
+                 $filename=$idServicio.round(microtime(true) * 1000)."_img". $fotos['file']['name'][$i];
                  
-                $targetFile =  $targetPath.$idServicio."_img". $i.".jpg";  //5
-                  $targetFileBDD=$idServicio."_img". $i.".jpg";
+                $targetFile =  $targetPath.$idServicio.round(microtime(true) * 1000)."_img". $i.".jpg";  //5
+
+                  $targetFileBDD=$idServicio.round(microtime(true) * 1000)."_img". $i.".jpg";
              
                 move_uploaded_file($tempFile,$targetFile); //6
 

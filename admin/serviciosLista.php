@@ -16,9 +16,12 @@ require("classes/destinos.php");
  require("classes/fotos_servicio.php"); 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["desHabilitarServicio"]) ) {
+$resul=quitarDestacarServicio($_POST["desHabilitarServicio"]);
+$resul=desHabilitarServicio($_POST["desHabilitarServicio"]);
 
-desHabilitarServicio($_POST["desHabilitarServicio"]);
-
+if ($resul) {
+  alertar("Servicio destacado con exito", "success");
+}
 
 
 }
@@ -27,13 +30,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["habilitarServicio"]) )
 
 
 
-habilitarServicio($_POST["habilitarServicio"]);
+$resul=habilitarServicio($_POST["habilitarServicio"]);
+if ($resul) {
+  alertar("Servicio destacado con exito", "success");
+}
+
+
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["destacarServicio"]) ) {
+
+
+
+$resul=destacarServicio($_POST["destacarServicio"]);
+if ($resul) {
+  alertar("Servicio destacado con exito", "success");
+}
 
 
 
 }
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["quitarDestacarServicio"]) ) {
 
 
+
+$resul=quitarDestacarServicio($_POST["quitarDestacarServicio"]);
+if ($resul) {
+  alertar("Servicio destacado con exito", "success");
+}
+
+
+}
 
  ?>
 
@@ -201,6 +227,7 @@ habilitarServicio($_POST["habilitarServicio"]);
                                 if($servicios[$i]["habilitado"]==0){ ?>
 
                                 <button class="btn btn-sm btn-success" name="habilitarServicio" value="<?=$idServicio?>"><?=$lang["habilitar"];?></button>
+                              
 
                                 <?php }
 
@@ -210,7 +237,17 @@ habilitarServicio($_POST["habilitarServicio"]);
 
                                    value="<?=$idServicio;?>"><?=$lang["deshabilitar"];?></button>
 
-                               <?php }?>    </form></td>
+                                     <?php if ($servicios[$i]["destacado"]==1) {
+  ?> <button class="btn-sm btn-primary" name="quitarDestacarServicio"  value="<?=$idServicio;?>"  >Quitar Destacado</button> <?php
+} else{ ?>
+
+<button class="btn-sm btn-secondary" name="destacarServicio" value="<?=$idServicio;?>" >Destacar</button>
+<?php } ?>
+
+                               <?php }?>    </form><br>
+
+
+                             </td>
 
 <?php  } ?>
 

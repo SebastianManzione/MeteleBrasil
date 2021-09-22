@@ -1,36 +1,13 @@
 <?php
 
 function getArticulosBlog(){
-
-
-
     require("conexion.php");
-
-  
-
     $consulta = "select * from blog ";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
     return $resultado;
-
-    
-
-    
 
     }
 
@@ -221,6 +198,58 @@ function updatePostBlog($idPost, $titulo, $idDestino, $descripcionCorta, $conten
 
         }
 
+
+
+
+        function borraPost($idPost){
+
+
+
+require("conexion.php");
+
+    $data=["idPost"=> $idPost];
+
+    $consulta = "DELETE FROM blog WHERE idPost=:idPost ";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($data);
+    $cuenta_col = $comando->columnCount();
+    $cuenta_row = $comando->rowCount();
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+      $data=["idPost"=> $idPost];
+    $consulta = "select * from blog_img WHERE idPost=:idPost";
+
+
+
+    $comando = $pdo->prepare($consulta);
+
+    $comando->execute($data);
+   $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+for ($i=0; $i < count($resultado); $i++) { 
+
+
+    $old = getcwd();
+
+       unlink($old."/classes/imgBlog/".$resultado[$i]["ruta"]);
+}
+$consulta = "DELETE FROM blog_img WHERE idPost=:idPost ";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    return $cuenta_row;
+    
+
+    
+
+    }
+
     /*
 
             function desHabilitarCategoria($idCategoria_servicio){
@@ -269,41 +298,7 @@ function updatePostBlog($idPost, $titulo, $idDestino, $descripcionCorta, $conten
 
         
 
-function borraPrestador($idPrestador){
-
-
-
-require("conexion.php");
-
-    $data=["idPrestador"=> $idPrestador];
-
-    $consulta = "DELETE FROM prestadores WHERE idPrestador=:idPrestador ";
-
-    
-
-    $comando = $pdo->prepare($consulta);
-
-    
-
-    $comando->execute($data);
-
-    $cuenta_col = $comando->columnCount();
-
-    $cuenta_row = $comando->rowCount();
-
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    
-
-    
-
-    return $cuenta_row;
-
-    
-
-    
-
-    }*/
+*/
 
     
 

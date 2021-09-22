@@ -2,60 +2,25 @@
 
 function getAllServicios(){
 
-
-
     require("conexion.php");
-
-  
-
     $consulta = "select * from servicio";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
     return $resultado;
-
-    
-
-    
 
     }
 
 function getAllServiciosPrestador($idPrestador){
 
-
-
     require("conexion.php");
-
      require_once("salidas.php");
-
     $consulta = "select * from servicio";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
        $retorno=Array();
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 foreach ($resultado as $key => $value) {
   
@@ -69,14 +34,8 @@ array_push($retorno, $value);
 
    }
 }
-
-
-
     return $retorno;
 
-    
-
-    
 
     }
 
@@ -87,32 +46,12 @@ function getServicios(){
 
 
     require("conexion.php");
-
-  
-
     $consulta = "select * from servicio WHERE habilitado=1";
-
-    
-
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
     return $resultado;
-
-    
-
-    
 
     }
 
@@ -120,37 +59,15 @@ function getServicios(){
 
 function getServiciosPaginado($desde, $hasta){
 
-
-
     require("conexion.php");
-
-
-
     $consulta = "select * from servicio  WHERE habilitado=1 LIMIT :desde, :hasta";
-
-    
-
     $comando = $pdo->prepare($consulta);
-$comando->bindParam(":desde", $desde, PDO::PARAM_INT);
-$comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
-    
-
+    $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
+    $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
-
     return $resultado;
-
-    
-
-    
 
     }
 
@@ -283,39 +200,36 @@ $busqueda="%".$busqueda."%";
 
    function getServiciosLimit6(){
 
+    require("conexion.php");
+    $consulta = "select * from servicio WHERE habilitado=1 AND destacado=1 LIMIT 6";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute();
+    $cuenta_col = $comando->columnCount();
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    return $resultado;
+
+    } 
+
+
+     function getServiciosLimit612(){
+
 
 
 
 
     require("conexion.php");
-
-
-
-    $consulta = "select * from servicio WHERE habilitado=1 LIMIT 6";
-
-    
-
+   $consulta = "select * from servicio WHERE habilitado=1 AND destacado=1 LIMIT 6,12";
     $comando = $pdo->prepare($consulta);
-
-    
-
     $comando->execute();
-
     $cuenta_col = $comando->columnCount();
-
-    
-
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
     return $resultado;
 
-    
-
-    
-
     } 
+
+
+
+    
    function getServiciosLimit6Nuevo($idCategoria_servicio,$desde, $hasta, $busqueda){
 
    require("conexion.php");
@@ -428,41 +342,7 @@ array_push($retorno, ["idServicio"=>$idServicio,"nombre_servicio"=>$nombre_servi
 array_multisort(array_column($retorno, 'valor'), SORT_ASC, $retorno);
   return $retorno;
     } 
- function getServiciosLimit612(){
 
-
-
-
-
-    require("conexion.php");
-
-
-
-    $consulta = "select * from servicio WHERE habilitado=1 LIMIT 6,12";
-
-    
-
-    $comando = $pdo->prepare($consulta);
-
-    
-
-    $comando->execute();
-
-    $cuenta_col = $comando->columnCount();
-
-    
-
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-    // Imprimir en pantalla
-
-    return $resultado;
-
-    
-
-    
-
-    } 
 
     function getServicio($idServicio){
 
@@ -555,6 +435,42 @@ array_multisort(array_column($retorno, 'valor'), SORT_ASC, $retorno);
     
 
     }
+
+    function getServiciosidDestino($idDestino){
+
+
+
+    require("conexion.php");
+
+    $data=["idDestino"=>$idDestino];
+
+    $consulta = "select * from servicio WHERE idDestino=:idDestino AND habilitado=1";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado;
+
+    
+
+    
+
+    }
+
+
     function getDuracionServicio($idServicio){
 
 
@@ -946,6 +862,35 @@ $consulta = "DELETE FROM servicio_img WHERE idServicio=:idServicio ";
     
 
     }
+
+
+
+
+       function destacarServicio($idServicio){
+        require("conexion.php");
+        $data=["idServicio"=> $idServicio];
+        $consulta = "UPDATE servicio SET destacado=1 WHERE idServicio=:idServicio ";
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+        $id = $pdo->lastInsertId(); 
+        $cuenta_col = $comando->columnCount();
+        $cuenta_row = $comando->rowCount();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $id;
+        }
+              function quitarDestacarServicio($idServicio){
+        require("conexion.php");
+        $data=["idServicio"=> $idServicio];
+        $consulta = "UPDATE servicio SET destacado=0 WHERE idServicio=:idServicio ";
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+        $id = $pdo->lastInsertId(); 
+        $cuenta_col = $comando->columnCount();
+        $cuenta_row = $comando->rowCount();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $id;
+        }
+
 
           /*
 

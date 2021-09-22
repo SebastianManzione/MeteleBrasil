@@ -470,14 +470,14 @@ $servicios=getServiciosLimit6();
 
 $servicios=getServiciosLimit612();
  
-    for ($i=0; $i < count($servicios); $i++) { 
-      if ($i<6) {
-        
-    $idServicio=$servicios[$i]["idServicio"];
+      for ($i=0; $i < count($servicios); $i++) { 
+      $idServicio=$servicios[$i]["idServicio"];
       $fecha=date("Y-m-d");
   
       $salidas=getSalidasFechaLuegoIdServicio($fecha,$idServicio);
-      if (count($salidas)>0) {
+    if (count($salidas )>0) {
+      # code...
+   
   $idMoneda=$salidas[0]['idMoneda'];
       $idServicioSalidas=$salidas[0]['idServicioSalidas'];
       $tarifas=getTarifas($idServicioSalidas);
@@ -486,7 +486,10 @@ $servicios=getServiciosLimit612();
 1);
       $precioSugerido=($tarifa[0]["valorSym"]);
 
-      
+       }
+       else{
+        $precioSugerido="AGOTADO!";
+       }
 
       $OpinionesServicio=GetOpinionesServicio($idServicio);
       $estrellasServicio=GetEstrellasServicio($idServicio);
@@ -551,7 +554,7 @@ $servicios=getServiciosLimit612();
        <!--EL BUCLE DEBES TERMINARLO ACA--> 
 
     	<?php
-    }}}
+    }
 
  ?>
 

@@ -12,7 +12,7 @@ require("classes/idiomas.php");
 require("classes/edades.php");
 require("classes/destinos.php");
 require("classes/blog.php"); 
-require("classes/fotos_servicio.php"); 
+require("classes/fotos_blog.php"); 
 
 if (!$_SESSION["login"]["rol"]==1) {
   alertar("Usted no tiene acceso a esta seccion del software", "error");
@@ -20,7 +20,15 @@ if (!$_SESSION["login"]["rol"]==1) {
 exit();
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['borraPost'])) {
+$idPost=$_POST["borraPost"];
+   $resul=borraPost($idPost);
+   if ($resul) {
 
+    alertar("postagem excluída com sucesso","success");
+     // code...
+   }
+}
 
 
 
@@ -129,17 +137,13 @@ exit();
                   <tr>
 
                       <th>idPost</th>
-
-                      <th>Titulo</th>
-
+                      <th>Título</th>
                       <th>Destino</th>
-
                       <th>Desc.Corta</th>  
-
                       <th>Fecha</th>
-
-                      <th>Acciones</th>
                       <th></th>
+                      <th>Acciones</th>
+                      <th></th>  
                        <!-- /.Descripcion corta -->
 
                   </tr>
@@ -153,82 +157,41 @@ exit();
                     for ($i=0; $i < count($blog); $i++) { 
 
                       $idPost=$blog[$i]["idPost"];
-
                       $titulo=$blog[$i]["titulo"];
-
-                       $idDestino=$blog[$i]["idDestino"];
-
-                       $destino=getDestino($idDestino);
-
-                        $descripcionCorta=$blog[$i]["descripcionCorta"];
-
-                         $contenido=$blog[$i]["contenido"];
-
-                          $tipsYConsejos=$blog[$i]["tipsYConsejos"];
-
-                           $observaciones=$blog[$i]["observaciones"];
-
-                            $idTextoMiniaturasBlog=$blog[$i]["idTextoMiniaturasBlog"];
-
-                            $fecha_alta=date("d-m-Y", strtotime($blog[$i]["fecha_alta"]));
-
-                     
-
-                           
-
-
-
-                  
-
+                      $idDestino=$blog[$i]["idDestino"];
+                      $destino=getDestino($idDestino);
+                      $descripcionCorta=$blog[$i]["descripcionCorta"];
+                      $contenido=$blog[$i]["contenido"];
+                      $tipsYConsejos=$blog[$i]["tipsYConsejos"];
+                      $observaciones=$blog[$i]["observaciones"];
+                      $fotosp=getFotoMiniaturaBlog($idPost);
+                      $idTextoMiniaturasBlog=$blog[$i]["idTextoMiniaturasBlog"];
+                      $fecha_alta=date("d-m-Y", strtotime($blog[$i]["fecha_alta"]));
                     ?>
 
-    <tr><a ></a>
-
-                    <td><?=$idPost?></td>
-
+                  <tr>
+                   <td><?=$idPost?></td>
                     <td><?=$titulo;?></td>
-
                     <td><?=$destino[0]["nombre"];?></td>
-
                     <td><?=$descripcionCorta;?></td>
-
                      <td><?=$fecha_alta;?></td>
-
-                      
-
-          <!--  <td><img style="width: 100px;"src="classes/imgServicio/<?=$fotos[0]['ruta']?>"></td>-->
-
-
-
-                    <td><a href="../articuloBlog.php?post=<?=$idPost;?>" class="btn btn-success">Ver</a></td> 
-
+           <td><img style="width: 100px;"src="classes/imgBlog/<?=$fotosp[0]['ruta']?>"></td>
+                    <td><a href="../articuloBlog.php?post=<?=$idPost;?>" class="btn btn-success">Ver</a>
+                        <form method="post" action="blogFotos"><button class="btn-sm btn-secondary" name="idPost" value="<?=$idPost?>">Fotos</button></form>
+                    </td> 
                         <td><form method="post" action="blogAlta">
-                          <button name="editaPost" value="<?=$idPost;?>" class="btn btn-info">Editar</button>
-                        </form></td> 
-
-
-                  
+                             <button name="editaPost" value="<?=$idPost;?>" class="btn btn-info">Editar</button>
+                        </form>
+                        <form method="post" onsubmit="confirm('Tem certeza que deseja deletar a postagem?');"><button class="btn-sm btn-danger" name="borraPost" value="<?=$idPost;?>">Eliminar</button></form>
+                      </td> 
 
                   </tr>
 
                     <?php
 
                      } ?>
-
-             
-
-           
-
                   </tbody>
-
                 </table>
-
-
-
-
-
-                                
-
                             </div>              <!-- /.card-body -->
 
             </div>

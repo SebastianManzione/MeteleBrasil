@@ -10,7 +10,6 @@ require_once("admin/classes/salidas.php");
 
 require("admin/classes/categoria.php");
 require("admin/classes/servicio_opiniones.php");
-require("admin/classes/texto_miniaturas.php"); 
 
   
 

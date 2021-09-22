@@ -13,8 +13,8 @@ include("includes/navbar.php");
 include("includes/sidebar.php");
 require("classes/functions.php");
 require("classes/categoria.php");
-require("classes/fotos_servicio.php");
-require("classes/servicio.php");
+require("classes/fotos_blog.php");
+require("classes/blog.php");
 
 if (!$_SESSION["login"]["rol"]==1) {
 
@@ -25,35 +25,35 @@ if (!$_SESSION["login"]["rol"]==1) {
 }
 
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idServicio"])) {
-  $idServicio=$_POST["idServicio"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idPost"])) {
+  $idPost=$_POST["idPost"];
 
 
 }
   
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["portada"])) {
-  $idServicio=$_POST["idServicio"];
-  $idImgServicio=$_POST["portada"];
-$resul=setPortada($idImgServicio, $idServicio);
+  $idPost=$_POST["idPost"];
+  $idImgPost=$_POST["portada"];
+$resul=setPortadaBlog($idImgPost, $idPost);
 if ($resul>0) {
   alertar("Portada cambiada con exito", "success");
 };
 
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["miniatura"])) {
-  $idServicio=$_POST["idServicio"];
-  $idImgServicio=$_POST["miniatura"];
-$resul=setMiniatura($idImgServicio, $idServicio);
+  $idPost=$_POST["idPost"];
+  $idImgPost=$_POST["miniatura"];
+$resul=setMiniaturaBlog($idImgPost, $idPost);
 if ($resul>0) {
   alertar("Miniatura cambiada con exito", "success");
 };
 
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["altaFotos"])) {
-  $idServicio=$_POST["altaFotos"];
+  $idPost=$_POST["altaFotos"];
 
-$resul=$fotos=altaFotosServicio($_FILES, $idServicio);
+$resul=$fotos=altaFotosBlog($_FILES, $idPost);
 if ($resul>0) {
   alertar("Foto agregada con exito", "success");
 };
@@ -62,20 +62,21 @@ if ($resul>0) {
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["eliminarFoto"])) {
-  $idServicio=$_POST["idServicio"];
-  $idImgServicio=$_POST["eliminarFoto"];
-$resul=borraFoto($idImgServicio);
+  $idPost=$_POST["idPost"];
+  $idImgPost=$_POST["eliminarFoto"];
+$resul=borraFotoBlog($idImgPost);
 if ($resul>0) {
   alertar("Foto eliminada con exito", "success");
 };
 
 }
 
-if ($idServicio<1) {
+if ($idPost<1) {
   redireccionar("serviciosLista.php");
 }
-$servicio=getServicio($idServicio);
-$fotos=getFotosServicio($idServicio);
+
+$post=getArticuloBlog($idPost);
+$fotos=getFotosBlogIdPost($idPost);
 
 
 
@@ -96,7 +97,7 @@ $fotos=getFotosServicio($idServicio);
 
           <div class="col-sm-6">
 
-            <h1 class="m-0 text-dark">Fotos servicio <?=$servicio[0]["nombre_servicio"];?></h1>
+            <h1 class="m-0 text-dark">Fotos post <?=$post[0]["titulo"];?></h1>
 
           </div><!-- /.col -->
 
@@ -176,7 +177,7 @@ $fotos=getFotosServicio($idServicio);
 
 
 
-                                            <button type="submit" class= "btn btn-primary" name="altaFotos" value="<?=$idServicio?>">Agregar</button>
+                                            <button type="submit" class= "btn btn-primary" name="altaFotos" value="<?=$idPost?>">Agregar</button>
 
                                             </form>
 
@@ -192,7 +193,7 @@ $fotos=getFotosServicio($idServicio);
 
 
 
-        <button type="button" class= "btn btn-secondary btn-lg btn-block" data-card-widget="collapse">Serviço de lista de fotos
+        <button type="button" class= "btn btn-secondary btn-lg btn-block" data-card-widget="collapse">Blog lista de fotos
 </button>
 
 
@@ -242,7 +243,7 @@ $fotos=getFotosServicio($idServicio);
 
 for ($i=0; $i < count($fotos); $i++) { 
 
-  $idImgServicio=$fotos[$i]["idImgServicio"];
+  $idImgPost=$fotos[$i]["idImgPost"];
   $ruta=$fotos[$i]["ruta"];
   $portada=$fotos[$i]["portada"];
  $miniatura=$fotos[$i]["miniatura"];
@@ -252,14 +253,14 @@ for ($i=0; $i < count($fotos); $i++) {
 
     <tr>
 
-                                <td><img src="classes/imgServicio/<?=$ruta;?>" style="width: 150px;"></td>
+                                <td><img src="classes/imgBlog/<?=$ruta;?>" style="width: 150px;"></td>
 
                              
 <?php if ($portada==0) {
 ?>
   <td><form method="post">
-    <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-    <button class="btn-sm btn-primary" name="portada" value="<?=$idImgServicio?>">Bandeira</button></form></td>
+    <input type="hidden" name="idPost" value="<?=$idPost;?>">
+    <button class="btn-sm btn-primary" name="portada" value="<?=$idImgPost?>">Bandeira</button></form></td>
 <?php
 }else{
   ?>
@@ -271,8 +272,8 @@ for ($i=0; $i < count($fotos); $i++) {
 <?php if ($miniatura==0) {
 ?>
   <td><form method="post">
-    <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-    <button class="btn-sm btn-primary" name="miniatura" value="<?=$idImgServicio?>">Miniatura</button></form></td>
+    <input type="hidden" name="idPost" value="<?=$idPost;?>">
+    <button class="btn-sm btn-primary" name="miniatura" value="<?=$idImgPost?>">Miniatura</button></form></td>
 <?php
 }else{
   ?>
@@ -287,8 +288,8 @@ for ($i=0; $i < count($fotos); $i++) {
 <?php if ($miniatura==0 && $portada==0) {
 ?>
 <form method="post" >
-  <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-<button type="submit" name="eliminarFoto" value="<?=$idImgServicio;?>" class="btn-sm btn-danger">Retirar</button></form>
+  <input type="hidden" name="idPost" value="<?=$idPost;?>">
+<button type="submit" name="eliminarFoto" value="<?=$idImgPost;?>" class="btn-sm btn-danger">Retirar</button></form>
 <?php
 } ?>
 
@@ -326,7 +327,7 @@ for ($i=0; $i < count($fotos); $i++) {
                                     </div>
 
 
-<form method="get" action="servicioVer"><button class="btn btn-info" name="idServicio" value="<?=$idServicio;?>">Volver</button></form>
+<form method="get" action="blogLista"><button class="btn btn-info" name="idPost" value="<?=$idPost;?>">Volver</button></form>
                                     </div><!-- /.card-body -->
 
              

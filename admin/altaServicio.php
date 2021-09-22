@@ -150,7 +150,7 @@ $idDestino=$servicio[0]['idDestino'];
                                 
                                     	for ($i=0; $i < count($categorias); $i++) { 
                                             $selected='';
-                                                if ($idCategoria_servicio=$categorias[$i]['idCategoria_servicio']) {
+                                                if ($idCategoria_servicio==$categorias[$i]['idCategoria_servicio']) {
                                                     $selected='selected';
                                                 }
                                             ?>

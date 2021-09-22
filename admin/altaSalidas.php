@@ -1003,14 +1003,16 @@ $prestadores=getPrestadores();
                                     
 
                                         for ($i=0; $i < count($tarifas); $i++) { 
-
+                                            if ($tarifas[$i]['idTipoTarifa']==2) {
+                                                // code...
+                                            
                                         
 
                                       ?>
 
                                           <option value="<?=$tarifas[$i]['idTipoTarifa'];?>" ><?=$tarifas[$i]['nombre'];?></option><?php
 
-                                         } ?>                                            
+                                         }} ?>                                            
 
                              </div>
 
@@ -1048,13 +1050,18 @@ $prestadores=getPrestadores();
 
                                         <?php $cancelaciones=getTiposCancelaciones();
 
-                                        for ($i=0; $i < count($cancelaciones); $i++) { ?>
+                                        for ($i=0; $i < count($cancelaciones); $i++) { 
+                                                if ($cancelaciones[$i]['idCancelacion']==2) {
+                                                    // code...
+                                                
+                                            ?>
 
-              <option value="<?=$cancelaciones[$i]['idCancelacion']?>"> <?=$cancelaciones[$i]['texto']?></option>
+              <option value="<?=$cancelaciones[$i]['idCancelacion']?>" > <?=$cancelaciones[$i]['texto']?></option>
 
 
 
-                                        <?php  } ?>       
+                                        <?php  } }
+                                        ?>       
 
                                       </select>
 

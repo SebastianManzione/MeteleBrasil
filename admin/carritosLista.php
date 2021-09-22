@@ -151,55 +151,28 @@ for ($i=0; $i < count($reservas); $i++) {
 
 
 	$idReserva=$reservas[$i]["idReserva"];
-
-
-
-
-
-
-
-
-
- 
-
 $monedaSel=$reservas[$i]["monedaSel"];
-
 $total=$reservas[$i]["total"];
-
 $impuestos=$reservas[$i]["impuestos"];
-
 $precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $total);
-
   $totalComprobantes=getComprobantesIdReserva($idReserva);
-
   $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
-
 $horariosReserva=getReservaHorarios($idReserva);
-
-
-
 $trs='';
 
 for ($j=0; $j < count($horariosReserva); $j++) { 
 
-
-
 	$idServicioSalidas=$horariosReserva[$j]["idServicioSalidas"];
-
 	$salida=getSalida($idServicioSalidas);
-
+if (count($salida)>0) {
+  // code...
+}
   $fecha_salida=date("d-m-Y ", strtotime($salida[0]["fecha"]));
-
 	$servicio=getServicio($salida[0]["idServicio"]);
-
   $idCategoria_servicio=$servicio[0]["idCategoria_servicio"];
-
   $categoria_servicio=getCategoria($idCategoria_servicio);
-
   $nombre_categoria_servicio=$categoria_servicio[0]["nombre_categoria_servicio"];
-
 	$nombreServicio=$servicio[0]["nombre_servicio"];
-
 	$trs=$trs.' 
 
           <tr class="table-secondary">

@@ -1,8 +1,8 @@
   
 
  <!--SECCION HEADER-->
-
-<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgBlog/<?=$fotos[0]["ruta"];?>');" >
+<?php $fotoPortada=getFotoPortadaBlog($idPost); ?>
+<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgBlog/<?=$fotoPortada[0]["ruta"];?>');" >
 
   <div class="container d-md-block d-none">
 

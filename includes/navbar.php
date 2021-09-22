@@ -225,7 +225,38 @@ $descripcion_corta="Atividades, excursões, visitas guiadas em Brasil. Reserve o
 
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
 <meta property="og:image" content="https://metelebrasil.com/admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" /> 
-                      <?php }
+                      <?php } 
+                      else if(isset($_GET['post'])){
+                        require("admin/classes/blog.php"); 
+require("admin/classes/fotos_blog.php");
+                        $idPost=$_GET['post'];
+                         $articulo=getArticuloBlog($idPost);
+                         $descripcionCorta=$articulo[0]["descripcionCorta"];
+                         $fotos=getFotosBlogIdPost($idPost);  
+                            $titulo=$articulo[0]["titulo"];
+?>
+
+    <meta property="og:title"  content="<?=$titulo;?> | Metele Brasil" />
+
+    <meta property="og:description" content="<?=$descripcionCorta;?>" />
+
+    <meta name="keywords" content="excursões, visitas guiadas, passeios, atividades, traslados, circuitos, guias turísticos, guias de viagem" />
+
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+<meta property="og:type" content="article" />
+
+<meta property="og:image:width" content="1280" />
+
+<meta property="og:image:height" content="720" />
+
+<link rel="icon" href="img/favicon.ico" sizes="32x32">
+<meta property="og:image" content="https://metelebrasil.com/admin/classes/imgBlog/<?=$fotos[0]['ruta'];?>" /> 
+<?php
+                      } 
 else{
   ?>
 

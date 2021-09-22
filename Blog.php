@@ -238,7 +238,7 @@ $busqueda="";
              }
              $nombre_destino=$destinos[$i]["nombre"];
           ?>        
-<a href="blog?idDestino=<?=$idDestino;?>">
+<a href="Blog?idDestino=<?=$idDestino;?>">
 
                          <div class="custom-control custom-checkbox mb-2">
 
@@ -389,71 +389,12 @@ $busqueda="";
 
 
 
-        <div class="card card-ultimas-o d-md-block d-none">
-
-
-
-              <div class="card-body">
-
-      <p class="text-primary">asddas</p>
-
-            <p>
-
-            <i class="fa fa-star text-primary"></i>
-
-            <i class="fa fa-star text-primary"></i>
-
-            <i class="fa fa-star text-primary"></i>
-
-            <i class="fa fa-star text-primary"></i>
-
-            <i class="fa fa-star text-primary"></i>
-
-          asdasd</p>
-
-            <hr>
-
-          
-
-         
-
- </div>
-
-
-
-         
-
-        </div>
-
         <!--FIN CARD ULTIMAS OPINIONES-->
 
         <br>
 
         <!--CARD GUIA PC-->
 
-         <div class="card card-ultimas-o d-md-block d-none">
-
-          <div class="card-body" >
-
-            <form action="guias.php" method="post">
-
-              <input type="hidden" name="idCategoria" value="<?= $id;?>">
-
-            <h4><i class="fa fa-map"></i> Conoce nuestra guia de asdasd</h4>
-
-            <a class="text-white">
-
-              <img src="admin/img/categoria_servicio/<?=$fotos;?>" class="img-fluid img-guia">
-
-              <button class="submit btn btn-primary">asdasdads</button>
-
-            </a>
-
-          </form>
-
-          </div>
-
-        </div>
 
         <!--FIN CARD GUIA PC-->
 
@@ -785,21 +726,21 @@ if (count($img)>0) {
        <h4 class="text-left titulo-card-destinos semibold"><?=$titulo;?></h4>
 
                    
-                    <p class="text-gris d-md-block d-none"><?=$descripcionCorta;?></p>
+                    <p class="text-gris d-md-block "><?=$descripcionCorta;?></p>
 
             </div>
 
              <ul class="lista-caracteristicas d-md-none">
 
-                      <li><i class="fa fa-hourglass-half"></i> </li>
+                      <li> </li>
 
-                      <li><i class="fa fa-comment"></i> Español Ingles Portugués</li>
+                  
 
                     </ul>
 
                    
 
-                    <p class="float-right d-md-none semibold"><</p>
+                    <p class="float-right d-md-none semibold"></p>
 
           </div>
 
@@ -813,25 +754,17 @@ if (count($img)>0) {
 
                   <div class="col-lg-4 col-12">
 
-                    <ul class="lista-caracteristicas">
+                 
+                  </div>
 
-                      <li><i class="fa fa-hourglass-half"></i> asd </li>
+                  <div class="col-lg-4 col-12">
 
-                      <li><i class="fa fa-comment"></i> Español Ingles Portugués</li>
-
-                    </ul>
 
                   </div>
 
                   <div class="col-lg-4 col-12">
 
-                    <h4 class="text-success text-cancelacion semibold">Cancelación gratuita</h4>
-
-                  </div>
-
-                  <div class="col-lg-4 col-12">
-
-                    <h4 class="float-right semibold">asd</h4>
+                   
 
                   </div>
 
@@ -843,7 +776,7 @@ if (count($img)>0) {
 
        <div class="destacado d-md-block d-none">
 
-               <h5 class="text-uppercase text-white">¡ahorra!</h5>
+               <h5 class="text-uppercase text-white"><?=$textoMiniatura;?></h5>
 
              </div>
 
@@ -903,7 +836,7 @@ if (count($img)>0) {
 
     <li class="page-item flechas">
 
-                <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina-1).'" aria-label="Previous">
+                <a class="page-link" href="Blog.php?id='.$id.'&pagina='.($pagina-1).'" aria-label="Previous">
 
                   <span aria-hidden="true">&laquo;</span>
 
@@ -915,7 +848,7 @@ if (count($img)>0) {
 
 
 
- <li ><a class="page-link" href="categorias.php?id='.$id.'&pagina='.$contadorr.'">0</a></li>
+ <li ><a class="page-link" href="Blog.php?id='.$id.'&pagina='.$contadorr.'">0</a></li>
 
 
 
@@ -923,7 +856,7 @@ if (count($img)>0) {
 
        <li class="page-item flechas">
 
-                <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina+1).'" aria-label="Next">
+                <a class="page-link" href="Blog.php?id='.$id.'&pagina='.($pagina+1).'" aria-label="Next">
 
                   <span aria-hidden="true">&raquo;</span>
 
@@ -971,8 +904,7 @@ if (count($img)>0) {
 
               <input type="hidden" name="idCategoria" value="<?= $id;?>">
 
-  <?php print_r($opiniones_categoria);
-
+  <?php 
    ?>
 
        <h4><i class="fa fa-map"></i> Conoce nuestra guia de <?= $nombre_categoria; ?></h4>

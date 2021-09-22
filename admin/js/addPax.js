@@ -43,7 +43,7 @@ if (txtDireccion.length>0) {
         								 '<td>'+to_edades_text+'</td>'+
         								 '<td>'+tipo_tarifa_text+'</td>'+
         								 '<td>'+valor_tarifa+'</td>'+
-        								 '<td>'+pago_minimo+'</td>'+
+        								 '<td>'+valor_tarifa+'</td>'+
         								 '<td>'+selCancelaciones_text+'</td>'+
                                          '<td>'+comisionaFunny+'</td> '+
                                          '<td></td>'+
@@ -59,7 +59,7 @@ if (txtDireccion.length>0) {
                                          '<input type="hidden" name="to_edades[]" value="'+to_edades+'"></input>'+
                                          '<input type="hidden" name="tipo_tarifa[]" value="'+tipo_tarifa+'"></input>'+
                                          '<input type="hidden" name="valor_tarifa[]" value="'+valor_tarifa+'"></input>'+
-                                         '<input type="hidden" name="pago_minimo[]" value="'+pago_minimo+'"></input>'+
+                                         '<input type="hidden" name="pago_minimo[]" value="'+valor_tarifa+'"></input>'+
                                          '<input type="hidden" name="selCancelaciones[]" value="'+selCancelaciones+'"></input>'+
                                           '<input type="hidden" name="comisiona[]" value="'+comisiona+'"></input>'+
                                          ' ');
@@ -70,17 +70,17 @@ if (txtDireccion.length>0) {
 	        $('html, body').animate({
  scrollTop: $("#tipos_pax_table").offset().top
  }, 1000);
-
+swal.fire("Metelebrasil", "Taxa adicionada com sucesso", "success");
 }//if (tipo_tarifa!=4) {
 	else{
-swal.fire("error", "Las tarifas que no son free deben tener un precio", "warning");
+swal.fire("error", "As taxas não gratuitas devem ter um preço", "warning");
 		 
 		  $('html, body').animate({
  scrollTop: $("#nombre_tarifa_txt").offset().top
  }, 1000);
 }
 } else{
-swal.fire("error", "Las tarifas deben tener un nombre", "warning");
+swal.fire("error", "As taxas devem ter um nome", "warning");
 		 
 		  $('html, body').animate({
  scrollTop: $("#nombre_tarifa_txt").offset().top
@@ -89,7 +89,7 @@ swal.fire("error", "Las tarifas deben tener un nombre", "warning");
 }                                   		
 }//if (txtDireccion.length>0) {
 	else{//if (txtDireccion.length>0) {
-		swal.fire("error", "No selecciono un punto de salida en el mapa", "warning");
+		swal.fire("error", "Eu não seleciono um ponto de partida no mapa", "warning");
 		 
 		  $('html, body').animate({
  scrollTop: $("#searchBoxDIV").offset().top
