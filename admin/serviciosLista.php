@@ -251,7 +251,10 @@ if ($resul) {
 
 <?php  } ?>
 
-                    <td><a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-success"><?=$lang["ver"];?></a></td> 
+                    <td><a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-success"><?=$lang["ver"];?></a>
+  <a class="btn-sm btn-secondary" href="../servicio?id=<?=$idServicio;?>">veja em metelebrasil.com</a>
+
+                    </td> 
 
 
 

@@ -29,6 +29,12 @@ if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["reserva"])) {
 
 $codigoAmigable=$_GET["reserva"];
 
+$reserva=getReserva($codigoAmigable);
+if (count($reserva)<1) {
+  alertar($lang["la_reserva_con_el_codigo"]." ".$codigoAmigable." ".$lang["no_existe"],"error");
+  redireccionarLento("index");
+  exit();
+}
 
 
 $reserva=getReserva($codigoAmigable)[0];
@@ -39,11 +45,6 @@ $idReserva=$reserva["idReserva"];
 
 
 
-}
-if (count($reserva)<1) {
-  alertar($lang["la_reserva_con_el_codigo"].$codigoAmigable.$lang["no_existe"]);
-  redireccionarLento("index");
-  exit();
 }
 
 

@@ -1003,7 +1003,7 @@ $prestadores=getPrestadores();
                                     
 
                                         for ($i=0; $i < count($tarifas); $i++) { 
-                                            if ($tarifas[$i]['idTipoTarifa']==2) {
+                                            if ($tarifas[$i]['idTipoTarifa']==2 || $tarifas[$i]['idTipoTarifa']==4) {
                                                 // code...
                                             
                                         

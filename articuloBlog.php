@@ -358,37 +358,11 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
        <div class="<?= $classe ?>">
-
-
-
                   <img class="d-block w-100 img-slider-servicio" src="admin/classes/imgBlog/<?=$fotos[$i]['ruta'];?>" alt="First slide">
-
-
-
                   <div class="carousel-caption d-none d-md-block">
-
-
-
                     <h5></h5>
-
-
-
                   </div>
-
-
-
                 </div>
-
-
-
-   
-
-
-
-   
-
-
-
 <?php
 
 
@@ -418,105 +392,16 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
                 <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-
-
-
                   <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-
-
-
                   <span class="sr-only"><?=$lang["anterior"];?></span>
-
-
-
                 </a>
-
 
 
                 <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-
-
-
                   <span class="carousel-control-next-icon" aria-hidden="true"></span>
-
-
-
                   <span class="sr-only"><?=$lang["Proxima"];?></span>
-
-
-
                 </a>
-
-
-
            </div>
-
-
-
-        <!--FIN SLIDER-->
-
-
-
-        <!--TEXTO VISITA-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-         
-
-
-
-          
-
-
-
-     
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--FIN TEXTO VISITA-->
-
-
-
-
-
-
-
-        <!--TEXTO IMPORTANTE-->
-
-
-
-
-
 
 
          <h2 class="py-4 text-primary"><?=$lang["tips_y_concejos"];?></h2>
@@ -543,7 +428,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
 
-
+sdsdds
 
 
 
@@ -556,13 +441,6 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
           </div>
-
-
-
-
-
-
-
 
 
       </div>
@@ -586,115 +464,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
               <!-- /.card-header -->
 
-        
-              <!-- /.card-body -->
 
-              <div class="card-footer">
-
-                <form action="#" method="post" style="display: none;">
-
-
-
-
-
-
-
-                   <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" data-whatever="agregarNota"><?=$lang["quiero_comentar"];?></button>
-
-
-
-
-
-
-
-          
-
-
-
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-
-                                      <div class="modal-dialog" role="document">
-
-                                        <div class="modal-content">
-
-                                          <div class="modal-header">
-
-                                            <h5 class="modal-title" id="exampleModalLabel"><?=$lang["nuevo_comentario"];?></h5>
-
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-
-                                              <span aria-hidden="true">&times;</span></button>
-
-                                          </div>
-
-
-
-                                          <div class="modal-body">
-
-                                            <form method="post">
-
-                                              <div class="form-group">
-
-                                            
-
-                                               <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-
-                                                  <label for="recipient-name" class="col-form-label"><?=$lang["nombre"];?>:</label>
-
-                                                  <input type="text" name="nombre" class="form-control" id="recipient-name">
-
-                                             </div>
-
-
-
-                                             <div class="form-group">
-
-                                            
-
-                                               <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
-
-                                                  <label for="recipient-name" class="col-form-label">E-mail:</label>
-
-                                                  <input type="text" name="nombre" class="form-control" id="recipient-name">
-
-                                             </div>
-
-                                                  <div class="form-group">
-
-                                                     <label for="message-text" class="col-form-label"><?=$lang["comentario"];?>:</label>
-
-                                                        <textarea name="opinion" class="form-control" id="message-text"></textarea>
-
-                                                  </div>
-
-                                                  
-
-                                            <div class="form-group">
-
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal"><?=$lang["cancelar"];?></button>
-
-                                            <button type="submit" name="setOpinionServicio" class= "btn btn-primary"></button>
-                                            </div>
-</form></div></div></div>
-
-                                    </div>
-
-
-
-
-
-
-
-
-
-
-
-                </form>
-
-              </div>
-
-              <!-- /.card-footer-->
-<br>
 
 <!--botones de compartir whatsapp y facebook-->
 
@@ -706,7 +476,7 @@ for ($i=0; $i < count($fotos); $i++) {
   </div>
 
 </div>
-<br>
+
 
 <div class="row" style="margin-right: 3%; margin-left: 3%;">
 
@@ -715,11 +485,11 @@ for ($i=0; $i < count($fotos); $i++) {
 
 </div>
 
-<br>
+
 
 <!--FINALIZA CAJA DE COMENTARIOS-->
 
-
+</section>
 
 
 
@@ -786,35 +556,21 @@ if (count($serviciosRelacionados)>1) {
   $cantidadRelleno=1;
 }
 else{
-  $cantidadRelleno=3;
+  $cantidadRelleno=2;
 }
 
   if ($i<=$cantidadRelleno) {
 
-    // code...
-
-
-
   $idPost=$articulosRecomendados[$i]["idPost"];
-
   $titulo=$articulosRecomendados[$i]["titulo"];
-
 $descripcionCorta=$articulosRecomendados[$i]["descripcionCorta"];
-
 $img=getImgArticulo($idPost);
-
 $idTextoMiniaturas=$articulosRecomendados[$i]["idTextoMiniaturasBlog"];
-
 $textoMiniatura=getTextoMiniaturaBlog($idTextoMiniaturas)[0]["texto"];
-
 $foto='default.jpg';
-
 if (count($img)>0) {
-
   $foto=$img[0]['ruta'];
-
 }
-
   ?>
 
 
@@ -826,7 +582,7 @@ if (count($img)>0) {
                    </div>
                    <div class="card-body">
                      <h3><a href="articuloBlog?post=<?=$idPost?>"><?=$titulo;?></a></h3>
-                     <p class="text-primary"><strong><?=$descripcionCorta;?></strong> <span class="text-gris"></span></p>
+                     <p class="text-primary"><strong></strong> <span class="text-gris"><?=$descripcionCorta;?></span></p>
                      <p></p>
                      <h3 class="text-primary"></h3>
                    </div>
@@ -835,14 +591,7 @@ if (count($img)>0) {
   <?php
 
 }  } ?>
-
-
-
-
-
-
-
-              </div>
+             </div>
             </div>
          </div>
    </div>
@@ -850,75 +599,9 @@ if (count($img)>0) {
   </section>
 
 
-<section class="d-md-none scroll-to-top2  position-fixed">
-
-
-
-    <div class="container-fluid d-md-none">
-
-
-
-        
-
-
-
-   </div>
-
-
-
-
-
-
-
-</section>
-
-
-
-
-
-
 
 <!--FIN BOTON RESERVA MOVIL-->
 
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- <!-- Footer -->
 
 
 

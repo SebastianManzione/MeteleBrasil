@@ -3,29 +3,17 @@
 
 
 include('includes/navbar.php');
-
-
-
 include('admin/classes/categoria.php');
-
 include('admin/classes/fotos_categoria.php');
-
-
-
 include('admin/classes/opiniones_categoria.php');
-
 include('admin/classes/servicio_opiniones.php');
-
-
-
 require("admin/classes/texto_miniaturas.php");
-
 
 
 $busqueda = "";
 $cantidad_por_pagina = 5;
 $desde = 0;
-$pagina=0;
+$pagina=1;
 if (isset($_GET['pagina'])) {
   $pagina = $_GET['pagina'];
   if ($pagina == 0) {
@@ -1130,33 +1118,21 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               case 1:
               case 3:
               case 7:
-                $cancelacion = "gratís!";
+                $cancelacion = "Cancelamento gratis!";
                 break;
 
               default:
                 // code...
                 break;
             }
-
-
-
-
-            $nombre_servicio = $servicios[$i]["nombre_servicio"];
-
+           $nombre_servicio = $servicios[$i]["nombre_servicio"];
             $descripcion_corta = $servicios[$i]["descripcion_corta"];
-
             $opiniones_servicio = getOpinionesServicio($idServicio);
-
             $estrellas_servicio = getEstrellasServicio($idServicio);
-
             $cantidad_opiniones_servicio = count($opiniones_servicio);
-
             $duracion_servicio = getDuracionServicio($idServicio);
-
             $fotos_servicio = getFotoMiniaturaServicio($idServicio);
-
             $fotos_servicio = $fotos_servicio[0]["ruta"];
-
             $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"];
 
         ?>
@@ -1164,87 +1140,45 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
 
             <a href="servicio?id=<?= $idServicio ?>">
-
-              <div class="mb-4">
-
+             <div class="mb-4">
                 <div class="card card-visitas">
-
                   <div class="row no-gutters d-md-none" style="position: absolute;z-index: 999;">
-
                     <div class="col-6">
-
                       <div class="badge badge-primary badge-destacado"><?= $textoMiniatura; ?></div>
-
                     </div>
-
                   </div>
-
                   <div class="card-body padding-body">
-
                     <div class="row ">
-
                       <div class="col-md-4 col-4">
-
                         <img src="admin/classes/imgServicio/<?= $fotos_servicio; ?>" class="w-100 img-fluid img-card-destinos">
-
                       </div>
-
                       <div class="col-md-8 col-8" style="padding-left:0px !important;">
-
                         <div class="card-block ">
-
                           <h4 class="text-left titulo-card-destinos semibold"><?= $nombre_servicio ?></h4>
-
                           <h5 class="texto-opinion-desta"><strong><?= $estrellas_servicio; ?>/10</strong> <small class="text-gris"><?= $cantidad_opiniones_servicio; ?> opiniones</small></h5>
-
                           <p class="text-gris d-md-block"><?= $descripcion_corta; ?></p>
-
                         </div>
-
                         <ul class="lista-caracteristicas d-md-none">
-
                           <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
-
-
-
                         </ul>
-
                         <h4 class="text-success text-cancelacion  float-left d-md-none semibold"><?= $cancelacion ?></h4>
-
                         <p class="float-right d-md-none semibold"><?= $precioSugerido; ?></p>
-
                       </div>
-
-
-
                     </div>
 
                     <div class=" d-md-block mt-2 d-none">
-
                       <div class="row no-gutters">
-
                         <div class="col-lg-4 col-12">
-
                           <ul class="lista-caracteristicas">
-
                             <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?> </li>
-
-
-
-                          </ul>
-
+                         </ul>
                         </div>
-
                         <div class="col-lg-4 col-12">
-
                           <h4 class="text-success text-cancelacion semibold"><?= $cancelacion; ?></h4>
-
                         </div>
 
-                        <div class="col-lg-4 col-12">
-
+                       <div class="col-lg-4 col-12">
                           <h4 class="float-right semibold"><?= $precioSugerido; ?></h4>
-
                         </div>
 
                       </div>
@@ -1307,7 +1241,14 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
 
 
+<style type="text/css">
+  .active{
+    color: white !important;
+    background-color: lightgrey;
+    zoom:  1.05;
+}
 
+</style>
 
 <div class="col-12" style="margin: 10%; width: 90%;">
         <nav aria-label="Page navigation example">
@@ -1339,11 +1280,10 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
               <?php
 
-
               for ($i = 1; $i < $cantidad_de_paginas; $i++) {
                 $activada="";
                 if(($pagina)==$i){
-                  $activada=" disabled";
+                  $activada="active";
                 }
               ?>
                 <li class=" <?=$activada?>"><a class="page-link <?=$activada?>" href="categorias.php?idCategoria=<?= $idCategoria ?>&pagina=<?= $i ?>"><?= $i; ?></a></li>
@@ -1391,7 +1331,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
 
 
-        <div class="card card-ultimas-o d-md-block">
+        <div class="card card-ultimas-o d-block d-sm-none">
 
           <?php
 

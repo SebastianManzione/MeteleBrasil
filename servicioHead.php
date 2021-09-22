@@ -180,8 +180,19 @@
      <div class="row">
 
       <div class="col-6">
+<?php if($servicio["idCategoria_servicio"] == 4){ //si es paquete
+  $origen=getDestino($servicio["idDestino"]);
+     $paisOrigen=getPais($origen[0]["idPais"]); 
+?>
+  <a  class="btn btn-movil-header  text-primary "><?=$origen[0]["nombre"]?>, <?=$origen[0]["estado"]?>, <?=$paisOrigen[0]["nombre"]?> | <?=$destino[0]["nombre"]?>, <?=$pais[0]["nombre"]?></a>
+<?php
+} else{
+  ?>
+  <a  class="btn btn-movil-header  text-primary "><?=$destino[0]["nombre"]?>, <?=$destino[0]["estado"]?>, <?=$pais[0]["nombre"]?></a>
+  <?php
+} ?>
 
-        <a href="categorias.php?id=<?= $idcatsrv;?>" class="btn btn-movil-header  text-primary "><i class="fa fa-arrow-left"></i><?=$lang["categoria_servicio"]?><strong>><?=$lang["brasil"]?></strong></a>
+       
 
       </div>
 

@@ -108,28 +108,19 @@ var salidas;
 
 function traeHorarios($fecha, $idServicio){
 
-   precioTotal=0;cantidadPersonas=1;
-
+   precioTotal=0;
+   cantidadPersonas=1;
   idServicioSeleccionado=$idServicio;
 
 
-
- 
-
   $.post("admin/ctrl/ctrlHorarios", {fecha: $fecha,idServicio: $idServicio}, function(data, status){
-
-
-
    salidas = JSON.parse(data); 
-
-
-
-limpiarTarifaYAdicionales();
+   limpiarTarifaYAdicionales();
 
 for (var i = 0; i < salidas.length; i++) {   
 
 if (salidas[i]["sinHorario"]==1) {
-$('#divhora').append(
+    $('#divhora').append(
 
         '<button type="button" class="btn btn-light btn-block mt-2" onClick="traeTarifas('+salidas[i]["idServicioSalidas"]+')">'+salidas[i]["sinHorarioTexto"]+'</button>');
 
@@ -754,13 +745,10 @@ precioTotal+=tarifas[0]['valor'];
 
 for (var i = 0; i < reservaAdicionales.length; i++) {
 
-  if (reservaAdicionales[i]["cantidad"]>cantidadPersonas) {
+  if (reservaAdicionales[i]["cantidad"]=cantidadPersonas) {
 
 reservaAdicionales[i]["cantidad"]=cantidadPersonas;
-
-
-
-    CalculaAdicionales(reservaAdicionales[i]["idServicioSalidasAdicionales"], 2,cantidadPersonas);
+    CalculaAdicionales(reservaAdicionales[i]["idServicioSalidasAdicionales"], 0 ,cantidadPersonas);
 
   }
 

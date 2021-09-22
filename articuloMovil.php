@@ -214,26 +214,7 @@ for ($i=0; $i < count($fotos); $i++) {
 
           <p class=""> <?=$observaciones;?></p>
 
-        <!--FIN TEXTO IMPORTANTE-->
-
-
-
-        <!--TEXTO RECOGIDA-
-
-
-
-        <h4 class="py-4 text-primary">Recogida en el hotel</h4>
-
-
-
-       <p>Opcionalmente, podes reservar la recogida en por el hotel. La recogida es una hora antes de la hora de inicio del tour e incluye todos los alojamientos en un radio de 8 kilómetros desde el punto de encuentro.</p>
-
-
-
-  
-
-        --FIN TEXTO RECOGIDA-->  
-
+ 
 
 
         </div>
@@ -249,25 +230,8 @@ for ($i=0; $i < count($fotos); $i++) {
                   </div>
 
               </div>
-
-
-
-
-
-
-
-
-
-
-
        </div>
-
-            
-
-            <!--FIN ACORDEON OPINIONES-->
-
-
-
+         
 
 
     </div>

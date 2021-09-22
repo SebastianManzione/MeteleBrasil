@@ -164,15 +164,16 @@ for ($j=0; $j < count($horariosReserva); $j++) {
 
 	$idServicioSalidas=$horariosReserva[$j]["idServicioSalidas"];
 	$salida=getSalida($idServicioSalidas);
+   $fecha_salida='';
 if (count($salida)>0) {
-  // code...
-}
-  $fecha_salida=date("d-m-Y ", strtotime($salida[0]["fecha"]));
-	$servicio=getServicio($salida[0]["idServicio"]);
+   $fecha_salida=date("d-m-Y ", strtotime($salida[0]["fecha"]));
+  $servicio=getServicio($salida[0]["idServicio"]);
   $idCategoria_servicio=$servicio[0]["idCategoria_servicio"];
   $categoria_servicio=getCategoria($idCategoria_servicio);
   $nombre_categoria_servicio=$categoria_servicio[0]["nombre_categoria_servicio"];
-	$nombreServicio=$servicio[0]["nombre_servicio"];
+  $nombreServicio=$servicio[0]["nombre_servicio"];
+}
+ 
 	$trs=$trs.' 
 
           <tr class="table-secondary">
