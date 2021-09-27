@@ -18,48 +18,17 @@ require("admin/classes/destinos.php");
 
 
      if (isset($_GET["post"]) ) {
-
-
-
                     $idPost=$_GET['post'];
-
-
-
                     $articulo=getArticuloBlog($idPost);
-
-
-
-         
-
-
-
-             $titulo=$articulo[0]["titulo"];
-
-
-
-            $descripcionCorta=$articulo[0]["descripcionCorta"];
-
-
-
-              $contenido=$articulo[0]["contenido"];
-
-
-
-               $tipsYConsejos=$articulo[0]["tipsYConsejos"];
-
-
-
-$observaciones=$articulo[0]["observaciones"];
-
-
-
-$idDestino=$articulo[0]["idDestino"];
-
-
-
-$destino=getDestino($idDestino);
-$pais=getPais($destino[0]["idPais"]);
- $fotos=getFotosBlogIdPost($idPost);  
+                     $titulo=$articulo[0]["titulo"];
+                    $descripcionCorta=$articulo[0]["descripcionCorta"];
+                    $contenido=$articulo[0]["contenido"];
+                   $tipsYConsejos=$articulo[0]["tipsYConsejos"];
+                    $observaciones=$articulo[0]["observaciones"];
+                  $idDestino=$articulo[0]["idDestino"];
+                  $destino=getDestino($idDestino);
+                  $pais=getPais($destino[0]["idPais"]);
+                  $fotos=getFotosBlogIdPost($idPost);  
 
 if (count($fotos)<1) {
 
@@ -113,27 +82,9 @@ if (count($fotos)<1) {
 
      <?php
 
-
-
 include('blogHead.php');
 
-
-
 ?>
-
-
-
-
-
-
-
- 
-
-
-
-
-
-
 
 <?php include("articuloMovil.php"); ?>
 
@@ -226,24 +177,6 @@ include('blogHead.php');
 
 
         <h2 class="py-4 text-primary" name="desc"><?=$titulo;?></h2>
-
-
-
-
-
-
-
-   
-
-
-
-
-
-
-
-       
-
-
 
  <?=$contenido;?>
 
@@ -405,67 +338,21 @@ for ($i=0; $i < count($fotos); $i++) {
 
 
          <h2 class="py-4 text-primary"><?=$lang["tips_y_concejos"];?></h2>
-
-
-
-
-
-
-
-        <?=$tipsYConsejos;?>
-
-
-
-
-
-
-
-
-
-
-
+                <?=$tipsYConsejos;?>
          <h2 class="py-4 text-primary"><?=$lang["observaciones"];?></h2>
-
-
-
-sdsdds
-
-
-
-        <?=$observaciones;?>
-
-
-
+                <?=$observaciones;?>
            <!--BARRA DESPLAZADA-->
-
-
-
           </div>
-
-
       </div>
             <!--CAJA DE COMENTARIOS-->
 
 
-
-
-
 <div class="card direct-chat direct-chat-primary" >
-
               <div class="card-header">
-
-                <h3 class="card-title">Comentarios</h3>
-
-
-
-                
-
+                <h3 class="card-title">Comentarios</h3>           
               </div>
 
               <!-- /.card-header -->
-
-
-
 <!--botones de compartir whatsapp y facebook-->
 
 <div class="row" style="margin-right: 3%; margin-left: 3%;">

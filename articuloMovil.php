@@ -33,8 +33,7 @@
                       <h5 class="mb-0">
 
                         <a class="btn btn-accordion bg-white border-top btn-accordion-dark-show " id="btn-descripcion"  data-toggle="collapse" data-target="#descripcion-movil" aria-expanded="true" aria-controls="collapseOne">
-
-                          <?=$descripcionCorta;?> <i class="fa fa-sort-down text-primary float-right"></i>
+   <?=$lang["descripcion_"]?> <i class="fa fa-sort-down text-primary float-right"></i>
 
                         </a>
 
@@ -60,7 +59,8 @@
 
           <!--TEXTO DESTACADO-->
 
-          <p></p>
+          <p>
+                          <?=$descripcionCorta;?></p>
 
           <!--FIN TEXTO DESTACADO-->
 

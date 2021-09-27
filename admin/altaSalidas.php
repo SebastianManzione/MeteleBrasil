@@ -291,6 +291,7 @@ $hoy= date("Y-m-d");
 
 $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month")); 
 
+$masTresMeses= date("Y-m-d",strtotime($hoy."+ 3 month")); 
  ?>
 
  <!-- Content Wrapper. Contains page content -->
@@ -402,7 +403,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                     <div class="form-group">
 
-                                        <input class="form-control" name="inicio_periodo" type="date" value="<?= $hoy;?>" min="<?= $hoy;?>"> 
+                                        <input class="form-control" name="inicio_periodo" type="date" value="<?= $hoy;?>" min="<?= $hoy;?>" max="<?=$masTresMeses;?>"> 
 
                                     </div>
 
@@ -414,7 +415,7 @@ $mesQueViene= date("Y-m-d",strtotime($hoy."+ 1 month"));
 
                                    <div class="form-group">     
 
-                                        <input class="form-control" name="fin_periodo" type="date" value="<?= $mesQueViene;?>" min="<?= $hoy;?>">
+                                        <input class="form-control" name="fin_periodo" type="date" value="<?= $mesQueViene;?>" min="<?= $hoy;?>" max="<?=$masTresMeses;?>">
 
                                     </div>
 

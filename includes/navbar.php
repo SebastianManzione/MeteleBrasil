@@ -205,7 +205,7 @@ $descripcion_corta="Atividades, excursões, visitas guiadas em Brasil. Reserve o
 
                     $servicio=getServicio($idServicio)[0];
                       $fotos=getFotosServicio($idServicio);?>
-
+<meta property="og:url" content="https://www.metelebrasil.com.com/servicio" />
     <meta property="og:title"  content="<?=$servicio["nombre_servicio"];?> | Metele Brasil" />
 
     <meta property="og:description" content="<?=$servicio["descripcion_corta"];?>" />
@@ -219,9 +219,9 @@ $descripcion_corta="Atividades, excursões, visitas guiadas em Brasil. Reserve o
 
 <meta property="og:type" content="article" />
 
-<meta property="og:image:width" content="1280" />
+<meta property="og:image:width" content="400" />
 
-<meta property="og:image:height" content="720" />
+<meta property="og:image:height" content="300" />
 
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
 <meta property="og:image" content="https://metelebrasil.com/admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" /> 
@@ -249,9 +249,9 @@ require("admin/classes/fotos_blog.php");
 
 <meta property="og:type" content="article" />
 
-<meta property="og:image:width" content="1280" />
+<meta property="og:image:width" content="400" />
 
-<meta property="og:image:height" content="720" />
+<meta property="og:image:height" content="300" />
 
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
 <meta property="og:image" content="https://metelebrasil.com/admin/classes/imgBlog/<?=$fotos[0]['ruta'];?>" /> 

@@ -310,7 +310,7 @@ if (isset($_FILEs)) {
 
                                      		 <label>Texto de la Miniatura Blog</label>
 
-                                
+                                 <select name="idTextoMiniaturasBlog" class="form-control" required> 
   
                                        		<?php 
 
@@ -322,7 +322,7 @@ if (isset($_FILEs)) {
                                            $selected='selected';
                                         }
                                          ?>
-    <select name="idTextoMiniaturasBlog" class="form-control" required> 
+   
                                 <option value="<?=$textMiniaturas[$i]["idTextoMiniaturasBlog"];?>" <?=$selected?>>
 
                                                         <?=$textMiniaturas[$i]["texto"];?></option>

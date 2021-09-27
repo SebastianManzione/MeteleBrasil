@@ -1,8 +1,4 @@
-
-
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <?php 
- 
+<?php
 include("navbar.php");
 include($GLOBALS['path'].'/conectar.php');
 
@@ -28,8 +24,6 @@ else{
 
 
 ?>
-
-
 
  <!--SECCION HEADER-->
 <section id="header-visitas" class="menu-h" style="background-image: url('img/slider4.jpg');">
