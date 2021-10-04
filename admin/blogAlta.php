@@ -373,7 +373,7 @@ if (isset($_FILEs)) {
 
                                 <a href="blogLista.php" class="btn btn-danger">
 
-                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Volver
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i> Voltar
 
                                 </a>
 

@@ -208,6 +208,7 @@ exit();
                 
                     <?php $tipos_cancelaciones=getTiposCancelaciones();
                             for ($i=0; $i < count($tipos_cancelaciones); $i++) {
+                                     if ($tipos_cancelaciones[$i]['idCancelacion']==2) {
                             $selected=""; 
                               if ($idTipoCancelacion==$tipos_cancelaciones[$i]["idCancelacion"]) {
                                 $selected="selected";
@@ -216,18 +217,19 @@ exit();
 <option value="<?=$tipos_cancelaciones[$i]["idCancelacion"]?>" <?=$selected?> ><?=$tipos_cancelaciones[$i]["texto"]?></option>
 
                            <?php
+                         }
                             }
 
                      ?>
                          </select>
                     <label>comision</label>
-                    <input type="checkbox" name="comisiona" class="form-control" <?=$comisiona?>>
+                    <input type="checkbox" name="comisiona" class="form-control" required checked readonly="true" onclick="return false;">
 </div>
 <button class="btn-sm btn-success" name="updateTarifa">Guardar</button>
 
 </form>
-<form method="post" action="salidasEditar">
-  <button class="btn-sm btn-info" name="idServicioSalidas" value="<?=$idServicioSalidas?>">Volver</button>
+<form method="post" action="salidaVer">
+  <button class="btn-sm btn-info" name="idServicioSalidas" value="<?=$idServicioSalidas?>">Voltar</button>
 </form>                                    </div>
 
                                     </div>

@@ -33,7 +33,8 @@ $mail->Helo = "www.metelebrasil.com"; //Muy importante para que llegue a hotmail
 $mail->From = $direccion_remitente;
 
 $mail->FromName = 'Reservas METELEBRASIL.COM';
-
+// Activo condificacción utf-8
+$mail->CharSet = 'UTF-8';
 $mail->addAddress($receptor);     // Add a recipient
 
 $mail->addBCC($direccion_remitente);     // Add a recipient

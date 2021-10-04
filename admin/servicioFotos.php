@@ -326,7 +326,7 @@ for ($i=0; $i < count($fotos); $i++) {
                                     </div>
 
 
-<form method="get" action="servicioVer"><button class="btn btn-info" name="idServicio" value="<?=$idServicio;?>">Volver</button></form>
+<form method="get" action="servicioVer"><button class="btn btn-info" name="idServicio" value="<?=$idServicio;?>">Voltar</button></form>
                                     </div><!-- /.card-body -->
 
              

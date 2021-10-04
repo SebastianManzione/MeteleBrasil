@@ -219,7 +219,7 @@ $cuerpo='
                         <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
                           <tr>
                             <td align="center" bgcolor="46D928" role="presentation" style="background-color:#46D928;border:none;border-radius:5px;cursor:auto;padding:10px 25px;" valign="middle">
-                              <a href="https://api.whatsapp.com/send?phone=541165346776&text=Oi%20preciso%20ajuda%20com%20minha%20reserva%20reserva='.$codigoAmigable.'" style="background:#46D928;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;" target="_blank">
+                              <a href="https://api.whatsapp.com/send?phone=+48996837008&text=Oi%20preciso%20ajuda%20com%20minha%20reserva%20reserva='.$codigoAmigable.'" style="background:#46D928;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;" target="_blank">
                                Nosso Whatsapp
                               </a>
  

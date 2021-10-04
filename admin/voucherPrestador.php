@@ -59,7 +59,7 @@ $telefonoResponsable=$reserva['telefonoResponsable'];
 $totalReserva=$reserva["total"];
 $impuestos=$reserva["impuestos"];
 $monedaSel=$reserva["monedaSel"];
-
+$comentario=$horarios[0]['comentario'];
 $precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $totalReserva);
      $servicio= getServicio($horarios[0]["idServicioSeleccionado"]);
 $idServicioSalidas=($horarios[0]['idServicioSalidas']);
@@ -316,6 +316,12 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
   
                 <!-- /.col -->
               </div>
+                   <div class="row">
+       <div class="card">
+        <label>Comentários</label>
+         <p ><?=$comentario?></p>
+       </div>
+     </div>
           <div class="callout callout-info" >
               <h3><i class="fas fa-info"></i> Ponto de sáida: <?=$ubicacion[0]['direccion']?></h3>
              
@@ -327,7 +333,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
             
             </div>
               <!-- /.row -->
-     
+
               <div class="row">
 
 
@@ -394,7 +400,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                
                   <form method="post" action="pasajerosLista">
                        <a id="btnImprimir" class="btn btn-default"><i class="fas fa-print"></i> Imprimir</a>
-                    <button class="btn-sm btn-default" type="submit" name="idServicioSalidas" value="<?=$idServicioSalidas;?>">Volver</button>
+                    <button class="btn-sm btn-default" type="submit" name="idServicioSalidas" value="<?=$idServicioSalidas;?>">Voltar</button>
                   </form>
                  
                 

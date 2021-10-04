@@ -36,7 +36,7 @@ $web='';
 
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST['altaPrestador'])) {
-echo "********************************** ALTA PRESTADOR";
+
 $nombre=$_POST["nombre"];
 $rSocial=$_POST["rSocial"];
 $documento=$_POST["documento"];
@@ -666,7 +666,7 @@ localizacion[3]=result.location['longitude'];
            <button type="submit" name="altaPrestador"id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Continuar</button>  
 <?php } ?>
 
-            <a href="prestadores" class="btn btn-info" ><i class="fas fa-arrow-left"></i>Volver</a>
+            <a href="prestadores" class="btn btn-info" ><i class="fas fa-arrow-left"></i>Voltar</a>
 
 </div>
 

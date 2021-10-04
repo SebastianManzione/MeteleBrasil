@@ -322,7 +322,7 @@ if (count($svNoIncluidos)==0) {
               <!-- /.col -->
                <div align="right">
             <button type="submit" id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> <?=$lang["continuar_"];?></button> 
-            <a href="servicios.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i><?=$lang["salir_sin_guardar"];?></a>
+            <a href="serviciosLista.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i><?=$lang["salir_sin_guardar"];?></a>
 </div>
 
 

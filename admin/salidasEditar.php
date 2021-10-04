@@ -649,11 +649,11 @@ if ($salida[0]['sinHorario']==1) {
                                 <div clas="col-md-4">
 
                                     <div align="right">
-   <a href="servicioVer.php?idServicio=<?=$idServicio;?>" class="btn btn-info btn-sm">
 
-                                           <i class="fas fa-arrow-left"></i>  <?=$lang["salir"];?>
+  
 
-                                        </a>
+                </form>
+
                                         <button type="submit" onclick="upload();" value="Crear servicio"
 
                                             class="btn btn-success btn-sm">
@@ -661,8 +661,7 @@ if ($salida[0]['sinHorario']==1) {
                                          <i class="fas fa-save"></i> <?=$lang["guardar"];?>
 
                                         </button>
-
-                                     
+                                       <form method="post" action="salidaVer.php"><button class="btn-sm btn-info" name="idServicioSalidas" value="<?=$idServicioSalidas?>"><i class="fas fa-arrow-left"></i>  <?=$lang["salir"];?></button></form>
 
                                     </div>
 
@@ -673,8 +672,6 @@ if ($salida[0]['sinHorario']==1) {
                         </div>
 
                     </div>
-
-                </form>
 
             </div>
 

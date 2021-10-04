@@ -13,16 +13,18 @@
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
- 
+ echo "***********************update";
    $idServicio=$_GET['idServicio'];
 
     $idUsuario=$_SESSION['login']['idUsuario'];
  
 $idServiciodd=updateServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['txtDescripcion'],  $_POST['txtDescripcionCorta'],  $_POST['txtDocumentacionViajero'],  $_POST['txtObservaciones'],  $_POST['idTextoMiniatura'],$idUsuario, $_POST['idOrigen'],$_POST['idDestino'],$_POST['idServicio'] );
 
+echo "string".count($_FILES);
+if (count($_FILES)>1) {
+    // code...
 
-
-$fotos=altaFotosServicio($_FILES, $idServicio);
+$fotos=altaFotosServicio($_FILES, $idServicio);}
 if ($idServiciodd>0) {
    alertar($lang["servicio_actualizado_correctamente"],"success");
 
@@ -42,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar'])) {
 $idServicio=altaServicio($_POST['txtNomEvt'], $_POST['selCategoria'],  $_POST['txtDescripcion'],  $_POST['txtDescripcionCorta'],  $_POST['txtDocumentacionViajero'],  $_POST['txtObservaciones'],  $_POST['idTextoMiniatura'],$idUsuario, $_POST['idOrigen'],$_POST['idDestino'] );
 
 $_SESSION["altaServicio"] = $idServicio;
-
-$fotos=altaFotosServicio($_FILES, $idServicio);
+if (count($_FILES)>1) {
+$fotos=altaFotosServicio($_FILES, $idServicio);}
 alertar($lang["servicio_cargado_correctamente"],"success");
 
      
@@ -311,7 +313,7 @@ $idDestino=$servicio[0]['idDestino'];
                             </div>
                         <div class="card-footer">
                           <div align="center">
-                                <?php   if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET['idServicio'])) { ?>
+                                <?php   if ($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET['idServicio']) || isset($_POST['idServicio'])) { ?>
                                 <button type="submit" id="uploadFiles" value="Crear servicio" class="btn btn-info" name="actualizar">
                                     <i class="fa fa-floppy-o" aria-hidden="true"></i> 
 
@@ -324,14 +326,14 @@ $idDestino=$servicio[0]['idDestino'];
                                     <i class="fa fa-floppy-o" aria-hidden="true"></i> <?=$lang["continuar_"];?>
                                 </button>
                             <?php }?>
-                                <a href="servicios.php" class="btn btn-danger">
+                                <a href="serviciosLista.php" class="btn btn-danger">
                                     <i class="fa fa-times" aria-hidden="true"></i> 
 
                                     <?=$lang["salir_sin_guardar"];?>
 
 
                                 </a>
-                                <?php if (isset($_GET['idServicio'])) {
+                                <?php if (isset($_GET['idServicio']) || isset($_POST['idServicio']) ) {
                                 ?>
                                 <a href="servicioVer.php?idServicio=<?=$_GET['idServicio'];?>" class="btn btn-primary"> 
 

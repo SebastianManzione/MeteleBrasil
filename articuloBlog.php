@@ -345,17 +345,8 @@ for ($i=0; $i < count($fotos); $i++) {
           </div>
       </div>
             <!--CAJA DE COMENTARIOS-->
-
-
-<div class="card direct-chat direct-chat-primary" >
-              <div class="card-header">
-                <h3 class="card-title">Comentarios</h3>           
-              </div>
-
-              <!-- /.card-header -->
-<!--botones de compartir whatsapp y facebook-->
-
-<div class="row" style="margin-right: 3%; margin-left: 3%;">
+<div class="row">
+  <div class="row" style="margin-right: 3%; margin-left: 3%;">
     <div class="col fb-share-button" data-href="https://www.metelebrasil.com/articuloBlog?post=<?=$idPost?>" data-layout="button_count" data-size="small"><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2FarticuloBlog%3Fpost%3D<?=$idPost?>&amp;src=sdkpreparse" class="btn btn-primary btn-lg active btn-block"><i class="fab fa-facebook-f"></i>  <?=$lang["compartir_en_facebook"];?></a>
     </div>
     <div class="col">
@@ -363,6 +354,17 @@ for ($i=0; $i < count($fotos); $i++) {
   </div>
 
 </div>
+</div>
+
+<div class="card direct-chat direct-chat-primary" style="margin-top: 10px;">
+              <div class="card-header">
+                <h3 class="card-title">Comentarios</h3>           
+              </div>
+
+              <!-- /.card-header -->
+<!--botones de compartir whatsapp y facebook-->
+
+
 
 
 <div class="row" style="margin-right: 3%; margin-left: 3%;">

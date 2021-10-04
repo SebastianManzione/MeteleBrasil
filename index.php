@@ -522,7 +522,7 @@ $servicios=getServiciosLimit612();
                            <p><small class="text--rating-total "><?=count($OpinionesServicio);?> opiniones</small></p>
                         </div>
                       </div>
-                      <p class="p-text" style="margin-top:-5px;"><?=$servicios[$i]["descripcion_corta"];?></b></p>
+                      <p class="p-text" style="margin-top:-5px;"><p><?=$servicios[$i]["descripcion_corta"];?></p></p>
                   </div>
                 </div>
               </div>

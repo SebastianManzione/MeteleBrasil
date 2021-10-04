@@ -1,9 +1,63 @@
-<?php function getCuerpoEmailPagoRecibido($codigoAmigable, $pasarela){
+<?php 
 
 
-$cuerpo='
+function enviaMailAdjunto($receptor, $asunto, $cuerpo, $site, $adjunto){
 
+    $direccion_remitente='mails@metelebrasil.com';
 
+require_once($_SERVER['DOCUMENT_ROOT'].'/admin/email/PHPMailerAutoload.php');
+
+$mail = new PHPMailer;
+
+//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+$mail->isSMTP();                                      // Set mailer to use SMTP
+
+$mail->Host = 'mail.metelebrasil.com';  // Specify main and backup SMTP servers
+
+$mail->SMTPAuth = true;                               // Enable SMTP authentication
+
+$mail->Username = $direccion_remitente;                 // SMTP username
+
+$mail->Password = 'Nueva$123';                           // SMTP password
+
+$mail->SMTPSecure = 'ssl';                         // Enable TLS encryption, `ssl` also accepted
+
+$mail->Port = 465;                                    // TCP port to connect to
+
+$mail->Helo = "www.metelebrasil.com"; //Muy importante para que llegue a hotmail y otros
+
+$mail->From = $direccion_remitente;
+
+$mail->FromName = 'Reservas METELEBRASIL.COM';
+
+$mail->addAddress($receptor);     // Add a recipient
+
+$mail->addBCC($direccion_remitente);     // Add a recipient
+// Activo condificacción utf-8
+$mail->CharSet = 'UTF-8';
+$mail->isHTML(true);                                  // Set email format to HTML
+$mail->AddAttachment($adjunto);
+$mail->Subject = $asunto;
+
+$mail->Body    = $cuerpo;
+
+//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+if(!$mail->send()) {
+
+    return 'El mensaje no se pudo enviar.'.'Envie este error al programador: ' . $mail->ErrorInfo;
+
+} else {
+
+    return 'Mensaje enviado correctamente';
+
+}
+
+} 
+
+function cuerpoEmailGuia($nombre, $categoria){
+    $retorno= '
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
   <head>
@@ -103,7 +157,7 @@ $cuerpo='
                                              </a>
 
 
-                                <div style="color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:27px;font-weight:700;line-height:50px;text-align:center;font-style:bold;">
+                                <div style="color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:23px;font-weight:700;line-height:50px;text-align:center;font-style:bold;">
                                   METELE BRASIL
                                 </div>
 
@@ -155,15 +209,19 @@ $cuerpo='
                           <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                             <tr>
                               <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                <div style="color:#4d4d4d;font-family:Oxygen, Helvetica neue, sans-serif;font-size:32px;font-weight:700;line-height:37px;text-align:center;">
-                                  Parabéns!
+                                <div style="color:#52AC0D;font-family:Oxygen, Helvetica neue, sans-serif;font-size:32px;font-weight:700;line-height:37px;text-align:center;">
+                                  Ótimo! Ja tem sua guia na mão!
                                 </div>
                               </td>
                             </tr>
                             <tr>
                               <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                 <div style="color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;line-height:21px;text-align:center;">
-                                  Recebemos o seu pagamento corretamente através de '.$pasarela.'
+                                  Olá '.$nombre.' Metele Brasil encaminhou sua guia para ('.$categoria.'). Poderá descarregar ela grátis sem custo! Pensamos em cada detalhe para sua viagem diante a isso também encaminhamos um tutorial para montar sua mala para este '.$categoria.'. 
+                                  <br><br>
+                                      Agradecemos sua confiança! 
+                                                  <br>
+                                                         Boa Viagem!
 
                                 </div>
                               </td>
@@ -184,62 +242,7 @@ $cuerpo='
                         </div>
   
 
-      <div style="margin:0px auto;max-width:600px;">
-        <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
-          <tbody>
-            <tr>
-              <td style="direction:ltr;font-size:0px;padding:20px 0;text-align:center;vertical-align:top;">
-              <div class="dys-column-per-100 outlook-group-fix" style="direction:ltr;display:inline-block;font-size:13px;text-align:left;vertical-align:top;width:100%;">
-                  <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
-                    <tr>
-                      <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;" vertical-align="middle">
-                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
-                          <tr>
-                            <td align="center" bgcolor="#029ce2" role="presentation" style="background-color:#029ce2;border:none;border-radius:5px;cursor:auto;padding:10px 25px;" valign="middle">
-                              <a href="https://metelebrasil.com/consultaReserva?reserva='.$codigoAmigable.'" style="background:#029ce2;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;" target="_blank">
-                               Ver Reserva Oline
-                              </a>
-  
-                            </td>
-
-                          </tr>
-
-                        </table>
-
-
-
-
-                      </td>
-                    </tr>
-
-
-
-                         
-<tr>
-                      <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;" vertical-align="middle">
-                        <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
-                          <tr>
-                            <td align="center" bgcolor="46D928" role="presentation" style="background-color:#46D928;border:none;border-radius:5px;cursor:auto;padding:10px 25px;" valign="middle">
-                              <a href="https://api.whatsapp.com/send?phone=+48996837008&text=Oi%20preciso%20ajuda%20com%20minha%20reserva%20reserva='.$codigoAmigable.'" style="background:#46D928;color:#ffffff;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-weight:400;line-height:21px;margin:0;text-decoration:none;text-transform:none;" target="_blank">
-                               Nosso Whatsapp
-                              </a>
- 
-                            </td>
-
-                          </tr>
-
-                        </table>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-  
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-  
+   
       <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#f7f7f7;background-color:#f7f7f7;width:100%;">
         <tbody>
           <tr>
@@ -257,7 +260,7 @@ $cuerpo='
                             <tr>
                               <td align="center" style="font-size:0px;padding:5px 25px;word-break:break-word;">
                                 <div style="color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-style:bold;line-height:1;text-align:center;">
-                                  Você está recebendo este e-mail porque realizou uma reserva em metelebrasil.com. Se você desconhece esse serviço contratado,&nbsp;<strong><em><a target="_blank">clique aquí.
+                                  Você está recebendo este e-mail porque realizou um cadastro no site metelebrasil.com. Caso você desconheça essa ação ignore este e-mail.
                                 </div>
                               </td>
                             </tr>
@@ -271,9 +274,9 @@ $cuerpo='
                                                                                 
                                   Reservate Software ®
                                 </div>
-                                
+
                                 <div style="color:#777777;font-family:Oxygen, Helvetica neue, sans-serif;font-size:14px;font-style:bold;line-height:1;text-align:center;">
-                                  Rua 101, Balneario Camboriu. SC
+                                  Balneário Camboriú. SC - BRASIL
                                 </div>
                               </td>
                             </tr>
@@ -295,7 +298,9 @@ $cuerpo='
       
     </div>
   </body>
-</html>
-';
-return $cuerpo;
-} ?>
+</html>';
+return $retorno;
+}
+
+
+?>

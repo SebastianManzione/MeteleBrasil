@@ -403,7 +403,7 @@ $masTresMeses= date("Y-m-d",strtotime($hoy."+ 3 month"));
 
                                     <div class="form-group">
 
-                                        <input class="form-control" name="inicio_periodo" type="date" value="<?= $hoy;?>" min="<?= $hoy;?>" max="<?=$masTresMeses;?>"> 
+                                        <input class="form-control" name="inicio_periodo" type="date" value="<?= $hoy;?>" > <!--min="<?= $hoy;?>" max="<?=$masTresMeses;?>"-->
 
                                     </div>
 
@@ -415,7 +415,7 @@ $masTresMeses= date("Y-m-d",strtotime($hoy."+ 3 month"));
 
                                    <div class="form-group">     
 
-                                        <input class="form-control" name="fin_periodo" type="date" value="<?= $mesQueViene;?>" min="<?= $hoy;?>" max="<?=$masTresMeses;?>">
+                                        <input class="form-control" name="fin_periodo" type="date" value="<?= $mesQueViene;?>"><!-- min="<?= $hoy;?>" max="<?=$masTresMeses;?>"-->
 
                                     </div>
 

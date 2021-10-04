@@ -863,6 +863,82 @@ $consulta = "DELETE FROM servicio_img WHERE idServicio=:idServicio ";
 
     }
 
+    
+
+function vaciarServicio($idServicio){
+
+
+
+require("conexion.php");
+
+    $data=["idServicio"=> $idServicio];
+
+
+
+    $consulta = "select * from servicio_salidas  WHERE idServicio=:idServicio";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    $comando->execute($data);
+   $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+   for ($i=0; $i < count($resultado); $i++) { 
+  
+       $idServicioSalidas=$resultado[$i]["idServicioSalidas"];
+       $datos=["idServicioSalidas"=> $idServicioSalidas];
+         $consulta = "DELETE FROM servicio_salidas_adicionales WHERE idServicioSalidas=:idServicioSalidas ";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($datos);
+
+     $consulta = "DELETE FROM servicio_salidas_idioma WHERE idServicioSalidas=:idServicioSalidas ";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($datos);
+
+       $consulta = "DELETE FROM servicio_salidas_tarifas WHERE idServicioSalidas=:idServicioSalidas ";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($datos);
+
+      $consulta = "DELETE FROM servicio_salidas_tarifas WHERE idServicioSalidas=:idServicioSalidas ";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($datos);
+ 
+ 
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($datos);
+}
+     $consulta = "DELETE FROM servicio_salidas WHERE idServicio=:idServicio ";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+
+    $cuenta_col = $comando->columnCount();
+
+    $cuenta_row = $comando->rowCount();
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+      
+
+    return $cuenta_row;
+
+    
+
+    
+
+    }
+
 
 
 

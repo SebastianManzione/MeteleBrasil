@@ -519,7 +519,7 @@ if ($totalDescuentos>0) {
 
              $servicio=getServicio($reserva[0]['idServicioSeleccionado']);
 
-             $fotos=getFotosServicio($idServicio);
+             $fotos=getFotoMiniaturaServicio($idServicio);
 
             
 

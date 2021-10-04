@@ -3,6 +3,7 @@
 setlocale(LC_TIME, "es_ES");
 
 
+$fecha_actual = date("d-m-Y");
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
@@ -50,6 +51,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["eliminarServicio"])) {
   }
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vaciarServicio"])) {
+
+  alertar($lang["por_favor_espere_no_cierre"], "success");
+
+  $idServicio = $_POST["vaciarServicio"];
+  $reservas = getHorariosReservados_idServicioSeleccionado($idServicio);
+
+  if (count($reservas) > 0) { //count($reservas)>0
+    foreach ($reservas as $key => $value) {
+      $idReserva = $value['idReserva'];
+      $reserva = getReservaId($idReserva);
+      echo "Reserva con tiempo en este servicio
+: " . $reserva[0]["codigoAmigable"] . "<br>";
+    }
+
+
+    alertar($lang["no_se_puede_eliminar_servicios"], "error");
+  } else {
+
+    $resEliminar = vaciarServicio($idServicio);
+    alertar("Servicio desocupado con éxito", "success");
+    redireccionarLento("servicioVer?idServicio=".$idServicio);
+    exit();
+  }
+}
+
+
 if (isset($_GET["idServicio"])) {
 
   $idServicio = $_GET["idServicio"];
@@ -62,10 +90,6 @@ if (isset($_GET["idServicio"])) {
 }
 
 ?>
-
-
-
-
 
 
 
@@ -202,14 +226,8 @@ if (isset($_GET["idServicio"])) {
                   <!-- /.user-block -->
 
                   <p>
-
-
-
-                    <?= $lang["descripcion_del_servicio"]; ?>
-
-
-
-                  </p>
+                   <?= $lang["descripcion_del_servicio"]; ?>
+                 </p>
 
 
 
@@ -260,7 +278,11 @@ if (isset($_GET["idServicio"])) {
 
         <?php } ?>
 
-        <?php if ($_SESSION['login']["idUsuario"] == 1) {
+        <?php
+
+
+
+         if ($_SESSION['login']["idUsuario"] == 1) {
         ?>
           <form method="post" action="servicioFotos" style="padding: 3px;">
             <button type="submit" class="btn btn-success" name="idServicio" value="<?= $idServicio ?>">Editor de fotos</button>
@@ -274,8 +296,15 @@ if (isset($_GET["idServicio"])) {
             <input type="hidden" name="eliminarServicio" value="<?= $idServicio; ?>">
             <a class="btn btn-danger" name="eliminarServicio" value="<?= $idServicio; ?>" onclick="confirm1()"><?= $lang["eliminar_servicio"]; ?></a>
           </form>
+
+          <form method="post" id="vaciarServicio" style="padding: 3px;">
+            <input type="hidden" name="vaciarServicio" value="<?= $idServicio; ?>">
+            <a class="btn btn-danger" name="vaciarServicio" value="<?= $idServicio; ?>" onclick="confirm2()">Vaciar Salidas Servicio</a>
+          </form>
+
         <?php
         } ?>
+
 
 
 
@@ -292,6 +321,25 @@ if (isset($_GET["idServicio"])) {
               /* Read more about isConfirmed, isDenied below */
               if (result.isConfirmed) {
                 $("#borraServicio").submit();
+              } else if (result.isDenied) {
+                return false
+              }
+            })
+            return false
+          }
+
+              function confirm2() {
+
+            Swal.fire({
+              title: 'Esta seguro que desea borrar salidas y tarifas?',
+
+              showCancelButton: true,
+              confirmButtonText: `Si, Borrar`,
+              denyButtonText: `No`,
+            }).then((result) => {
+              /* Read more about isConfirmed, isDenied below */
+              if (result.isConfirmed) {
+                $("#vaciarServicio").submit();
               } else if (result.isDenied) {
                 return false
               }
@@ -317,6 +365,28 @@ if (isset($_GET["idServicio"])) {
 
 
 
+    <section class="content">
+     <div class="" >
+
+<table  id="tabla_servicios" class="table table-bordered table-striped" style="width: 100%;">
+  <thead>
+    <div class="input-group input-daterange">
+
+      <input type="date" id="min-date" class="form-control date-range-filter" data-date-format="yyyy-mm-dd" placeholder="From:" value="<?=date('Y-m-d')?>">
+
+      <div class="input-group-addon">to</div>
+
+      <input type="date" id="max-date" class="form-control date-range-filter" data-date-format="yyyy-mm-dd" placeholder="To:" value="<?=date('Y-m-d',strtotime($fecha_actual.'+ 1 days')); ?>">
+
+    </div>
+    <tr>
+      <th>idSalida</th>
+       <th>Nombre</th>
+        <th>Fecha</th>
+         <th>Accion</th>
+    </tr>
+  </thead>
+  <tbody>
 
   <!-- Default box -->
 
@@ -352,276 +422,71 @@ if (isset($_GET["idServicio"])) {
 
 
 
-
+$idServicioSalidas=$salidas[$i]["idServicioSalidas"];
 
   ?>
 
 
+    <tr>
+              <td><?= $idServicioSalidas; ?></td>
+      <td><?= $salidas[$i]["nombre"] ?></td>
 
-    <section class="content">
+          <td data-filter="<?= date('Y-m-d', strtotime($salidas[$i]['fecha'])) ?> "><?= strftime("%A", strtotime($salidas[$i]["fecha"])) ?> <?= date("d-m-Y", strtotime($salidas[$i]["fecha"])) ?> <?= $salidas[$i]["horaSalida"] ?></td>
+            <td>
+              <form method="post" action="salidaVer.php">
+                <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseSalidas<?=$idServicioSalidas?>" aria-expanded="false" aria-controls="collapseSalidas<?=$idServicioSalidas?>" name="idServicioSalidas" value="<?=$idServicioSalidas;?>"><?= $lang["ver"]; ?></button>
 
-      <div class="" >
-        <!--collapsed-card_-->
-
-        <div class="card-header">
-
-          <h3 class="card-title"><?= $salidas[$i]["nombre"] ?> | id Salida: <?= $salidas[$i]["idServicioSalidas"] ?> |<?= strftime("%A", strtotime($salidas[$i]["fecha"])) ?> <?= date("d-m-Y", strtotime($salidas[$i]["fecha"])) ?> <?= $salidas[$i]["horaSalida"] ?></h3>
-
-          <div class="card-tools">
-
-            <button class="btn btn-primary" data-toggle="collapse" data-target="#collapseSalidas<?=$idServicioSalidas?>" aria-expanded="false" aria-controls="collapseSalidas<?=$idServicioSalidas?>"><?= $lang["ver"]; ?><i></i></button>
-
-            <button class="btn btn-danger" style="display: none;"><?= $lang["eliminar_salida"]; ?></button>
-
-            <form method="post" action="pasajerosLista">
-
-              <button name="idServicioSalidas" value="<?= $idServicioSalidas; ?>" class="btn btn-secondary"><?= $lang["lista_de_pasajeros"]; ?></button>
-
-            </form>
-
-            <form method="post" action="salidasEditar">
-
-              <button name="idServicioSalidas" value="<?= $idServicioSalidas; ?>" class="btn btn-info"><?= $lang["editar_salida"]; ?></button>
-
-            </form>
-            <?php if (isset($_SESSION['login']['adminManz'])) {
-            ?>
-              <form method="post" action="serviciosAdicionalesSalidaEdita">
-
-                <button name="idServicioSalidas" value="<?= $idServicioSalidas; ?>" class="btn btn-warning">Editar Adicionales</button>
 
               </form>
+                    
+            </td>
+    </tr>
 
 
-            <?php
-            } ?>
-
-
-          </div>
-
-        </div>
-
-
-
-        <div class="collapse" id="collapseSalidas<?=$idServicioSalidas?>">
-          <!-- /.card-body -->
-
-          <div class="row">
-
-            <div class="col-12">
-
-              <div class="row">
-                <table style="width:100%">
-                  <tr>
-                    <th><?= $lang["dia_de_la_salida"]; ?></th>
-                    <th><?= $lang["fecha_de_salida"]; ?></th>
-                    <th><?= $lang["disponibilidad"]; ?></th>
-                  </tr>
-                  <tr>
-                    <td><?= strftime("%A", strtotime($salidas[$i]["fecha"])) ?></td>
-                    <td><?= date('d-m-Y', strtotime($salidas[$i]["fecha"])) ?></td>
-                    <td><?= $salidas[$i]["disponibilidad"]; ?></td>
-                  </tr>
-                  <tr>
-                    <th><?= $lang["horario_de_salida"]; ?></th>
-                    <th><?= $lang["horario_de_check_in"]; ?></th>
-                    <th><?= $lang["nota_de_salida"]; ?></th>
-                  </tr>
-
-                  <tr>
-                    <td><?= $salidas[$i]["horaSalida"] ?></td>
-                    <td><?= $salidas[$i]["horaCheckIn"] ?></td>
-                    <th><?= $salidas[$i]["nota_salida"] ?></th>
-                  </tr>
-                </table>
-
-
-                <button class="btn btn-link collapsed <?= $alerta; ?>" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                </button>
-
-                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-
-                  Tarifas de Salida
-
-                </button>
-
-
-
-
-                <div class="accordion" id="accordionExample" style="width: 100%;">
-
-
-
-
-
-
-
-                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-
-                    <div class="card-body">
-
-                      <table class="table table-bordered table-striped table-hover" id="tipos_pax_table" style="width:100%">
-
-                        <thead>
-
-                          <tr>
-
-                            <th style="width: 20%;"><?= $lang["origen"]; ?></th>
-
-                            <th> <?= $lang["nombre_tarifa"]; ?></th>
-
-                            <th><?= $lang["desde_anos"]; ?></th>
-
-                            <th><?= $lang["hasta_anos"]; ?></th>
-
-                            <th style="width: 20%;"> <?= $lang["tipo_de_tarifa"]; ?></th>
-
-                            <th> <?= $lang["precio_"]; ?></th>
-
-                            <th> <?= $lang["pago_minimo"]; ?></th>
-
-                            <th> <?= $lang["tipo_de_cancelacion"]; ?></th>
-
-
-                          </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                          <?php
-
-                          $tarifas = getTarifas($idServicioSalidas);
-
-                          for ($j = 0; $j < count($tarifas); $j++) {
-
-                            $edadFrom = getEdad($tarifas[$j]["idFromEdad"])[0];
-                            $edadTo = getEdad($tarifas[$j]["idToEdad"])[0];
-                            $tipoTarifa = getTipoTarifa($tarifas[$j]["idTipoTarifa"])[0];
-                            $idServicioSalidasTarifas = $tarifas[$j]["idServicioSalidasTarifas"];
-                            $ubicacion = getUbicacionIdTarifa($idServicioSalidasTarifas);
-                            $idCancelacion = $tarifas[$j]["idCancelaciones"];
-                            $cancelacion = getTipoCancelaciones($idCancelacion);
-
-                          ?>
-
-                            <tr>
-                              <th><?= $ubicacion[0]["direccion"]; ?></th>
-                              <th><?= $tarifas[$j]['nombre']; ?></th>
-                              <th><?= $edadFrom['valor']; ?></th>
-                              <th><?= $edadTo['valor']; ?></th>
-                              <th><?= $tipoTarifa["nombre"]; ?></th>
-                              <th><?= $moneda[0]["Symbol"] . $tarifas[$j]["valor"]; ?></th>
-                              <th><?= $moneda[0]["Symbol"] . $tarifas[$j]["minimo"]; ?></th>
-                              <th><?= $cancelacion[0]["texto"] ?></th>
-                            </tr>
-                          <?php
-
-                          } ?>
-
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  <?php $adicionales = getServiciosAdicionalesSalidaNoIncluidos($idServicioSalidas);
-                  $adicionalesIncluidos = getServiciosAdicionalesSalidaIncluidos($idServicioSalidas);
-                  $cantidadServiciosAdicionales = count($adicionales) + count($adicionalesIncluidos);
-                  $alerta = "";
-                  $msj = " Servicios Adicionales Salida (" . $cantidadServiciosAdicionales . ")";
-                  if ($cantidadServiciosAdicionales == 0) {
-                    $alerta = "alert alert-danger";
-                    $msj = " SIN SERVICIOS ADICIONALES CARGADOS!!!";
-                  }
-                  ?>
-
-            
-
-
-
-
-
-                  <?php if ($cantidadServiciosAdicionales > 0) {
-
-                  ?>
-
-                  <div class="card-header">
-                    <h5 class="mb-0">
-                      <button class="btn btn-warning <?= $alerta; ?>" type="button" data-toggle="collapse" data-target="#collapseAdicionales<?= $idServicioSalidas; ?>" aria-expanded="false" aria-controls="collapseAdicionales<?= $idServicioSalidas; ?>">
-                        <?= $msj; ?>
-                      </button>
-                      <form method="post" action="altaServiciosAdicionales"><button name="idServicioSalidas" value="<?= $idServicioSalidas; ?>" class="btn btn-success"><?= $lang["agregar_servicios_adicionales"]; ?></button></form>
-                    </h5>
-
-                  </div>
-                    <div id="collapseAdicionales<?= $idServicioSalidas; ?>" class="card collapse">
-                      <div class="card-body">
-                        <table class="table table-bordered table-striped table-hover"  style="width:100%">
-                          <thead>
-                            <tr>
-                              <th style="width: 20%;"><?= $lang["nombre"]; ?></th>
-                              <th><?= $lang["descripcion"]; ?></th>
-                              <th><?= $lang["valor"]; ?></th>
-                              <th> </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php
-                            for ($j = 0; $j < count($adicionales); $j++) {
-                            ?>
-                              <tr>
-                                <th><?= $adicionales[$j]["nombre"]; ?></th>
-                                <th><?= $adicionales[$j]["descripcion"]; ?></th>
-                                <th><?= $adicionales[$j]["valor"]; ?></th>
-                                <th><?php //print_r($adicionales[$j]) ?></th>
-                              </tr>
-                            <?php
-                            } ?>
-                            <?php
-                            for ($j = 0; $j < count($adicionalesIncluidos); $j++) {
-                            ?>
-                              <tr>
-                                <th><?= $adicionalesIncluidos[$j]["nombre"]; ?></th>
-                                <th colspan="3"><?= $adicionalesIncluidos[$j]["descripcion"]; ?></th>
-                              </tr>
-                            <?php
-                            } ?>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  <?php } ?>
-
-
-
-                </div>
-
-
-
-
-
-              </div>
-
-            </div>
-
-
-
-
-
-
-
-
-
-          </div> <!-- /.card-body -->
-
-
-        </div><!-- /.card collapsed-card del periodo-->
 
       <?php } ?>
 
+  </tbody>
+</table>
 
 
 
+<script type="text/javascript">
+  
+ var table = $('#tabla_servicios').DataTable({
+      "paging": true,
+      "stateSave": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true
+    });
 
+$.fn.dataTable.ext.search.push(
+  function(settings, data, dataIndex) {
+    var min = $('#min-date').val();
+    var max = $('#max-date').val();
+
+    var createdAt = data[2] || 0; // Our date column in the table
+
+    if (
+      (min == "" || max == "") ||
+      (moment(createdAt).isSameOrAfter(min) && moment(createdAt).isSameOrBefore(max))
+    ) {
+      return true;
+    }
+    return false;
+  }
+);
+
+// Re-draw the table when the a date range filter changes
+$('.date-range-filter').change(function() {
+  table.draw();
+
+});
+ //  table.draw();
+$('#my-table_filter').hide();
+</script>
       <!-- Content Header (Page header) -->
 
 
@@ -629,7 +494,8 @@ if (isset($_GET["idServicio"])) {
 
 
 
-
+</div>
+</section>
 
 
 

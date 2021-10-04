@@ -613,7 +613,7 @@ $clientesListClass=" ";
 
 $treeviewClientes="   ";
 
-if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="solicitudes.php"||$archivo_actual=="contacto.php" ||$archivo_actual=="cupones.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" || $archivo_actual=="edades.php" || $archivo_actual=="cancelaciones.php") {
+if ($archivo_actual=="usuariosLista.php"||$archivo_actual=="usuarioAlta.php" ||$archivo_actual=="monedaAdmin.php" ||$archivo_actual=="solicitudes.php"||$archivo_actual=="contacto.php" ||$archivo_actual=="cupones.php" ||$archivo_actual=="comisionesEditor.php" ||$archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaVer.php" || $archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" || $archivo_actual=="parametros.php"  || $archivo_actual=="textoMiniaturaLista.php" || $archivo_actual=="textoMiniaturaBlogLista.php" || $archivo_actual=="serviciosAdicionalesAlta.php" || $archivo_actual=="textosAccesibilidad.php" || $archivo_actual=="destinosAlta.php" || $archivo_actual=="edades.php" || $archivo_actual=="cancelaciones.php") {
 
 $treeviewClientes=" menu-open ";
 
@@ -1010,7 +1010,7 @@ if ($archivo_actual=="comisionesEditor.php") {
 
 $clientesClass=" ";
 
-if ($archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" ) {
+if ($archivo_actual=="categoriasLista.php" ||$archivo_actual=="categoriaServiciosAdicionales.php" ||$archivo_actual=="categoriaOpiniones.php" ||$archivo_actual=="categoriaVer.php" ) {
 
                $clientesClass="active";
 
@@ -1203,6 +1203,56 @@ if ($archivo_actual=="comisionesLista.php") {
 
 
 
+<?php  } ?>
+
+
+
+
+<?php  if($_SESSION["login"]["rol"]==1){ ?>
+<!--COMIENZA-->
+<?php
+ 
+$clientesIcon="far";
+$clientesClass=" ";
+$clientesListClass=" ";
+$treeviewClientes="   ";
+if ($archivo_actual=="emailsLista.php" ) {
+$treeviewClientes=" menu-open ";
+$clientesListClass="active";
+             }
+?> 
+
+      <li class="nav-item has-treeview <?=$treeviewClientes?>">
+            <a class="nav-link <?=$clientesListClass?>">
+     <i class="fas fa-vial"></i>
+              <p>
+               Test
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview ">
+
+
+              <!-- individual Usuarios-->
+
+<?php  $clientesClass=" ";
+ if ($archivo_actual=="emailsLista.php") {
+               $clientesClass="active";
+               $clientesIcon="fas";
+             } ?>
+
+ <li class="nav-item">
+                <a href="emailsLista" class="nav-link <?=$clientesClass?>">
+              <i class="fas fa-list-ol"></i>
+                  <p>Lista emails guias</p>
+                </a>
+              </li>
+      <!-- individual-->
+
+              </ul>
+          </li>
+
+<!--TERMINA-->
 <?php  } ?>
 
 

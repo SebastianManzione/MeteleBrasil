@@ -1,28 +1,17 @@
 <?php 
 
 
-
 include("includes/headPagos.php");
-
 include("admin/classes/salidas.php");
-
 include("admin/classes/tarifas.php");
-
 include("admin/classes/tarifas_ubicacion.php");
-
 include("admin/classes/idiomas.php");
-
 include("admin/classes/servicio.php");
-
-  include("admin/classes/comisiones.php");
-
-    include("admin/classes/edades.php");
-
-    include("admin/classes/cancelaciones.php");
-
-    include("admin/classes/servicios_adicionales.php");
-
-        include("admin/classes/convierte_monedas.php");
+include("admin/classes/comisiones.php");
+include("admin/classes/edades.php");
+include("admin/classes/cancelaciones.php");
+include("admin/classes/servicios_adicionales.php");
+include("admin/classes/convierte_monedas.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
@@ -31,18 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   if (isset($_POST["eliminarPaquete"])) {
 
   $posicion=$_POST["eliminarPaquete"];
-
   unset ($_SESSION['reserva'][$posicion]); 
+  $_SESSION['reserva'] = array_values($_SESSION['reserva']);
 
-
-
-$_SESSION['reserva'] = array_values($_SESSION['reserva']);
-
-
-
-
-
-  }
+                                        }
 
 
 
@@ -50,16 +31,9 @@ $_SESSION['reserva'] = array_values($_SESSION['reserva']);
 
     if (isset($_POST["eliminarActividad"])) {
 
-  $posicion=$_POST["eliminarActividad"];
-
-  unset ($_SESSION['reserva'][$posicion]); 
-
-
-
-$_SESSION['reserva'] = array_values($_SESSION['reserva']);
-
-
-
+        $posicion=$_POST["eliminarActividad"];
+        unset ($_SESSION['reserva'][$posicion]); 
+        $_SESSION['reserva'] = array_values($_SESSION['reserva']);
 
 
   }
@@ -69,34 +43,14 @@ $_SESSION['reserva'] = array_values($_SESSION['reserva']);
 
 
 $totalCarrito=0;
-
 $carrito=$_SESSION['reserva'];
-
-
-
-//print_r($carrito);
-
 $cantCarrito=count($carrito);
 
 
-
-// unset($_SESSION['reserva']);
-
-
-
-
-
-if (false) {//$cantCarrito<1
-
-echo '
-
-<script>
-
-location.href="index.php";
-
-</script>
-
-';
+if ($cantCarrito<1) {//$cantCarrito<1
+alertar("Seu carrinho está vazio", "success");
+redireccionarLento('index.php');
+exit();
 
 }
 
@@ -442,7 +396,7 @@ $precioTotalCarrito=0;
 
             $servicio=getServicio($reserva[0]['idServicioSeleccionado']);
 
-           $fotos=getFotosServicio($idServicio);
+           $fotos=getFotoMiniaturaServicio($idServicio);
 
       ?>
 

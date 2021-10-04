@@ -722,9 +722,9 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
           <div class="card-body">
 
-            <form action="guias.php" method="post">
+            <form action="guias.php" method="get">
 
-              <input type="hidden" name="idCategoria" value="<?= $id; ?>">
+              <input type="hidden" name="idCategoria" value="<?= $idCategoria; ?>">
 
               <h4><i class="fa fa-map"></i><?= $lang["conoce_nuestra_guia_de"] ?> <?= $lang[$nombre_categoria]; ?></h4>
 

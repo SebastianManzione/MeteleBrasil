@@ -1310,7 +1310,7 @@ for ($i=1; $i < $CantOpinionesServicio; $i++) {
            <!--FIN CONTENEDOR OPINIONES-->
 
 <!--botones de compartir whatsapp y facebook-->
-<div class="row" style="width: 100%; padding: 2.5em;">
+<div class="row" style="width: 70%; padding: 2.5em;">
   <div class="col-xs-6 col-md-3"></div>
         <div class="col-xs-6 col-md-3">    
                <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.metelebrasil.com%2Fservicio%3Fid%3D<?=$idServicio?>&amp;src=sdkpreparse" class="btn btn-primary btn-lg active btn-block"><i class="fab fa-facebook-f"></i>  <?=$lang["compartir_en_facebook"];?></a>

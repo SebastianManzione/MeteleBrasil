@@ -349,7 +349,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                
                   <form method="post" action="voucherCarrito">
                        <a id="btnImprimir" class="btn btn-default"><i class="fas fa-print"></i> Imprimir</a>
-                    <button class="btn-sm btn-default" type="submit" name="codigoAmigable" value="<?=$codigoAmigable;?>">Volver</button>
+                    <button class="btn-sm btn-default" type="submit" name="codigoAmigable" value="<?=$codigoAmigable;?>">Voltar</button>
                   </form>
                  
                 

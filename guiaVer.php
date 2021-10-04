@@ -1,10 +1,9 @@
 <?php
-
  include('includes/navbar.php'); 
 
  include('admin/classes/categoria.php'); 
   include('admin/classes/fotos_categoria.php'); 
-   include('admin/classes/guias.php'); 
+ 
  include('admin/classes/opiniones_categoria.php'); 
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET'){
@@ -15,7 +14,7 @@ $idCategoria=$_GET["idCategoria"];
 }
 else{
 
-
+$idCategoria=0;
  $categorias=getCategorias();
  $nViajeros=rand(690,1200); 
 $nombre_categoria=" Todas Las Categorías";
@@ -26,22 +25,11 @@ $opiniones_categoria=array();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-$nombre=$_POST["nombre"];
-$email=$_POST["email"];
-$telefono=$_POST["telefono"];
-$mensaje=$_POST["mensaje"];
+  print_r($_POST);
 $idCategoria=$_POST["idCategoria"];
- $categorias=getCategoria($idCategoria);
- $nombre_categoria=$categorias[0]["nombre_categoria_servicio"];
-  $guia=$categorias[0]["guia"];
- include('admin/classes/email_guias.php'); 
- $cuerpo=cuerpoEmailGuia($_POST["nombre"], $nombre_categoria);
-insertaEmailGuia($nombre,$email, $idCategoria, $telefono, $mensaje);
 
- enviaMailAdjunto("elcheby@gmail.com", "guia de ".$nombre_categoria, $cuerpo ,"metelebrasil.com", "admin/classes/guias/".$guia);
- alertar("o guia de ".$nombre_categoria." foi enviado para seu e-mail", "success");
-redireccionarLento("index");
-exit();
+
+
 }
 
 $categorias=getCategoria($idCategoria);
@@ -164,7 +152,7 @@ $categorias=getCategoria($idCategoria);
           <h5 class="text-uppercase mb-4" style="text-align: center;">Teléfono</h5>
          
                   <div class="input-group">
-                <input class="field form-control" id="phone" name="telefono" type="text" placeholder="Escribe tu teléfono" value="">
+                <input class="field form-control" id="phone" name="phone" type="text" placeholder="Escribe tu teléfono" value="">
               </div>
             
         </div>

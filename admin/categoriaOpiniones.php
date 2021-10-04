@@ -251,16 +251,19 @@ console.log(data);
                             });
                    </script>
 
-
                                              </div>   
+     <a href="categoriaVer?idCategoria=<?=$idCategoria_servicio;?>" class="btn btn-success float-right"><i class="fas fa-arrow-left"></i>Voltar</a>
                                             </div>   
                                           </div>
                             <!-- /.row -->
                                       </div>
                           <!-- /.card-body -->
+                         
                <div class="card-footer">
                                                  <!-- <div align="center"> <button type="submit" id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Continuar</button>   <a href="servicios.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> Salir sin guardar</a>
                                         </div>-->
+
+       
           </div>
      </div>
      <!-- /.card -->
