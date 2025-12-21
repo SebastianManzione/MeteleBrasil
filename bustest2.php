@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<!--
+ @license
+ Copyright 2019 Google LLC. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+-->
+<html>
+<style type="text/css">
+  /**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+/* 
+ * Always set the map height explicitly to define the size of the div element
+ * that contains the map. 
+ */
+#map {
+  height: 100%;
+}
+
+/* 
+ * Optional: Makes the sample page fill the window. 
+ */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+</style>
+  <head>
+    <title>Geocoding Service</title>
+    <script src=""></script>
+    <!-- jsFiddle will insert css and js -->
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- 
+     The `defer` attribute causes the callback to execute after the full HTML
+     document has been parsed. For non-blocking uses, avoiding race conditions,
+     and consistent behavior across browsers, consider loading using Promises
+     with https://www.npmjs.com/package/@googlemaps/js-api-loader.
+    -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBim3Kla3BvgU1PerQPd4kLAzhOH_yoP7c&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </body>
+</html>
+<script type="text/javascript">
+ /**
+ * @license
+ * Copyright 2019 Google LLC. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0
+ */
+// @ts-nocheck TODO remove when fixed
+let map;
+let marker;
+let geocoder;
+let responseDiv;
+let response;
+
+function initMap() {
+  map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 8,
+    center: {
+      lat: -34.397,
+      lng: 150.644
+    },
+    mapTypeControl: false,
+  });
+  geocoder = new google.maps.Geocoder();
+
+  const inputText = document.createElement("input");
+
+  inputText.type = "text";
+  inputText.placeholder = "ponto de saída";
+
+  const submitButton = document.createElement("input");
+
+  submitButton.type = "button";
+  submitButton.value = "Buscar";
+  submitButton.classList.add("button", "button-primary");
+
+  const clearButton = document.createElement("input");
+
+  clearButton.type = "button";
+  clearButton.value = "Clear";
+  clearButton.classList.add("button", "button-secondary");
+  response = document.createElement("pre");
+  response.id = "response";
+  response.innerText = "";
+  responseDiv = document.createElement("div");
+  responseDiv.id = "response-container";
+  responseDiv.appendChild(response);
+
+  const instructionsElement = document.createElement("p");
+
+  instructionsElement.id = "instructions";
+  instructionsElement.innerHTML =
+    "<strong>Instructions</strong>: Enter an address in the textbox to geocode or click on the map to reverse geocode.";
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(inputText);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(submitButton);
+  map.controls[google.maps.ControlPosition.TOP_LEFT].push(clearButton);
+  map.controls[google.maps.ControlPosition.LEFT_TOP].push(instructionsElement);
+  map.controls[google.maps.ControlPosition.LEFT_TOP].push(responseDiv);
+  marker = new google.maps.Marker({
+    map,
+  });
+  map.addListener("click", (e) => {
+    geocode({
+      location: e.latLng
+    });
+  });
+  submitButton.addEventListener("click", () =>
+    geocode({
+      address: inputText.value
+    })
+  );
+  clearButton.addEventListener("click", () => {
+    clear();
+  });
+  clear();
+}
+
+function clear() {
+  marker.setMap(null);
+  responseDiv.style.display = "none";
+}
+
+function geocode(request) {
+  clear();
+  geocoder
+    .geocode(request)
+    .then((result) => {
+      const {
+        results
+      } = result;
+
+      map.setCenter(results[0].geometry.location);
+      marker.setPosition(results[0].geometry.location);
+      marker.setMap(map);
+      responseDiv.style.display = "block";
+      response.innerText = JSON.stringify(result, null, 2);
+      return results;
+    })
+    .catch((e) => {
+      alert("Geocode was not successful for the following reason: " + e);
+    });
+}
+
+window.initMap = initMap;
+
+
+</script>

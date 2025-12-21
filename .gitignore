@@ -1,0 +1,22 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.vscode/
+.idea/
+
+# Dependencies
+vendor/
+node_modules/
+
+# Runtime & cache
+_sessions/
+logs/
+error_log
+*.log
+*.tmp
+
+# Environment/config
+.env
+php.ini

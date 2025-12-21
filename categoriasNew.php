@@ -1,0 +1,2296 @@
+<?php
+
+
+
+ include('includes/navbar.php'); 
+
+
+
+ include('admin/classes/categoria.php'); 
+
+  include('admin/classes/fotos_categoria.php'); 
+
+
+
+ include('admin/classes/opiniones_categoria.php'); 
+
+ include('admin/classes/servicio_opiniones.php');
+
+    
+
+require("admin/classes/texto_miniaturas.php");
+
+ 
+
+$busqueda="";
+$cantidad_por_pagina=5;
+      $desde=0;
+if (isset($_GET['pagina'])) {
+  $pagina=$_GET['pagina'];
+  if ( $pagina==0) {
+     $desde=0;
+  }
+  else{
+     $desde=($pagina-1)*$cantidad_por_pagina;
+  }}
+
+if (isset($_GET["idCategoria"]) && $_GET['idCategoria']>0) {
+
+
+
+$idCategoria=$_GET["idCategoria"];
+
+$categorias=getCategoria($idCategoria);
+ 
+
+$servicios=getServiciosLimit6Nuevo($idCategoria,$desde,$cantidad_por_pagina,'');
+
+$cantidad_servicios_categoria=count(getServiciosLimit6Nuevo($idCategoria,-5,$cantidad_por_pagina,''));
+ 
+
+  $nViajeros=$categorias[0]["nViajeros"];
+
+   $id=$categorias[0]["idCategoria_servicio"];
+
+   $nombre_categoria=$categorias[0]["nombre_categoria_servicio"];
+
+   $opiniones_categoria=OpinionesCategoria($id);
+
+   $cantidad_opiniones_categoria=count($opiniones_categoria);
+
+   $fotos=$categorias[0]["img_categoria_servicio"];
+
+}
+
+else if (isset($_GET["buscar"])) {
+
+$busqueda=$_GET["buscar"];
+
+  $idCategoria=0;
+
+
+
+$servicios=getServiciosLimit6Nuevo($idCategoria,$desde,$cantidad_por_pagina,$busqueda);
+
+ $cantidad_servicios_categoria=count(getServiciosBusqueda($_GET["buscar"]));
+
+
+
+ $categorias=getCategorias();
+
+ $nViajeros=rand(690,1200); 
+
+$nombre_categoria="todas_las_categorias";
+
+$opiniones_categoria=array();
+
+ $cantidad_opiniones_categoria=rand(100,500); ;
+
+    $fotos="sinCategoria.jpg";
+
+
+
+
+
+
+
+}
+
+else{
+
+  $idCategoria=0;
+      $desde=0;
+if (isset($_GET['pagina'])) {
+  $pagina=$_GET['pagina'];
+  if ($pagina==1) {
+     $desde=0;
+  }
+  else{
+     $desde=($pagina-1)*$cantidad_por_pagina;
+  }
+ 
+
+}
+  $servicios=getServicios();
+  $cantidad_servicios_categoria=count(getServicios());
+
+
+
+$servicios=getServiciosLimit6Nuevo(-5,$desde,$cantidad_por_pagina,'maceio');
+  $cantidad_servicios_categoria=count(getServiciosLimit6Nuevo(-5,0,6,'maceio'));
+
+
+ $categorias=getCategorias();
+
+ $nViajeros=rand(690,1200); 
+
+$nombre_categoria="todas_las_categorias";
+
+$opiniones_categoria=array();
+
+ $cantidad_opiniones_categoria=rand(100,500); ;
+
+    $fotos="sinCategoria.jpg";
+
+}
+
+
+
+
+
+
+
+        
+
+?>
+
+ <!--SECCION HEADER-->
+
+<section id="header-destinos"  style="background-image: url('admin/img/categoria_servicio/<?= $fotos; ?> ');" >
+
+  <div class="container mb-5">
+
+    <div class="row mb-4">
+
+      <div class="col-lg-12">
+
+          
+
+          <!--BUCLE DE LOS RESULTADOS AQUI-->	
+
+        <div class="badge badge-primary badge-ciudad"><?php //echo NombreCategoria($id); ?></div>
+
+         <!--FIN BUCLE DE LOS RESULTADOS AQUI-->
+
+         
+
+          <!--TITULO-->
+
+        <h1 class="text-white titulo-categoria py-2 bold texto-shadow"><?=$lang[$nombre_categoria];?></h1>
+
+         <!--TITULO-->
+
+        
+
+        
+
+        <!--DESPLIEGUE DE LISTA
+
+        <ul class="lista-ciudad d-md-block d-none">
+
+          <li><a href="#" class="text-white texto-shadow">Actividades</a></li>
+
+          <li><a href="#" class="text-white texto-shadow">Visitas guiadas</a></li>
+
+          <li><a href="#" class="text-white texto-shadow">Excursiones</a></li>
+
+          <li><a href="#" class="text-white texto-shadow">Traslados aeropuerto</a></li>
+
+        </ul>
+
+    FIN DESPLIEGUE DE LISTA-->
+
+        
+
+      </div>
+
+    </div>
+
+  </div>
+
+ <!--header-->
+
+
+
+
+
+
+
+ <!-- CONTENEDOR DE CARACTERISTICAS-->
+
+  <div class="container z-index d-md-block d-none ">
+
+    <div class="row text-white">
+
+      <div class="col-lg-3 col-md-3">
+
+          <h2 class="title-numeros mb-0 bold"><?= $cantidad_servicios_categoria; ?></h2>
+
+          <p class="text-d-number"> <?=$lang[$nombre_categoria];?></p>
+
+      </div>
+
+      <div class="col-lg-3 col-md-3">
+
+          <h2 class="title-numeros mb-0 bold"><?= $nViajeros; ?></h2>
+
+          <p class="text-d-number"><?=$lang["viajeros_lo_han_disfrutado"]?></p>
+
+      </div>
+
+      <div class="col-lg-3 col-md-3">
+
+          <h2 class="title-numeros mb-0 bold"><?=$cantidad_opiniones_categoria;?></h2>
+
+          <p class="text-d-number"><?=$lang["opiniones_reales"]?></p>
+
+      </div>
+
+      <div class="col-lg-3 col-md-3">
+
+          <h2 class="title-numeros mb-0 bold">9,2</h2>
+
+          <p class="text-d-number"><?=$lang["asi_nos_puntuan"]?></p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+   <!-- FIN CONTENEDOR DE CARACTERISTICAS-->
+
+
+
+<br>
+
+
+
+  <!-- CONTENEDOR DE FRANJA TRANSPARENTE-->
+
+  <div class="container-fluid d-md-block d-none">
+
+     <div class="row">
+
+      <div class="col-lg-12">
+
+        <div class="div-fondo"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+    <!-- FIN CONTENEDOR DE FRANJA TRANSPARENTE-->
+
+  
+
+</section>
+
+ <!--FIN SECCION HEADER-->
+
+
+
+
+
+
+
+<!--SECCION ACTIVIDADES-->
+
+
+
+<section class="mt-4">
+
+  <div class="container">
+
+    <div class="row">
+
+        
+
+        <!--COLUMNA DERECHA DE BUSQUEDA-->
+
+      <div class="col-lg-4 d-md-block d-none">
+
+          
+
+           <!--CARD PRINCIPAL DE BUSQUEDA-->
+
+        <div class="card card-seccion-right  ">
+
+          <div class="card-body">
+
+              <div>
+
+                <form class="form-buscar mb-5 " method="get">
+
+            <label class="sr-only" for="s"><?= $lang["que_hacemos"]; ?></label>
+
+          <div class="input-group">
+
+            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="<?= $lang["que_hacemos"]; ?>" value="<?=$busqueda?>">
+
+            <span class="input-group-append">
+
+              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
+
+            </span>
+
+          </div>
+
+</form>
+
+        </div>
+
+              <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
+
+            <div class="accordion" id="Disponibilidad" style="display: none;">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["disponibilidad"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
+
+                      <div class="card-body">
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                          <?php 
+
+
+
+$btnHoy="btn btn-primary btn-size";
+
+$btnManana="btn btn-primary btn-size";           
+
+if (isset($_GET["hoy"]))
+
+ {
+
+$btnHoy="btn btn-primary-selected btn-size";
+
+   }
+
+   if (isset($_GET["manana"]))
+
+ {
+
+$btnManana="btn btn-primary-selected btn-size";
+
+   }
+
+
+
+
+
+
+
+                           ?>
+
+                          <form style="display: none;">
+
+                            <input type="hidden" name="hoy">
+
+                          <button type="submit" class="<?=$btnHoy;?>"><?= $lang["hoy"];?></button>
+
+                        </form>
+
+                         <form style="display: none;">
+
+                          <input type="hidden" name="manana">
+
+                          <button type="submit" class="<?= $btnManana;?>"><?= $lang["manana"];?></button>
+
+                            </form>
+
+                       
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne"><?= $lang["categoria"];?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="categorias" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <?php 
+
+                       $todas_las_categorias=getCategorias();
+
+                        for ($i=0; $i < count($todas_las_categorias); $i++) { 
+
+                          $idCategoria_todas=$todas_las_categorias[$i]["idCategoria_servicio"];
+
+                          $nombre_categoria_servicio_todas=$todas_las_categorias[$i]["nombre_categoria_servicio"];
+
+$checked="";
+
+$type="";
+
+
+
+                          if($idCategoria==$idCategoria_todas){
+
+                           $checked="checked";
+
+                           $type="radio";
+
+                          }
+
+                         echo '    
+
+<a href="categorias?idCategoria='.$idCategoria_todas.'">
+
+                         <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
+
+                          <label class="custom-control-label" for="">'.$nombre_categoria_servicio_todas.'</label>
+
+                        </div></a>';
+
+                        }
+
+                      ?>
+
+                       
+
+                    
+
+                      
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+              <!-- <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#accesibiliad" aria-expanded="true" aria-controls="collapseOne">
+
+                          Accesibilidad <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="accesibiliad" class="collapse  show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInlinea">
+
+                          <label class="custom-control-label" for="customControlInlinea">Accesible</label>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>-->
+
+              <br>
+
+               <div class="accordion" id="accordionExample" style="display: none;">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion show" href="#" data-toggle="collapse" data-target="#precio" aria-expanded="true" aria-controls="collapseOne"><?= $lang["ordenar"];?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="precio" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+
+
+                      <form class="padding">
+
+                  
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+             
+
+                                   <?php 
+
+
+
+$btnMenorPrecio="btn btn-primary btn-size";
+
+$btnMayorPrecio="btn btn-primary btn-size";           
+
+if (isset($_GET["priceMin"]))
+
+ {
+
+$btnMenorPrecio="btn btn-primary-selected btn-size";
+
+   }
+
+   if (isset($_GET["priceMax"]))
+
+ {
+
+$btnMayorPrecio="btn btn-primary-selected btn-size";
+
+   }
+
+
+
+
+
+
+
+                           ?>                      
+
+
+
+ <form  style="display: none;">
+
+                            <input type="hidden" name="priceMin">
+                          <button type="submit" class="<?=$btnMenorPrecio;?>"><?= $lang["menor_precio"];?></button>
+
+                        </form>
+
+                                   <form action="categorias.php">
+
+                            <input type="hidden" name="priceMax">
+
+                          <button type="submit" class="<?=$btnMayorPrecio;?>">"mayor_precio"];?></button>
+
+                        </form>
+
+
+
+
+
+ 
+
+                            
+
+                        <!--input type="range" class="form-control-range custom-range"  id="formControlRange" href="#"-->
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+             <!--  <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion show" href="#" data-toggle="collapse" data-target="#Duración" aria-expanded="true" aria-controls="collapseOne">
+
+                          Duración <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="Duración" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                       <form class="padding">
+
+                      <div class="form-group">
+
+                        <input type="range" class="form-control-range custom-range"  id="formControlRange2">
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>-->
+
+               <!--FIN ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
+
+          </div>
+
+        </div>
+
+        <br>
+
+         <!--CARD ULTIMAS OPINIONES-->
+
+
+
+        <div class="card card-ultimas-o d-md-block d-none">
+
+<?php 
+
+      for ($b=0; $b < count($opiniones_categoria) ; $b++) { 
+
+        if ($b <=2) {
+
+          # code...
+
+        
+
+  ?>
+
+              <div class="card-body">
+
+      <p class="text-primary"><?=$opiniones_categoria[$b]['opinion']?></p>
+
+            <p>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+             <?=$opiniones_categoria[$b]['nombre']?></p>
+
+            <hr>
+
+          
+
+         
+
+ </div>
+
+      <?php
+
+      }}
+
+
+
+  
+
+
+
+ ?>
+
+         
+
+        </div>
+
+        <!--FIN CARD ULTIMAS OPINIONES-->
+
+        <br>
+
+        <!--CARD GUIA PC-->
+
+         <div class="card card-ultimas-o d-md-block d-none">
+
+          <div class="card-body" >
+
+            <form action="guias.php" method="post">
+
+              <input type="hidden" name="idCategoria" value="<?= $id;?>">
+
+            <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?> <?=$lang[$nombre_categoria];?></h4>
+
+            <a class="text-white">
+
+              <img src="admin/img/categoria_servicio/<?=$fotos;?>" class="img-fluid img-guia">
+
+              <button class="submit btn btn-primary">  <?=$lang[$nombre_categoria];?></button>
+
+            </a>
+
+          </form>
+
+          </div>
+
+        </div>
+
+        <!--FIN CARD GUIA PC-->
+
+         <div id="sidebar" class="mb-5" style="display: none;">
+
+           <div class="sidebar__inner" style="bottom:50px !important">
+
+              <!--CARD PRINCIPAL DE BUSQUEDA-->
+
+        <div class="card card-seccion-right  ">
+
+          <div class="card-body">
+
+              
+
+              <!--ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
+
+            <div class="accordion" id="Disponibilidad" style="display: none;" >
+
+                 <div class="card card-accordion" style="display: none;">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne"><?=$lang["disponibilidad"]?> <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
+
+                      <div class="card-body">
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                               <form >
+
+                            <input type="hidden" name="hoy"></input>
+
+                          <button type="submit" class="<?=$btnHoy;?>"><?=$lang["Hoy"]?></button>
+
+                        </form>
+
+                         <form >
+
+                          <input type="hidden" name="manana"></input>
+
+                          <button type="submit" class="<?= $btnManana;?>"><?=$lang["manana"]?></button>
+
+                            </form>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["categorias"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="categorias" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+
+
+
+
+
+
+                       
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInline">
+
+                          <label class="custom-control-label" for="customControlInline"><?=$lang["visitas_guiadas"]?></label>
+
+                        </div>
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInline2">
+
+                          <label class="custom-control-label" for="customControlInline2"><?=$lang["visitas_guiadas"]?></label>
+
+                        </div>
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInline3">
+
+                          <label class="custom-control-label" for="customControlInline3"><?=$lang["visitas_guiadas"]?></label>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#accesibiliad" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["accesibiliad"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="accesibiliad" class="collapse  show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInlinea">
+
+                          <label class="custom-control-label" for="customControlInlinea"><?=$lang["accesible"]?></label>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion show" href="#" data-toggle="collapse" data-target="#precio" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["precio"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="precio" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <form class="padding">
+
+                      <div class="form-group">
+
+                        <label for="formControlRange">gratis</label>
+
+                        <input type="range" class="form-control-range custom-range"  id="formControlRange">
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion show" href="#" data-toggle="collapse" data-target="#Duración" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["duracion"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="Duración" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                       <form class="padding">
+
+                      <div class="form-group">
+
+                        <input type="range" class="form-control-range custom-range"  id="formControlRange2">
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+               <!--FIN ACORDEON PARA FILTRO DE BUSQUEDA EN PC-->
+
+          </div>
+
+        </div>
+
+           </div>
+
+         </div>
+
+
+
+      </div>
+
+ <!--FIN COLUMNA DERECHA DE BUSQUEDA-->
+
+ 
+
+ 
+
+ 
+
+  <!--COLUMNA IZQUIERDA RESULTADOS DE BUSQUEDA-->
+
+      <div class="col-lg-8 padding-lr-0">
+
+      
+
+
+
+
+
+
+
+
+
+        <!--BUCLE DE RESULTADOS -->
+
+
+
+
+
+            <div class="container d-md-none py-2">
+
+          <div class="row ">
+
+          <div class="col-4 ">
+
+            <a href="#" style="font-size: 10px;" class="btn btn-dark btn-filtar d-md-none " data-toggle="modal" data-target="#exampleModal"><i class="fa fa-sliders-h "></i><?=$lang["filtrar"]?></a>
+
+          </div>
+
+           <div class="col-8 my-auto">
+
+            
+
+            <p class="text-left text-filtrar"><?=$cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?> <?=$lang[$nombre_categoria];?></p>
+
+          </div>
+
+        </div>
+
+        </div>
+
+
+
+ <p class="text-left d-md-block d-none " style="font-size: 30px;"><?= $cantidad_servicios_categoria;?> <?=$lang["actividades_en"]?> <?=$lang[$nombre_categoria];?></p>
+
+
+
+
+
+
+
+
+
+<?php  for ($i=0; $i < count($servicios) ; $i++) { 
+
+ 
+
+
+
+ 
+
+  $idServicio=$servicios[$i]["idServicio"];
+
+      $fecha=date("Y-m-d");
+
+        $salidas=$servicios[$i]["salidas"];
+
+      $idMoneda=$salidas[0]['idMoneda'];
+
+      $idServicioSalidas=$salidas[0]['idServicioSalidas'];
+
+      $tarifas=$servicios[$i]["tarifas"];
+
+
+   $tarifa=$servicios[$i]["tarifa"];
+
+      $precioSugerido=($tarifa[0]["valorSym"]);
+
+
+
+
+ $cancelaciones=$servicios[$i]["cancelaciones"];
+
+   $cancelacion="";
+switch ($cancelaciones[0]["idCancelacion"]) {
+      case 1:
+      case 3:
+      case 7:
+   $cancelacion="gratís!";
+    break;
+  
+  default:
+    // code...
+    break;
+}
+
+
+
+
+$nombre_servicio=$servicios[$i]["nombre_servicio"];
+
+$descripcion_corta=$servicios[$i]["descripcion_corta"];
+
+$opiniones_servicio=$servicios[$i]["opinionesServicio"];
+
+$estrellas_servicio=$servicios[$i]["estrellasServicio"];
+
+$cantidad_opiniones_servicio=count($opiniones_servicio);
+
+$duracion_servicio=$servicios[$i]["duracion_servicio"];
+
+$fotos_servicio=$servicios[$i]["fotos"];
+
+$fotos_servicio=$fotos_servicio[0]["ruta"];
+
+      $textoMiniatura=$servicios[$i]["textoMiniatura"];
+
+?>
+
+
+
+<a href="servicio?id=<?= $idServicio?>">
+
+              <div class="mb-4">
+
+    <div class="card card-visitas">
+
+        <div class="row no-gutters d-md-none" style="position: absolute;z-index: 999;">
+
+                    <div class="col-6">
+
+                         <div class="badge badge-primary badge-destacado"><?=$textoMiniatura;?></div>
+
+                    </div>
+
+        </div>
+
+      <div class="card-body padding-body">
+
+          <div class="row ">
+
+        <div class="col-md-4 col-4">
+
+            <img src="admin/classes/imgServicio/<?=$fotos_servicio;?>" class="w-100 img-fluid img-card-destinos">
+
+          </div>
+
+          <div class="col-md-8 col-8" style="padding-left:0px !important;">
+
+            <div class="card-block ">
+
+       <h4 class="text-left titulo-card-destinos semibold"><?=$nombre_servicio?></h4>
+
+                    <h5 class="texto-opinion-desta"><strong><?=$estrellas_servicio;?>/10</strong> <small class="text-gris"><?=$cantidad_opiniones_servicio;?> opiniones</small></h5>
+
+                    <p class="text-gris d-md-block d-none"><?=$descripcion_corta;?></p>
+
+            </div>
+
+             <ul class="lista-caracteristicas d-md-none">
+
+                      <li><i class="fa fa-hourglass-half"></i> <?=$duracion_servicio["duracionMinima"];?>  - <?=$duracion_servicio["duracionMaxima"];?></li>
+
+                      
+
+                    </ul>
+
+                    <h4 class="text-success text-cancelacion  float-left d-md-none semibold"><?=$cancelacion?></h4>
+
+                    <p class="float-right d-md-none semibold"><?=$precioSugerido;?></p>
+
+          </div>
+
+
+
+        </div>
+
+        <div class=" d-md-block mt-2 d-none">
+
+                <div class="row no-gutters">
+
+                  <div class="col-lg-4 col-12">
+
+                    <ul class="lista-caracteristicas">
+
+                      <li><i class="fa fa-hourglass-half"></i> <?=$duracion_servicio["duracionMinima"];?>  - <?=$duracion_servicio["duracionMaxima"];?> </li>
+
+                      
+
+                    </ul>
+
+                  </div>
+
+                  <div class="col-lg-4 col-12">
+
+                    <h4 class="text-success text-cancelacion semibold"><?=$cancelacion;?></h4>
+
+                  </div>
+
+                  <div class="col-lg-4 col-12">
+
+                    <h4 class="float-right semibold"><?=$precioSugerido;?></h4>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+      </div>
+
+       <div class="destacado d-md-block d-none">
+
+               <h5 class="text-uppercase text-white"><?=$textoMiniatura;?></h5>
+
+             </div>
+
+     </div>
+
+    </div>
+
+         </a>
+
+
+
+
+
+
+
+
+
+
+
+<?php
+
+  }?>
+
+
+
+
+
+        
+
+   
+
+
+
+
+
+
+
+
+
+     
+
+         <!--BUCLE DE RESULTADOS -->
+
+       
+
+         <!--PAGINACION DE RESULTADOS -->
+
+   
+
+         
+
+   
+
+    <nav aria-label="Page navigation example">
+
+            <ul class="pagination pagination-lg  justify-content-center">
+
+
+
+   
+<?php 
+
+$cantidad_de_paginas=$cantidad_servicios_categoria/$cantidad_por_pagina;
+if($cantidad_servicios_categoria%$cantidad_por_pagina>0){
+  $cantidad_de_paginas+=1;
+}
+if ($cantidad_de_paginas>1) {
+
+
+
+?>
+
+
+
+    <li class="page-item flechas">
+
+              <!--  <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina-1).'" aria-label="Previous"> -->
+
+
+                </a>
+
+              </li>
+
+<?php 
+
+
+for ($i=1; $i < $cantidad_de_paginas; $i++) { 
+?>
+ <li ><a class="page-link" href="categorias.php?idCategoria=<?=$idCategoria?>&pagina=<?=$i?>"><?=$i;?></a></li>
+<?php
+ } ?>
+
+
+
+
+
+
+
+       <li class="page-item flechas">
+
+             <!--   <a class="page-link" href="categorias.php?id='.$id.'&pagina='.($pagina+1).'" aria-label="Next"> -->
+
+           
+
+                </a>
+
+              </li>
+
+              
+
+  </ul>
+
+<?php
+} ?>
+        </nav>
+
+
+
+
+
+             <!--FIN PAGINACION DE RESULTADOS -->
+
+
+
+            
+
+           
+
+            
+
+       
+
+      
+
+        
+
+        <br>
+
+
+
+
+
+        <div class="card card-ultimas-o d-md-block">
+
+<?php 
+
+      for ($b=0; $b < count($opiniones_categoria) ; $b++) { 
+
+        if ($b <= 2) { // para maximo 2 resultados
+
+          # code...
+
+       
+
+  ?>
+
+              <div class="card-body">
+
+      <p class="text-primary"><?=$opiniones_categoria[$b]['opinion']?></p>
+
+            <p>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+            <i class="fa fa-star text-primary"></i>
+
+             <?=$opiniones_categoria[$b]['nombre']?></p>
+
+            <hr>
+
+          
+
+         
+
+ </div>
+
+      <?php
+
+      }
+
+ }
+
+  
+
+
+
+ ?>
+
+         
+
+        </div>
+
+
+
+         <!--CARD GUIA MOVIL -->
+
+        <div class="card card-ultimas-o d-md-none">
+
+          <div class="card-body">
+
+            <form action="guias.php" method="post">
+
+              <input type="hidden" name="idCategoria" value="<?= $id;?>">
+
+
+
+       <h4><i class="fa fa-map"></i><?=$lang["conoce_nuestra_guia_de"]?> <?=$lang[$nombre_categoria];?></h4>
+
+            <a href="#" class="text-white">
+
+
+
+              <img src="admin/img/categoria_servicio/<?= $fotos; ?>" class="img-fluid img-guia mx-auto d-block">
+
+              <h4 class="text-guia2"> <?=$lang[$nombre_categoria];?></h4>
+
+            </a>
+
+             <button class="submit btn btn-primary"> <?=$lang[$nombre_categoria];?></button>
+
+           </form>
+
+          </div>
+
+        </div>
+
+         <!--FIN CARD GUIA MOVIL -->
+
+         <div class="container_r clearfix">
+
+           
+
+         </div>
+
+      </div>
+
+        <!--FIN COLUMNA IZQUIERDA RESULTADOS DE BUSQUEDA-->
+
+    </div>
+
+  </div>
+
+</section>
+
+<!--SECCION ACTIVIDADES-->
+
+
+
+
+
+<!-- MODAL HERRAMIENTAS MOVIL-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <div class="card card-seccion-right  ">
+
+          <div class="card-body">
+
+              <!--ACORDEON PARA FILTRO DE BUSQUEDA EN MOVIL-->
+
+
+
+              <div name="buscadorOPT">
+              <div>
+
+                <form class="form-buscar mb-5 " action="categorias.php" method="get">
+
+            <label class="sr-only" for="s"><?= $lang["que_hacemos"]; ?></label>
+
+          <div class="input-group">
+
+            <input class="field form-control form-control-search"  name="buscar" type="text" placeholder="<?= $lang["que_hacemos"]; ?>" value="<?=$busqueda?>">
+
+            <span class="input-group-append">
+
+              <button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?= $lang["buscar"]; ?> <i class="fa fa-arrow-right"></i></button>
+
+            </span>
+
+          </div>
+
+</form>
+
+        </div>
+
+            <div class="accordion" id="Disponibilidad" style="display: none;">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["disponibilidad"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#Disponibilidad">
+
+                      <div class="card-body">
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                          <?php 
+
+
+
+$btnHoy="btn btn-primary btn-size";
+
+$btnManana="btn btn-primary btn-size";           
+
+if (isset($_GET["hoy"]))
+
+ {
+
+$btnHoy="btn btn-primary-selected btn-size";
+
+   }
+
+   if (isset($_GET["manana"]))
+
+ {
+
+$btnManana="btn btn-primary-selected btn-size";
+
+   }
+
+
+
+
+
+
+
+                           ?>
+
+                          <form action="categorias.php" style="display: none;">
+
+                            <input type="hidden" name="hoy">
+
+                          <button type="submit" class="<?=$btnHoy;?>"><?= $lang["hoy"];?></button>
+
+                        </form>
+
+                         <form action="categorias.php" style="display: none;">
+
+                          <input type="hidden" name="manana">
+
+                          <button type="submit" class="<?= $btnManana;?>"><?= $lang["manana"];?></button>
+
+                            </form>
+
+                       
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne"><?= $lang["categoria"];?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="categorias" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <?php 
+
+                       $todas_las_categorias=getCategorias();
+
+                        for ($i=0; $i < count($todas_las_categorias); $i++) { 
+
+                          $idCategoria_todas=$todas_las_categorias[$i]["idCategoria_servicio"];
+
+                          $nombre_categoria_servicio_todas=$todas_las_categorias[$i]["nombre_categoria_servicio"];
+
+$checked="";
+
+$type="";
+
+
+
+                          if($idCategoria==$idCategoria_todas){
+
+                           $checked="checked";
+
+                           $type="radio";
+
+                          }
+
+                         echo '    
+
+<a href="categorias?idCategoria='.$idCategoria_todas.'">
+
+                         <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
+
+                          <label class="custom-control-label" for="">'.$nombre_categoria_servicio_todas.'</label>
+
+                        </div></a>';
+
+                        }
+
+                      ?>
+
+                       
+
+                    
+
+                      
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+
+        </div>
+
+
+
+
+
+           <div class="accordion" id="Disponibilidad">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["disponibilidad"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="collapseOne" class="collapse show " aria-labelledby="headingOne" data-parent="#Disponibilidad">
+
+                      <div class="card-body">
+
+                        <div class="btn-group" role="group" aria-label="Basic example">
+
+                                <form action="categorias.php">
+
+                            <input type="hidden" name="hoy"></input>
+
+                          <button type="submit" class="<?=$btnHoy;?>"><?=$lang["hoy"]?></button>
+
+                        </form>
+
+                         <form action="categorias.php">
+
+                          <input type="hidden" name="manana"></input>
+
+                          <button type="submit" class="<?= $btnManana;?>"><?=$lang["manana"]?></button>
+
+                            </form>
+
+                          
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div> 
+
+              <br>
+
+             <!--  <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#categorias" aria-expanded="true" aria-controls="collapseOne">
+
+                          Categorias <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="categorias" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+ <?php 
+
+
+
+//$cant=count(DevuelveCategorias());
+
+//$devuelveCat=DevuelveCategorias();
+
+
+
+                        for ($i=0; $i < $cant; $i++) {
+
+                        $checked="";
+
+                        $type=""; 
+
+                        if($id==$devuelveCat[$i][0]){
+
+                           $checked="checked";
+
+                           $type="radio";
+
+                          }
+
+  /*                       echo '    
+
+<a href="categorias.php?id='.DevuelveCategorias()[$i][0].'">
+
+               <div class="custom-control custom-checkbox mb-2" >
+
+                      
+
+    <input type="'.$type.'" class="custom-control-input" id="" '.$checked.'>
+
+   <label class="custom-control-label" for="">'.DevuelveCategorias()[$i][1].'</label>
+
+                    </div> </a>   ';*/
+
+                        }
+
+                      ?>
+
+                    
+
+
+
+                    
+
+                        
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>-->
+
+              <br>
+
+              <!-- <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#accesibiliad" aria-expanded="true" aria-controls="collapseOne">
+
+                          Accesibilidad <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="accesibiliad" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <div class="card-body">
+
+                        <div class="custom-control custom-checkbox mb-2">
+
+                          <input type="checkbox" class="custom-control-input" id="customControlInlinea">
+
+                          <label class="custom-control-label" for="customControlInlinea">Accesible</label>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+              </div>-->
+
+              <br>
+
+               <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#precio" aria-expanded="true" aria-controls="collapseOne">
+
+                          <?=$lang["precio"]?><i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="precio" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                      <form class="padding">
+
+                      <div class="btn-group" role="group" aria-label="Basic example">
+
+                                <form action="categorias.php">
+
+                            <input type="hidden" name="priceMin"></input>
+
+                          <button type="submit" class="<?=$btnMenorPrecio;?>"><?=$lang["menor_precio"]?></button>
+
+                        </form>
+
+                                   <form action="categorias.php">
+
+                            <input type="hidden" name="priceMax"></input>
+
+                          <button type="submit" class="<?=$btnMayorPrecio;?>"><?=$lang["mayor_precio"]?></button>
+
+                        </form>
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>
+
+              <br>
+
+              <!-- <div class="accordion" id="accordionExample">
+
+                 <div class="card card-accordion">
+
+                    <div class="" id="headingOne">
+
+                      <h5 class="mb-0">
+
+                        <a class="btn btn-accordion " href="#" data-toggle="collapse" data-target="#Duración" aria-expanded="true" aria-controls="collapseOne">
+
+                          Duración <i class="fa fa-sort-down float-right"></i>
+
+                        </a>
+
+                      </h5>
+
+                    </div>
+
+
+
+                    <div id="Duración" class="collapse show " aria-labelledby="headingOne" data-parent="#accordionExample">
+
+                       <form class="padding">
+
+                      <div class="form-group">
+
+                        <input type="range" class="form-control-range custom-range"  id="formControlRange2">
+
+                      </div>
+
+                    </form>
+
+                    </div>
+
+                  </div>
+
+              </div>-->
+
+                  <!--ACORDEON PARA FILTRO DE BUSQUEDA EN MOVIL-->
+
+          </div>
+
+        </div>
+
+      </div>
+
+   
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FIN MODAL HERRAMIENTAS MOVIL-->
+
+
+
+
+
+
+
+<!-- MODAL BUSCAR MOVIL-->
+
+<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <div class="modal-dialog" role="document">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+          <span aria-hidden="true">&times;</span>
+
+        </button>
+
+      </div>
+
+      <div class="modal-body">
+
+        <form class="form-buscar">
+
+            <label class="sr-only" for="s"><?=$lang["donde_vamos"]?></label>
+
+        	<div class="input-group ">
+
+        		<input class="field form-control"  name="buscar" type="text" placeholder="¿Dónde vamos?" value="">
+
+        		<span class="input-group-append">
+
+        			<button class="submit btn btn-primary" id="searchsubmit" name="submit" type="submit"><?=$lang["buscar"]?><i class="fa fa-arrow-right"></i></button>
+
+        		</span>
+
+        	</div>
+
+              <!--EMPIEZA DESPLEGABLE DEL BANNER-->	
+
+              <div class="form-group">
+
+               <div class="container">
+
+                <div class="row">
+
+                  <div class="col-lg-12">
+
+                     <div class="top-destinos-movil" >
+
+                         <div class="container">
+
+                        <div class="row mb-4">
+
+                          <div class="col-lg-12">
+
+                            <h3 class="text-center text-primary"><?=$lang["top_actividades"]?></h3>
+
+                          </div>
+
+                        </div>
+
+                        <div class="row  mb-4">
+
+                            
+
+                            <!--EL BUCLE DE LOS RESULTADOS DEBE IR ACA-->	  
+
+                            <div class="col-md-3 col-6 mb-3">
+
+                            <h4 class=" mb-0"><a href="#" class="text-destinos">Rio de Janeiro</a></h4>
+
+                            <small>Florianopolis</small>
+
+                            </div>
+
+                            <!--FIN BUCLE DE LOS RESULTADOS DEBE IR ACA-->	 
+
+                  
+
+                         </div>
+
+                         <div class="row py-4">
+
+                          <div class="col-lg-12">
+
+                            <h3 class="text-center"><a href="" class="btn btn-outline-primary btn-white" style="border-radius:25px;"><?=$lang["ver_todos_los_destinos"]?></a></h3>
+
+                          </div>
+
+                        </div>
+
+                        </div>
+
+                     </div>
+
+                  </div>
+
+                </div>
+
+                </div>
+
+              </div>
+
+               <!--EMPIEZA DESPLEGABLE DEL BANNER-->	
+
+              
+
+            </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FIN MODAL BUSCAR MOVIL-->
+
+
+
+ <!-- Footer -->
+
+ <?php include "footer.php"; 
+
+?>
+
+ <!--- Fin del footer --->
+
+
+
+ 
+
+  <!-- BOTON SUBIR-->
+
+  <div class="scroll-to-top  position-fixed ">
+
+    <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
+
+      <i class="fa fa-chevron-up"></i>
+
+    </a>
+
+  </div>
+
+  <!-- FIN BOTON SUBIR-->
+
+
+
+
+
+ <!-- SCRIPTS NECESARIOS-->
+
+ 
+
+  <!-- JQUERY-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+  <!-- JQUERY-->
+
+  
+
+  <!-- UNDERSCORE-->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+  <!-- UNDERSCORE-->
+
+  
+
+  <!-- MOMENT -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+
+  <!-- MOMENT -->
+
+  
+
+  <!-- WOW ANIMACION -->
+
+  <script src="js/wow.min.js"></script>
+
+  <!-- WOW ANIMACION -->
+
+  
+
+
+
+  <!-- BOOTSTRAP BUNDLE -->
+
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- BOOTSTRAP BUNDLE -->
+
+  
+
+  <!-- JQUERY EASING -->
+
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- JQUERY EASING -->
+
+
+
+  <!-- CUSTOM -->
+
+  <script src="js/script.js"></script>
+
+  <!-- CUSTOM -->
+
+
+
+  <script type="text/javascript" src="js/rAF.js"></script>
+
+  <script type="text/javascript" src="js/ResizeSensor.js"></script>
+
+  <script type="text/javascript" src="js/sticky-sidebar.js"></script>
+
+  <script type="text/javascript">
+
+
+
+    var stickySidebar = new StickySidebar('#sidebar', {
+
+      topSpacing: 90,
+
+      bottomSpacing: 100,
+
+      containerSelector: '.container_r',
+
+      innerWrapperSelector: '.sidebar__inner'
+
+    });
+
+</script>
+
+  
+
+<!-- FIN SCRIPTS NECESARIOS-->
+
+</body>
+
+
+
+</html>
+

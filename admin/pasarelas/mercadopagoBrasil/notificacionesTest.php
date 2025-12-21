@@ -1,0 +1,285 @@
+<?php 
+
+
+include("config.php");
+include("../../classes/functions.php");
+include("../../classes/comprobantes.php");
+include("../../classes/reservaEmail.php");
+include("../../classes/reserva.php");
+include("../../classes/moneda.php");
+include("../../classes/usuario.php");
+include("../../classes/convierte_monedas.php");
+
+header('Access-Control-Allow-Origin: *');
+header('Content-type: application/json;  charset=UTF-8');
+$bodyy = file_get_contents('php://input');
+
+
+  $body = json_decode($bodyy, true);
+
+
+
+$geet=$_GET;
+echo "string".$_GET['id'];
+$fp = fopen("./MPResu.csv", 'a+');
+fputcsv($fp, $bodyy,";");
+fputcsv($fp, "***************************************************/n",";");
+ http_response_code(200);
+
+
+   
+     $topic=$geet["type"];
+  if(1){   //aca consultamos el pago a la api de mercadopago pasandole
+
+
+
+    // el token del collector
+
+
+$id = $_GET['id'];
+$url = 'https://api.mercadopago.com/v1/payments/'.$id.'?access_token='.$accessTokenML;
+
+
+
+
+    //  Iniciamos curl
+
+
+
+    $curl = curl_init();
+    // Desactivamos verificación SSL
+    curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, 0 );
+    // Devuelve respuesta aunque sea falsa
+    curl_setopt( $curl, CURLOPT_RETURNTRANSFER, 1 );
+    // Especificamo los MIME-Type que son aceptables para la respuesta.
+    curl_setopt( $curl, CURLOPT_HTTPHEADER, [ 'Accept: application/json' ] );
+    // Establecemos la URL
+    curl_setopt( $curl, CURLOPT_URL, $url );
+    // Ejecutmos curl
+    $json = curl_exec( $curl );
+    // Cerramos curl
+    curl_close( $curl );
+    $respuestas = json_decode( $json, true );
+    echo "string";
+    print_r($respuestas);
+
+$fp = fopen("./MPResu.csv", 'a+');
+fputcsv($fp,  $json,";");
+
+fputcsv($fp, "***************************************************/n",";");
+fputcsv($fp, "***************************************************/n",";");
+
+
+if (!isset($respuestas['message'])) {
+//csv on
+
+ switch ($respuestas['status']) {
+
+
+
+      case 'rejected':
+      $resu=2;
+        break;
+
+
+
+          case 'approved':
+         $resu=3;
+         break;
+
+
+
+
+
+      default:
+        $resu=1;
+        break;
+
+
+
+    }
+
+
+
+if ( $resu==3) {
+
+    // code...
+
+
+
+
+
+$nro_venta=$respuestas['external_reference'];
+
+
+
+$importe=$respuestas['transaction_details']['total_paid_amount'];
+
+
+
+$fecha = (new DateTime)->format('d/m/y'); 
+
+
+
+$hora= (new DateTime)->format('H:i:s'); 
+
+
+
+$nombre=$respuestas['payer']['first_name'];
+
+
+
+$apellido=$respuestas['payer']['last_name'];
+
+
+
+$lista =array( $respuestas['external_reference'] ,$nombre,$apellido,$respuestas['payer']['identification']['number'],$id,$respuestas['transaction_amount']);
+
+
+
+$total_transaccion=$respuestas['transaction_amount'];
+
+
+
+$total_dolares=  $total_dolares=ConvierteMoneda(283,188, $total_transaccion);
+
+
+
+$comprobante=insertaComprobante($respuestas['external_reference'], $total_transaccion, 2, 283, $id, $total_dolares, 1);
+
+
+
+
+
+
+
+
+
+
+
+$total_abonado="R$".$total_transaccion;
+
+
+
+$codigo_amigable=$reserva[0]["codigoAmigable"]; 
+
+
+
+ $pasarela="Mercadopago Brasil";
+
+
+
+
+
+
+
+include("../../classes/email_pago_recibido.php");
+
+
+
+enviaMailPagos($email,"Recibimos tu pago correctamente!",$email_pago_recibido, $parametros[0]["site"]);
+
+
+
+exit();
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+  
+
+
+
+  
+
+
+
+    
+
+
+
+ ?>

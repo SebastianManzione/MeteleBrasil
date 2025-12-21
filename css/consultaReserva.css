@@ -1,0 +1,262 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+}
+.footer {
+  margin-top: auto;
+}
+
+#container-valores-moedas {
+  background-color: #fff;
+  padding: 0.4rem;
+}
+#container-valores-moedas .container-vm {
+  transition: 0.3s ease-in-out all;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  height: 6rem;
+  padding-left: 1rem;
+  border: 0px solid #ccc;
+  border-radius: 0rem;
+  background-color: transparent;
+  box-shadow: 0px 0px 0px transparent;
+}
+#container-valores-moedas .container-vm.active {
+  transition: 0.3s ease-in-out all;
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  background-color: #fdfdfd;
+  box-shadow: 0px 1px 1px #ccc;
+}
+#container-valores-moedas .container-vm .container-icone-valor-moeda {
+  /* margin-left: 1rem; */
+}
+#container-valores-moedas .container-vm .container-icone-valor-moeda i::before {
+  transition: 0.3s ease-in-out all;
+  content: "\e836";
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  font-size: 2.2rem;
+  opacity: 0.4;
+  color: #222;
+}
+#container-valores-moedas
+  .container-vm.active
+  .container-icone-valor-moeda
+  i::before {
+  transition: 0.3s ease-in-out all;
+  content: "\e2e6";
+  opacity: 1;
+  color: #029ce2;
+  font-size: 3rem;
+}
+#container-valores-moedas .container-vm .container-valor-moeda {
+  margin-left: 1rem;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(1) {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  position: relative;
+  top: 0.3rem;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(1)
+  span {
+  margin-right: 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #222;
+  position: relative;
+  top: 4px;
+  white-space: nowrap;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(1)
+  strong {
+  font-size: 1.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  line-height: 1.2;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(2)
+  span {
+  font-size: 0.9rem;
+  font-weight: 300;
+  white-space: nowrap;
+}
+#container-valores-moedas
+  .container-vm
+  .container-valor-moeda
+  div:nth-child(2)
+  span:nth-child(2) {
+  opacity: 0.7;
+  font-size: 0.8rem;
+}
+
+.container-formas-pagamento {
+  display: flex;
+}
+.container-formas-pagamento > .row {
+  width: 100%;
+  background-color: #fff;
+  margin: auto;
+}
+.container-formas-pagamento .payment-option {
+  width: 100%;
+}
+
+.container-formas-pagamento .payment-option.show {
+  display: flex;
+}
+.container-formas-pagamento .payment-option .form-real {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: unset;
+}
+.container-formas-pagamento .payment-option .form-real .custom-radio {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 1rem;
+  min-height: 3rem;
+  cursor: pointer;
+  width: 96%;
+  margin: 0 auto;
+}
+.container-formas-pagamento .payment-option .form-real .custom-radio.active {
+  border: 1px solid #ccc;
+  border-radius: 0.4rem;
+  background-color: #fdfdfd;
+  box-shadow: 0px 1px 1px #ccc;
+  margin-bottom: 1rem;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio
+  .container-card-pagamento-topo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio
+  .container-card-pagamento-body {
+  display: none;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio.active
+  .container-card-pagamento-body {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio.active
+  .container-card-pagamento-body > button{
+    width: 8rem;
+}
+
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio
+  .container-card-pagamento-topo
+  > i::before {
+  margin-right: 0.6rem;
+  transition: 0.3s ease-in-out all;
+  content: "\e836";
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px; /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  font-size: 1.4rem;
+  opacity: 0.4;
+  color: #222;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio.active
+  .container-card-pagamento-topo
+  > i::before {
+  transition: 0.3s ease-in-out all;
+  content: "\e2e6";
+  opacity: 1;
+  color: #f7cd12;
+  font-size: 1.4rem;
+}
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio:not(:last-child) {
+  margin-bottom: 1rem;
+}
+/* .container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio
+  input[type="radio"] {
+  margin-right: 0.6rem;
+} */
+.container-formas-pagamento
+  .payment-option
+  .form-real
+  .custom-radio
+  .content-cards {
+}

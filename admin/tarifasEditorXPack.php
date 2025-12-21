@@ -1,0 +1,433 @@
+<?php 
+include("includes/header.php");
+include("includes/navbar.php");
+include("includes/sidebar.php");
+require("classes/functions.php");
+require("classes/categoria.php");
+require("classes/tarifas.php");
+require("classes/tipos_tarifa.php");
+require("classes/edades.php");
+require("classes/texto_miniaturas.php");
+require("classes/cancelaciones.php");
+require("classes/salidas.php");
+
+?>
+
+  <!-- Content Wrapper. Contains page content -->
+
+  <div class="content-wrapper">
+
+    <!-- Content Header (Page header) -->
+
+    <div class="content-header">
+
+      <div class="container-fluid">
+
+        <div class="row mb-2">
+
+          <div class="col-sm-6">
+
+            <h1 class="m-0 text-dark">Tarifas</h1>
+
+          </div><!-- /.col -->
+
+          <div class="col-sm-6">
+
+            <ol class="breadcrumb float-sm-right">
+
+              <li class="breadcrumb-item"><a href="#">Editor Tarifas</a></li>
+
+              <li class="breadcrumb-item active">Editor Tarifas</li>
+
+            </ol>
+
+          </div><!-- /.col -->
+
+        </div><!-- /.row -->
+
+      </div><!-- /.container-fluid -->
+
+    </div>
+
+<?php
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['updateTarifa'])) {
+
+
+$idServicioSalidasTarifas2=$_GET['idServicioSalidasTarifas'];
+$idServicioSalidasTarifas=$_POST['idServicioSalidasTarifas'];
+$tarifas=getTarifa($idServicioSalidasTarifas);
+$idServicioSalidas=$tarifas[0]["idServicioSalidas"];
+$salida=getSalida($idServicioSalidas);
+$IdServiciosSalidasPack=$salida[0]["idServiciosSalidasPack"];
+$pack=getSalidasIdServiciosSalidasPack($IdServiciosSalidasPack);
+
+$nombre=$_POST['nombre'];
+$idFromEdadTarifa=$_POST['fromEdadOriginal'];
+$idToEdadTarifa=$_POST['toEdadOriginal'];
+$idFromEdadNueva=$_POST['fromEdadNueva'];
+$idToEdadNueva=$_POST['toEdadNueva'];
+$idTipoTarifaNueva=$_POST['tipo_tarifa'];
+$valor=$_POST['valor'];
+$minimo=$_POST['minimo'];
+$idCancelaciones=$_POST['idCancelacion'];
+ $comisiona='';
+if (isset($_POST['comisiona']) && $_POST['comisiona']=="on") {
+  $comisiona=1;
+  // code...
+}
+
+$cantidad_actualizaciones=0;
+foreach ($pack as $key => $value) {
+    $idServicioSalidas=$value["idServicioSalidas"];
+    $tarifasAUpdate=getTarifas($idServicioSalidas);
+    
+
+    foreach ($tarifasAUpdate as $key2 => $value2) {
+       
+         $idFromEdadUpdate=$value2['idFromEdad'];
+    $idToEdadUpdate=$value2['idToEdad'];
+    $idTipoTarifa=$value2['idTipoTarifa'];
+
+        if ($value2['idFromEdad']==$idFromEdadTarifa && $value2['idToEdad']==$idToEdadTarifa) {
+
+           $resul=updateTarifa($value2['idServicioSalidasTarifas'], $nombre, $idFromEdadNueva, $idToEdadNueva, $idTipoTarifaNueva, $valor, $minimo, $idCancelaciones, $comisiona);
+if ($resul) {
+    $cantidad_actualizaciones+=1;
+}
+        }
+        
+         
+    }
+  
+}
+alertar("Se actualizaron ".$cantidad_actualizaciones." Tarifas", "success");
+
+
+
+/*if ($resul>0) {
+  alertar("tarifa guardada con exito", "success");
+}*/
+
+
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['idServicioSalidasTarifas'])) {
+
+$idServicioSalidasTarifas=$_GET['idServicioSalidasTarifas'];
+
+
+  // code...
+}
+
+$tarifas=getTarifa($idServicioSalidasTarifas);
+$idServicioSalidas=$tarifas[0]["idServicioSalidas"];
+$salida=getSalida($idServicioSalidas);
+$IdServiciosSalidasPack=$salida[0]["idServiciosSalidasPack"];
+$pack=getSalidasIdServiciosSalidasPack($IdServiciosSalidasPack);
+
+
+if($salida[0]["idPrestador"]!= $_SESSION['login']["idPrestador"] && $_SESSION['login']["rol"]!= 1){
+
+    alertar("Usted no tiene acceso a esta seccion del software", "error");
+    redireccionarLento("index");
+exit();
+}
+ $idTipoTarifa=$tarifas[0]['idTipoTarifa'];
+                     
+                        $valor=$tarifas[0]['valor'];
+                         $minimo=$tarifas[0]['minimo'];
+                         $idTipoCancelacion=$tarifas[0]["idCancelaciones"];
+                    
+                        $comisiona=" ";
+                     if ($tarifas[0]['comisiona']==1) {
+                         $comisiona="checked";
+                     }
+
+
+
+ ?>
+
+
+
+    <section class="content">
+
+      <div class="container-fluid">
+
+        <!-- SELECT2 EXAMPLE -->
+
+      
+
+
+
+        <!-- SELECT2 EXAMPLE -->
+
+        <div class="card card-default">
+
+<!-- /.card-header -->
+
+
+        <div class="card-body">
+
+            <div class="row">
+
+                  <div >   
+
+       <form method="post">                     
+<div class="col-12">
+  <div class="col-6">
+<label>Nombre</label>
+<input type="hidden" name="idServicioSalidasTarifas" value="<?=$idServicioSalidasTarifas?>">
+<input type="text" name="nombre" class="form-control" value="<?=$tarifas[0]['nombre']?>">
+</div>
+<div class="col-12">
+  <label>From Edad original</label>
+<input type="hidden" name="fromEdadOriginal" value="<?=$tarifas[0]['idFromEdad']?>">
+
+  <select name="fromEdadOriginall" class="form-control" disabled>
+<?php $edades=getEdades();
+
+                   for ($i=0; $i < count($edades); $i++) { 
+                                   $selected="";
+                                   if ($tarifas[0]['idFromEdad']==$edades[$i]["idEdad"]) {
+                                        $selected="selected";
+                                     }  
+
+                                     ?>
+
+                                          <option value="<?=$edades[$i]['idEdad'];?>" <?=$selected?>><?=$edades[$i]['valor'];?></option><?php
+
+                                         } ?>  
+
+  </select>
+</div>
+<div class="col-12">
+  <label>From Edad Nueva</label>
+
+  <select name="fromEdadNueva" class="form-control">
+<?php $edades=getEdades();
+
+                   for ($i=0; $i < count($edades); $i++) { 
+                                   $selected="";
+                                   if ($tarifas[0]['idFromEdad']==$edades[$i]["idEdad"]) {
+                                        $selected="selected";
+                                     }  
+
+                                     ?>
+
+                                          <option value="<?=$edades[$i]['idEdad'];?>" <?=$selected?>><?=$edades[$i]['valor'];?></option><?php
+
+                                         } ?>  
+
+  </select>
+</div>
+<div class="col-12">
+    <input type="hidden" name="toEdadOriginal" value="<?= $tarifas[0]['idToEdad']; ?>">
+  <label>To Edad original</label>
+  <select name="toEdadOriginall" class="form-control" disabled>
+<?php $edades=getEdades();
+
+                   for ($i=0; $i < count($edades); $i++) { 
+                                   $selected="";
+                                   if ($tarifas[0]['idToEdad']==$edades[$i]["idEdad"]) {
+                                        $selected="selected";
+                                     }  
+
+                                     ?>
+
+                                          <option value="<?=$edades[$i]['idEdad'];?>" <?=$selected?>><?=$edades[$i]['valor'];?></option><?php
+
+                                         } ?>  
+  </select>
+</div>
+<div class="col-12">
+  <label>To Edad Nueva</label>
+  <select name="toEdadNueva" class="form-control">
+<?php $edades=getEdades();
+
+                   for ($i=0; $i < count($edades); $i++) { 
+                                   $selected="";
+                                   if ($tarifas[0]['idToEdad']==$edades[$i]["idEdad"]) {
+                                        $selected="selected";
+                                     }  
+
+                                     ?>
+
+                                          <option value="<?=$edades[$i]['idEdad'];?>" <?=$selected?>><?=$edades[$i]['valor'];?></option><?php
+
+                                         } ?>  
+  </select>
+</div>
+                    
+              <div class="col-12">
+                    <label>Tipo Tarifa</label>
+                    <input type="hidden" name="tipo_tarifa" value="<?=$idTipoTarifa; ?>">
+            <select name="tipo_tarifaa" class="form-control" disabled>
+                    <?php $tipos_tarifas=getTiposTarifas();
+                        
+                            for ($i=0; $i < count($tipos_tarifas); $i++) { 
+                                  $selected="";
+
+                              if ($tipos_tarifas[$i]["idTipoTarifa"]==$idTipoTarifa) {
+                         
+                              $selected="selected";
+                              }
+                             ?>
+       
+                                <option value="<?=$tipos_tarifas[$i]['idTipoTarifa']?>" <?=$selected?> ><?=$tipos_tarifas[$i]["nombre"]?></option>
+                             <?php
+                            }
+                     ?>
+                     
+                   </select>
+                
+                  </div>
+                    <label>Valor</label>
+                    <input type="number" name="valor" value="<?=$valor?>" class="form-control" step="0.01">
+                    <label>Minimo</label>
+                          <input type="number" name="minimo" value="<?=$minimo?>" class="form-control" step="0.01">
+                    <label>Cancelacion</label>
+                    <select name="idCancelacion" class="form-control">
+                      
+
+                
+                    <?php $tipos_cancelaciones=getTiposCancelaciones();
+                            for ($i=0; $i < count($tipos_cancelaciones); $i++) {
+                                     if ($tipos_cancelaciones[$i]['idCancelacion']==2) {
+                            $selected=""; 
+                              if ($idTipoCancelacion==$tipos_cancelaciones[$i]["idCancelacion"]) {
+                                $selected="selected";
+                              }
+                           ?>
+<option value="<?=$tipos_cancelaciones[$i]["idCancelacion"]?>" <?=$selected?> ><?=$tipos_cancelaciones[$i]["texto"]?></option>
+
+                           <?php
+                         }
+                            }
+
+                     ?>
+                         </select>
+                    <label>comision</label>
+                    <input type="checkbox" name="comisiona" class="form-control" required checked readonly="true" onclick="return false;">
+</div>
+<button class="btn-sm btn-success" name="updateTarifa">Guardar</button>
+
+</form>
+<form method="post" action="salidaVer">
+  <button class="btn-sm btn-info" name="idServicioSalidas" value="<?=$idServicioSalidas?>">Voltar</button>
+</form>                                    </div>
+
+                                    </div>
+
+
+
+                                    </div><!-- /.card-body -->
+
+             
+
+
+
+
+
+
+
+                                        
+
+                                  
+
+                                   
+
+
+
+        <script type="text/javascript">
+
+                        function format(value) {
+
+                        return value  ;
+
+                            }
+
+                            $(document).ready(function () {
+
+                                var table = $('#tablaCarrito').DataTable({});
+
+
+
+                                // Add event listener for opening and closing details
+
+                                $('#tablaCarrito').on('click', 'td.details-control', function () {
+
+
+
+                                    var tr = $(this).closest('tr');
+
+                                    var row = table.row(tr);
+
+
+
+                                    if (row.child.isShown()) {
+
+                                        // This row is already open - close it
+
+                                        row.child.hide();
+
+                                        tr.removeClass('shown');
+
+                                    } else {
+
+                                        // Open this row
+
+                                        row.child(format(tr.data('child-value'))).show();
+
+                                        tr.addClass('shown');
+
+                                    }
+
+                                });
+
+                            });
+
+                   </script>
+
+
+
+
+
+                                             </div>   
+
+                                            </div>   
+
+                                          </div>
+
+                            <!-- /.row -->
+
+                                      </div>
+
+                          <!-- /.card-body -->
+
+               <div class="card-footer">
+
+                                                 <!-- <div align="center"> <button type="submit" id="uploadfiles" value="Crear servicio" class="btn btn-success"><i class="fa fa-floppy-o" aria-hidden="true"></i> Continuar</button>   <a href="servicios.php" class="btn btn-danger" ><i class="fa fa-times" aria-hidden="true"></i> Salir sin guardar</a>
+
+                                        </div>-->
+
+          </div>
+
+     </div>
+
+     <!-- /.card -->
+
+
+
+
+
+
+
+                     <!-- /.card -->
+
+         </div><!-- /.container-fluid -->
+
+    
+
+  <?php 
+
+   include("includes/footer.php"); ?>
