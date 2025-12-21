@@ -77,10 +77,13 @@ function actualizaPrecios(){
 
 function limpiarTarifaYAdicionales(){
   $('#divAdicionalesNoIncluidos').empty();
-  $('#divAdicionalesNoIncluidosMovil').empty();
+  // En móvil el contenedor usado es "divAdicionalesNoIncluidosCelular"
+  $('#divAdicionalesNoIncluidosCelular').empty();
   $('#seleccionar_adicionales_a').hide();
   $('#divhora').empty();
   $('#divhora-movil').empty();
+  $('#divLugares').empty();
+  $('#divLugares-movil').empty();
   $('#seleccionar_personas').empty();
   $('#seleccionar_personasMovil').empty();
   $('#ulIncluidos').empty();
@@ -167,6 +170,11 @@ function traeTarifas($idSalida){
   $('#seleccionar_personasMovil').empty();
   $('#divAdicionalesNoIncluidos').empty();
   $('#seleccionar_adicionales_a').hide();
+  // Limpiar mensajes previos y contenedores de lugares
+  $('#sinHorarioMsg').remove();
+  $('#sinHorarioMsgMovil').remove();
+  $('#divLugares').empty();
+  $('#divLugares-movil').empty();
   
   // Resetear variables globales
   reserva=[];
@@ -183,6 +191,33 @@ function traeTarifas($idSalida){
   $.post("admin/ctrl/ctrlHorarios", {idSalida: $idSalida}, function(data, status){
     var tarifas = JSON.parse(data);
     disponibilidad=tarifas[0]["disponibilidad"];
+
+    // Mostrar texto de sinHorario si corresponde para la salida seleccionada
+    try {
+      var salidaSel = null;
+      if (Array.isArray(salidas)) {
+        for (var si = 0; si < salidas.length; si++) {
+          if (parseInt(salidas[si]["idServicioSalidas"]) === parseInt($idSalida)) {
+            salidaSel = salidas[si];
+            break;
+          }
+        }
+      }
+      if (salidaSel && parseInt(salidaSel["sinHorario"]) === 1) {
+        var texto = salidaSel["sinHorarioTexto"] || "";
+        if (texto) {
+          var msgPc = '<div id="sinHorarioMsg" class="alert alert-info p-2 my-2"><i class="fa fa-info-circle"></i> ' + texto + '</div>';
+          var msgMov = '<div id="sinHorarioMsgMovil" class="alert alert-info p-2 my-2"><i class="fa fa-info-circle"></i> ' + texto + '</div>';
+          $('#divhora').append(msgPc);
+          $('#divhora-movil').append(msgMov);
+          // También reflejar en punto de encuentro (PC y móvil)
+          $('#divLugares').append(msgPc);
+          $('#divLugares-movil').append(msgMov);
+        }
+      }
+    } catch (e) {
+      // Silencioso: si no existen campos, continuar sin mensaje
+    }
     
     $('#ulIncluidos').html(''); 
     $('#ulNoIncluidos').html('');
