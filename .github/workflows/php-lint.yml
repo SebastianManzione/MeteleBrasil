@@ -1,0 +1,30 @@
+name: PHP Syntax Check
+
+on:
+  push:
+    branches: [ main, developer ]
+  pull_request:
+    branches: [ main, developer ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: PHP Version
+        run: php -v
+
+      - name: PHP syntax check
+        run: |
+          set -e
+          find . -type f -name "*.php" \
+            -not -path "*/vendor/*" \
+            -print0 | xargs -0 -n 1 -P 4 php -l
