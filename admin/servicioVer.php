@@ -130,7 +130,7 @@ if (isset($_GET["idServicio"])) {
                 <p><?= $servicio["descripcion_corta"]; ?></p>
               </div>
 
-              <h5 class="mt-4 text-muted"><?= $lang["galeria"]; ?></h5>
+              <h5 class="mt-4 text-muted"><?= $lang["galeria"] ?? "Galería"; ?></h5>
               <div class="row">
                 <?php if (count($fotos) > 0) : ?>
                   <?php foreach ($fotos as $foto) : ?>

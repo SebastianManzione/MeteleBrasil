@@ -55,8 +55,51 @@ function getValorComision($idServicioSalidasTarifas, $idComision) {
     return $resultado ? floatval($resultado['valor']) : 0;
 }
 
-if ($_SESSION["login"]["rol"] != 1) {
+// Función para obtener comisiones desde reserva_tarifas
+function getComisionesReservaTarifas($codigoAmigable, $idServicio) {
+    require("classes/conexion.php");
+
+    $data = ["codigoAmigable" => $codigoAmigable, "idServicio" => $idServicio];
+
+    $consulta = "SELECT rt.comisionVendedor, rt.comisionSistema
+                FROM reserva_tarifas rt
+                INNER JOIN reserva_horarios rh ON rh.idReservaHorarios = rt.idReservaHorarios
+                INNER JOIN reservas r ON r.idReserva = rh.idReserva
+                WHERE r.codigoAmigable = :codigoAmigable
+                AND rh.idServicioSeleccionado = :idServicio
+                LIMIT 1";
+
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($data);
+
+    $resultado = $comando->fetch(PDO::FETCH_ASSOC);
+
+    if ($resultado) {
+        // Los valores ya están en la base de datos como montos, no como porcentajes
+        return [
+            'comisionVendedor' => floatval($resultado['comisionVendedor'] ?? 0),
+            'comisionSistema' => floatval($resultado['comisionSistema'] ?? 0)
+        ];
+    }
+
+    return ['comisionVendedor' => 0, 'comisionSistema' => 0];
+}
+
+// Detectar si es Admin o Prestador y obtener idPrestador
+$vistaAdmin = ($_SESSION['login']['idUsuario'] == 1);
+$idPrestador = null;
+
+if ($vistaAdmin && isset($_GET['idPrestador'])) {
+    // Admin viendo un prestador específico
+    $idPrestador = (int)$_GET['idPrestador'];
+} elseif (!$vistaAdmin && isset($_SESSION['login']['idPrestador']) && $_SESSION['login']['idPrestador'] > 0) {
+    // Prestador viendo sus propios datos
+    $idPrestador = $_SESSION['login']['idPrestador'];
+} else {
+    // Si no es admin ni tiene idPrestador, no tiene acceso
+    alertar("No tiene acceso a esta sección", "error");
     redireccionarLento("index");
+    exit();
 }
 
 // Obtener todos los servicios de una vez
@@ -94,6 +137,26 @@ foreach ($allServicios as $s) {
                         <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
+
+                <?php if ($vistaAdmin): ?>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label>Filtrar por Prestador:</label>
+                            <select class="form-control" id="filtroPrestador" onchange="window.location.href='financieroSalidas.php?idPrestador=' + this.value">
+                                <option value="">Todos los prestadores</option>
+                                <?php 
+                                $prestadores = getPrestadores();
+                                foreach ($prestadores as $prest) {
+                                    $selected = ($idPrestador == $prest['idPrestador']) ? 'selected' : '';
+                                    echo "<option value='{$prest['idPrestador']}' {$selected}>{$prest['nombre']} (ID: {$prest['idPrestador']})</option>";
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
 
                 <div class="card-body">
                     <div class="row">
@@ -152,6 +215,7 @@ foreach ($allServicios as $s) {
 
                                             if (!empty($reserva)) {
                                                 $codigoAmigable = $reserva[0]["codigoAmigable"];
+                                                $codigoAmigableRow = $reserva[0]["codigoAmigable"];
 
                                                 $fecha_reserva = date("d-m-Y", strtotime($reserva[0]["fechaAlta"]));
                                                 $total = $reserva[0]["total"];
@@ -161,6 +225,25 @@ foreach ($allServicios as $s) {
                                                 // Obtener todos los servicios de la reserva
                                                 $serviciosData = getReservaServicios($codigoAmigable);
                                                 if (!empty($serviciosData)) {
+                                                    // Si hay filtro de prestador, verificar si algún servicio pertenece al prestador
+                                                    if ($idPrestador !== null) {
+                                                        $perteneceAlPrestador = false;
+                                                        foreach ($serviciosData as $svc) {
+                                                            $servicioCompleto = getServicio($svc['idServicio'] ?? null);
+                                                            if (!empty($servicioCompleto)) {
+                                                                $salidaServicio = getSalida($svc['idServicioSalidas'] ?? null);
+                                                                if (!empty($salidaServicio) && $salidaServicio[0]['idPrestador'] == $idPrestador) {
+                                                                    $perteneceAlPrestador = true;
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        // Si no pertenece al prestador filtrado, saltar esta reserva
+                                                        if (!$perteneceAlPrestador) {
+                                                            continue;
+                                                        }
+                                                    }
+                                                    
                                                     // Crear una fila por cada servicio
                                                     foreach ($serviciosData as $servicio) {
                                                         // Generar fila para este servicio
@@ -184,22 +267,36 @@ foreach ($allServicios as $s) {
                                                         $comisionVendedorPorcentaje = $servicio['comisionVendedor'] ?? 0;
                                                         $comisionSistemaPorcentaje = $servicio['comisionSistema'] ?? 0;
 
-                                                        // Obtener valores monetarios de las comisiones
-                                                        $comisionVendedorCalculada = 0;
-                                                        $comisionSistemaCalculada = 0;
-
-                                                        // Buscar idServicioSalidasTarifas para este servicio y reserva
-                                                        $idServicioSalidasTarifas = getIdServicioSalidasTarifas($codigoAmigableRow, $servicio['idServicio'] ?? null);
-
-                                                        if ($idServicioSalidasTarifas) {
-                                                            // Obtener comisión del vendedor (idComision = 1)
-                                                            $comisionVendedorCalculada = getValorComision($idServicioSalidasTarifas, 1);
-
-                                                            // Obtener comisión del sistema (idComision = 2)
-                                                            $comisionSistemaCalculada = getValorComision($idServicioSalidasTarifas, 2);
+                                                        // Obtener valores monetarios de las comisiones desde reserva_tarifas
+                                                        $comisionesData = getComisionesReservaTarifas($codigoAmigableRow, $servicio['idServicio'] ?? null);
+                                                        $comisionVendedorCalculada = $comisionesData['comisionVendedor'];
+                                                        $comisionSistemaCalculada = $comisionesData['comisionSistema'];
+                                                        
+                                                        // Si aún están en cero, usar los porcentajes como fallback
+                                                        if (!$comisionVendedorCalculada && $comisionVendedorPorcentaje > 0) {
+                                                            $comisionVendedorCalculada = ($precio * $comisionVendedorPorcentaje) / 100;
                                                         }
+                                                        
+                                                        if (!$comisionSistemaCalculada && $comisionSistemaPorcentaje > 0) {
+                                                            $comisionSistemaCalculada = ($precio * $comisionSistemaPorcentaje) / 100;
+                                                        }
+                                                        
+                                                        // Calcular valores de ganancia
+                                                        $descuentoValor = $reserva[0]["descuento_valor"] ?? 0;
+                                                        $impuestoValor = $comprobante["impuesto_valor"] ?? 0;
+                                                        
+                                                        // Ganancia del Sistema = Solo la Comisión del Sistema
+                                                        $gananciaDelSistema = $comisionSistemaCalculada;
+                                                        
+                                                        // Ganancia del Sistema + Comisión del Vendedor
+                                                        $gananciaDelSistemaVendedor = $gananciaDelSistema + $comisionVendedorCalculada;
+                                                        
+                                                        // Descuento Mercado Pago y Otros
+                                                        $descuentoMercadoPago = $impuestoValor;
+                                                        
+                                                        // Ganancia Final Líquida = Ganancia del Sistema - Descuentos de pasarelas
+                                                        $gananciaFinalLiquida = $gananciaDelSistema - $descuentoMercadoPago;
 
-                                                        $codigoAmigableRow = $reserva[0]["codigoAmigable"];
                                                         $fecha_reservaRow = date("d-m-Y", strtotime($reserva[0]["fechaAlta"]));
                                                         $nombreResponsableRow = $reserva[0]["nombreResponsable"] . " " . $reserva[0]["apellidoResponsable"];
 
@@ -268,10 +365,10 @@ foreach ($allServicios as $s) {
                                                             <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["valor_pagar_proveedor"] ?? 0, 2); ?></td>
                                                             <td><?= $comisionSistemaPorcentaje; ?>%</td>
                                                             <td><?= $_SESSION["moneda_sel_sym"] . number_format($comisionSistemaCalculada, 2); ?></td>
-                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_sistema_final"] ?? 0, 2); ?></td>
-                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_sistema_vendedor"] ?? 0, 2); ?></td>
-                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["descuento_mercado_pago"] ?? 0, 2); ?></td>
-                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_final_liquida"] ?? 0, 2); ?></td>
+                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaDelSistema, 2); ?></td>
+                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaDelSistemaVendedor, 2); ?></td>
+                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($descuentoMercadoPago, 2); ?></td>
+                                                            <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaFinalLiquida, 2); ?></td>
                                                             <td class="details-control" style="cursor: pointer; text-align: center;"><i class="fas fa-plus-circle text-primary fa-lg"></i></td>
                                                         </tr>
 
@@ -291,6 +388,14 @@ foreach ($allServicios as $s) {
                                                     $comisionSistemaPorcentaje = 0;
                                                     $comisionVendedorCalculada = 0;
                                                     $comisionSistemaCalculada = 0;
+                                                    
+                                                    // Calcular ganancias (sin servicios)
+                                                    $descuentoValor = $reserva[0]["descuento_valor"] ?? 0;
+                                                    $impuestoValor = $comprobante["impuesto_valor"] ?? 0;
+                                                    $gananciaDelSistema = $comisionSistemaCalculada;
+                                                    $gananciaDelSistemaVendedor = $gananciaDelSistema + $comisionVendedorCalculada;
+                                                    $descuentoMercadoPago = $impuestoValor;
+                                                    $gananciaFinalLiquida = $gananciaDelSistema - $descuentoMercadoPago;
 
                                                     $fechaIngreso = date("d-m-Y", strtotime($comprobante["fechaIngreso"]));
                                                     $idMonedaOrigen = $comprobante["monedaComprobante"];
@@ -377,10 +482,10 @@ foreach ($allServicios as $s) {
                                                         <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["valor_pagar_proveedor"] ?? 0, 2); ?></td>
                                                         <td><?= $comisionSistemaPorcentaje; ?>%</td>
                                                         <td><?= $_SESSION["moneda_sel_sym"] . number_format($comisionSistemaCalculada, 2); ?></td>
-                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_sistema_final"] ?? 0, 2); ?></td>
-                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_sistema_vendedor"] ?? 0, 2); ?></td>
-                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["descuento_mercado_pago"] ?? 0, 2); ?></td>
-                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($reserva[0]["ganancia_final_liquida"] ?? 0, 2); ?></td>
+                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaDelSistema, 2); ?></td>
+                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaDelSistemaVendedor, 2); ?></td>
+                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($descuentoMercadoPago, 2); ?></td>
+                                                        <td><?= $_SESSION["moneda_sel_sym"] . number_format($gananciaFinalLiquida, 2); ?></td>
                                                         <td class="details-control" style="cursor: pointer; text-align: center;"><i class="fas fa-plus-circle text-primary fa-lg"></i></td>
                                                     </tr>
 

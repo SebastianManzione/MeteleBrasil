@@ -4,7 +4,6 @@ function getServiciosAdicionales()
   require("conexion.php");
 
   // Obtém o idioma da sessão
-  session_start();
   $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
 
   // Consulta para buscar os serviços adicionais
@@ -39,12 +38,29 @@ function getServiciosAdicionales()
 }
 
 
+/**
+ * Obtener servicio adicional SIN traducción (para editor)
+ * Devuelve todos los campos de nombres y descripciones en todos los idiomas
+ */
+function getServicioAdicionalParaEditar($idServiciosAdicionales)
+{
+  require("conexion.php");
+
+  $data = ["idServiciosAdicionales" => $idServiciosAdicionales];
+  $consulta = "SELECT * FROM servicios_adicionales WHERE idServiciosAdicionales = :idServiciosAdicionales";
+  $comando = $pdo->prepare($consulta);
+  $comando->execute($data);
+  $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+  // Devuelve sin traducción automática
+  return $resultado;
+}
+
 function getServicioAdicional($idServiciosAdicionales)
 {
   require("conexion.php");
 
   // Obtém o idioma da sessão
-  session_start();
   $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
 
   // Consulta para buscar o serviço adicional
@@ -168,7 +184,6 @@ function getServiciosAdicionalesCategoria($idCategoria)
   require("conexion.php"); // Inclui o arquivo de conexão
 
   // Obtém o idioma da sessão
-  session_start();
   $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
 
   // Consulta para buscar os serviços adicionais da categoria
@@ -186,12 +201,12 @@ function getServiciosAdicionalesCategoria($idCategoria)
   foreach ($resultado as &$row) {
     switch ($idioma) {
       case 'EN': // Inglês
-        $row['nombre'] = $row['nombre_en'] ?? $row['nombre'];
-        $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'];
+        $row['nombre'] = $row['nombre_en'] ?? $row['nombre'] ?? '';
+        $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'] ?? '';
         break;
       case 'PT': // Português
-        $row['nombre'] = $row['nombre_pt'] ?? $row['nombre'];
-        $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'];
+        $row['nombre'] = $row['nombre_pt'] ?? $row['nombre'] ?? '';
+        $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'] ?? '';
         break;
       // Caso padrão (ES ou qualquer outro idioma)
       default:
@@ -273,6 +288,9 @@ function getServiciosAdicionalesSalidaIncluidos($idServicioSalidas)
 
   require("conexion.php");
 
+  // Obtén el idioma de la sesión (verificar si está activa)
+  $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Valor por defecto: español
+
   $data = ["idServicioSalidas" => $idServicioSalidas];
 
   $consulta = "select * from servicio_salidas_adicionales ssa INNER JOIN servicios_adicionales SAD ON ssa.idServiciosAdicionales =  SAD.idServiciosAdicionales WHERE idServicioSalidas=:idServicioSalidas AND valor = 0";
@@ -287,6 +305,28 @@ function getServiciosAdicionalesSalidaIncluidos($idServicioSalidas)
 
 
   $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+  // Ajusta los datos según el idioma
+  foreach ($resultado as &$row) {
+    switch ($idioma) {
+      case 'EN': // Inglés
+        $row['nombre'] = $row['nombre_en'] ?? $row['nombre'];
+        $row['descripcion_servicio_adicional'] = $row['descripcion_servicio_adicional_en'] ?? $row['descripcion_servicio_adicional'];
+        break;
+      case 'PT': // Portugués
+        $row['nombre'] = $row['nombre_pt'] ?? $row['nombre'];
+        $row['descripcion_servicio_adicional'] = $row['descripcion_servicio_adicional_pt'] ?? $row['descripcion_servicio_adicional'];
+        break;
+      case 'IT': // Italiano
+        $row['nombre'] = $row['nombre_it'] ?? $row['nombre'];
+        $row['descripcion_servicio_adicional'] = $row['descripcion_servicio_adicional_it'] ?? $row['descripcion_servicio_adicional'];
+        break;
+      // Caso por defecto (ES u otro idioma)
+      default:
+        // Mantiene los valores originales en español
+        break;
+    }
+  }
 
   // Imprimir en pantalla
 
@@ -448,6 +488,8 @@ function getServiciosAdicionalesSalidaNoIncluidos($idServicioSalidas)
 
   require("conexion.php");
 
+  // Obtén el idioma de la sesión (verificar si está activa)
+  $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Valor por defecto: español
 
   $data = ["idServicioSalidas" => $idServicioSalidas];
 
@@ -473,6 +515,20 @@ function getServiciosAdicionalesSalidaNoIncluidos($idServicioSalidas)
 
     $idMoneda = $resultado[$i]["idMoneda"];
 
+    // Ajusta el nombre según el idioma
+    $nombre = $resultado[$i]["nombre"];
+    switch ($idioma) {
+      case 'EN':
+        $nombre = $resultado[$i]["nombre_en"] ?? $nombre;
+        break;
+      case 'PT':
+        $nombre = $resultado[$i]["nombre_pt"] ?? $nombre;
+        break;
+      case 'IT':
+        $nombre = $resultado[$i]["nombre_it"] ?? $nombre;
+        break;
+    }
+
     $serviciosAdicionalesSalidaNoIncluidos[$i]['idMoneda'] = $resultado[$i]["idMoneda"];
 
     $serviciosAdicionalesSalidaNoIncluidos[$i]['idServicioSalidas'] = $resultado[$i]["idServicioSalidas"];
@@ -481,7 +537,7 @@ function getServiciosAdicionalesSalidaNoIncluidos($idServicioSalidas)
 
     $serviciosAdicionalesSalidaNoIncluidos[$i]['idServiciosAdicionales'] = $resultado[$i]["idServiciosAdicionales"];
 
-    $serviciosAdicionalesSalidaNoIncluidos[$i]['nombre'] = $resultado[$i]["nombre"];
+    $serviciosAdicionalesSalidaNoIncluidos[$i]['nombre'] = $nombre;
 
 
     if (strlen($resultado[$i]["descripcion"]) > 0) {
@@ -726,6 +782,107 @@ function borraServicioAdicionalSalida($idServiciosAdicionales, $idServicioSalida
   return $cuenta_row;
 
 
+}
+
+// ==================== CRUD PARA EDITOR ====================
+
+/**
+ * Crear nuevo servicio adicional
+ * @param array $nombres Array con claves ES, EN, PT, IT
+ * @param array $descripciones Array con claves ES, EN, PT, IT
+ */
+function altaServicioAdicional($nombres, $descripciones)
+{
+  require("conexion.php");
+
+  $data = [
+    "nombre" => $nombres["ES"] ?? "",
+    "nombre_en" => $nombres["EN"] ?? null,
+    "nombre_pt" => $nombres["PT"] ?? null,
+    "nombre_it" => $nombres["IT"] ?? null,
+    "descripcion_servicio_adicional" => $descripciones["ES"] ?? "",
+    "descripcion_servicio_adicional_en" => $descripciones["EN"] ?? null,
+    "descripcion_servicio_adicional_pt" => $descripciones["PT"] ?? null,
+    "descripcion_servicio_adicional_it" => $descripciones["IT"] ?? null
+  ];
+
+  $consulta = "INSERT INTO servicios_adicionales 
+              (nombre, nombre_en, nombre_pt, nombre_it, descripcion_servicio_adicional, descripcion_servicio_adicional_en, descripcion_servicio_adicional_pt, descripcion_servicio_adicional_it) 
+              VALUES 
+              (:nombre, :nombre_en, :nombre_pt, :nombre_it, :descripcion_servicio_adicional, :descripcion_servicio_adicional_en, :descripcion_servicio_adicional_pt, :descripcion_servicio_adicional_it)";
+
+  $comando = $pdo->prepare($consulta);
+  $resultado = $comando->execute($data);
+
+  return $resultado ? $pdo->lastInsertId() : 0;
+}
+
+/**
+ * Editar servicio adicional existente
+ * @param int $idServiciosAdicionales ID del servicio
+ * @param array $nombres Array con claves ES, EN, PT, IT
+ * @param array $descripciones Array con claves ES, EN, PT, IT
+ */
+function editaServicioAdicional($idServiciosAdicionales, $nombres, $descripciones)
+{
+  require("conexion.php");
+
+  $data = [
+    "idServiciosAdicionales" => $idServiciosAdicionales,
+    "nombre" => $nombres["ES"] ?? "",
+    "nombre_en" => $nombres["EN"] ?? null,
+    "nombre_pt" => $nombres["PT"] ?? null,
+    "nombre_it" => $nombres["IT"] ?? null,
+    "descripcion_servicio_adicional" => $descripciones["ES"] ?? "",
+    "descripcion_servicio_adicional_en" => $descripciones["EN"] ?? null,
+    "descripcion_servicio_adicional_pt" => $descripciones["PT"] ?? null,
+    "descripcion_servicio_adicional_it" => $descripciones["IT"] ?? null
+  ];
+
+  $consulta = "UPDATE servicios_adicionales 
+              SET nombre = :nombre, 
+                  nombre_en = :nombre_en, 
+                  nombre_pt = :nombre_pt, 
+                  nombre_it = :nombre_it,
+                  descripcion_servicio_adicional = :descripcion_servicio_adicional,
+                  descripcion_servicio_adicional_en = :descripcion_servicio_adicional_en,
+                  descripcion_servicio_adicional_pt = :descripcion_servicio_adicional_pt,
+                  descripcion_servicio_adicional_it = :descripcion_servicio_adicional_it
+              WHERE idServiciosAdicionales = :idServiciosAdicionales";
+
+  $comando = $pdo->prepare($consulta);
+  $resultado = $comando->execute($data);
+
+  return $resultado ? $comando->rowCount() : 0;
+}
+
+/**
+ * Eliminar servicio adicional
+ * @param int $idServiciosAdicionales ID del servicio a eliminar
+ */
+function eliminaServicioAdicional($idServiciosAdicionales)
+{
+  require("conexion.php");
+  $data = ["idServiciosAdicionales" => $idServiciosAdicionales];
+
+  // Bloquear eliminación si está asignado a salidas/servicios
+  $check = $pdo->prepare("SELECT COUNT(*) AS total FROM servicio_salidas_adicionales WHERE idServiciosAdicionales = :idServiciosAdicionales");
+  $check->execute($data);
+  $uso = (int)($check->fetch(PDO::FETCH_ASSOC)["total"] ?? 0);
+  if ($uso > 0) {
+    return -1; // No se puede eliminar porque está asignado
+  }
+
+  // Limpiar posibles relaciones auxiliares y eliminar el registro
+  $consulta2 = "DELETE FROM servicios_adicionales_categoria WHERE idServiciosAdicionales = :idServiciosAdicionales";
+  $comando2 = $pdo->prepare($consulta2);
+  $comando2->execute($data);
+
+  $consulta3 = "DELETE FROM servicios_adicionales WHERE idServiciosAdicionales = :idServiciosAdicionales";
+  $comando3 = $pdo->prepare($consulta3);
+  $resultado = $comando3->execute($data);
+
+  return $resultado ? $comando3->rowCount() : 0;
 }
 
 ?>
