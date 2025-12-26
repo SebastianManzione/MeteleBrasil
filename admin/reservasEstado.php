@@ -222,10 +222,11 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
  }
                    
-                   // Agregar servicios adicionales al total
+                   // Agregar servicios adicionales (solo los con precio > 0)
                    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
                    foreach ($adicionales as $adic) {
-                       $total += ConvierteMoneda($adic["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                       // El precio del adicional ya está en la moneda de la salida (la del horario)
+                       $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
                    }
 
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
@@ -414,10 +415,11 @@ $reservas=getReservasPendientes($idPrestador);
 
 }
                    
-                   // Agregar servicios adicionales al total
+                   // Agregar servicios adicionales (solo los con precio > 0)
                    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
                    foreach ($adicionales as $adic) {
-                       $total += ConvierteMoneda($adic["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                       // El precio del adicional ya está en la moneda de la salida (la del horario)
+                       $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
                    }
 
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
