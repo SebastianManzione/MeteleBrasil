@@ -1786,7 +1786,7 @@ else{  ?>
                     <div class="input-group">
                       <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control " placeholder="Contraseña">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-secondary border-left-0 rounded-right d-flex align-items-center py-0 px-2" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye fa-sm" aria-hidden="true"></i></button>
+                        <button class="btn btn-outline-secondary nav-eye-btn" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
                       </div>
                     </div>
 
@@ -3660,7 +3660,7 @@ else{
                     <div class="input-group">
                       <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contraseña">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-secondary border-left-0 rounded-right d-flex align-items-center py-0 px-2" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye fa-sm" aria-hidden="true"></i></button>
+                        <button class="btn btn-outline-secondary nav-eye-btn" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
                       </div>
                     </div>
 
@@ -3881,6 +3881,24 @@ else{
     }
   }
 </script>
+<style>
+  .nav-eye-btn {
+    border-left: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: .25rem;
+    border-bottom-right-radius: .25rem;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(2.25rem + 2px);
+  }
+  .nav-eye-btn i {
+    font-size: .9rem;
+    line-height: 1;
+  }
+</style>
 
 
 
