@@ -3882,17 +3882,17 @@ else{
     position: relative;
   }
   .nav-password-wrapper .form-control {
-    padding-right: 2.75rem;
+    padding-right: 2.25rem;
   }
   .nav-eye-inline {
     position: absolute;
     top: 0;
     bottom: 0;
-    right: 10px;
+    right: 6px;
     border: 0;
     background: transparent;
     padding: 0;
-    width: 28px;
+    width: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3901,7 +3901,7 @@ else{
   }
   .nav-eye-inline:focus { outline: none; box-shadow: none; }
   .nav-eye-inline i {
-    font-size: .85rem;
+    font-size: .75rem;
     line-height: 1;
   }
 </style>
