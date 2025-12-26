@@ -250,15 +250,6 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
                                     <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
 
-                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
-
-                             
-
-
-
-                             </tr>
-
-
 
                              <?php
 
@@ -520,7 +511,7 @@ $reservas=getReservasPendientes($idPrestador);
 
                                     <th scope="col"><?=$lang["valor_total"];?></th>
 
-                                    <th scope="col">Acciones</th>
+                      
 
                                  </tr>
 
