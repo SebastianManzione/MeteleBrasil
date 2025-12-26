@@ -1783,7 +1783,12 @@ else{  ?>
 
 
 
-                    <input type="password" name="clave"  autocomplete="off" class="form-control " placeholder="Contraseña">
+                    <div class="input-group">
+                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control " placeholder="Contraseña">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
 
 
 
@@ -3652,7 +3657,12 @@ else{
 
 
 
-                    <input type="password" name="clave" class="form-control" placeholder="Contraseña">
+                    <div class="input-group">
+                      <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contraseña">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
 
 
 
@@ -3857,6 +3867,20 @@ else{
 
 
  <!--FIN MENU MOVIL-->
+
+<script>
+  function toggleNavClave(id, btn) {
+    var input = document.getElementById(id);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (btn && btn.querySelector('i')) btn.querySelector('i').classList.replace('fa-eye','fa-eye-slash');
+    } else {
+      input.type = 'password';
+      if (btn && btn.querySelector('i')) btn.querySelector('i').classList.replace('fa-eye-slash','fa-eye');
+    }
+  }
+</script>
 
 
 
