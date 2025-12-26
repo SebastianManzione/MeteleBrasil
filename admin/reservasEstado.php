@@ -585,7 +585,7 @@ $reservas=getReservasPendientes($idPrestador);
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
                     $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
                     
-                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<=$hoy) {
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<$hoy) {
 
 
 
@@ -742,7 +742,7 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
                     $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
                     
-                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<=$hoy) {
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<$hoy) {
 
 
 
