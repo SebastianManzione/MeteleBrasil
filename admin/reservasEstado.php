@@ -221,6 +221,12 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                      
 
  }
+                   
+                   // Agregar servicios adicionales al total
+                   $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+                   foreach ($adicionales as $adic) {
+                       $total += ConvierteMoneda($adic["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                   }
 
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
                     $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
@@ -407,6 +413,12 @@ $reservas=getReservasPendientes($idPrestador);
                      $fechaEvento=strtotime($salida[0]['fecha']);
 
 }
+                   
+                   // Agregar servicios adicionales al total
+                   $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+                   foreach ($adicionales as $adic) {
+                       $total += ConvierteMoneda($adic["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                   }
 
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
                     $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
