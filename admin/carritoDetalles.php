@@ -697,6 +697,16 @@ $nombre_servicio=$servicio[0]["nombre_servicio"];
         $toEdad=getEdad($tarifas[0]['idToEdad'])[0]['valor'];
     }
     
+    $listaPasajeros = [];
+    for ($jj=0; $jj < count($tarifas); $jj++) { 
+        $idReservaTarifasTmp=$tarifas[$jj]['idReservaTarifas'];
+        $pasajerosTmp=getPasajeros($idReservaTarifasTmp);
+        for ($kk=0; $kk < count($pasajerosTmp); $kk++) { 
+            $listaPasajeros[] = $pasajerosTmp[$kk]["nombrePasajero"] . " " . $pasajerosTmp[$kk]["apellidoPasajero"];
+        }
+    }
+    $listaPasajerosStr = implode(', ', $listaPasajeros);
+    
     $totalTarifa=0;
     $trs='';
     $trAdc='';
@@ -782,7 +792,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
 
-                                <td class="details-control"><input id="boton" type="submit" name="proceso" class="btn btn-info" value="Ver"></td>
+                                <td class="details-control"><?=$listaPasajerosStr?><br><input id="boton" type="submit" name="proceso" class="btn btn-info" value="Ver"></td>
 
 
 
@@ -1623,3 +1633,6 @@ $comprobantesReserva=muestraComprobantes($idReserva);
 
 
    include("includes/footer.php"); ?>
+
+
+
