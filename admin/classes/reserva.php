@@ -158,16 +158,16 @@ function getReservas(){
         return $resultado;
     }
 
-    function getReservasConfirmadas($idPrestador){
+    function getReservasConfirmadas($idPrestador, $vistaAdmin = true){
 
 
     require("conexion.php");
     include_once('convierte_monedas.php');
     include_once('comprobantes.php');
     $data=["idPrestador"=>$idPrestador];
-    $consulta = "select * from reservas WHERE 1";
+    $consulta = "select * from reservas WHERE estado=2";  // estado=2 is confirmada
     $comando = $pdo->prepare($consulta);
-    $comando->execute();//$data
+    $comando->execute();
     $cuenta_col = $comando->columnCount();
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
     $retorno=array();
@@ -192,12 +192,12 @@ $totalComprobantesDolar=getComprobantesIdReservaDolar($idReserva);
 $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 
 // Determinar si debe ver todas las reservas (admin sin filtro de prestador)
-$verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+$verTodasReservas = ($_SESSION['login']['idUsuario']==1 && $vistaAdmin);
 
    for ($i=0; $i < count($horarios); $i++) { 
 
 
-       if (($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) && $totalComprobantesDolar <=1) {
+       if ($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) {
 
         $envia=true; 
 
