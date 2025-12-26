@@ -556,16 +556,17 @@ function cargarPermisosRol() {
 
 function renderMenuPermisos(items, permisosActuales = []) {
   let html = '';
-  const permisosSet = new Set(permisosActuales.map(p => parseInt(p)));
+  const permisosSet = new Set(permisosActuales.map(p => parseInt(p, 10)));
 
   function renderItems(items, nivel = 0) {
     items.forEach(item => {
-      const checked = permisosSet.has(item.id) ? 'checked' : '';
+      const itemId = parseInt(item.id, 10);
+      const checked = permisosSet.has(itemId) ? 'checked' : '';
       const nivelClass = nivel === 0 ? 'nivel-padre' : 'nivel-hijo';
       const marginLeft = nivel > 0 ? `margin-left: ${nivel * 20}px;` : '';
 
       html += `<div class="permiso-item ${nivelClass}" style="${marginLeft}">
-        <input type="checkbox" class="menu-checkbox" value="${item.id}" ${checked}>
+        <input type="checkbox" class="menu-checkbox" value="${itemId}" ${checked}>
         <i class="${item.icon}"></i>
         <label>${item.label}</label>
       </div>`;
