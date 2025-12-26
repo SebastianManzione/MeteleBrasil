@@ -1,4 +1,6 @@
-# OS
+config/credentials.local.php
+.env
+.env.local# OS
 .DS_Store
 Thumbs.db
 
@@ -18,5 +20,9 @@ error_log
 *.tmp
 
 # Environment/config
+.env*
+config/ftp.php
+.env.prod
+
 .env
 php.ini
