@@ -194,16 +194,17 @@ $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 // Determinar si debe ver todas las reservas (admin sin filtro de prestador)
 $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && $vistaAdmin);
 
-   for ($i=0; $i < count($horarios); $i++) { 
-
-
-       if ($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) {
-
-        $envia=true; 
-
-
+   // Si es admin viendo todas, incluir todas las reservas confirmadas
+   if ($verTodasReservas) {
+       $envia=true;
+   } else {
+       // Si no es admin, filtrar por prestador
+       for ($i=0; $i < count($horarios); $i++) { 
+           if ($horarios[$i]["idPrestador"]==$idPrestador) {
+               $envia=true; 
+               break;
+           }
        }
-
    }
 
    if ($envia) {
