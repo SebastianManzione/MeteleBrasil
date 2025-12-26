@@ -3,6 +3,14 @@ include("includes/navbar.php");
 
 ?>
 
+<script>
+function toggleClave() {
+  const input = document.getElementById('clave');
+  if (!input) return;
+  input.type = input.type === 'password' ? 'text' : 'password';
+}
+</script>
+
 
 
  <!--SECCION HEADER-->
@@ -175,7 +183,12 @@ else{
                   </div>
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
-                    <input type="password" name="clave" class="form-control" placeholder="Contraseña">
+                    <div class="input-group">
+                      <input type="password" name="clave" id="clave" class="form-control" placeholder="Contraseña">
+                      <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="toggleClave()"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                      </div>
+                    </div>
                     <small class="float-right text-primary py-2"><a href="">He olvidado mi contraseña</a></small>
                   </div>
                   <button class="btn btn-primary bd-highlight">Iniciar sesion</button>
