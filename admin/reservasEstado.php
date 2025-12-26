@@ -204,23 +204,9 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
                    for ($k=0; $k < count($tarifas); $k++) { 
 
-                
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"], $_SESSION["moneda_sel"], $tarifas[$k]["valor"]);
 
-                        $nombre_tarifa=($tarifas[$k]["nombre"]);
-
-                        $monedaSel=$tarifas[$k]["monedaSel"];
-
-                        $valorSinIva=$tarifas[$k]["valorSinIva"];
-
-                       $cantidad=($tarifas[$k]["cantidad"]);
-
-                        $totalTarifa=$valorSinIva*$cantidad;
-
-                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-
-                     
-
- }
+                   }
                    
                    // Agregar servicios adicionales (solo los con precio > 0)
                    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
@@ -397,23 +383,12 @@ $reservas=getReservasPendientes($idPrestador);
                    
                    for ($k=0; $k < count($tarifas); $k++) { 
 
-                
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"], $_SESSION["moneda_sel"], $tarifas[$k]["valor"]);
 
-                        $nombre_tarifa=($tarifas[$k]["nombre"]);
-
-                        $monedaSel=$tarifas[$k]["monedaSel"];
-
-                        $valorSinIva=$tarifas[$k]["valorSinIva"];
-
-                       $cantidad=($tarifas[$k]["cantidad"]);
-
-                        $totalTarifa=$valorSinIva*$cantidad;
-
-                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-
-                     $fechaEvento=strtotime($salida[0]['fecha']);
-
-}
+                   }
+                   
+                   // Obtener fecha del evento
+                   $fechaEvento=strtotime($salida[0]['fecha']);
                    
                    // Agregar servicios adicionales (solo los con precio > 0)
                    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
