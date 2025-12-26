@@ -27,6 +27,10 @@ $lang = array(
 
 	"sin_sobreprecios"=>"Sem sobretaxas",
 
+	"antes_precio"=>"Antes",
+
+	"ahora_precio"=>"Agora",
+
 	"principales_actividades"=>"Atividades principais",
 
 	"ver_mas"=> "Ver mais",
@@ -74,6 +78,8 @@ $lang = array(
 	"registrate"=>"Cadastre-se",
 
 	"aqui"=>"aquí",
+
+	"selecciona_fecha"=>"Selecionar Data",
 
 	"mis_reservas"=>"Minhas reservas",
 
@@ -1757,7 +1763,7 @@ $lang = array(
 
    "mas_populas" => "MAIS POPULARES",
 
-
+   "mas_popular" => "MAIS POPULAR",
 
    "detalles_" => " Detalhes",
 

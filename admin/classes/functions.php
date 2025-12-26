@@ -57,6 +57,19 @@ function alertar2($mensaje, $tipo) {
     </script>
     <?php
 }
+
+function alertar_redirect($mensaje, $tipo, $url) {
+  ?>
+  <script>
+    Swal.fire({
+      title: "<?= $mensaje ?>",
+      icon: "<?= $tipo ?>"
+    }).then(() => {
+      window.location.replace("<?= $url ?>");
+    });
+  </script>
+  <?php
+}
   
   
   function redireccionar($url){

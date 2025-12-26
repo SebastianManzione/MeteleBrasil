@@ -78,6 +78,21 @@ if (!$_SESSION["login"]["rol"]==1) {
 
 }*/
 
+      // Asegurar que moneda_sel esté definida (fallback a Real brasileño)
+      if (!isset($_SESSION["moneda_sel"]) || empty($_SESSION["moneda_sel"])) {
+          $_SESSION["moneda_sel"] = 283; // Real brasileño
+          $_SESSION["moneda_sel_sym"] = 'R$';
+          error_log("WARNING: moneda_sel no estaba definida en voucherPrestador, se usó valor por defecto 283");
+      }
+      
+      // Validar que moneda_sel sea uno de los valores soportados
+      $monedasSoportadas = [188, 213, 225, 270, 271, 283];
+      if (!in_array($_SESSION["moneda_sel"], $monedasSoportadas)) {
+          error_log("ERROR: moneda_sel inválida en voucherPrestador: " . $_SESSION["moneda_sel"] . ", se usará fallback 283");
+          $_SESSION["moneda_sel"] = 283;
+          $_SESSION["moneda_sel_sym"] = 'R$';
+      }
+      
       $totalIva=0;
 
           $totalCarrito=0;
@@ -183,6 +198,9 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
          $adicionales=getReservaAdicionalesNoIncluidos($idReservaHorarios);
          $reservaTarifas=getReservaTarifas($idReservaHorarios);
          $adicionales=getReservaAdicionalesNoIncluidos($idReservaHorarios);
+         
+         // Obtener ubicación de la salida (usaremos la misma para todas las tarifas)
+         $ubicacion=getUbicacionIdTarifa($idServicioSalidas);
 
 
  ?>
@@ -401,6 +419,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
 
 
+                     if (!empty($reservaTarifas)) {
                      for ($j=0; $j < count($reservaTarifas); $j++) { 
 
 
@@ -415,9 +434,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
          
 
-
-
-            $ubicacion=getUbicacionIdTarifa($idServicioSalidasTarifas);
+            
 
             $cancelacion=getTipoCancelaciones($tarifaOrigi[0]["idCancelaciones"]);
 
@@ -441,7 +458,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                     $valorDelIvaUnitario=$reservaTarifas[$j]['valorDeIva']/$cantidad; 
 
-                       $valorDelIva=ConvierteMoneda($reservaTarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
+                       $valorDelIva=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
 
                       $totalNetoTarifa=$valorSinIva;
 
@@ -504,6 +521,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
                     <?php
 
           } 
+                     } // cierre del if (!empty($reservaTarifas))
 
                
 
@@ -517,7 +535,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
         
 
-              $precioAdicional=ConvierteMoneda($reservaTarifas[0]["monedaSel"],$_SESSION["moneda_sel"],$adicionales[$k]['precio']);
+              $precioAdicional=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"],$adicionales[$k]['precio']);
 
               $cantidad=$adicionales[$k]['cantidad'];
 
@@ -525,7 +543,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
 
 
-              $valorIva=ConvierteMoneda($reservaTarifas[0]["monedaSel"],$_SESSION["moneda_sel"],$adicionales[$k]['valorIva']);
+              $valorIva=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"],$adicionales[$k]['valorIva']);
 
              $totalIva+=$valorIva;
 
@@ -599,6 +617,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
      </div>
 
+          <?php if (!empty($ubicacion) && isset($ubicacion[0]['direccion'])): ?>
           <div class="callout callout-info" >
 
               <h3><i class="fas fa-info"></i> Ponto de sáida: <?=$ubicacion[0]['direccion']?></h3>
@@ -618,7 +637,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
             
 
             </div>
-
+            <?php endif; ?>
               <!-- /.row -->
 
 

@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 include("admin/classes/functions.php");
 include("admin/classes/parametros.php");
 include("admin/classes/geolocalizacion.php");
@@ -92,7 +94,7 @@ if (!isset($_SESSION["moneda_sel"])) {
   <!-- ESTILOS NECESARIOS -->
 
   <!-- FONT-AWESOME -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="admin/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- FONT-AWESOME -->
 
   <!-- ANIMATE -->
@@ -106,6 +108,20 @@ if (!isset($_SESSION["moneda_sel"])) {
   <!-- STYLES GENERALES -->
   <link href="css/styles.css" rel="stylesheet">
   <!-- STYLES GENERALES -->
+
+  <!-- ESTILO BOTÓN CERRAR WINDOWS-LIKE PARA CARRITO -->
+  <style>
+    .btn-close-container { position: absolute; top: 6px; right: 6px; }
+    .btn-close-win {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; border-radius: 4px; background: transparent;
+      color: #C50F1F; font-weight: 700; font-size: 20px; line-height: 1; cursor: pointer;
+      padding: 0; text-decoration: none; transition: background .15s ease, color .15s ease;
+    }
+    .btn-close-win:hover { background: #C50F1F; color: #fff; }
+    .btn-close-win:focus { outline: none; box-shadow: 0 0 0 2px rgba(197,15,31,.2); }
+  </style>
 
   <!-- RESPONSIVE DESING-->
   <link href="css/responsive.css" rel="stylesheet">

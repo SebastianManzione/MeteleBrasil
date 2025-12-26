@@ -1250,17 +1250,17 @@ a.nav-link:hover{
 
 .precio-card{
 
-  position:absolute;
+  font-size: 22px;
+  
+  font-weight: 600;
 
-  width:100%;
+  color: #029ce2;
 
-  bottom:5px;
-
-  right:10px;
-
-/*  font-size:30px;*/
-font-size: 17px;
-top: 0;
+  margin-left: auto;
+  
+  white-space: nowrap;
+  
+  flex-shrink: 0;
 
 }
 
@@ -1660,11 +1660,11 @@ a.destacados:hover div.d-destacado {
 
   padding-right: 30px;
 
-  padding-top: 50px;
+  padding-top: 20px;
 
-  position: absolute;
+  padding-bottom: 20px;
 
-  margin-top: 220px;
+  position: relative;
 
   -webkit-transition:margin 0.5s;
 
@@ -2743,6 +2743,11 @@ color: #fff !important;
 }
 
 
+
+.div-precios {
+  padding: 0;
+  margin: 0;
+}
 
 .div-precios small{
 
@@ -3830,31 +3835,7 @@ padding-bottom: 20px;
 
 }
 
-
-
-.paymentWrap .paymentBtnGroup .paymentMethod .method.paypal {
-
-/*background-image: url(../img/pay-pal.png);*/
-
-}
-
-
-
-.paymentWrap .paymentBtnGroup .paymentMethod .method.mercadopagoArgentina {
-
-background-image: url(../img/mercadopago.png);
-
-padding-top: 20px;
-
-padding-bottom: 20px;
-
-min-width: 200px;
-
-height: 200px;
-
-
-
-}
+/* Obsolete CSS rules removed - logos now display via img tags in HTML */
 
 
 .paymentMethod.metele-pago {
@@ -4832,5 +4813,56 @@ span.white {
 
 
 
+}
+
+
+/* Forzar estilo boton finalizar carrito navbar */
+.btn-finalizar-carrito {
+  display: block !important;
+  width: 100% !important;
+  border-radius: 999px !important;
+  padding: 10px 14px !important;
+  font-weight: 700 !important;
+  background: #029ce2 !important;
+  background-color: #029ce2 !important;
+  border: 1px solid #029ce2 !important;
+  color: #fff !important;
+  text-decoration: none !important;
+  text-align: center !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+}
+
+.btn-finalizar-carrito:hover,
+.btn-finalizar-carrito:focus,
+.btn-finalizar-carrito:active {
+  color: #fff !important;
+  background: #0284c7 !important;
+  background-color: #0284c7 !important;
+  border: 1px solid #0284c7 !important;
+  text-decoration: none !important;
+}
+
+/* Ajustar dropdown carrito móvil */
+@media (max-width: 991px) {
+  .menumobile.dropdown-menu {
+    right: 10px !important;
+    left: auto !important;
+    width: calc(100vw - 30px) !important;
+    max-width: 340px !important;
+    min-width: unset !important;
+  }
+}
+
+
+/* Prevenir scroll horizontal en m�vil */
+html {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+}
+
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  position: relative !important;
 }
 

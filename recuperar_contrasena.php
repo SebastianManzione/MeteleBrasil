@@ -3,33 +3,36 @@
 include("includes/navbar.php");
 include("admin/classes/usuario.php"); 
 include("admin/classes/generador_aleatorio.php");
+include("admin/classes/antibot.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validación anti-bot
+    $validacion = validarAntiBot('reset_password_form', $_POST['recaptcha_token'] ?? null);
+    
+    if (!$validacion['success']) {
+        alertar($validacion['error'], "error");
+    } else {
+        $email=$_POST['correo'];
+        $usuario=getUsuarioEmail($email);
+        if (count($usuario)==1) {
+            $idUsuario=$usuario[0]["idUsuario"];
+            $codigo=generadorAleatorio(5,5);  
+            $recuperacion=setCodigoRecuperacion($idUsuario, $codigo);
 
- 
-  $email=$_POST['correo'];
-$usuario=getUsuarioEmail($email);
-if (count($usuario)==1) {
-$idUsuario=$usuario[0]["idUsuario"];
-$codigo=generadorAleatorio(5,5);  
- $recuperacion=setCodigoRecuperacion($idUsuario, $codigo);
+            include("admin/classes/email_recuperar_contrasena.php");
+            include("admin/classes/reservaEmail.php");
+            $cuerpo=getCuerpoEmailRecuperarContrasena($email, $codigo);
 
-include("admin/classes/email_recuperar_contrasena.php");
-include("admin/classes/reservaEmail.php");
-$cuerpo=getCuerpoEmailRecuperarContrasena($email, $codigo);
+            $resumail=enviaMail($email," Você solicitou redefinir sua senha ", $cuerpo, $parametros[0]["site"]);
 
-
-
-$resumail=enviaMail($email," Você solicitou redefinir sua senha ", $cuerpo, $parametros[0]["site"]);
-
-alertar("Enviamos un email a ".$email." con las instrucciones para redefinir una nueva contraseña", "success");
-redireccionarLento("index");
-exit();
-}
-else{
-  alertar("El Email No existe", "warning");
-}
-
+            alertar("Enviamos un email a ".$email." con las instrucciones para redefinir una nueva contraseña", "success");
+            redireccionarLento("index");
+            exit();
+        }
+        else{
+            alertar("El Email No existe", "warning");
+        }
+    }
 }
 
 
@@ -147,6 +150,9 @@ else{
             </div>
           </div>
         </div>
+
+        <!-- Campos Anti-Bot (invisibles) -->
+        <?php echo generarCamposAntiBot(); ?>
         
         <div class="row">
           <div class="col-12">

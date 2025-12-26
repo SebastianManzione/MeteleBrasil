@@ -132,7 +132,7 @@ $reserva=getReservaId($idReserva);
 
 $codigo_telefonico=getCodigoTelefonico($reserva[0]["idCountry"]);
 
-$nombre_pais=$codigo_telefonico[0]['nicename'];
+$nombre_pais = (is_array($codigo_telefonico) && isset($codigo_telefonico[0]['nicename'])) ? $codigo_telefonico[0]['nicename'] : 'N/A';
 
 $idioma=$reserva[0]["idioma"];
 

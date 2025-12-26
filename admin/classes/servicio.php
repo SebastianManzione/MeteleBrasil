@@ -19,12 +19,12 @@ function getAllServicios() {
     foreach ($resultado as &$row) {
         switch ($idioma) {
             case 'EN': // Inglês
-                $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'];
-                $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'];
+                $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'] ?? '';
                 break;
             case 'PT': // Português
-                $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'];
-                $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'];
+                $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'] ?? '';
                 break;
             // Caso padrão (ES ou qualquer outro idioma)
             default:

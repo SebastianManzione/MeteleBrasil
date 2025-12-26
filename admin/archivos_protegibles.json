@@ -1,0 +1,184 @@
+[
+    {
+        "id": 1,
+        "label": "Home",
+        "route": "index",
+        "parent_id": null,
+        "enabled": 1
+    },
+    {
+        "id": 10,
+        "label": "Lista de prestadores",
+        "route": "prestadores",
+        "parent_id": 2,
+        "enabled": 1
+    },
+    {
+        "id": 11,
+        "label": "Alta prestador",
+        "route": "altaPrestador",
+        "parent_id": 2,
+        "enabled": 1
+    },
+    {
+        "id": 12,
+        "label": "Lista de art\u00edculos",
+        "route": "blogLista",
+        "parent_id": 3,
+        "enabled": 1
+    },
+    {
+        "id": 13,
+        "label": "Alta art\u00edculo",
+        "route": "blogAlta",
+        "parent_id": 3,
+        "enabled": 1
+    },
+    {
+        "id": 14,
+        "label": "Alta servicio",
+        "route": "altaServicio",
+        "parent_id": 4,
+        "enabled": 1
+    },
+    {
+        "id": 15,
+        "label": "Lista de servicios",
+        "route": "serviciosLista",
+        "parent_id": 4,
+        "enabled": 1
+    },
+    {
+        "id": 16,
+        "label": "Carrito",
+        "route": "carritosLista",
+        "parent_id": 5,
+        "enabled": 1
+    },
+    {
+        "id": 17,
+        "label": "Estado de reservas",
+        "route": "reservasEstado",
+        "parent_id": 5,
+        "enabled": 1
+    },
+    {
+        "id": 18,
+        "label": "Usuarios",
+        "route": "usuariosLista",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 19,
+        "label": "Solicitudes",
+        "route": "solicitudes",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 20,
+        "label": "Contacto",
+        "route": "contacto",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 21,
+        "label": "Cupones",
+        "route": "cupones",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 22,
+        "label": "Edades",
+        "route": "edades",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 23,
+        "label": "Cancelaciones",
+        "route": "cancelaciones",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 24,
+        "label": "Moneda",
+        "route": "monedaAdmin",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 25,
+        "label": "Textos Editor",
+        "route": "textoMiniaturaLista",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 26,
+        "label": "Accesibilidad",
+        "route": "textosAccesibilidad",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 27,
+        "label": "Destinos",
+        "route": "destinosAlta",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 29,
+        "label": "Categor\u00edas",
+        "route": "categoriasLista",
+        "parent_id": 6,
+        "enabled": 1
+    },
+    {
+        "id": 32,
+        "label": "Comprobantes",
+        "route": "comprobantesLista",
+        "parent_id": 7,
+        "enabled": 1
+    },
+    {
+        "id": 33,
+        "label": "Comisiones Vendedor",
+        "route": "comisionesLista",
+        "parent_id": 7,
+        "enabled": 1
+    },
+    {
+        "id": 34,
+        "label": "Comisiones Prestador",
+        "route": "financieroSalidas",
+        "parent_id": 7,
+        "enabled": 1
+    },
+    {
+        "id": 35,
+        "label": "Cobro Signal",
+        "route": "cobroSignal",
+        "parent_id": 7,
+        "enabled": 1
+    },
+    {
+        "id": 36,
+        "label": "Emails",
+        "route": "emailsLista",
+        "parent_id": 8,
+        "enabled": 1
+    },
+    {
+        "id": 38,
+        "label": "Administraci\u00f3n de Men\u00fa",
+        "route": "adminMenuRoles",
+        "parent_id": 6,
+        "enabled": 1
+    }
+]

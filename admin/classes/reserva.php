@@ -122,7 +122,7 @@ function getReservas(){
             rt.comisionVendedor,
             rt.comisionSistema,
             rt.nombre as nombrePasajero,
-            rt.valorTarifa
+            rt.valor as valorTarifa
         FROM reservas r
         INNER JOIN reserva_horarios rh ON rh.idReserva = r.idReserva
         INNER JOIN reserva_tarifas rt ON rt.idReservaHorarios = rh.idReservaHorarios
@@ -141,7 +141,9 @@ function getReservas(){
 
         $data=["codigoAmigable"=>$codigoAmigable];
 
-        $consulta = "SELECT s.idServicio, s.nombre_servicio, rh.nombre as periodo, scp.comisionVendedor, scp.comisionSistema
+        $consulta = "SELECT s.idServicio, s.nombre_servicio, rh.nombre as periodo,
+        rh.idServicioSalidas,
+        scp.comisionVendedor, scp.comisionSistema
         FROM reservas r
         INNER JOIN reserva_horarios rh ON r.idReserva = rh.idReserva
         INNER JOIN servicio s ON rh.idServicioSeleccionado = s.idServicio
@@ -189,12 +191,13 @@ $totalComprobantesDolar=getComprobantesIdReservaDolar($idReserva);
 
 $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 
-
+// Determinar si debe ver todas las reservas (admin sin filtro de prestador)
+$verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
 
    for ($i=0; $i < count($horarios); $i++) { 
 
 
-       if ($horarios[$i]["idPrestador"]==$idPrestador && $totalComprobantesDolar <=1 || $_SESSION['login']['idUsuario']==1 && $totalComprobantesDolar <=1) {
+       if (($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) && $totalComprobantesDolar <=1) {
 
         $envia=true; 
 
@@ -470,7 +473,8 @@ $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
 
 $diferenciaComprobantesPrecioDolar=$total_dolares-$totalComprobantesDolar;
 
-
+// Determinar si debe ver todas las reservas (admin sin filtro de prestador)
+$verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
 
    for ($i=0; $i < count($horarios); $i++) { 
 
@@ -486,7 +490,7 @@ $diferenciaComprobantesPrecioDolar=$total_dolares-$totalComprobantesDolar;
 
 
 
-       if ($horarios[$i]["idPrestador"]==$idPrestador && $diferenciaComprobantesPrecioDolar > 1 || $_SESSION['login']['idUsuario']==1 && $diferenciaComprobantesPrecioDolar > 1) {
+       if (($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) && $diferenciaComprobantesPrecioDolar > 1) {
 
         $envia=true; 
 
@@ -991,7 +995,7 @@ return $resultado;
 
 
 
- function altaReservaTarifas($idServicioSalidasTarifas, $idReservaHorarios,$cantidad, $monedaSel, $valor, $valorSinIva, $valorDeIva, $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre, $valorTarifa){
+ function altaReservaTarifas($idServicioSalidasTarifas, $idReservaHorarios,$cantidad, $monedaSel, $valor, $valorSinIva, $valorDeIva, $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre){
 
 
 
@@ -1007,11 +1011,11 @@ return $resultado;
 
 
 
-        $data=["idServicioSalidasTarifas"=> $idServicioSalidasTarifas, "idReservaHorarios"=> $idReservaHorarios, "cantidad"=>$cantidad, "monedaSel"=>$monedaSel, "valor"=>$valor, "valorSinIva"=>$valorSinIva, "valorDeIva"=> $valorDeIva, "idFromEdad"=> $idFromEdad, "idToEdad"=> $idToEdad,  "comisionVendedor"=> $comisionVendedor, "comisionSistema"=> $comisionSistema, "nombre"=> $nombre, "valorTarifa" => $valorTarifa];
+        $data=["idServicioSalidasTarifas"=> $idServicioSalidasTarifas, "idReservaHorarios"=> $idReservaHorarios, "cantidad"=>$cantidad, "monedaSel"=>$monedaSel, "valor"=>$valor, "valorSinIva"=>$valorSinIva, "valorDeIva"=> $valorDeIva, "idFromEdad"=> $idFromEdad, "idToEdad"=> $idToEdad,  "comisionVendedor"=> $comisionVendedor, "comisionSistema"=> $comisionSistema, "nombre"=> $nombre];
 
 
 
-        $consulta = "INSERT INTO reserva_tarifas (idServicioSalidasTarifas, idReservaHorarios, cantidad, monedaSel, valor, valorSinIva, valorDeIva, idFromEdad, idToEdad,comisionVendedor, comisionSistema, nombre, valorTarifa) VALUES (:idServicioSalidasTarifas,  :idReservaHorarios,:cantidad, :monedaSel, :valor, :valorSinIva, :valorDeIva, :idFromEdad, :idToEdad,  :comisionVendedor, :comisionSistema, :nombre, :valorTarifa) ";
+        $consulta = "INSERT INTO reserva_tarifas (idServicioSalidasTarifas, idReservaHorarios, cantidad, monedaSel, valor, valorSinIva, valorDeIva, idFromEdad, idToEdad, comisionVendedor, comisionSistema, nombre) VALUES (:idServicioSalidasTarifas, :idReservaHorarios, :cantidad, :monedaSel, :valor, :valorSinIva, :valorDeIva, :idFromEdad, :idToEdad, :comisionVendedor, :comisionSistema, :nombre) ";
 
 
 

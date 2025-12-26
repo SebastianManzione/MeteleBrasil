@@ -2,16 +2,15 @@
 // =======================================
 // CONFIGURACIÓN GLOBAL
 // =======================================
-// Detectar entorno: usa APP_ENV si está definido, si el hostname contiene "server" asume prod; cualquier otro valor -> dev
+// Detectar entorno: usa APP_ENV si está definido; si no, fuerza prod por defecto
 if (!defined('APP_ENV')) {
-    $host = gethostname();
     $debug = true;
     $envFromVar = getenv('APP_ENV');
 
     if ($envFromVar) {
         define('APP_ENV', $envFromVar);
     } else {
-        define('APP_ENV', (strpos($host, 'server') !== false) ? 'prod' : 'dev');
+        define('APP_ENV', 'prod');
     }
 
 // Mostrar errores solo en desarrollo
@@ -35,8 +34,8 @@ if (!defined('APP_ENV')) {
         define('DB_PASS', '');
     } else {
         define('DB_HOST', 'localhost');
-        define('DB_NAME', 'metelebr_metelebrasil');
-        define('DB_USER', 'metelebr_admin');
-        define('DB_PASS', 'EjGLC(7~lolq7WeW');
+        define('DB_NAME', 'u925692129_metelebrasil');
+        define('DB_USER', 'u925692129_metelebrasil');
+        define('DB_PASS', 'Cambiar2026');
     }
 }

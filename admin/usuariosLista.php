@@ -1,14 +1,14 @@
 <?php 
-
-
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('usuariosLista');
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
+
 
 require("classes/functions.php");
 
@@ -150,26 +150,14 @@ if ($habilitar==1) {
 
 
 
-
-
-
-
-
-
- ?>
+?>
 
   <!-- Content Wrapper. Contains page content -->
-
   <div class="content-wrapper">
-
     <!-- Content Header (Page header) -->
-
     <div class="content-header">
-
       <div class="container-fluid">
-
         <div class="row mb-2">
-
           <div class="col-sm-6">
 
             <h1 class="m-0 text-dark">Usuarios</h1>
@@ -248,7 +236,7 @@ if ($habilitar==1) {
 
                   <div class="table-responsive">  
 
-               <table id="#collapseExample" class="table table-bordered table-striped">
+               <table id="usuariosTable" class="table table-bordered table-striped">
 
  
 
@@ -274,7 +262,8 @@ if ($habilitar==1) {
 
                   <th>Acciones</th>
 
-                </thead> 
+                </thead>
+                <tbody>
 
          
 
@@ -469,6 +458,7 @@ if (stripos ( $usuarios[$i]['fotoUsuario'], "ttps:")==1) {
       <td>
 
           <button class="btn-sm btn-info" name="guardar"><i class="fas fa-save"></i>Guardar</button>
+               <button type="button" class="btn-sm btn-danger" onclick="borraUsuario(<?=$idUsuario?>)"><i class="fas fa-trash"></i> Borrar</button>
 
       </td>
 
@@ -484,6 +474,8 @@ if (stripos ( $usuarios[$i]['fotoUsuario'], "ttps:")==1) {
 
 ?>
 
+                </tbody>
+
 
 
 
@@ -497,6 +489,17 @@ if (stripos ( $usuarios[$i]['fotoUsuario'], "ttps:")==1) {
 
 
 <script type="text/javascript">
+$(document).ready(function(){
+  if ($.fn.DataTable) {
+    $('#usuariosTable').DataTable({
+      pageLength: 25,
+      order: [[7, 'desc']],
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/es-ES.json'
+      }
+    });
+  }
+});
 
 
 
@@ -578,6 +581,37 @@ console.log(data);
 
 
 
+      function borraUsuario(idUsuario){
+                       
+      var parametros={"borraUsuario" : idUsuario};   
+      Swal.fire({
+      title: 'Esta seguro?',
+      text: 'Esta accion no se puede revertir!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, borrar!'
+      }).then((result) => {
+
+      if (result.value) {
+       $.post("./ctrl/ctrl_usuario.php",
+      parametros,
+      function(data, status){
+      console.log(data);
+       if (parseInt(data)>0) {
+        location.href = 'usuariosLista.php';
+       }
+      });
+       Swal.fire(
+         'Eliminado!',
+         'El usuario se elimino.',
+         'success'
+       )
+      }
+      })   
+     
+             }
            </script>
 
          

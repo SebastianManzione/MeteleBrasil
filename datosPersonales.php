@@ -252,9 +252,6 @@ location.href="carrito";
 
     }
 
- return false;
-
-
 
   }
 
@@ -1102,23 +1099,9 @@ $precioTotalCarrito+=$tarifa[0]["valor"];
 
                   <div class="col-md-12">
 
-
-
-                    <div class="custom-control custom-checkbox mr-sm-2">
-
-
-
-                      <input type="checkbox" class="custom-control-input" id="example<?=$i?>Check<?=$k?>" data-toggle="collapse" href="#collapseExample<?=$i?>comentario<?=$k?>" role="button" aria-expanded="false" aria-controls="collapseExample<?=$i?>comentario<?=$k?>">
-
-
-
-                      <label class="custom-control-label" for="example<?=$i?>Check<?=$k?>"><?=$lang["comentarios_al_proveedor"]?></label>
-
-
-
-                    </div>
-
-
+                    <button class="btn btn-link p-0 text-left" type="button" onclick="toggleComentario('collapseExample<?=$i?>comentario<?=$k?>')">
+                      <i class="fas fa-comment"></i> <?=$lang["comentarios_al_proveedor"]?>
+                    </button>
 
                     <div class="collapse mt-2" id="collapseExample<?=$i?>comentario<?=$k?>">
 
@@ -1328,19 +1311,17 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 
 
 
-      <div class="row">
+      <div class="row justify-content-end">
 
 
 
-        <div class="col-lg-8 col-md-8"></div>
+        <div class="col-lg-4 col-md-6 col-12 text-right">
 
 
 
-        <div class="col-lg-4 col-md-4 col-12 text-right">
-
-
-
-          <button class="btn btn-primary btn-lg btn-radius" style="width: 100% !important;"><?=$lang["continuar"]?></a>
+          <button type="submit" class="btn btn-primary btn-lg btn-radius shadow-sm px-4 py-3" style="width: 100% !important;">
+            <?=$lang["continuar"]?> <i class="fas fa-arrow-right ml-2"></i>
+          </button>
 
 
 
@@ -1642,27 +1623,22 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 
   <!-- BOOTSTRAP BUNDLE -->
 
-
-
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-
 
   <!-- BOOTSTRAP BUNDLE -->
 
-
-
-  
-
-
+  <script>
+  function toggleComentario(id) {
+      const element = document.getElementById(id);
+      if (element) {
+          element.classList.toggle('show');
+      }
+  }
+  </script>
 
   <!-- JQUERY EASING -->
 
-
-
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-
 
   <!-- JQUERY EASING -->
 

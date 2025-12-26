@@ -1,9 +1,14 @@
 <?php 
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('reservasEstado');
+
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
+
 
 require("classes/functions.php");
 
@@ -13,7 +18,22 @@ require("classes/salidas.php");
 
 require("classes/convierte_monedas.php");
 
-$idPrestador=($_SESSION['login']['idPrestador']);
+require("classes/prestador.php");
+
+// Si el admin está logueado, puede ver como cualquier prestador
+if ($_SESSION['login']['idUsuario'] == 1 && isset($_GET['idPrestador'])) {
+    $idPrestador = (int)$_GET['idPrestador'];
+    $vistaAdmin = false; // Admin viendo como prestador específico
+} else {
+    $idPrestador = $_SESSION['login']['idPrestador'];
+    $vistaAdmin = ($_SESSION['login']['idUsuario'] == 1); // Admin viendo todas las reservas
+}
+
+// Obtener lista de prestadores para el select (solo si es admin)
+$prestadores = [];
+if ($_SESSION['login']['idUsuario'] == 1) {
+    $prestadores = getPrestadores();
+}
 
 
 
@@ -55,6 +75,24 @@ $idPrestador=($_SESSION['login']['idPrestador']);
 
         </div><!-- /.row -->
 
+        <?php if ($_SESSION['login']['idUsuario'] == 1 && count($prestadores) > 0): ?>
+        <div class="row mt-3">
+          <div class="col-sm-12">
+            <div class="alert alert-info">
+              <strong><i class="fas fa-user-tie"></i> Ver como Prestador:</strong>
+              <select id="selectPrestador" class="form-control d-inline-block ml-2" style="width: auto; display: inline-block;">
+                <option value="">-- Seleccione un prestador --</option>
+                <?php foreach ($prestadores as $prest): ?>
+                  <option value="<?=$prest['idPrestador']?>" <?= ($idPrestador == $prest['idPrestador']) ? 'selected' : '' ?>>
+                    <?=$prest['nombre'] ?? 'Sin nombre'?> (ID: <?=$prest['idPrestador']?>)
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <?php endif; ?>
+
       </div><!-- /.container-fluid -->
 
     </div>
@@ -93,7 +131,7 @@ $idPrestador=($_SESSION['login']['idPrestador']);
 
 
 
-    <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 
       <div class="card-body">
 
@@ -135,7 +173,7 @@ $idPrestador=($_SESSION['login']['idPrestador']);
 
 
 
-$reservas=getReservasConfirmadas($idPrestador);
+$reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
   $hoy=strtotime(date('Y-m-d'));
 
@@ -161,27 +199,33 @@ $reservas=getReservasConfirmadas($idPrestador);
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
 
+                   // Calcular el total solo de este servicio/horario (no toda la reserva)
+                   $total = 0;
+
                    for ($k=0; $k < count($tarifas); $k++) { 
 
                 
 
-                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $nombre_tarifa=($tarifas[$k]["nombre"]);
 
-                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $monedaSel=$tarifas[$k]["monedaSel"];
 
-                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                        $valorSinIva=$tarifas[$k]["valorSinIva"];
 
-                       $cantidad=($tarifas[0]["cantidad"]);
+                       $cantidad=($tarifas[$k]["cantidad"]);
 
                         $totalTarifa=$valorSinIva*$cantidad;
 
-$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $reservas[$i]["total"]);
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
 
                      
 
  }
 
-                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento>=$hoy || $_SESSION['login']['idUsuario']==1 && $fechaEvento>=$hoy ) {
+                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
+                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+                    
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento>=$hoy) {
 
                       // code...
 
@@ -340,28 +384,34 @@ $reservas=getReservasPendientes($idPrestador);
           
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
-
+                   
+                   // Calcular el total solo de este servicio/horario (no toda la reserva)
+                   $total = 0;
+                   
                    for ($k=0; $k < count($tarifas); $k++) { 
 
                 
 
-                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $nombre_tarifa=($tarifas[$k]["nombre"]);
 
-                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $monedaSel=$tarifas[$k]["monedaSel"];
 
-                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                        $valorSinIva=$tarifas[$k]["valorSinIva"];
 
-                       $cantidad=($tarifas[0]["cantidad"]);
+                       $cantidad=($tarifas[$k]["cantidad"]);
 
                         $totalTarifa=$valorSinIva*$cantidad;
 
-$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $reservas[$i]["total"]);
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
 
                      $fechaEvento=strtotime($salida[0]['fecha']);
 
 }
 
-                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento>=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento>=$hoy) {
+                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
+                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+                    
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento>=$hoy) {
 
 
 
@@ -516,28 +566,34 @@ $reservas=getReservasPendientes($idPrestador);
           
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
-
+                   
+                   // Calcular el total solo de este servicio/horario (no toda la reserva)
+                   $total = 0;
+                   
                    for ($k=0; $k < count($tarifas); $k++) { 
 
                 
 
-                        $nombre_tarifa=($tarifas[0]["nombre"]);
+                        $nombre_tarifa=($tarifas[$k]["nombre"]);
 
-                        $monedaSel=$tarifas[0]["monedaSel"];
+                        $monedaSel=$tarifas[$k]["monedaSel"];
 
-                        $valorSinIva=$tarifas[0]["valorSinIva"];
+                        $valorSinIva=$tarifas[$k]["valorSinIva"];
 
-                       $cantidad=($tarifas[0]["cantidad"]);
+                       $cantidad=($tarifas[$k]["cantidad"]);
 
                         $totalTarifa=$valorSinIva*$cantidad;
 
-$total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $reservas[$i]["total"]);
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
 
                      $fechaEvento=strtotime($salida[0]['fecha']);
 
     }
 
-                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento<=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento<=$hoy) {
+                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
+                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+                    
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<=$hoy) {
 
 
 
@@ -645,7 +701,7 @@ $total=ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $reserv
 
 
 
-$reservas=getReservasConfirmadas($idPrestador);
+$reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
    $hoy=strtotime(date('Y-m-d'));
 
@@ -668,7 +724,10 @@ $reservas=getReservasConfirmadas($idPrestador);
           
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
-
+                   
+                   // Calcular el total solo de este servicio/horario (no toda la reserva)
+                   $total = 0;
+                   
                    for ($k=0; $k < count($tarifas); $k++) { 
 
                 
@@ -681,21 +740,20 @@ $reservas=getReservasConfirmadas($idPrestador);
 
                        $cantidad=($tarifas[$k]["cantidad"]);
 
-                        $totalTarifa=$valorSinIva;
+                        $totalTarifa=$valorSinIva*$cantidad;
 
-$total=ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-
-
-
-$totalReserva=ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
 
 
 
                      $fechaEvento=strtotime($salida[0]['fecha']);
 
+}
 
-
-                    if ($salida[0]["idPrestador"]==$idPrestador && $fechaEvento<=$hoy || $_SESSION['login']['idUsuario']==1  && $fechaEvento<=$hoy) {
+                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
+                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+                    
+                    if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento<=$hoy) {
 
 
 
@@ -727,7 +785,7 @@ $totalReserva=ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"],
 
                                     <td><?=count($tarifas);?></td>
 
-                                    <td><?=$_SESSION["moneda_sel_sym"].$totalReserva;?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
 
                              
 
@@ -739,14 +797,12 @@ $totalReserva=ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"],
 
                              <?php
 
-                                          }     }
-
+                                          }
   }
 
+}
 
-
-} ?>
-
+ ?>
                         </tbody>
 
                       </table>
@@ -862,6 +918,24 @@ $totalReserva=ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"],
          </div><!-- /.container-fluid -->
 
     
+
+  <?php if ($_SESSION['login']['idUsuario'] == 1): ?>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const selectPrestador = document.getElementById('selectPrestador');
+    if (selectPrestador) {
+      selectPrestador.addEventListener('change', function() {
+        const idPrestador = this.value;
+        if (idPrestador) {
+          window.location.href = 'reservasEstado.php?idPrestador=' + idPrestador;
+        } else {
+          window.location.href = 'reservasEstado.php';
+        }
+      });
+    }
+  });
+  </script>
+  <?php endif; ?>
 
   <?php 
 

@@ -165,19 +165,29 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
   $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
   $idComprobante = $id;
   if ($id > 0) {
-    require_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/reservaEmail.php");
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/reserva.php");
+    require_once(__DIR__ . "/reservaEmail.php");
+    include_once(__DIR__ . "/reserva.php");
     $reserva = getReservaId($idReserva);
     $comprobantes = getComprobantesIdReservaDolar($idReserva);
     $total_dolares = $reserva[0]["total_dolares"];
     $horariosReserva = getReservaHorarios($idReserva);
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/salidas.php");
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/prestador.php");
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/email_prestador_reserva_confirmada.php");
-    include_once($_SERVER['DOCUMENT_ROOT'] . "/admin/classes/email_reserva_confirmada.php");
+    include_once(__DIR__ . "/salidas.php");
+    include_once(__DIR__ . "/prestador.php");
+    include_once(__DIR__ . "/email_prestador_reserva_confirmada.php");
+    include_once(__DIR__ . "/email_reserva_confirmada.php");
+    include_once(__DIR__ . "/email_renderer.php");
     if ($comprobantes >= $total_dolares) {
-      $cuerpo = getCuerpoEmailReservaConfirmada($reserva[0]["codigoAmigable"]);
-      $resumail = enviaMail($reserva[0]["emailResponsable"], "Reserva Confirmada ", $cuerpo, "metelebrasil.com");
+      $renderer = new EmailRenderer();
+      $idioma = $_SESSION['idioma'] ?? 'ES';
+      $codigo = $reserva[0]["codigoAmigable"];
+      $varsCliente = [
+        'codigo_reserva' => $codigo,
+        'enlace_reserva' => "http://metelebrasil.com/consultaReserva?reserva=" . $codigo
+      ];
+      $fallbackBodyCliente = getCuerpoEmailReservaConfirmada($codigo);
+      $renderCliente = $renderer->render('reserva_confirmada', $idioma, $varsCliente, 'Reserva confirmada', $fallbackBodyCliente);
+
+      $resumail = enviaMail($reserva[0]["emailResponsable"], $renderCliente['asunto'], $renderCliente['html'], "metelebrasil.com");
       confirmaReserva($idReserva);
       foreach ($horariosReserva as $key => $value) {
         $salida = getSalida($value['idServicioSalidas']);
@@ -185,8 +195,15 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
         $idReservaHorarios = $value['idReservaHorarios'];
         $nombrePrestador = ($prestador[0]['nombre']);
         $fecha_salida = date("d-m-Y", strtotime($salida[0]['fecha']));
-        $cuerpo = getCuerpoEmailPrestadorReservaConfirmada($idReservaHorarios, "metelebrasil.com", $nombrePrestador);
-        $resumail = enviaMail($prestador[0]['email'], "Nova reserva! " . $fecha_salida . " | Salida: " . $value['idServicioSalidas'] . " | Carrito: " . $reserva[0]["codigoAmigable"], $cuerpo, "metelebrasil.com");
+        $fallbackPrestador = getCuerpoEmailPrestadorReservaConfirmada($idReservaHorarios, "metelebrasil.com", $nombrePrestador);
+        $varsPrestador = [
+          'nombre_prestador' => $nombrePrestador,
+          'fecha_salida' => $fecha_salida,
+          'codigo_reserva' => $codigo,
+          'id_salida' => $value['idServicioSalidas']
+        ];
+        $renderPrestador = $renderer->render('prestador_reserva_confirmada', $idioma, $varsPrestador, "Nova reserva! " . $fecha_salida, $fallbackPrestador);
+        $resumail = enviaMail($prestador[0]['email'], $renderPrestador['asunto'], $renderPrestador['html'], "metelebrasil.com");
       }
     }
   }

@@ -28,17 +28,22 @@ function geoLocalizacionIp($url, $option, $cCode)
     $data = curl_exec($ch);
     curl_close($ch);
 
-    $data= unserialize($data);
-    //print_r( $data);
-  $countryCode=$data["geoplugin_countryCode"];
-if ($option==(-5)) {
-  $countryCode=$cCode;
-}
+    // Intentar deserializar, si falla inicializar array vacío
+    $data = @unserialize($data);
+    if ($data === false) {
+        $data = array();
+    }
     
-        $geoLocalizacionIp=Array();
-    $geoLocalizacionIp["longitud"]=$data["geoplugin_longitude"];
-    $geoLocalizacionIp["latitud"]=$data["geoplugin_latitude"];
-      $geoLocalizacionIp["ciudad"]=$data["geoplugin_city"];
+    //print_r( $data);
+    $countryCode = isset($data["geoplugin_countryCode"]) ? $data["geoplugin_countryCode"] : '';
+    if ($option==(-5)) {
+        $countryCode=$cCode;
+    }
+    
+    $geoLocalizacionIp=Array();
+    $geoLocalizacionIp["longitud"] = isset($data["geoplugin_longitude"]) ? $data["geoplugin_longitude"] : '';
+    $geoLocalizacionIp["latitud"] = isset($data["geoplugin_latitude"]) ? $data["geoplugin_latitude"] : '';
+    $geoLocalizacionIp["ciudad"] = isset($data["geoplugin_city"]) ? $data["geoplugin_city"] : '';
     
     switch ($countryCode) {
       case 'AR':
@@ -81,8 +86,8 @@ if ($option==(-5)) {
         break;
 
       default:
-        $geoLocalizacionIp[0] =$data["geoplugin_countryCode"];
-      $geoLocalizacionIp['nombre_pais'] ="Desconocido";
+        $geoLocalizacionIp[0] = isset($data["geoplugin_countryCode"]) ? $data["geoplugin_countryCode"] : '';
+        $geoLocalizacionIp['nombre_pais'] ="Desconocido";
       $geoLocalizacionIp['idPais'] = 188;
       $geoLocalizacionIp['sym'] = 'U$S'; 
        $geoLocalizacionIp["countryCode"] = $countryCode; 

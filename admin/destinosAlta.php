@@ -1,11 +1,16 @@
 
 
 <?php 
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('destinosAlta');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
+
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");

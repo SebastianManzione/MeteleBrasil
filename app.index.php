@@ -102,9 +102,15 @@ Visitante($visitante);
 
 // --- CÓDIGO AÑADIDO PARA SERVICIOS CERCANOS ---
 
-// IMPORTANTE: Reemplaza los datos de conexión ("localhost", "usuario", "password", "nombre_db") con los de tu base de datos real.
+// Detectar entorno y usar credenciales apropiadas
+$envFromVar = getenv('APP_ENV');
+$isProd = $envFromVar ? ($envFromVar === 'prod') : true;
 
-$mysqli = new mysqli("localhost", "root", "", "metelebrasil");
+if ($isProd) {
+    $mysqli = new mysqli("localhost", "u925692129_metelebrasil", "Cambiar2026", "u925692129_metelebrasil");
+} else {
+    $mysqli = new mysqli("localhost", "root", "", "metelebrasil");
+}
 
 if ($mysqli->connect_error) {
 
@@ -1460,7 +1466,7 @@ $estrellas=getEstrellasCategoria($idCategoria_servicio);
 
 
 
-          <button class="btn  btn-white" type="button" id="alternar-panel-oculto-1" data-toggle="collapse" data-target="#VerMasActividades" aria-expanded="false" aria-controls="VerMasActividades">
+          <button class="btn  btn-white" type="button" id="alternar-panel-oculto-1" data-toggle="collapse" data-target="#VerMasActividades" data-bs-toggle="collapse" data-bs-target="#VerMasActividades" aria-expanded="false" aria-controls="VerMasActividades">
 
 
 
@@ -2394,7 +2400,7 @@ $servicios_restantes = array_slice($todos_servicios, 6, 6); // Siguientes 6 serv
 
 
 
-         <button class="btn  btn-white" type="button" id="alternar-panel-oculto-2" data-toggle="collapse" data-target="#VerMasActividades-d" aria-expanded="false" aria-controls="VerMasActividades-d">
+         <button class="btn  btn-white" type="button" id="alternar-panel-oculto-2" data-toggle="collapse" data-target="#VerMasActividades-d" data-bs-toggle="collapse" data-bs-target="#VerMasActividades-d" aria-expanded="false" aria-controls="VerMasActividades-d">
 
 
 
@@ -2512,15 +2518,7 @@ $servicios_restantes = array_slice($todos_servicios, 6, 6); // Siguientes 6 serv
 
 <?php if (!isset($_SESSION["login"]["active"])) { ?>
 
-    <div class="text-center my-5">
-
-      <a href="#" id="abrirLogin" class="primary">
-
-        <i class="fa fa-user-alt"></i> Mi Cuenta
-
-      </a>
-
-    </div>
+    <!-- Bloque suelto de "Mi Cuenta" removido: usar navbar -->
 
 <?php } ?>
 
@@ -3228,7 +3226,7 @@ $(document).ready(function() {
 
 
 
-    $('#abrirLogin, #clickLoginMovil').click(function(e){
+    $('#clickLoginMovil').click(function(e){
 
         e.preventDefault();
 

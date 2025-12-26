@@ -1,4 +1,9 @@
 <?php
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('servicioVer2');
 
 setlocale(LC_TIME, "es_ES");
 
@@ -7,17 +12,17 @@ $fecha_actual = date("d-m-Y");
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
-require("classes/functions.php");
-require("classes/categoria.php");
-require("classes/texto_miniaturas.php");
-require("classes/tipos_tarifa.php");
-require("classes/accesibilidad.php");
-require("classes/idiomas.php");
-require("classes/reserva.php");
-require("classes/edades.php");
-require("classes/salidas.php");
-require("classes/tarifas.php");
-require("classes/tarifas_ubicacion.php");
+require_once("classes/functions.php");
+require_once("classes/categoria.php");
+require_once("classes/texto_miniaturas.php");
+require_once("classes/tipos_tarifa.php");
+require_once("classes/accesibilidad.php");
+require_once("classes/idiomas.php");
+require_once("classes/reserva.php");
+require_once("classes/edades.php");
+require_once("classes/salidas.php");
+require_once("classes/tarifas.php");
+require_once("classes/tarifas_ubicacion.php");
 require("classes/prestador.php");
 require("classes/servicio.php");
 require("classes/cancelaciones.php");

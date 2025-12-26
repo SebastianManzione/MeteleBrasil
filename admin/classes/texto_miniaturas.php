@@ -3,7 +3,9 @@ function getTextosMiniaturas() {
     require("conexion.php");
 
     // Obtém o idioma da sessão
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
 
     // Seleciona a coluna correta com base no idioma
@@ -30,10 +32,25 @@ function getTextosMiniaturas() {
 function getTextoMiniatura($idTextoMiniaturas) {
     require("conexion.php");
 
-    // Simply fetch the texto column - ignore language variations
-    // The schema only has 'texto' column, not texto_en, texto_pt, etc.
+    // Obtém o idioma da sessão
+    $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
+
+    // Seleciona a coluna correta com base no idioma
+    $coluna_texto = "texto"; // Padrão: espanhol
+    switch ($idioma) {
+        case 'EN':
+            $coluna_texto = "texto_en";
+            break;
+        case 'PT':
+            $coluna_texto = "texto_pt";
+            break;
+        case 'IT':
+            $coluna_texto = "texto_it";
+            break;
+    }
+
     $data = ["idTextoMiniaturas" => $idTextoMiniaturas];
-    $consulta = "SELECT idTextoMiniaturas, texto FROM texto_miniaturas WHERE idTextoMiniaturas = :idTextoMiniaturas";
+    $consulta = "SELECT idTextoMiniaturas, $coluna_texto AS texto FROM texto_miniaturas WHERE idTextoMiniaturas = :idTextoMiniaturas";
     
     try {
         $comando = $pdo->prepare($consulta);

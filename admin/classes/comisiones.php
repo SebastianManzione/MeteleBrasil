@@ -108,8 +108,15 @@ function getComisiones(){
 
     }
 
-
-
+    function getPrestadorComision($idPrestador){
+        require("conexion.php");
+        $data=["idPrestador"=>$idPrestador];
+        $consulta = "select * from prestador_comision WHERE idPrestador=:idPrestador";
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    }
 
 
         function getComisionesIdUsuarioCupon($idUsuarioCupon){

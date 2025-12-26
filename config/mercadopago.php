@@ -2,7 +2,7 @@
 class MercadoPagoConfig
 {
     private static string $environment = 'production';
-    private static array $config = [
+    private static array $configFallback = [
         'AR' => [
             'sandbox' => [
                 'public_key' => 'APP_USR-cf99fd0d-bd3b-4038-9e53-c32f6e1fe899',
@@ -29,17 +29,39 @@ class MercadoPagoConfig
     {
         $country = strtoupper($country);
 
-        if (!isset(self::$config[$country])) {
+        if (!in_array($country, ['AR', 'BR'])) {
             throw new Exception("País no soportado: {$country}");
         }
 
-        $env = self::$environment;
+        // Try to load from DB
+        if (file_exists(__DIR__ . '/../admin/classes/configuracion.php')) {
+            require_once(__DIR__ . '/../admin/classes/configuracion.php');
+            try {
+                $config = new Configuracion();
+                $env = $config->obtener('mp_environment', self::$environment);
+                
+                $countryLower = strtolower($country);
+                $publicKey = $config->obtener("mp_{$countryLower}_{$env}_public_key", null);
+                $accessToken = $config->obtener("mp_{$countryLower}_{$env}_access_token", null);
+                
+                if ($publicKey && $accessToken) {
+                    return [
+                        'public_key' => $publicKey,
+                        'access_token' => $accessToken
+                    ];
+                }
+            } catch (Exception $e) {
+                // Fall through to fallback
+            }
+        }
 
-        if (!isset(self::$config[$country][$env])) {
+        // Fallback to hardcoded
+        $env = self::$environment;
+        if (!isset(self::$configFallback[$country][$env])) {
             throw new Exception("No existen credenciales para {$country} en entorno {$env}");
         }
 
-        return self::$config[$country][$env];
+        return self::$configFallback[$country][$env];
     }
 
     /**

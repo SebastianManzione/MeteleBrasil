@@ -1,10 +1,14 @@
 <?php 
 
-require("classes/parametros.php");
- session_start(); 
+require_once("classes/parametros.php");
+if (session_status() === PHP_SESSION_NONE) {
+  session_start(); 
+}
+header('Content-Type: text/html; charset=utf-8');
 setlocale(LC_TIME, 'es_ES.UTF-8', 'es_ES.utf8', 'es_ES', 'Spanish_Spain.1252');
 if(!isset($_SESSION["login"]["rol"])){
-header("LOCATION:../index.php");
+  header("LOCATION:login.php");
+  exit;
 }
 
 
@@ -50,6 +54,9 @@ $parametros=getParametros();
 <!--   <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css"> -->
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap4.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->

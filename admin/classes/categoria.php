@@ -82,10 +82,21 @@ function getCategorias()
 function getCategoriasLimit6() {
     require("conexion.php");
 
-    // Consulta para buscar as categorias (limite de 6) - apenas colunas existentes
+    // Seleccionar el campo de nombre según el idioma
+    $idioma = $_SESSION['idioma'] ?? 'ES';
+    $campoNombre = 'nombre_categoria_servicio'; // Por defecto es español
+    if ($idioma === 'EN') {
+        $campoNombre = 'nombre_categoria_servicio_en';
+    } elseif ($idioma === 'PT') {
+        $campoNombre = 'nombre_categoria_servicio_pt';
+    } elseif ($idioma === 'IT') {
+        $campoNombre = 'nombre_categoria_servicio_it';
+    }
+
+    // Consulta para buscar as categorias (limite de 6)
     $consulta = "SELECT 
                     idCategoria_servicio, 
-                    nombre_categoria_servicio, 
+                    $campoNombre as nombre_categoria_servicio, 
                     descripcion_categoria_servicio, 
                     descripcionCorta_categoria_servicio, 
                     nViajeros, 
@@ -105,10 +116,29 @@ function getCategoriasLimit6() {
 function getCategoriasLimit612() {
     require("conexion.php");
 
+    // Seleccionar el campo de nombre según el idioma
+    $idioma = $_SESSION['idioma'] ?? 'ES';
+    $campoNombre = 'nombre_categoria_servicio'; // Por defecto es español
+    if ($idioma === 'EN') {
+        $campoNombre = 'nombre_categoria_servicio_en';
+    } elseif ($idioma === 'PT') {
+        $campoNombre = 'nombre_categoria_servicio_pt';
+    } elseif ($idioma === 'IT') {
+        $campoNombre = 'nombre_categoria_servicio_it';
+    }
+
     // Consulta para buscar as categorias (limite de 6, começando do 7º)
-    $consulta = "SELECT * FROM categoria_servicio 
+    $consulta = "SELECT 
+                    idCategoria_servicio, 
+                    $campoNombre as nombre_categoria_servicio,
+                    descripcion_categoria_servicio, 
+                    descripcionCorta_categoria_servicio, 
+                    nViajeros, 
+                    img_categoria_servicio, 
+                    guia
+                 FROM categoria_servicio 
                  WHERE idCategoria_servicio > 0 AND habilitado = 1 
-                 LIMIT 6 OFFSET 6"; // Retorna 6 categorias, começando do 7º registro
+                 LIMIT 6 OFFSET 6";
 
     $comando = $pdo->prepare($consulta);
     $comando->execute();

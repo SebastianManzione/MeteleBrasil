@@ -275,49 +275,58 @@ function posicionarCalendario() {
 
 
 
-/*Calendario Visita*/
+/*Calendario Visita - inicializado con idioma y weekOffset*/
+$(function() {
+  var idioma = (typeof window.idiomaSistema !== 'undefined' && window.idiomaSistema) ? window.idiomaSistema : 'ES';
+  var diasSemanaCortosMap = {
+    ES: ['D','L','M','X','J','V','S'],
+    EN: ['S','M','T','W','T','F','S'],
+    PT: ['D','S','T','Q','Q','S','S'],
+    IT: ['D','L','M','M','G','V','S']
+  };
+  var mesesMap = {
+    ES: ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],
+    EN: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    PT: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+    IT: ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre']
+  };
+  var weekOffsetMap = { ES: 1, PT: 1, IT: 1, EN: 0 };
+  var diasSemanaHeader = diasSemanaCortosMap[idioma] || diasSemanaCortosMap['ES'];
+  var weekOffset = (typeof weekOffsetMap[idioma] !== 'undefined') ? weekOffsetMap[idioma] : 0;
 
- /* $(document).ready(function(){
-        
-    $('.calendario-visitas').clndr({
-        template: $('#calendar-template').html()
+  function initClndr(selector, templateId) {
+    if (!$(selector).length || !$(templateId).length) return;
+    $(selector).clndr({
+      template: $(templateId).html(),
+      daysOfTheWeek: diasSemanaHeader,
+      showAdjacentMonths: false,
+      weekOffset: weekOffset,
+      doneRendering: function() {
+        try {
+          var idxMes = this.month.month();
+          var anio = this.month.year();
+          var nombreMes = (mesesMap[idioma] || mesesMap['ES'])[idxMes];
+          $(selector + ' .month').text(nombreMes + ' ' + anio);
+        } catch(e) { /* silent */ }
+      }
     });
-  });*/
+  }
+
+  initClndr('.calendario-visitas', '#calendar-template');
+  initClndr('.calendario-visitas-movil', '#calendar-template-movil');
+});
 /*Calendario Visita*/
-
-
-/*Calendario Visita movil*/
-
-  /*$(document).ready(function(){
-        
-    $('.calendario-visitas-movil').clndr({
-        template: $('#calendar-template-movil').html()
-    });
-  });
-/*Calendario Visita movil*/
 
 
 /*COOKIES*/
 
-  $("#cerrar-cookies").click(function () {
-	 var cookiev = '1'; 
-	 document.cookie = 'politicaCookies='+cookiev; 
-     $("#cookies").slideUp();
-      $("#cookies").hide();
-      $("#cookies-movil").slideUp();
-      $("#cookies-movil").hide();
-  });
-
-  $("#cerrar-cookies-movil").click(function () {
-
-   var cookiev = '1'; 
-   document.cookie = 'politicaCookies='+cookiev; 
-   $("#cookies").slideUp();
-      $("#cookies").hide();
-     $("#cookies-movil").slideUp();
-      $("#cookies-movil").hide();
-         
-  });
+    $(document).on('click', '#cerrar-cookies, #cerrar-cookies-movil', function (e) {
+      e.preventDefault();
+      var cookiev = '1';
+      // Persistir cookie un año, accesible en todo el sitio
+      document.cookie = 'politicaCookies=' + cookiev + ';path=/;max-age=' + (60 * 60 * 24 * 365);
+      $("#cookies, #cookies-movil").slideUp().hide();
+    });
 
     /*SERVICIO CIUDAD Y PAIS*/
 

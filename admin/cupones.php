@@ -1,11 +1,16 @@
 
 
 <?php 
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('cupones');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
+
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
@@ -26,29 +31,27 @@ if (!$_SESSION["login"]["rol"]==1) {
 
 
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["addCupon"])) {
-$idUsuario=$_POST["idUsuario"];
-$descuentoPorcentual=$_POST["descuentoPorcentual"];
+  $idUsuario=$_POST["idUsuario"];
+  $descuentoPorcentual=$_POST["descuentoPorcentual"];
   
-$cupones=GeneraCupones(1, $idUsuario, $descuentoPorcentual);
+  $cupones=GeneraCupones(1, $idUsuario, $descuentoPorcentual);
 
-for ($i=0; $i < count($cupones); $i++) { 
-
-  $cupon=getCupon($cupones[$i]);
-  $usuario=getUsuario($cupon[0]["idUsuario"]);
-  
-  ?>
+  for ($i=0; $i < count($cupones); $i++) { 
+    $cupon=getCupon($cupones[$i]);
+    $codigo = !empty($cupon) && isset($cupon[0]["CodigoAmigable"]) ? $cupon[0]["CodigoAmigable"] : "";
+    $cuponUsuarioId = !empty($cupon) && isset($cupon[0]["idUsuario"]) ? (int)$cupon[0]["idUsuario"] : 0;
+    $usuario = $cuponUsuarioId > 0 ? getUsuario($cuponUsuarioId) : [];
+    $emailUsuario = !empty($usuario) && isset($usuario[0]["email"]) ? $usuario[0]["email"] : "";
+    $descuento = !empty($cupon) && isset($cupon[0]["descuentoPorcentual"]) ? $cupon[0]["descuentoPorcentual"] : 0;
+    ?>
 
 Cupon generado <?=$i+1?> <br>
-Codigo: <?=$cupon[0]["CodigoAmigable"];?> <br>
-Usuario: <?=$usuario[0]["email"];?> <br>
-Descuento: <?=$cupon[0]["descuentoPorcentual"];?>% <br>
+Codigo: <?=$codigo;?> <br>
+Usuario: <?=$emailUsuario;?> <br>
+Descuento: <?=$descuento;?>% <br>
 
-  <?php 
-}
-
-
-
-
+    <?php 
+  }
 }
 
 
@@ -160,6 +163,7 @@ for ($i=0; $i < count($cupones); $i++) {
   $descuentoPorcentual=$cupones[$i]["descuentoPorcentual"];
   $idUsuario=$cupones[$i]["idUsuario"];
   $usuario=getUsuario($idUsuario);
+  $emailUsuario = (!empty($usuario) && isset($usuario[0]["email"])) ? $usuario[0]["email"] : "";
 
 ?>
 
@@ -167,7 +171,7 @@ for ($i=0; $i < count($cupones); $i++) {
 
                              <tr>
                                 <td ><?=$CodigoAmigable;?></td>
-                                 <td ><?=$usuario[0]["email"];?></td>
+                                 <td ><?=$emailUsuario;?> </td>
                                   <td ><?=$descuentoPorcentual;?>%</td>
         
                              </tr>                    

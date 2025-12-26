@@ -3,27 +3,34 @@
 include("includes/navbar.php");
 include("admin/classes/paises.php");
 include("admin/classes/solicitudes.php");
+include("admin/classes/antibot.php");
+
 if ($_SERVER["REQUEST_METHOD"] == "POST"  ) {
+    // Validación anti-bot
+    $validacion = validarAntiBot('register_operator_form', $_POST['recaptcha_token'] ?? null);
+    
+    if (!$validacion['success']) {
+        alertar($validacion['error'], "error");
+    } else {
+        $idTipoSolicitud=4;
+        $email=$_POST["email"];
+        $password=$_POST["contrasena"];
+        $nombre_agencia=$_POST["nombre_agencia"];
+        $tipo_de_agencia=$_POST["tipo_agencia"];
+        $nombre=$_POST["nombre"];
+        $cargo_empresa=$_POST["cargo_empresa"];
+        $whatsapp=$_POST["whatsapp"];
+        $estado=$_POST["estado"];
+        $ciudad=$_POST["ciudad"];
+        $destino_que_opera=$_POST["destino_que_opera"];
+        $descripcion_agencia=$_POST["descripcion"];
 
-
-$idTipoSolicitud=4;
-$email=$_POST["email"];
-$password=$_POST["contrasena"];
-$nombre_agencia=$_POST["nombre_agencia"];
-$tipo_de_agencia=$_POST["tipo_agencia"];
-$nombre=$_POST["nombre"];
-$cargo_empresa=$_POST["cargo_empresa"];
-$whatsapp=$_POST["whatsapp"];
-$estado=$_POST["estado"];
-$ciudad=$_POST["ciudad"];
-$destino_que_opera=$_POST["destino_que_opera"];
-$descripcion_agencia=$_POST["descripcion"];
-
-$resu=setSolicitud($idTipoSolicitud, $email, $password, $nombre_agencia, $descripcion_agencia, $tipo_de_agencia, $nombre, $cargo_empresa, $whatsapp, $estado, $ciudad, $destino_que_opera);
-if($resu>0){
-  alertar("Su solicitud se envio correctamente, nos comunicaremos con usted por email", "success");
-  redireccionarLento("index");
-}
+        $resu=setSolicitud($idTipoSolicitud, $email, $password, $nombre_agencia, $descripcion_agencia, $tipo_de_agencia, $nombre, $cargo_empresa, $whatsapp, $estado, $ciudad, $destino_que_opera);
+        if($resu>0){
+            alertar("Su solicitud se envio correctamente, nos comunicaremos con usted por email", "success");
+            redireccionarLento("index");
+        }
+    }
 }
 
 
@@ -245,6 +252,8 @@ if($resu>0){
           
           <!-- /.col -->
         </div>
+        <!-- Campos Anti-Bot (invisibles) -->
+        <?php echo generarCamposAntiBot(); ?>
       </div>
 
 <div class="col">

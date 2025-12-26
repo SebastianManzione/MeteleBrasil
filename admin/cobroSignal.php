@@ -1,11 +1,14 @@
 <?php 
-
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('cobroSignal');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
+
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
@@ -120,6 +123,12 @@ $resumail=enviaMail($reserva[0]["emailResponsable"], $lang["si_recibimos_su_pago
 
 
   alertar($lang["si_tu_cobro_se_realizo"],"success");
+  
+  echo '<div class="text-center mt-3 mb-3">';
+  echo '<a href="reservaDetalles?reserva='.$codigoAmigable.'" class="btn btn-primary btn-lg">';
+  echo '<i class="fas fa-arrow-left mr-2"></i>Volver a la Reserva';
+  echo '</a>';
+  echo '</div>';
 
   redireccionarLento('cobroSignal?reserva='.$codigoAmigable);
 
