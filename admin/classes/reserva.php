@@ -165,7 +165,7 @@ function getReservas(){
     include_once('convierte_monedas.php');
     include_once('comprobantes.php');
     $data=["idPrestador"=>$idPrestador];
-    $consulta = "select * from reservas WHERE idEstado=2";  // idEstado=2 is confirmada
+    $consulta = "select * from reservas WHERE idEstado=3";  // idEstado=3 is confirmada
     $comando = $pdo->prepare($consulta);
     $comando->execute();
     $cuenta_col = $comando->columnCount();
