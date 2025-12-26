@@ -1783,11 +1783,9 @@ else{  ?>
 
 
 
-                    <div class="input-group nav-password-group">
-                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control " placeholder="Contraseña">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary nav-eye-btn" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                      </div>
+                    <div class="nav-password-wrapper">
+                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="Contraseña">
+                      <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
                     </div>
 
 
@@ -3657,11 +3655,9 @@ else{
 
 
 
-                    <div class="input-group nav-password-group">
+                    <div class="nav-password-wrapper">
                       <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contraseña">
-                      <div class="input-group-append">
-                        <button class="btn btn-outline-secondary nav-eye-btn" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                      </div>
+                      <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
                     </div>
 
 
@@ -3882,28 +3878,32 @@ else{
   }
 </script>
 <style>
-  .nav-eye-btn {
-      border-left: 0;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
-      border-top-right-radius: 12px;
-      border-bottom-right-radius: 12px;
-      padding: 0 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 2rem;
-      min-width: 32px;
-      margin-left: -1px;
+  .nav-password-wrapper {
+    position: relative;
   }
-  .nav-eye-btn i {
-      font-size: .8rem;
-      line-height: 1;
+  .nav-password-wrapper .form-control {
+    padding-right: 2.25rem;
   }
-    .nav-password-group .form-control {
-      height: 2rem;
-      padding: .25rem .5rem;
-    }
+  .nav-eye-inline {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a5568;
+  }
+  .nav-eye-inline:focus { outline: none; box-shadow: none; }
+  .nav-eye-inline i {
+    font-size: .8rem;
+    line-height: 1;
+  }
 </style>
 
 
