@@ -1786,7 +1786,7 @@ else{  ?>
                     <div class="input-group">
                       <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control " placeholder="Contraseña">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                        <button class="btn btn-outline-secondary d-flex align-items-center py-0 px-3" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fa fa-eye fa-sm" aria-hidden="true"></i></button>
                       </div>
                     </div>
 
@@ -3660,7 +3660,7 @@ else{
                     <div class="input-group">
                       <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contraseña">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                        <button class="btn btn-outline-secondary d-flex align-items-center py-0 px-3" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fa fa-eye fa-sm" aria-hidden="true"></i></button>
                       </div>
                     </div>
 
