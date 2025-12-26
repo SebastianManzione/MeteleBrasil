@@ -195,6 +195,11 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
               $salida=getSalida($horarios[$j]["idServicioSalidas"]);
 
+              // Validar que getSalida retornó resultados
+              if (empty($salida) || !isset($salida[0])) {
+                  continue; // Saltar esta salida si no existe
+              }
+
                  $fechaEvento=strtotime($salida[0]['fecha']);
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
@@ -365,7 +370,10 @@ $reservas=getReservasPendientes($idPrestador);
 
               $salida=getSalida($horarios[$j]["idServicioSalidas"]);
 
-          
+              // Validar que getSalida retornó resultados
+              if (empty($salida) || !isset($salida[0])) {
+                  continue; // Saltar esta salida si no existe
+              }
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
                    
@@ -695,7 +703,10 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
               $salida=getSalida($horarios[$j]["idServicioSalidas"]);
 
-          
+              // Validar que getSalida retornó resultados
+              if (empty($salida) || !isset($salida[0])) {
+                  continue; // Saltar esta salida si no existe
+              }
 
                    $tarifas=getReservaTarifas($idReservaHorarios);
                    
