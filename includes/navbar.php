@@ -1,5 +1,15 @@
  <?php
 
+// Detectar ambiente: si el hostname no contiene "server", estamos en desarrollo
+if (empty(getenv('APP_ENV'))) {
+    $hostname = getenv('COMPUTERNAME') ?: gethostname() ?: $_SERVER['SERVER_NAME'] ?? '';
+    if (strpos($hostname, 'server') === false) {
+        putenv('APP_ENV=dev');
+    } else {
+        putenv('APP_ENV=prod');
+    }
+}
+
 session_start();
 header('Content-Type: text/html; charset=utf-8');
 
