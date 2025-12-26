@@ -520,7 +520,7 @@ $reservas=getReservasPendientes($idPrestador);
 
                                     <th scope="col"><?=$lang["valor_total"];?></th>
 
-                      
+                                    <th scope="col">Acciones</th>
 
                                  </tr>
 
@@ -616,13 +616,7 @@ $reservas=getReservasPendientes($idPrestador);
 
                                     <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
 
-                             
-
-
-
-                             </tr>
-
-
+                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
 
                              <?php
 
@@ -677,6 +671,8 @@ $reservas=getReservasPendientes($idPrestador);
                                     <th scope="col"><?=$lang["cod-servicio-contratados"];?></th>
 
                                     <th scope="col"><?=$lang["valor_total"];?></th>
+
+                                    <th scope="col">Acciones</th>
 
                       
 
@@ -775,6 +771,8 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                                     <td><?=count($tarifas);?></td>
 
                                     <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+
+                                    <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
 
                              
 
