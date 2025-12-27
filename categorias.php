@@ -350,22 +350,23 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       border-radius: 8px;
     }
 
-    /* ========== TARJETAS DE SERVICIOS ========== */
+    /* ========== TARJETAS DE SERVICIOS (HORIZONTAL) ========== */
     .service-card {
-      border: none;
-      border-radius: 12px;
+      border: 1px solid #e5e5e5;
+      border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
-      height: 100%;
+      background: white;
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
       text-decoration: none;
       color: inherit;
+      margin-bottom: 1rem;
     }
 
     .service-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       transform: translateY(-2px);
     }
 
@@ -373,15 +374,18 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       text-decoration: none;
       color: inherit;
       display: flex;
-      flex-direction: column;
-      height: 100%;
+      flex-direction: row;
+      width: 100%;
     }
 
     .card-img-container {
       position: relative;
       overflow: hidden;
+      width: 250px;
+      min-width: 250px;
       height: 200px;
       background-color: #f0f0f0;
+      flex-shrink: 0;
     }
 
     .card-img-container img {
@@ -401,11 +405,12 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       left: 10px;
       background-color: #007bff;
       color: white;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
       font-weight: 600;
       z-index: 10;
+      text-transform: uppercase;
     }
 
     .card-body {
@@ -413,10 +418,11 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       display: flex;
       flex-direction: column;
       padding: 1.2rem;
+      justify-content: space-between;
     }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
       color: #333;
@@ -425,8 +431,22 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
     .rating-text {
       color: #007bff;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       margin-bottom: 0.5rem;
+    }
+
+    /* Responsive: Mobile en vertical */
+    @media (max-width: 768px) {
+      .service-card,
+      .service-card a {
+        flex-direction: column !important;
+      }
+
+      .card-img-container {
+        width: 100% !important;
+        min-width: 100% !important;
+        height: 180px !important;
+      }
     }
 
     .rating-text strong {
@@ -985,8 +1005,8 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
 
             ?>
-              <!-- TARJETA SERVICIO - 3 COL DESKTOP, 1 COL MÓVIL -->
-              <div class="col-lg-4 col-md-6 col-12 mb-4">
+              <!-- TARJETA SERVICIO - HORIZONTAL DESKTOP, VERTICAL MÓVIL -->
+              <div class="col-12 mb-3">
                 <div class="service-card">
                   <a href="servicio?id=<?= $idServicio ?>">
                     <div class="card-img-container">
@@ -996,22 +1016,24 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                       <?php endif; ?>
                     </div>
                     <div class="card-body">
-                      <h5 class="card-title"><?= $nombre_servicio ?></h5>
-                      <?php if (count($opiniones_servicio) > 0) { ?>
-                      <p class="rating-text">
-                        <strong><?= $estrellas_servicio; ?>/10</strong> 
-                        <span>(<?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?>)</span>
-                      </p>
-                      <?php } ?>
-                      <!-- DESCRIPCIÓN: SOLO DESKTOP -->
-                      <p class="description-text d-none d-md-block"><?= $descripcion_corta; ?></p>
+                      <div>
+                        <h5 class="card-title"><?= $nombre_servicio ?></h5>
+                        <?php if (count($opiniones_servicio) > 0) { ?>
+                        <p class="rating-text">
+                          <strong><?= $estrellas_servicio; ?>/10</strong> 
+                          <span>(<?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?>)</span>
+                        </p>
+                        <?php } ?>
+                        <!-- DESCRIPCIÓN -->
+                        <p class="description-text"><?= $descripcion_corta; ?></p>
 
-                      <!-- DURACIÓN -->
-                      <?php if(!empty($duracion_servicio)): ?>
-                        <ul class="features-list">
-                          <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
-                        </ul>
-                      <?php endif; ?>
+                        <!-- DURACIÓN -->
+                        <?php if(!empty($duracion_servicio)): ?>
+                          <ul class="features-list">
+                            <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
+                          </ul>
+                        <?php endif; ?>
+                      </div>
 
                       <!-- PRECIO Y CANCELACIÓN -->
                       <div class="price-section">
