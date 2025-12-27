@@ -59,6 +59,7 @@ $queryString = http_build_query($params);
 $orden = isset($_GET['orden']) ? $_GET['orden'] : '';
 
 if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
+  // CASO 1: Categoría específica
   $idCategoria = $_GET["idCategoria"];
   $categorias = getCategoria($idCategoria);
   $servicios = getServiciosidCategoria_servicioPaginado($idCategoria, $desde, $cantidad_por_pagina);
@@ -69,7 +70,8 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $opiniones_categoria = OpinionesCategoria($id);
   $cantidad_opiniones_categoria = count($opiniones_categoria);
   $fotos = $categorias[0]["img_categoria_servicio"];
-} else if (isset($_GET["buscar"])) {
+} else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
+  // CASO 2: Búsqueda con término específico
   $busqueda = $_GET["buscar"];
   $idCategoria = 0;
   $servicios = getServiciosBusquedaPaginada($_GET["buscar"], $desde, $cantidad_por_pagina);
@@ -81,6 +83,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $cantidad_opiniones_categoria = rand(100, 500);
   $fotos = "sinCategoria.jpg";
 } else {
+  // CASO 3: Todas las categorías (sin búsqueda o con búsqueda vacía)
   $idCategoria = 0;
   $servicios = getServiciosPaginado($desde, $cantidad_por_pagina);
   $cantidad_servicios_categoria = count(getServicios());
