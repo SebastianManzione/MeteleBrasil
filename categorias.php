@@ -662,18 +662,20 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               $fecha = date("Y-m-d");
               $salidas = getSalidasFechaLuegoIdServicio($fecha, $idServicio);
 
+              // Inicializar valores por defecto
+              $precioSugerido = "Consultar";
+              $cancelacion = "";
+
               if (!empty($salidas)) {
                 $idMoneda = $salidas[0]['idMoneda'];
                 $idServicioSalidas = $salidas[0]['idServicioSalidas'];
                 $tarifas = getTarifas($idServicioSalidas);
 
-                $precioSugerido = "Consultar";
                 if (!empty($tarifas)) {
                   $tarifa = calculaTarifa($tarifas[0]['idServicioSalidasTarifas'], 1);
                   $precioSugerido = ($tarifa[0]["valorSym"]);
 
                   $cancelaciones = getTipoCancelaciones($tarifas[0]['idCancelaciones']);
-                  $cancelacion = "";
                   switch ($cancelaciones[0]["idCancelacion"]) {
                     case 1:
                     case 3:
@@ -682,16 +684,17 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
                       break;
                   }
                 }
+              }
 
-                $nombre_servicio = $servicios[$i]["nombre_servicio"];
-                $descripcion_corta = $servicios[$i]["descripcion_corta"];
-                $opiniones_servicio = getOpinionesServicio($idServicio);
-                $estrellas_servicio = getEstrellasServicio($idServicio);
-                $cantidad_opiniones_servicio = count($opiniones_servicio);
-                $duracion_servicio = getDuracionServicio($idServicio);
-                $fotos_servicio = getFotoMiniaturaServicio($idServicio);
-                $ruta_foto = !empty($fotos_servicio) ? $fotos_servicio[0]["ruta"] : 'placeholder.jpg';
-                $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
+              $nombre_servicio = $servicios[$i]["nombre_servicio"];
+              $descripcion_corta = $servicios[$i]["descripcion_corta"];
+              $opiniones_servicio = getOpinionesServicio($idServicio);
+              $estrellas_servicio = getEstrellasServicio($idServicio);
+              $cantidad_opiniones_servicio = count($opiniones_servicio);
+              $duracion_servicio = getDuracionServicio($idServicio);
+              $fotos_servicio = getFotoMiniaturaServicio($idServicio);
+              $ruta_foto = !empty($fotos_servicio) ? $fotos_servicio[0]["ruta"] : 'placeholder.jpg';
+              $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
 
             ?>
               <!-- TARJETA SERVICIO - 3 COL DESKTOP, 1 COL MÓVIL -->
@@ -734,10 +737,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
                 </div>
               </div>
 
-            <?php
-              }
-            }
-            ?>
+            <?php } ?>
           </div>
 
           <!-- PAGINACIÓN MEJORADA -->
