@@ -596,64 +596,66 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     }
 
     /* ========== PAGINACIÓN ========== */
+    .pagination {
+      gap: 0.3rem;
+    }
+
     .pagination .page-item .page-link {
-      border-radius: 0;
-      margin: 0;
       border: none;
-      background-color: #f8f9fa;
-      color: #007bff;
-      font-weight: 600;
-      padding: 0.5rem 0.75rem;
+      background: white;
+      color: #555;
+      padding: 0.4rem 0.7rem;
+      font-size: 0.9rem;
+      border-radius: 6px;
       transition: all 0.2s ease;
+      font-weight: 500;
+      margin: 0 2px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
     .pagination .page-item .page-link:hover:not(.disabled .page-link) {
-      background-color: #e9ecef;
-      color: #0056b3;
+      background-color: #e7f3ff;
+      color: #029ce2;
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(2, 156, 226, 0.2);
     }
 
     .pagination .page-item.active .page-link {
-      background-color: #007bff;
+      background: linear-gradient(135deg, #029ce2 0%, #0277bd 100%);
       color: white;
-      box-shadow: 0 2px 5px rgba(0, 123, 255, 0.5);
+      box-shadow: 0 3px 10px rgba(2, 156, 226, 0.35);
     }
 
     .pagination .page-item.disabled .page-link {
       background-color: #f8f9fa;
-      color: #6c757d;
+      color: #adb5bd;
       cursor: not-allowed;
-      opacity: 0.5;
-    }
-
-    .pagination .page-item:first-child .page-link {
-      border-radius: 50px 0 0 50px;
-    }
-
-    .pagination .page-item:last-child .page-link {
-      border-radius: 0 50px 50px 0;
+      opacity: 0.6;
+      box-shadow: none;
     }
 
     /* ========== ESTILOS COMUNES FILTROS (SIDEBAR + MODAL) ========== */
     .filtro-btn {
       text-align: left;
-      border-radius: 6px !important;
-      margin-bottom: 0.4rem;
-      padding: 0.5rem 0.8rem;
-      font-size: 0.9rem;
+      border-radius: 4px !important;
+      margin-bottom: 0.2rem;
+      padding: 0.4rem 0.6rem;
+      font-size: 0.85rem;
       border: 1px solid #e0e0e0;
-      background-color: #fafafa;
+      background-color: white;
       color: #555;
       transition: all 0.15s ease;
       display: block;
       width: 100%;
       font-weight: 400;
+      line-height: 1.3;
     }
 
     .filtro-btn i {
-      font-size: 0.85rem;
-      margin-right: 0.5rem;
+      font-size: 0.8rem;
+      margin-right: 0.4rem;
       opacity: 0.7;
-      width: 16px;
+      width: 14px;
       display: inline-block;
     }
 
@@ -992,59 +994,52 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             }
           ?>
             <nav aria-label="Paginación de resultados" class="mt-5 mb-4">
-              <ul class="pagination justify-content-center" style="display: inline-flex; flex-wrap: nowrap; overflow-x: auto;">
+              <ul class="pagination justify-content-center flex-wrap">
                 <!-- BOTÓN ANTERIOR -->
                 <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?pagina=1&<?= $queryString ?>" aria-label="Primera página" style="border-radius: 50px 0 0 50px;">
-                    <i class="fa fa-chevron-left"></i> Primera
-                  </a>
-                </li>
-                <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?pagina=<?= $pagina - 1 ?>&<?= $queryString ?>" aria-label="Anterior" style="border: none; border-left: 1px solid #dee2e6;">
-                    <span aria-hidden="true">&laquo;</span>
+                  <a class="page-link" href="?pagina=<?= $pagina - 1 ?>&<?= $queryString ?>" aria-label="Anterior">
+                    <i class="fa fa-chevron-left"></i>
                   </a>
                 </li>
 
                 <!-- NÚMEROS DE PÁGINA -->
                 <?php if ($inicio_rango > 1) : ?>
-                  <li class="page-item disabled d-none d-sm-block" style="border: none;">
-                    <span class="page-link" style="border: none;">...</span>
+                  <li class="page-item">
+                    <a class="page-link" href="?pagina=1&<?= $queryString ?>">1</a>
                   </li>
+                  <?php if ($inicio_rango > 2) : ?>
+                  <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                  </li>
+                  <?php endif; ?>
                 <?php endif; ?>
 
                 <?php for ($p = $inicio_rango; $p <= $fin_rango; $p++) : ?>
-                  <li class="page-item <?= ($p === $pagina) ? 'active' : '' ?>" style="<?= ($p !== $inicio_rango) ? 'border-left: 1px solid #dee2e6;' : ''; ?>">
-                    <a class="page-link" href="?pagina=<?= $p ?>&<?= $queryString ?>" style="border: none; min-width: 40px; text-align: center;">
+                  <li class="page-item <?= ($p === $pagina) ? 'active' : '' ?>">
+                    <a class="page-link" href="?pagina=<?= $p ?>&<?= $queryString ?>">
                       <?= $p ?>
                     </a>
                   </li>
                 <?php endfor; ?>
 
                 <?php if ($fin_rango < $cantidad_de_paginas) : ?>
-                  <li class="page-item disabled d-none d-sm-block" style="border: none;">
-                    <span class="page-link" style="border: none;">...</span>
+                  <?php if ($fin_rango < $cantidad_de_paginas - 1) : ?>
+                  <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                  </li>
+                  <?php endif; ?>
+                  <li class="page-item">
+                    <a class="page-link" href="?pagina=<?= $cantidad_de_paginas ?>&<?= $queryString ?>"><?= $cantidad_de_paginas ?></a>
                   </li>
                 <?php endif; ?>
 
                 <!-- BOTÓN SIGUIENTE -->
-                <li class="page-item <?= ($pagina >= $cantidad_de_paginas) ? 'disabled' : '' ?>" style="border-left: 1px solid #dee2e6;">
-                  <a class="page-link" href="?pagina=<?= $pagina + 1 ?>&<?= $queryString ?>" aria-label="Siguiente" style="border: none;">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
                 <li class="page-item <?= ($pagina >= $cantidad_de_paginas) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?pagina=<?= $cantidad_de_paginas ?>&<?= $queryString ?>" aria-label="Última página" style="border-radius: 0 50px 50px 0; border-left: 1px solid #dee2e6;">
-                    Última <i class="fa fa-chevron-right"></i>
+                  <a class="page-link" href="?pagina=<?= $pagina + 1 ?>&<?= $queryString ?>" aria-label="Siguiente">
+                    <i class="fa fa-chevron-right"></i>
                   </a>
                 </li>
               </ul>
-              
-              <!-- INFORMACIÓN DE PAGINACIÓN MÓVIL -->
-              <div class="d-sm-none text-center mt-2">
-                <small style="color: #6c757d; font-weight: 600;">
-                  Página <?= $pagina ?> de <?= $cantidad_de_paginas ?>
-                </small>
-              </div>
             </nav>
           <?php } ?>
 
