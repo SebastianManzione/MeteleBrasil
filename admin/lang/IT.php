@@ -103,6 +103,7 @@ $lang = array(
 "filtrar_resultados"=>"Filtra risultati",
 "menor_precio"=>"Prezzo più basso",
 "mayor_precio"=>"Prezzo più alto",
+"mas_cercano"=>"Più vicino",
 "visitas_guiadas"=>"Visite guidate",
 "accesible"=>"Accessibile",
 "duracion"=>"Durata",

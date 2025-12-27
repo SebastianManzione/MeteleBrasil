@@ -207,6 +207,8 @@ $lang = array(
     "ordenar_resultados"=>"Ordenar resultados",
     "filtrar_resultados"=>"Filtrar resultados",
     "menor_precio"=>"Menor preço",
+    "mayor_precio"=>"Maior preço",
+    "mas_cercano"=>"Mais próximo",
 
 
 

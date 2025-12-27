@@ -112,6 +112,7 @@ $lang = array(
     "filtrar_resultados"=>"Filter results",
     "menor_precio"=>"Lower price",
     "mayor_precio"=>"Higher price",
+    "mas_cercano"=>"Nearest",
     "visitas_guiadas"=> "Guided tours",
     "accesible"=>"Accessible",
     "duracion"=>"Activity time", 
