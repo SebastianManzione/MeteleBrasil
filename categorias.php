@@ -43,7 +43,7 @@ require("admin/classes/texto_miniaturas.php");
 
 // --- Lógica de obtención de datos (sin cambios) ---
 $busqueda = "";
-$cantidad_por_pagina = 10; // Aumentado para mejor experiencia móvil
+$cantidad_por_pagina = 6; // 6 servicios por página (2 filas de 3)
 $desde = 0;
 $pagina = 1;
 
@@ -609,30 +609,45 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     /* ========== ESTILOS COMUNES FILTROS (SIDEBAR + MODAL) ========== */
     .filtro-btn {
       text-align: left;
-      border-radius: 8px !important;
-      margin-bottom: 0.5rem;
-      padding: 0.75rem 1rem;
-      font-size: 0.95rem;
-      border: 1px solid #dee2e6;
-      background-color: white;
-      color: #333;
-      transition: all 0.2s ease;
+      border-radius: 6px !important;
+      margin-bottom: 0.4rem;
+      padding: 0.5rem 0.8rem;
+      font-size: 0.9rem;
+      border: 1px solid #e0e0e0;
+      background-color: #fafafa;
+      color: #555;
+      transition: all 0.15s ease;
       display: block;
       width: 100%;
+      font-weight: 400;
+    }
+
+    .filtro-btn i {
+      font-size: 0.85rem;
+      margin-right: 0.5rem;
+      opacity: 0.7;
+      width: 16px;
+      display: inline-block;
     }
 
     .filtro-btn:hover {
-      background-color: #f8f9fa;
-      border-color: #007bff;
-      color: #007bff;
+      background-color: #e7f3ff;
+      border-color: #029ce2;
+      color: #029ce2;
       text-decoration: none;
+      transform: translateX(2px);
     }
 
     .filtro-btn.active {
-      background-color: #007bff;
+      background: linear-gradient(135deg, #029ce2 0%, #0277bd 100%);
       color: white !important;
-      font-weight: 600;
-      border-color: #007bff;
+      font-weight: 500;
+      border-color: #029ce2;
+      box-shadow: 0 2px 8px rgba(2, 156, 226, 0.25);
+    }
+
+    .filtro-btn.active i {
+      opacity: 1;
     }
 
     .filtro-btn.btn-outline-secondary {
@@ -647,8 +662,8 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
     /* Ajustes específicos para modal móvil */
     .modal-body .filtro-btn {
-      padding: 1rem;
-      font-size: 1rem;
+      padding: 0.7rem 0.9rem;
+      font-size: 0.95rem;
     }
 
     /* ========== NO RESULTADOS ========== */
