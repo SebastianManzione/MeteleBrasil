@@ -26,6 +26,11 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 			unset($_SESSION['descuento_ars_aceptado']);
 			unset($_SESSION['descuento_ars_monto']);
 
+			// Guardar código de cupón si se envió
+			if (isset($_POST["codCupon"]) && !empty($_POST["codCupon"])) {
+				$_SESSION['codCupon'] = $_POST["codCupon"];
+			}
+
 			//print_r($_POST["reserva"]);
 			array_push($_SESSION["reserva"], array($_POST["reserva"],$_POST["reservaAdicionales"] ));
 		//print_r($_SESSION["reserva"]);	unset($_SESSION["reserva"]);

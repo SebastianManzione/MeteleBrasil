@@ -1,124 +1,93 @@
 <?php
+require_once __DIR__ . '/configuracion.php';
+require_once __DIR__ . '/../email/PHPMailerAutoload.php';
 
+/**
+ * Obtiene configuración SMTP desde la tabla configuracion con fallbacks razonables.
+ */
+function obtenerConfigSMTP() {
+    $config = new Configuracion();
 
+    $port = (int)$config->obtener('smtp_port', 465);
+    $secure = $config->obtener('smtp_secure', '');
+    if (!$secure) {
+        $secure = ($port === 465) ? 'ssl' : 'tls';
+    }
 
-  
+    $user = $config->obtener('smtp_usuario', 'mails@metelebrasil.com');
+    $from = $config->obtener('smtp_de', $config->obtener('sitio_email', $user));
 
-function enviaMail($receptor, $asunto, $cuerpo, $site){
+    return [
+        'host' => $config->obtener('smtp_host', 'mail.metelebrasil.com'),
+        'port' => $port,
+        'user' => $user,
+        'pass' => $config->obtener('smtp_password', getenv('SMTP_PASSWORD') ?: ''),
+        'secure' => $secure,
+        'from' => $from ?: $user,
+        'from_name' => $config->obtener('sitio_nombre', 'MeteleBrasil'),
+        'helo' => $_SERVER['HTTP_HOST'] ?? 'www.metelebrasil.com'
+    ];
+}
 
-    $direccion_remitente='mails@metelebrasil.com';
+/**
+ * Configura PHPMailer con los valores leídos de BD.
+ */
+function configurarMailer(PHPMailer $mail, array $smtpConfig) {
+    $mail->isSMTP();
+    $mail->Host = $smtpConfig['host'];
+    $mail->SMTPAuth = true;
+    $mail->Username = $smtpConfig['user'];
+    $mail->Password = $smtpConfig['pass'];
+    $mail->SMTPSecure = $smtpConfig['secure'];
+    $mail->Port = $smtpConfig['port'];
+    $mail->Helo = $smtpConfig['helo'];
+    $mail->From = $smtpConfig['from'];
+    $mail->FromName = $smtpConfig['from_name'];
+    $mail->CharSet = 'UTF-8';
+}
 
-require_once($_SERVER['DOCUMENT_ROOT'].'/admin/email/PHPMailerAutoload.php');
+function enviaMail($receptor, $asunto, $cuerpo, $site) {
+    $smtpConfig = obtenerConfigSMTP();
+    if (empty($smtpConfig['pass'])) {
+        return 'SMTP no configurado: completa las credenciales en admin/configuracion.php (smtp_password).';
+    }
 
-$mail = new PHPMailer;
+    $mail = new PHPMailer;
+    configurarMailer($mail, $smtpConfig);
 
-//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+    $mail->addAddress($receptor);
+    $mail->addBCC($smtpConfig['from']);
+    $mail->isHTML(true);
+    $mail->Subject = $asunto;
+    $mail->Body = $cuerpo;
 
-$mail->isSMTP();                                      // Set mailer to use SMTP
-
-$mail->Host = 'mail.metelebrasil.com';  // Specify main and backup SMTP servers
-
-$mail->SMTPAuth = true;                               // Enable SMTP authentication
-
-$mail->Username = $direccion_remitente;                 // SMTP username
-
-$mail->Password = '-s8k73Qrpy}lL)B&';                           // SMTP password
-
-$mail->SMTPSecure = 'ssl';                         // Enable TLS encryption, `ssl` also accepted
-
-$mail->Port = 465;                                    // TCP port to connect to
-
-$mail->Helo = "www.metelebrasil.com"; //Muy importante para que llegue a hotmail y otros
-
-$mail->From = $direccion_remitente;
-
-$mail->FromName = 'Reservas METELEBRASIL.COM';
-// Activo condificacción utf-8
-$mail->CharSet = 'UTF-8';
-$mail->addAddress($receptor);     // Add a recipient
-
-$mail->addBCC($direccion_remitente);     // Add a recipient
-
-$mail->isHTML(true);                                  // Set email format to HTML
-
-$mail->Subject = $asunto;
-
-$mail->Body    = $cuerpo;
-
-//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-if(!$mail->send()) {
-
-    return 'El mensaje no se pudo enviar.'.'Envie este error al programador: ' . $mail->ErrorInfo;
-
-} else {
+    if (!$mail->send()) {
+        return 'El mensaje no se pudo enviar. Envie este error al programador: ' . $mail->ErrorInfo;
+    }
 
     return 'Mensaje enviado correctamente';
-
 }
 
-}
+function enviaMailPagos($receptor, $asunto, $cuerpo, $site) {
+    $smtpConfig = obtenerConfigSMTP();
+    if (empty($smtpConfig['pass'])) {
+        return 'SMTP no configurado: completa las credenciales en admin/configuracion.php (smtp_password).';
+    }
 
+    $mail = new PHPMailer;
+    configurarMailer($mail, $smtpConfig);
 
+    $mail->addAddress($receptor);
+    $mail->addAddress($smtpConfig['from']);
+    $mail->isHTML(true);
+    $mail->Subject = $asunto;
+    $mail->Body = $cuerpo . " Mensaje generado automaticamente por Reservate software, si ud no desea recibir estos emails, haga click <a href='" . $site . "unSuscribe.php?email=" . $receptor . "'> Aqui </a>";
 
-
-
-  
-
-function enviaMailPagos($receptor, $asunto, $cuerpo, $site){
-
-    $direccion_remitente='mails@metelebrasil.com';
-
-require('../../email/PHPMailerAutoload.php');
-
-$mail = new PHPMailer;
-
-//$mail->SMTPDebug = 3;                               // Enable verbose debug output
-
-$mail->isSMTP();                                      // Set mailer to use SMTP
-
-$mail->Host =  'mail.metelebrasil.com';  // Specify main and backup SMTP servers
-
-$mail->SMTPAuth = true;                               // Enable SMTP authentication
-
-$mail->Username = $direccion_remitente;                 // SMTP username
-
-$mail->Password = 'Nueva$123';                           // SMTP password
-
-$mail->SMTPSecure = 'ssl';                         // Enable TLS encryption, `ssl` also accepted
-
-$mail->Port = 465;                                    // TCP port to connect to
-
-$mail->Helo = "www.metelebrasil.com"; //Muy importante para que llegue a hotmail y otros
-
-$mail->From = $direccion_remitente;
-
-$mail->FromName = 'Reservas METELEBRASIL.COM';
-
-$mail->addAddress($receptor);     // Add a recipient
-
-$mail->addAddress($direccion_remitente);     // Add a recipient
-
-$mail->isHTML(true);                                  // Set email format to HTML
-
-$mail->Subject = $asunto;
-
-$mail->Body    = $cuerpo." Mensaje generado automaticamente por Reservate software, si ud no desea recibir estos emails, haga click <a href='".$site."unSuscribe.php?email=".$receptor."'> Aqui </a>";
-
-//$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-
-if(!$mail->send()) {
-
-    return 'El mensaje no se pudo enviar.'.'Envie este error al programador: ' . $mail->ErrorInfo;
-
-} else {
+    if (!$mail->send()) {
+        return 'El mensaje no se pudo enviar. Envie este error al programador: ' . $mail->ErrorInfo;
+    }
 
     return 'Mensaje enviado correctamente';
-
 }
-
-}
-
-
 
 ?>

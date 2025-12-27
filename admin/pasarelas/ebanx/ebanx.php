@@ -3,7 +3,7 @@
 
 function url_ebanx($codigoAmigable, $currencyEbanx, $countryEbanx, $totalEbanx){
 
-include($_SERVER['DOCUMENT_ROOT']."/admin/pasarelas/ebanx/configEbanx.php");
+include(__DIR__ . "/configEbanx.php");
 $rand= mt_rand(99999,mt_getrandmax())/mt_getrandmax();
    $ch = curl_init();
 $post = [

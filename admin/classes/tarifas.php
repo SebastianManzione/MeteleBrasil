@@ -322,10 +322,8 @@ $cantidad){
 
 
 
- 
-
-
-
+        require("conexion.php");
+        
         if (isset($_SESSION["cupon_descuento"]["descuentoPorcentual"]) ) {
 
 
@@ -348,15 +346,12 @@ $cantidad){
 
         $totalDescuentos=0;
 
-
-
             $tarifas= getTarifa($idServicioSalidasTarifas);
 
-
-
-    
-
-
+            // Validar que tarifas tiene datos antes de acceder
+            if (empty($tarifas)) {
+                return [];
+            }
 
             $salida=getSalida($tarifas[0]['idServicioSalidas']);
 
@@ -453,25 +448,37 @@ $cantidad){
             if ($tarifas[$i]['comisiona']==1) {
 
                $comisionVendedor=(float)getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,1);
-//echo "comicomi".$comisionVendedor;
-
-           $comisionSistema=(float)getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,2); 
-             $retorno[$i]['comisionVendedor']=(float)$retorno[$i]['valor']*(float)$comisionVendedor; //retornamos la suma de comisiones
-         $retorno[$i]['comisionSistema']=(float)$retorno[$i]['valor']*(float)$comisionSistema; //retornamos la suma de comisiones
-
+               $comisionSistema=(float)getComisionIdServicioSalidasTarifas($idServicioSalidasTarifas,2);
+               
+               // Si no hay comisión específica por tarifa, usar la comisión por defecto del prestador
+               if ($comisionVendedor == 0 && $comisionSistema == 0 && isset($salida[0]['idPrestador'])) {
+                   $idPrestador = $salida[0]['idPrestador'];
+                   
+                   // Buscar comisión por defecto del prestador (la conexión ya está requerida al inicio de la función)
+                   $dataComision = ["idPrestador" => $idPrestador];
+                   $queryComision = "SELECT comisionVendedor, comisionSistema FROM prestador_comision WHERE idPrestador = :idPrestador LIMIT 1";
+                   $cmdComision = $pdo->prepare($queryComision);
+                   $cmdComision->execute($dataComision);
+                   $comisionPrestador = $cmdComision->fetch(PDO::FETCH_ASSOC);
+                   
+                   if (!empty($comisionPrestador)) {
+                       $comisionVendedor = floatval($comisionPrestador['comisionVendedor'] ?? 0) / 100;
+                       $comisionSistema = floatval($comisionPrestador['comisionSistema'] ?? 0) / 100;
+                   }
+               }
+               
+               // Guardar los porcentajes para recalcular después de impuestos
+               $retorno[$i]['comisionVendedorPorcentaje'] = (float)$comisionVendedor;
+               $retorno[$i]['comisionSistemaPorcentaje'] = (float)$comisionSistema;
 
             }
-
-
 
             else{
 
-                    $retorno[$i]['comisionVendedor']=0; //retornamos la suma de comisiones
-                    $retorno[$i]['comisionSistema']=0; //retornamos la suma de comisiones
+                    $retorno[$i]['comisionVendedorPorcentaje']=0;
+                    $retorno[$i]['comisionSistemaPorcentaje']=0;
 
             }
-
-
 
             
             $retorno[$i]['valor']=(float)$retorno[$i]['valor']*((float)$_SESSION["impuestos_pais"]+1);
@@ -496,6 +503,10 @@ $cantidad){
 		$totalDescuentos+=$descuentoTarifaConvertido;
 	}
 	
+            // AHORA calcular las comisiones basadas en el valor FINAL (después de redondeos y descuentos)
+            $retorno[$i]['comisionVendedor']=(float)$retorno[$i]['valor']*(float)$retorno[$i]['comisionVendedorPorcentaje'];
+            $retorno[$i]['comisionSistema']=(float)$retorno[$i]['valor']*(float)$retorno[$i]['comisionSistemaPorcentaje'];
+            
             // Formatear con separadores de miles y decimales según moneda
             $symMoneda = $_SESSION['moneda_sel_sym'];
             $decimales = (stripos($symMoneda, 'AR') !== false) ? 0 : 2;

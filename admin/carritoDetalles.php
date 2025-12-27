@@ -132,7 +132,7 @@ $reserva=getReservaId($idReserva);
 
 $codigo_telefonico=getCodigoTelefonico($reserva[0]["idCountry"]);
 
-$nombre_pais=$codigo_telefonico[0]['nicename'];
+$nombre_pais = (is_array($codigo_telefonico) && isset($codigo_telefonico[0]['nicename'])) ? $codigo_telefonico[0]['nicename'] : 'N/A';
 
 $idioma=$reserva[0]["idioma"];
 
@@ -676,16 +676,40 @@ $nombre_servicio=$servicio[0]["nombre_servicio"];
 
     $salida=getSalida($horarios[$i]['idServicioSalidas']);
 
-    $prestador=getPrestador($salida[0]['idPrestador']);
+    // Validar que salida existe antes de acceder
+    if (empty($salida) || !isset($salida[0])) {
+        error_log("WARNING carritoDetalles: getSalida retornó vacío para idServicioSalidas: ".$horarios[$i]['idServicioSalidas']);
+        $prestador_nombre = 'Prestador no disponible';
+    } else {
+        $prestador=getPrestador($salida[0]['idPrestador']);
+        $prestador_nombre=$prestador[0]['nombre'] ?? 'Prestador desconocido';
+    }
 
-    $prestador_nombre=$prestador[0]['nombre'];
-;
-     $cantidad=($tarifas[0]["cantidad"]);
+    // Validar que tarifas exista
+    if (empty($tarifas) || !isset($tarifas[0])) {
+        error_log("WARNING carritoDetalles: getReservaTarifas retornó vacío para idReservaHorarios: ".$idReservaHorarios);
+        $cantidad = 0;
+        $fromEdad = 'N/A';
+        $toEdad = 'N/A';
+    } else {
+        $cantidad=($tarifas[0]["cantidad"]);
+        $fromEdad=getEdad($tarifas[0]['idFromEdad'])[0]['valor'];
+        $toEdad=getEdad($tarifas[0]['idToEdad'])[0]['valor'];
+    }
+    
+    $listaPasajeros = [];
+    for ($jj=0; $jj < count($tarifas); $jj++) { 
+        $idReservaTarifasTmp=$tarifas[$jj]['idReservaTarifas'];
+        $pasajerosTmp=getPasajeros($idReservaTarifasTmp);
+        for ($kk=0; $kk < count($pasajerosTmp); $kk++) { 
+            $listaPasajeros[] = $pasajerosTmp[$kk]["nombrePasajero"] . " " . $pasajerosTmp[$kk]["apellidoPasajero"];
+        }
+    }
+    $listaPasajerosStr = implode(', ', $listaPasajeros);
+    
     $totalTarifa=0;
     $trs='';
-       $trAdc='';
-    $fromEdad=getEdad($tarifas[0]['idFromEdad'])[0]['valor'];
-    $toEdad=getEdad($tarifas[0]['idToEdad'])[0]['valor'];
+    $trAdc='';
 
 
     for ($j=0; $j < count($tarifas); $j++) { 
@@ -768,7 +792,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
 
-                                <td class="details-control"><input id="boton" type="submit" name="proceso" class="btn btn-info" value="Ver"></td>
+                                <td class="details-control"><?=$listaPasajerosStr?><br><input id="boton" type="submit" name="proceso" class="btn btn-info" value="Ver"></td>
 
 
 
@@ -1609,3 +1633,6 @@ $comprobantesReserva=muestraComprobantes($idReserva);
 
 
    include("includes/footer.php"); ?>
+
+
+

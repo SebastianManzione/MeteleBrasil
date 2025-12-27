@@ -1,4 +1,10 @@
 <?php
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('serviciosAdicionalesAlta');
+
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
@@ -8,7 +14,7 @@ require("classes/categoria.php");
 require("classes/servicios_adicionales.php");
 
 // Get current language from session
-session_start();
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
 $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {

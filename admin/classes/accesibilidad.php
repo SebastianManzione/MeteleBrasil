@@ -3,7 +3,9 @@ function getAccesibilidades() {
     require("conexion.php");
 
     // Obtém o idioma da sessão
-    session_start();
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
     $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES"; // Padrão: espanhol
 
     // Consulta para buscar as acessibilidades

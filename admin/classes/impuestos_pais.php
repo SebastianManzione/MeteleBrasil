@@ -1,26 +1,29 @@
 <?php
 
-    function getImpuestosPais($idPais){
-
+function getImpuestosPais($idPais){
     require("conexion.php");
-    $data=["idPais"=>$idPais];
-    $consulta = "select * from impuestos_pais WHERE idPais=:idPais";
     
-    $comando = $pdo->prepare($consulta);
-    
-    $comando->execute($data);
-    $cuenta_col = $comando->columnCount();
-    
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-    // Imprimir en pantalla
-    $valor=0;
- for ($i=0; $i < count($resultado); $i++) { 
-     $valor+=$resultado[$i]["valor"];
- }
-    return ($valor/100);
-    
-    
+    if (!isset($pdo) || !($pdo instanceof PDO)) {
+        return 0; // Sin impuestos si BD no está disponible
     }
+
+    try {
+        $data = ["idPais" => $idPais];
+        $consulta = "select * from impuestos_pais WHERE idPais=:idPais";
+        $comando = $pdo->prepare($consulta);
+        $comando->execute($data);
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        
+        $valor = 0;
+        foreach ($resultado as $row) {
+            $valor += $row["valor"];
+        }
+        return ($valor / 100);
+    } catch (Throwable $e) {
+        @file_put_contents(__DIR__ . '/../../logs/impuestos_pais.log', date('c') . ' getImpuestosPais: ' . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        return 0;
+    }
+}
 /*
     function getTarifas($idServicioSalidas){
 

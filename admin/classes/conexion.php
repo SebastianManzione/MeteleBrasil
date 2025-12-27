@@ -1,25 +1,42 @@
 <?php
+/**
+ * ALIAS SIMPLE - Por compatibilidad con código legado
+ * 
+ * Simplemente incluye db.php que tiene toda la lógica centralizada.
+ * También garantiza que $pdo esté disponible en el scope local.
+ */
 
-try {
-    $host = gethostname();
-    $envFromVar = getenv('APP_ENV');
-    $productionMode = $envFromVar ? ($envFromVar === 'prod') : (strpos($host, 'server') !== false);
+// Incluye el bootstrap centralizado
+require_once __DIR__ . '/db.php';
 
-    if ($productionMode) {
-        $GLOBALS['pdo'] = new PDO('mysql:host=localhost;dbname=metelebr_metelebrasil;charset=utf8mb4', 'metelebr_admin', 'EjGLC(7~lolq7WeW');
-        $GLOBALS['pdo']->exec("SET CHARACTER SET utf8");
-    } else {
-        $GLOBALS['pdo'] = new PDO('mysql:host=localhost;dbname=metelebrasil;charset=utf8mb4', 'root', '');
-        $GLOBALS['pdo']->exec("SET CHARACTER SET utf8");
-    }
-} catch (Exception $e) {
-    echo "ERROR: " . $e->getMessage();
+// IMPORTANTE: Hace que $pdo esté disponible en el scope que lo llamó
+// Esto es crítico para funciones que hacen require("conexion.php")
+// y luego usan $pdo localmente
+global $pdo, $mysqli, $conection;
+
+// Si $pdo no existe localmente, obtenerlo del global
+if (!isset($pdo) || !($pdo instanceof PDO)) {
+    $pdo = $GLOBALS['pdo'] ?? null;
 }
 
-// Also make it available as local $pdo for existing code
-$pdo = $GLOBALS['pdo'];
+// Si $mysqli no existe localmente, obtenerlo del global
+if (!isset($mysqli) || !($mysqli instanceof mysqli)) {
+    $mysqli = $GLOBALS['mysqli'] ?? null;
+}
 
-?>
+// Si $conection no existe, obtenerlo del global
+if (!isset($conection) || !($conection instanceof mysqli)) {
+    $conection = $GLOBALS['conection'] ?? null;
+}
+
+// Función helper para obtener PDO desde cualquier scope
+if (!function_exists('getPDO')) {
+    function getPDO() {
+        global $pdo;
+        return $pdo ?? $GLOBALS['pdo'] ?? null;
+    }
+}
+
 
 
 

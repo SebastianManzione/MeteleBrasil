@@ -1,14 +1,14 @@
 <?php 
-
-
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('solicitudes');
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
+
 
 require("classes/functions.php");
 
@@ -123,7 +123,7 @@ exit();
 
                   <div class="table-responsive">  
 
-               <table id="#collapseExample" class="table table-bordered table-striped">
+               <table id="tablaSolicitudes" class="table table-bordered table-striped">
 
  
 
@@ -257,9 +257,15 @@ $fecha_alta=$solicitudes[$i]["fecha_alta"];
 
 <script type="text/javascript">
 
-
-
-
+$(document).ready(function() {
+    $('#tablaSolicitudes').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
+        },
+        "pageLength": 25,
+        "order": [[12, "desc"]]
+    });
+});
 
 
 
@@ -340,8 +346,6 @@ console.log(data);
            </script>
 
          
-
-                </tfoot>
 
               </table>
 

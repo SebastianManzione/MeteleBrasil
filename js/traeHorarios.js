@@ -30,8 +30,8 @@ function getPrecioValor(item) {
   if (!item) return 0;
   
   // Intentar con valor - puede ser n�mero o string con s�mbolo
-  var v = 0;
-  if (item['valor']) {
+  var v = null;
+  if (item.hasOwnProperty('valor')) {
     if (typeof item['valor'] === 'string' && item['valor'].match(/[^0-9,.-]/)) {
       // Tiene caracteres no num�ricos (s�mbolos), extraer solo n�meros
       var stripped = item['valor'].replace(/[^0-9,.-]/g, '');
@@ -41,12 +41,13 @@ function getPrecioValor(item) {
     }
   }
   
-  if (!v && item['valorFormateado']) v = toNumeric(item['valorFormateado']);
-  if (!v && item['valorSym']) {
+  // Solo buscar en otros campos si NO se encontr� el valor (null), no si es 0
+  if (v === null && item['valorFormateado']) v = toNumeric(item['valorFormateado']);
+  if (v === null && item['valorSym']) {
     var stripped = String(item['valorSym']).replace(/[^0-9,.-]/g, '');
     v = toNumeric(stripped);
   }
-  return v;
+  return v === null ? 0 : v;
 }
 
 function formatPrice(amount) {
@@ -82,8 +83,6 @@ function limpiarTarifaYAdicionales(){
   $('#seleccionar_adicionales_a').hide();
   $('#divhora').empty();
   $('#divhora-movil').empty();
-  $('#divLugares').empty();
-  $('#divLugares-movil').empty();
   $('#seleccionar_personas').empty();
   $('#seleccionar_personasMovil').empty();
   $('#ulIncluidos').empty();
@@ -140,11 +139,17 @@ function traeHorarios($fecha, $idServicio){
     for (var i = 0; i < salidasDisponibles.length; i++) {
       var nombre = salidasDisponibles[i]["nombre"] || '';
       var horaSalida = salidasDisponibles[i]["horaSalida"] || '';
+      var sinHorario = parseInt(salidasDisponibles[i]["sinHorario"] || 0);
+      var sinHorarioTexto = salidasDisponibles[i]["sinHorarioTexto"] || '';
       var idSalida = salidasDisponibles[i]["idServicioSalidas"];
       
       var textoBoton = nombre;
-      if (horaSalida && horaSalida !== '00:00:00') {
-        textoBoton += ' - ' + horaSalida.substring(0, 5);
+      if (sinHorario === 1 && sinHorarioTexto) {
+        textoBoton = sinHorarioTexto;
+      } else {
+        if (horaSalida && horaSalida !== '00:00:00') {
+          textoBoton += ' - ' + horaSalida.substring(0, 5);
+        }
       }
       
       var botonHora = '<button id="btnSalida' + idSalida + '" class="btn btn-outline-primary btn-hora m-2" data-idsalida="' + idSalida + '" onclick="traeTarifas(' + idSalida + ')">' + textoBoton + '</button>';
@@ -169,12 +174,8 @@ function traeTarifas($idSalida){
   $('#seleccionar_personas').empty();
   $('#seleccionar_personasMovil').empty();
   $('#divAdicionalesNoIncluidos').empty();
+  $('#divAdicionalesNoIncluidosCelular').empty();
   $('#seleccionar_adicionales_a').hide();
-  // Limpiar mensajes previos y contenedores de lugares
-  $('#sinHorarioMsg').remove();
-  $('#sinHorarioMsgMovil').remove();
-  $('#divLugares').empty();
-  $('#divLugares-movil').empty();
   
   // Resetear variables globales
   reserva=[];
@@ -191,33 +192,6 @@ function traeTarifas($idSalida){
   $.post("admin/ctrl/ctrlHorarios", {idSalida: $idSalida}, function(data, status){
     var tarifas = JSON.parse(data);
     disponibilidad=tarifas[0]["disponibilidad"];
-
-    // Mostrar texto de sinHorario si corresponde para la salida seleccionada
-    try {
-      var salidaSel = null;
-      if (Array.isArray(salidas)) {
-        for (var si = 0; si < salidas.length; si++) {
-          if (parseInt(salidas[si]["idServicioSalidas"]) === parseInt($idSalida)) {
-            salidaSel = salidas[si];
-            break;
-          }
-        }
-      }
-      if (salidaSel && parseInt(salidaSel["sinHorario"]) === 1) {
-        var texto = salidaSel["sinHorarioTexto"] || "";
-        if (texto) {
-          var msgPc = '<div id="sinHorarioMsg" class="alert alert-info p-2 my-2"><i class="fa fa-info-circle"></i> ' + texto + '</div>';
-          var msgMov = '<div id="sinHorarioMsgMovil" class="alert alert-info p-2 my-2"><i class="fa fa-info-circle"></i> ' + texto + '</div>';
-          $('#divhora').append(msgPc);
-          $('#divhora-movil').append(msgMov);
-          // También reflejar en punto de encuentro (PC y móvil)
-          $('#divLugares').append(msgPc);
-          $('#divLugares-movil').append(msgMov);
-        }
-      }
-    } catch (e) {
-      // Silencioso: si no existen campos, continuar sin mensaje
-    }
     
     $('#ulIncluidos').html(''); 
     $('#ulNoIncluidos').html('');
@@ -236,7 +210,7 @@ function traeTarifas($idSalida){
       var textoDisponibilidad = disponibilidad > 0 ? '<small class="text-muted d-block">Disponibles: ' + disponibilidad + '</small>' : '';
       
       var lineaPrecios='   <div class="col-lg-2 col-5" style="margin-left: 20px">'+
-        '<p class="text-center ">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' a�os) '+tipoTarifa+badgeAgotado+'</p>'+
+        '<p class="text-center ">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'</p>'+
         textoDisponibilidad+
         '<div class="circulo-b">'+
                 '<p class="text-center text-primary">'+formatPrice(getPrecioValor(tarifas[i]))+'</p>'+
@@ -253,127 +227,35 @@ function traeTarifas($idSalida){
 
 
 
+// HTML unificado responsivo para PC y móvil
 var linea='	<div class="container py-3">'+
                             '  <div class="row">'+
-                                  '<div class="col-md-12">'+
-                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'<br><small class="text-muted">Disponibles: '+disponibilidad+'</small></p>'+
-                                  '</div>'+
-                                  '<div class="col-md-3">'+
-  '<span class="counter-label_span"><label id="txtPrecioMovil['+tarifas[i]['idServicioSalidasTarifas']+']">'+formatPrice(getPrecioValor(tarifas[i]))+'</label></span>'+
-                                  '</div>'+
-                                  '<div class="col-md-1" style=" padding-left: 0px !important;padding-right: 0px !important;">'+
-                                 '<a onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',0)"> '+
-                                '  <i class="fa fa-minus-circle fa-2x"></i>'+ 
-                                  ' </a></div>'+
-                                   '<div class="col-md-4">'+
-'<input type="number" class="form-control" value="0" id="cantPersAdc'+tarifas[i]['idServicioSalidasTarifas']+'" disabled>'+
-                                   '</div>'+
-   '<div class="col-md-1" style=" padding-left: 0px !important;padding-right: 0px !important;">'+
-'  <a onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',1)">'+
-' <i id="btnMas'+tarifas[i]['idServicioSalidasTarifas']+'" class="fa fa-plus-circle fa-2x"></i>'+
-
-
-
-'</a>'+
-
-
-
-                                 '  </div>'+
-
-
-
-     '  <div class="col-md-3">'+
-
-
-
-       '<small class="counter-label_span_precio"><label id="lblTotal'+tarifas[i]['idServicioSalidasTarifas']+'"></label></small>'+
-
-
-
-                                   '</div>'+
-
-
-
-                              '</div>'+
-
-
-
-                          '</div>';
-
-
-
-
-
-
-
-
-
-
-
-var lineaCelular=' <div class="container py-3">'+
-                            '  <div class="row">'+
-                                  '<div class="col-md-12">'+
+                                  '<div class="col-12">'+
                                      ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'<br><small class="text-muted">Disponibles: '+disponibilidad+'</small></p>'+
                                   '</div>'+
                                   '<div class="col-md-3 col-3">'+
-  '<span class="counter-label_span"><label id="txtPrecioMovil['+tarifas[i]['idServicioSalidasTarifas']+']">'+formatPrice(getPrecioValor(tarifas[i]))+'</label></span>'+
+  '<span class="counter-label_span"><label class="txtPrecio tarifa-'+tarifas[i]['idServicioSalidasTarifas']+'">'+formatPrice(getPrecioValor(tarifas[i]))+'</label></span>'+
                                   '</div>'+
-                                 '<a onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',0)"> '+
-                                 '<div class="col-md-1 col-1" style=" padding-left: 0px !important;padding-right: 0px !important;">'+
-'  <i class="fa fa-minus-circle fa-2x"></i>'+ 
-                                  ' </div></a>'+
-
-
-
-                                   '<div class="col-md-4 col-3">'+
-
-
-
-'<input type="number" class="form-control" value="0" id="cantPersAdcMovil'+tarifas[i]['idServicioSalidasTarifas']+'" disabled>'+
-
-
-
+                                  '<div class="col-md-1 col-1" style="padding-left:0 !important;padding-right:0 !important;">'+
+                                 '<a href="javascript:void(0);" onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',0); return false;" style="cursor:pointer;"> '+
+                                '  <i class="fa fa-minus-circle fa-2x"></i>'+ 
+                                  ' </a></div>'+
+                                   '<div class="col-md-4 col-4">'+
+'<input type="number" class="form-control cantPers tarifa-'+tarifas[i]['idServicioSalidasTarifas']+'" value="0" data-id="'+tarifas[i]['idServicioSalidasTarifas']+'" disabled>'+
                                    '</div>'+
-
-
-
-
-
-
-
-   '<div class="col-md-1 col-1" style=" padding-left: 0px !important;padding-right: 0px !important;">'+
-
-
-
-'  <a onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',1)">'+
-
-
-
-
-
-
-
-' <i class="fa fa-plus-circle fa-2x"></i>'+
-
-
-
+   '<div class="col-md-1 col-1" style="padding-left:0 !important;padding-right:0 !important;">'+
+'  <a href="javascript:void(0);" onclick="CalculaPersonas('+tarifas[i]['idServicioSalidasTarifas']+',1); return false;" style="cursor:pointer;">'+
+' <i id="btnMas'+tarifas[i]['idServicioSalidasTarifas']+'" class="fa fa-plus-circle fa-2x"></i>'+
 '</a>'+
-
-
-
                                  '  </div>'+
-
-
-
      '  <div class="col-md-3 col-3">'+
-
-
-
-       '<small class="counter-label_span_precio"><label id="lblTotalMovil'+tarifas[i]['idServicioSalidasTarifas']+'"></label></small>'+
-
-
-
+       '<small class="counter-label_span_precio"><label class="lblTotal tarifa-'+tarifas[i]['idServicioSalidasTarifas']+'"></label></small>'+
                                    '</div>'+
+                              '</div>'+
+                          '</div>';
+
+// Usamos el mismo HTML para ambas versiones
+var lineaCelular = linea;
 
 
 
@@ -406,16 +288,11 @@ $('#pIdiomasMovil').text(tarifas[0]["idiomas"]);
 
 
 $('#pIdiomasNav').text(tarifas[0]["idiomas"]);
-
 $('#pIdiomasNavCelular').text(tarifas[0]["idiomas"]);
 
-
-
+// Agregar a ambos contenedores (PC y móvil) - ahora usan clases en lugar de IDs
 $('#seleccionar_personas').append(linea);
-
-
-
-$('#seleccionar_personasMovil').append(lineaCelular);
+$('#seleccionar_personasMovil').append(linea);
 
 
 
@@ -837,61 +714,31 @@ var descripcion="";
 
 
 function CalculaPersonas(idServicioSalidasTarifas, operacion){
-  // No permitir superar disponibilidad. Si ya est� al m�ximo, s�lo permitir restar.
+  console.log('CalculaPersonas llamada:', idServicioSalidasTarifas, operacion);
+  // No permitir superar disponibilidad. Si ya está al máximo, sólo permitir restar.
   if (cantidadPersonas >= disponibilidad && operacion == 1) {
     Swal.fire({
       title: 'Sin disponibilidad',
-      text: 'No hay m�s cupos disponibles para esta salida',
+      text: 'No hay más cupos disponibles para esta salida',
       icon: 'warning',
       confirmButtonText: 'Entendido'
     });
     return;
   }
 
-  cantidadPc=($('#cantPersAdc'+idServicioSalidasTarifas).val());
+  // Usar clases en lugar de IDs para evitar conflicto PC/móvil
+  cantidad = parseInt($('.cantPers.tarifa-'+idServicioSalidasTarifas).val()) || 0;
 
+console.log('Cantidad inicial:', cantidad, 'CantidadPersonas:', cantidadPersonas);
 
-
-cantidadCelular=($('#cantPersAdcMovil'+idServicioSalidasTarifas).val());
-
-
-
-if (cantidadPc>0) {
-
-
-
-  cantidad= parseInt(cantidadPc);
-
-
-
-}
-
-
-
-else{
-
-
-
-   cantidad= parseInt(cantidadCelular);
-
-
-
-}
-
-
-
- 
-
-
-
- cantidadPersonas=cantidadPersonas-cantidad;
-
-
+  cantidadPersonas=cantidadPersonas-cantidad;
 
   $.post("admin/ctrl/ctrlHorarios", {idServicioSalidasTarifas: idServicioSalidasTarifas, cantidad: cantidad}, function(data, status){
+console.log('Respuesta del servidor:', data);
 tarifas=JSON.parse(data);
 var valorAdicional = getPrecioValor(tarifas[0]);
 var valorTarifa = getPrecioValor(tarifas[0]);
+console.log('Valor tarifa:', valorTarifa, 'Tarifa completa:', tarifas[0]);
 
 
 
@@ -907,7 +754,7 @@ if (cantidad>=0) {
 
   if (operacion==0 && cantidad>0 ) {
 
-
+console.log('Operación DECREMENTAR - cantidad antes:', cantidad);
 
   precioTotal-=valorTarifa;
 
@@ -915,7 +762,7 @@ if (cantidad>=0) {
 
   cantidad-=1;
 
-
+console.log('Operación DECREMENTAR - cantidad después:', cantidad);
 
 
 
@@ -931,13 +778,15 @@ if (cantidad>=0) {
 
  if  (operacion==1 && cantidad>=0){
 
-
+console.log('Operación INCREMENTAR - cantidad antes:', cantidad);
 
     precioTotal-=valorTarifa;
 
 
 
    cantidad+=1;
+
+console.log('Operación INCREMENTAR - cantidad después:', cantidad);
 
 
 
@@ -951,33 +800,22 @@ if (cantidad>=0) {
 
    cantidadPersonas=cantidadPersonas+cantidad;
 
+console.log('Actualizando input con cantidad:', cantidad);
 
+$('.cantPers.tarifa-'+idServicioSalidasTarifas).val(cantidad);
 
-$('#cantPersAdc'+idServicioSalidasTarifas).val(cantidad);
-
-
-
-$('#cantPersAdcMovil'+idServicioSalidasTarifas).val(cantidad);
-
-
+console.log('Input actualizado:', $('.cantPers.tarifa-'+idServicioSalidasTarifas).val());
 
   $.post("admin/ctrl/ctrlHorarios", {idServicioSalidasTarifas: idServicioSalidasTarifas, cantidad: cantidad}, function(data, status){
+console.log('Segunda llamada AJAX - Cantidad enviada:', cantidad);
 tarifas=JSON.parse(data);
 var valorTarifaActual = getPrecioValor(tarifas[0]);
 
+console.log('Valor tarifa actual calculado:', valorTarifaActual);
 
+$('.lblTotal.tarifa-'+idServicioSalidasTarifas).text(formatPrice(valorTarifaActual));
 
-
-
-
-
-$('#lblTotal'+idServicioSalidasTarifas).text(formatPrice(valorTarifaActual));
-
-
-
-$('#lblTotalMovil'+idServicioSalidasTarifas).text(formatPrice(valorTarifaActual));
-
-
+console.log('Label actualizado:', $('.lblTotal.tarifa-'+idServicioSalidasTarifas).text());
 
 precioTotal+=valorTarifaActual;
 

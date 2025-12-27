@@ -3,16 +3,16 @@
 
 
 <?php 
-
-
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('monedaAdmin');
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
+
 
 require("classes/functions.php");
 
@@ -36,25 +36,6 @@ if (!$_SESSION["login"]["rol"]==1) {
   alertar("Usted no tiene acceso a esta seccion del software", "error");
 
   redireccionarLento("index");
-
-}
-
-
-
-if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["updateMonedas"])) {
-
-
-$pesoArg=$_POST["pesoArg"];
-$rs=$_POST["rs"];
-$guarani=$_POST["guarani"];
-$pesoCh=$_POST["pesoCh"];
-$euro=$_POST["euro"];
-$resu=updateCotizacionMonedas($pesoArg, $rs, $guarani, $pesoCh, $euro);
-if ($resu>0) {
-  alertar("Cambio actualizado con exito", "success");
-}
-
-
 
 }
 

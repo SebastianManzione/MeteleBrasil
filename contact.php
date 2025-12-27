@@ -2,20 +2,26 @@
 <?php
 include("includes/navbar.php");
 include("admin/classes/contacto.php");
+include("admin/classes/antibot.php");
+
 if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["contacto"])) {
-$nombre=$_POST["nombre"];
-$email=$_POST["email"];
-$telefono=$_POST["telefono"];
-$mensaje=$_POST["mensaje"];
-$resul=setContacto($nombre, $email, $telefono, $mensaje);
+    // Validación anti-bot
+    $validacion = validarAntiBot('contact_form', $_POST['recaptcha_token'] ?? null);
+    
+    if (!$validacion['success']) {
+        alertar($validacion['error'], "error");
+    } else {
+        $nombre=$_POST["nombre"];
+        $email=$_POST["email"];
+        $telefono=$_POST["telefono"];
+        $mensaje=$_POST["mensaje"];
+        $resul=setContacto($nombre, $email, $telefono, $mensaje);
 
-
-if($resul>0){
-  alertar("Su consulta sera respondida a la brevedad", "success");
+        if($resul>0){
+            alertar("Su consulta sera respondida a la brevedad", "success");
+        }
+    }
 }
-
-}
-
 
 
 
@@ -156,6 +162,10 @@ if($resul>0){
               </div>
             
         </div>
+
+        <!-- Campos Anti-Bot (invisibles) -->
+        <?php echo generarCamposAntiBot(); ?>
+
 <br>
       <div class="col-lg-12 py-2 d-md-block" style="text-align: center;">
         <button class="btn btn-info" name="contacto"><?=$lang["enviar"];?></button>

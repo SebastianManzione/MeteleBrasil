@@ -1,6 +1,4 @@
-  
-
- <!--SECCION HEADER-->
+<!--SECCION HEADER-->
 
 <section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgServicio/<?=$fotoPortada[0]["ruta"];?>'); " >
 

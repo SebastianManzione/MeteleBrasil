@@ -1,7 +1,21 @@
 <?php function getCuerpoEmailReservaConfirmada($codigoAmigable){
+  // Si existe plantilla en BD, la usamos. Fallback: HTML actual.
+  if (file_exists(__DIR__ . '/email_renderer.php')) {
+    include_once(__DIR__ . '/email_renderer.php');
+    $renderer = new EmailRenderer();
+    $idioma = $_SESSION['idioma'] ?? 'ES';
+    $vars = [
+      'codigo_reserva' => $codigoAmigable,
+      'enlace_reserva' => "http://metelebrasil.com/consultaReserva?reserva=" . $codigoAmigable
+    ];
+    $tpl = $renderer->render('reserva_confirmada', $idioma, $vars, 'Reserva confirmada', '');
+    if (!empty($tpl['html'])) {
+      return $tpl['html'];
+    }
+  }
 
 
-$cuerpo='
+  $cuerpo='
 
 
 <!doctype html>

@@ -25,6 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Limpiar descuento AR$ cuando se modifica el carrito
         unset($_SESSION['descuento_ars_aceptado']);
         unset($_SESSION['descuento_ars_monto']);
+        
+        // Si el carrito quedó vacío, redirigir inmediatamente
+        if (count($_SESSION['reserva']) < 1) {
+            alertar("Seu carrinho está vazio", "info");
+            redireccionar('index.php');
+            exit();
+        }
     }
     if (isset($_POST["eliminarActividad"])) {
         $posicion = $_POST["eliminarActividad"];
@@ -34,6 +41,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Limpiar descuento AR$ cuando se modifica el carrito
         unset($_SESSION['descuento_ars_aceptado']);
         unset($_SESSION['descuento_ars_monto']);
+        
+        // Si el carrito quedó vacío, redirigir inmediatamente
+        if (count($_SESSION['reserva']) < 1) {
+            alertar("Seu carrinho está vazio", "info");
+            redireccionar('index.php');
+            exit();
+        }
     }
 }
 
@@ -41,9 +55,13 @@ $totalCarrito = 0;
 $carrito = $_SESSION['reserva'];
 $cantCarrito = count($carrito);
 
-if ($cantCarrito < 1) {//$cantCarrito<1
-    alertar("Seu carrinho está vazio", "success");
-    redireccionarLento('index.php');
+// Obtener código de cupón desde la sesión si existe
+$codCupon = isset($_SESSION['codCupon']) ? $_SESSION['codCupon'] : '';
+
+// Verificación final del carrito vacío (solo si no es POST, para evitar doble redirección)
+if ($cantCarrito < 1 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    alertar("Seu carrinho está vazio", "info");
+    redireccionar('index.php');
     exit();
 }
 ?>
@@ -84,121 +102,94 @@ if ($cantCarrito < 1) {//$cantCarrito<1
                     $servicio = getServicio($reserva[0]['idServicioSeleccionado']);
                     $fotos = getFotoMiniaturaServicio($idServicio);
                     ?>
-                    <div class=" py-2">
-                        <div class="card card-visitas">
+                    <div class="py-2">
+                        <div class="card card-visitas shadow-sm position-relative">
+                            <form method="post" action="carrito" class="btn-close-container" aria-label="<?= $lang["eliminar"] ?>">
+                                <input type="hidden" name="eliminarActividad" value="<?= $i ?>">
+                                <button type="submit" class="btn-close-win" title="<?= $lang["eliminar"] ?>">×</button>
+                            </form>
                             <div class="card-body">
-                                <div class="row ">
-                                    <div class="col-md-4  col-4">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 col-4">
                                         <img src="admin/classes/imgServicio/<?= $fotos[0]['ruta']; ?>"
-                                             class=" img-fluid img-card-destinos">
+                                             class="img-fluid img-card-destinos rounded">
                                     </div>
                                     <div class="col-md-8 col-8">
-                                        <div class="card-block ">
-                                            <h4 class="text-left titulo-card-destinos text-primary  mb-4"><?= $servicio[0]["nombre_servicio"]; ?>  </h4>
-                                            <div class="d-md-block ">
-                                                <div class="row no-gutters text-center ">
+                                        <div class="card-block">
+                                            <h4 class="text-left titulo-card-destinos text-primary mb-3">
+                                                <i class="fas fa-map-marker-alt mr-2"></i><?= $servicio[0]["nombre_servicio"]; ?>
+                                            </h4>
+                                            <div class="d-md-block">
+                                                <div class="row no-gutters text-center">
                                                     <div class="col-lg-5 col-md-5">
-                                                        <p class="mb-0">
-                                                            <label class="h3 text-gris">
+                                                        <p class="mb-2">
+                                                            <span class="badge badge-info badge-pill p-2">
+                                                                <i class="fas fa-users mr-1"></i>
                                                                 <?php
                                                                 $cantidadPasajeros = 0;
                                                                 for ($j = 0; $j < count($reserva); $j++) {
                                                                     $cantidadPasajeros += $reserva[$j]['cantidad'];
-                                                                    ?>
-                                                                    <?php
                                                                 }
                                                                 ?>
-                                                                <?= $cantidadPasajeros; ?>
-                                                                <i class="fas fa-users text-gris"></i>
-                                                            </label>
+                                                                <?= $cantidadPasajeros; ?> <?= $cantidadPasajeros == 1 ? 'Pessoa' : 'Pessoas'; ?>
+                                                            </span>
                                                         </p>
 
 
                                                         <?php
-
-
                                                         $precioReserva = 0;
-
                                                         $cantidadPasajeros = 0;
-
-
+                                                        $tarifasResumen = [];
                                                         for ($j = 0; $j < count($reserva); $j++) {
-
-
                                                             $idServicioSalidasTarifas = $reserva[$j]['idServicioSalidasTarifas'];
-
                                                             $cantidad = $reserva[$j]['cantidad'];
-
-                                                            $cantidadPasajeros += $reserva[$j]['cantidad'];
-
-                                                            $tarifa = calculaTarifa($reserva[$j]["idServicioSalidasTarifas"],
-
-                                                                $reserva[$j]["cantidad"]);
-
+                                                            $cantidadPasajeros += $cantidad;
+                                                            $tarifa = calculaTarifa($idServicioSalidasTarifas, $cantidad);
                                                             $salida = getSalida($tarifa[0]['idServicioSalidas']);
-
                                                             $idiomas = getIdiomaSalida($salida[0]['idServicioSalidas']);
-
                                                             $precioReserva += $tarifa[0]["valor"];
                                                             $fecha = strtotime($salida[0]['fecha']);
                                                             require("admin/classes/locale.php");
-
-
-                                                            if ($j == 0) {
-
-
+                                                            if (!isset($tarifasResumen[$idServicioSalidasTarifas])) {
+                                                                $tarifasResumen[$idServicioSalidasTarifas] = [
+                                                                    'nombre' => $tarifa[0]['nombre'],
+                                                                    'edadFrom' => $tarifa[0]['edadFrom'],
+                                                                    'edadTo' => $tarifa[0]['edadTo'],
+                                                                    'cantidad' => 0
+                                                                ];
                                                             }
-
-                                                            ?>
-
-                                                            <li> <?= $cantidad . ' ' . $tarifa[0]["nombre"] . ' (' . $tarifa[0]["edadFrom"] . ' a ' . $tarifa[0]["edadTo"] . ' Anos)' ?></li>
-
-
-                                                            <?php
-
+                                                            $tarifasResumen[$idServicioSalidasTarifas]['cantidad'] += $cantidad;
                                                             $precioTotalCarrito += $tarifa[0]["valor"];
-
-
-                                                        } //     for ($j=0; $j < count($reserva); $j++) {
-
-
+                                                        }
                                                         ?>
+                                                        <?php foreach ($tarifasResumen as $t) { ?>
+                                                            <li class="text-muted"><small><i class="fas fa-ticket-alt mr-1"></i><?= $t['cantidad'] . ' ' . $t['nombre'] . ' (' . $t['edadFrom'] . ' a ' . $t['edadTo'] . ' Anos)' ?></small></li>
+                                                        <?php } ?>
 
                                                     </div>
 
 
-                                                    <div class="col-lg-3 col-md-3 ">
-
-                                                        <p class="mb-0 h3 text-gris"><i class="fa fa-language "></i></p>
-
-                                                        <?php for ($m = 0; $m < count($idiomas); $m++) {
-
-                                                            ?>
-
-                                                            <li><?= $idiomas[$m]; ?></li>
-
-                                                            <?php
-
-                                                        } ?>
-
-
+                                                    <div class="col-lg-3 col-md-3">
+                                                        <p class="mb-2">
+                                                            <span class="badge badge-secondary badge-pill p-2">
+                                                                <i class="fas fa-language mr-1"></i> Idiomas
+                                                            </span>
+                                                        </p>
+                                                        <ul class="list-unstyled small text-muted">
+                                                            <?php for ($m = 0; $m < count($idiomas); $m++) { ?>
+                                                                <li><i class="fas fa-check-circle text-success mr-1"></i><?= $idiomas[$m]; ?></li>
+                                                            <?php } ?>
+                                                        </ul>
                                                     </div>
 
                                                     <div class="col-lg-2 col-md-2">
-
-                                                        <p class="mb-0 h3 text-gris"><i class="fa fa-calendar-alt"></i>
-
-                                                            <?= date("d", strtotime($salida[0]['fecha'])); ?>
-
+                                                        <p class="mb-2">
+                                                            <span class="badge badge-primary badge-pill p-2">
+                                                                <i class="fas fa-calendar-alt mr-1"></i><?= date("d", strtotime($salida[0]['fecha'])); ?>
+                                                            </span>
                                                         </p>
-
-                                                        <!--<p><?php //echo DevuelveFechaHorario($horarioId)[0][2]; ?></p>-->
-
-                                                        <p class="mb-0">
-
-
+                                                        <p class="mb-0 small text-muted">
                                                             <?php echo(strftime("%B", $fecha)); ?>
-
                                                             <?= date("Y", strtotime($salida[0]['fecha'])); ?>
 
                                                         </p>
@@ -206,14 +197,13 @@ if ($cantCarrito < 1) {//$cantCarrito<1
                                                     </div>
 
                                                     <div class="col-lg-2 col-md-2">
-
-                                                        <p class="mb-1  h3 text-gris"><i class="fa fa-clock"></i></p>
-
-                                                        <p class="mb-0">
-
+                                                        <p class="mb-2">
+                                                            <span class="badge badge-success badge-pill p-2">
+                                                                <i class="fas fa-clock mr-1"></i> Horário
+                                                            </span>
+                                                        </p>
+                                                        <p class="mb-0 small text-muted">
                                                             <?= $salida[0]['horaCheckIn']; ?>
-
-
                                                         </p>
 
                                                     </div>
@@ -228,28 +218,7 @@ if ($cantCarrito < 1) {//$cantCarrito<1
                                     </div>
 
                                 </div>
-                                <div class="row">
-
-                                    <div class="col-md-12">
-
-                                        <form method="post" action="carrito">
-
-                                            <input type="hidden" name="eliminarActividad" value="<?= $i ?>">
-
-                                            <div class="custom-control custom-checkbox mr-sm-2">
-
-                                                <button onclick=""
-                                                        class="btn btn-danger btn-lg btn-radius"><?= $lang["eliminar"] ?></button>
-
-                                            </div>
-
-
-                                        </form>
-
-
-                                    </div>
-
-                                </div>
+                                
                             </div>
 
                         </div>
@@ -276,7 +245,7 @@ if ($cantCarrito < 1) {//$cantCarrito<1
 
                     }
 
-                    function enviaa() {
+                  /*  function enviaa() {
 
 
                         chkCondiciones = $('#customControlAutosizing').prop('checked');
@@ -355,23 +324,28 @@ if ($cantCarrito < 1) {//$cantCarrito<1
                         }
 
 
-                    }
+                    } */
 
 
                 </script>
 
                 <!--BOTON SIGUIENTE-->
 
-                <div class="container mb-4">
+                <div class="container mt-4 mb-5">
 
                     <div class="row">
 
-                        <div class="col-lg-8 col-md-8"></div>
+                        <div class="col-lg-6 col-md-6 col-12 mb-2 mb-md-0">
+                            <a href="servicios.php" class="btn btn-outline-secondary btn-lg btn-radius shadow-sm px-4 py-3"
+                               style="width: 100% !important;">
+                                <i class="fas fa-shopping-bag mr-2"></i>Seguir comprando
+                            </a>
+                        </div>
 
-                        <div class="col-lg-4 col-md-4 col-12 text-right">
+                        <div class="col-lg-6 col-md-6 col-12 text-right">
 
-                            <a href="datosPersonales.php" class="btn btn-primary btn-lg btn-radius"
-                               style="width: 100% !important;" onclick="carga();"><?= $lang["continuar"] ?></a>
+                                     <a href="datosPersonales.php" class="btn btn-primary btn-lg btn-radius shadow-sm px-4 py-3"
+                                         style="width: 100% !important;" onclick="carga();"><?= $lang["continuar"] ?> <i class="fas fa-arrow-right ml-2"></i></a>
 
                         </div>
 

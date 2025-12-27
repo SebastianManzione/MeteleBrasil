@@ -1,7 +1,14 @@
 <?php 
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('financieroSalidas');
+
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
+
 require("classes/functions.php");
 require("classes/prestador.php");
 require("classes/usuario.php");
@@ -86,17 +93,20 @@ function getComisionesReservaTarifas($codigoAmigable, $idServicio) {
 }
 
 // Detectar si es Admin o Prestador y obtener idPrestador
-$vistaAdmin = ($_SESSION['login']['idUsuario'] == 1);
+// Usar el rol para detectar Admin (rol === 1) en lugar de idUsuario fijo
+$vistaAdmin = (isset($_SESSION['login']['rol']) && (int)$_SESSION['login']['rol'] === 1);
 $idPrestador = null;
 
-if ($vistaAdmin && isset($_GET['idPrestador'])) {
-    // Admin viendo un prestador específico
-    $idPrestador = (int)$_GET['idPrestador'];
-} elseif (!$vistaAdmin && isset($_SESSION['login']['idPrestador']) && $_SESSION['login']['idPrestador'] > 0) {
+if ($vistaAdmin) {
+    // Admin: por defecto ve TODOS. Si se provee idPrestador, se filtra.
+    if (isset($_GET['idPrestador']) && $_GET['idPrestador'] !== '') {
+        $idPrestador = (int)$_GET['idPrestador'];
+    }
+} elseif (isset($_SESSION['login']['idPrestador']) && (int)$_SESSION['login']['idPrestador'] > 0) {
     // Prestador viendo sus propios datos
-    $idPrestador = $_SESSION['login']['idPrestador'];
+    $idPrestador = (int)$_SESSION['login']['idPrestador'];
 } else {
-    // Si no es admin ni tiene idPrestador, no tiene acceso
+    // No es admin y no tiene idPrestador en sesión: sin acceso
     alertar("No tiene acceso a esta sección", "error");
     redireccionarLento("index");
     exit();

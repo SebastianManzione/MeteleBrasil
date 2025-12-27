@@ -3,7 +3,7 @@ RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Set environment variable for local dev
-SetEnv APP_ENV dev
+SetEnv APP_ENV prod
 
 
 RewriteEngine On
@@ -38,7 +38,7 @@ RewriteRule ^(.*)$ $1.php [L]
    php_value memory_limit 512M
    php_value post_max_size 512M
    php_value session.gc_maxlifetime 10500
-   php_value session.save_path "/home11/metelebr/public_html/_sessions"
+   php_value session.save_path "/home/u925692129/domains/metelebrasil.com/public_html/_sessions"
    php_value upload_max_filesize 2048M
    php_flag zlib.output_compression Off
    php_value output_buffering 4096
@@ -51,7 +51,7 @@ RewriteRule ^(.*)$ $1.php [L]
    php_value memory_limit 512M
    php_value post_max_size 512M
    php_value session.gc_maxlifetime 10500
-   php_value session.save_path "/home11/metelebr/public_html/_sessions"
+   php_value session.save_path "/home/u925692129/domains/metelebrasil.com/public_html/_sessions"
    php_value upload_max_filesize 2048M
    php_flag zlib.output_compression Off
    php_value output_buffering 4096

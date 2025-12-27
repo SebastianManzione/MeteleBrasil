@@ -1,61 +1,59 @@
 <?php
+// Evita redeclaraciones si el archivo se incluye más de una vez
+if (function_exists('getMonedas')) { return; }
 function getMonedas(){
 
     require("conexion.php");
+    
+    // Usar $GLOBALS['pdo'] como fallback
+    $pdo = $pdo ?? $GLOBALS['pdo'] ?? null;
+    
+    if (!($pdo instanceof PDO)) {
+        return [];  // Retornar array vacío si PDO no está disponible
+    }
   
     $consulta = "select * from moneda where activado = 1";
     
-    $comando = $pdo->prepare($consulta);
-    
-    $comando->execute();
-    $cuenta_col = $comando->columnCount();
-    
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-    // Imprimir en pantalla
-    return $resultado;
-    
-    
+    try {
+        $comando = $pdo->prepare($consulta);
+        $comando->execute();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    } catch (Throwable $e) {
+        @file_put_contents(__DIR__ . '/../../logs/moneda.log', date('c') . ' getMonedas error: ' . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        return [];
     }
+    
+}
 
-    function getMoneda($idMoneda){
+function getMoneda($idMoneda){
 
     require("conexion.php");
+    
+    // Usar $GLOBALS['pdo'] como fallback
+    $pdo = $pdo ?? $GLOBALS['pdo'] ?? null;
+    
+    if (!($pdo instanceof PDO)) {
+        return [];  // Retornar array vacío si PDO no está disponible
+    }
+    
     $data=["idMoneda"=>$idMoneda];
     $consulta = "select * from moneda WHERE idMoneda=:idMoneda";
     
-    $comando = $pdo->prepare($consulta);
-    
-    $comando->execute($data);
-    $cuenta_col = $comando->columnCount();
-    
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-    // Imprimir en pantalla
-    return $resultado;
-    
-    
-    }
-   /* function setPrestador($nombre, $rSocial, $documento, $telefono, $email, $observaciones, $direccion, $latitud, $longitud){
-
-
-        require("conexion.php");
-        $data=["nombre"=> $nombre, "rSocial"=>$rSocial, "documento"=>$documento, "telefono"=>$telefono, "email"=> $email, "observaciones"=> $observaciones,"direccion"=>$direccion, "latitud"=>$latitud,"longitud"=>$longitud];
-        $consulta = "INSERT INTO prestadores (nombre, razonSocial, documento, telefono, email, observaciones,direccion, latitud, longitud) VALUES (:nombre, :rSocial, :documento,:telefono,:email,:observaciones,:direccion, :latitud, :longitud) ";
-        
+    try {
         $comando = $pdo->prepare($consulta);
-        
         $comando->execute($data);
-        
-        $id = $pdo->lastInsertId(); 
-        $cuenta_col = $comando->columnCount();
-        $cuenta_row = $comando->rowCount();
         $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    } catch (Throwable $e) {
+        @file_put_contents(__DIR__ . '/../../logs/moneda.log', date('c') . ' getMoneda error: ' . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        return [];
+    }
+}
 
-        return $id;
-        
-        
-        }
+/*
+// Función comentada (setPrestador)
 
-        
 function borraPrestador($idPrestador){
 
 require("conexion.php");

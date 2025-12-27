@@ -57,6 +57,19 @@ function alertar2($mensaje, $tipo) {
     </script>
     <?php
 }
+
+function alertar_redirect($mensaje, $tipo, $url) {
+  ?>
+  <script>
+    Swal.fire({
+      title: "<?= $mensaje ?>",
+      icon: "<?= $tipo ?>"
+    }).then(() => {
+      window.location.replace("<?= $url ?>");
+    });
+  </script>
+  <?php
+}
   
   
   function redireccionar($url){
@@ -134,5 +147,35 @@ function quitar_acentos($cadena){
     return utf8_encode($cadena);
 }
 
+/**
+ * Helper tolerante para acceder a arrays multidimensionales
+ * @param array $arr Array a acceder
+ * @param mixed $key1 Primera clave
+ * @param mixed $key2 Segunda clave (opcional)
+ * @param mixed $default Valor por defecto
+ * @return mixed
+ */
+function safeArrayAccess($arr, $key1, $key2 = null, $default = null) {
+    // Si no es un array válido
+    if (!is_array($arr) || empty($arr)) {
+        return $default;
+    }
+    
+    // Acceso a primer nivel
+    if ($key2 === null) {
+        return isset($arr[$key1]) ? $arr[$key1] : $default;
+    }
+    
+    // Acceso a segundo nivel
+    if (!isset($arr[$key1])) {
+        return $default;
+    }
+    
+    $sub = $arr[$key1];
+    if (!is_array($sub)) {
+        return $default;
+    }
+    
+    return isset($sub[$key2]) ? $sub[$key2] : $default;
+}
 
-?>

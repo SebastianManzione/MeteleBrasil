@@ -2,17 +2,20 @@
 function getFotosServicios(){
 
     require("conexion.php");
+    
+    $pdo = $pdo ?? $GLOBALS['pdo'] ?? null;
+    if (!($pdo instanceof PDO)) return [];
   
     $consulta = "select * from servicio_img";
     
-    $comando = $pdo->prepare($consulta);
-    
-    $comando->execute();
-    $cuenta_col = $comando->columnCount();
-    
-    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-    // Imprimir en pantalla
-    return $resultado;
+    try {
+        $comando = $pdo->prepare($consulta);
+        $comando->execute();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    } catch (Throwable $e) {
+        return [];
+    }
     
     
     }
@@ -228,4 +231,3 @@ function borraFoto($idImgServicio){
         return $cuenta_row;
     }
     
-?>

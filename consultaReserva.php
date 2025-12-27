@@ -3,17 +3,22 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 include("config/mercadopago.php");
-$servidor_db = 'localhost';
-$usuario_db = 'metelebr_admin';
-$senha_db = 'EjGLC(7~lolq7WeW';
-$banco_db = 'metelebr_metelebrasil';
+// Conexión DB según entorno (dev/prod)
+$envFromVar = getenv('APP_ENV');
+$productionMode = $envFromVar ? ($envFromVar === 'prod') : true;
 
-$mysqli = new mysqli($servidor_db, $usuario_db, $senha_db, $banco_db);
-if ($mysqli->connect_error) {
-    $status = false;
-    $retorno = "Erro ao conectar ao banco de dados: " . $mysqli->connect_error;
-    echo json_encode(['status' => $status, 'retorno' => $retorno]);
-    exit;
+if ($productionMode) {
+    $mysqli = new mysqli('localhost', 'u925692129_metelebrasil', 'Cambiar2026', 'u925692129_metelebrasil');
+    if ($mysqli->connect_errno) {
+        $status = false;
+        $retorno = "Erro ao conectar ao banco de dados: " . $mysqli->connect_error;
+        echo json_encode(['status' => $status, 'retorno' => $retorno]);
+        exit;
+    }
+    $mysqli->set_charset("utf8mb4");
+} else {
+    // Dev: usa configuración compartida (root sin password, DB metelebrasil)
+    include("config/db.php");
 }
 
 
@@ -119,6 +124,46 @@ include("admin/classes/comprobantes.php");
 include("admin/classes/moneda.php");
 include("admin/classes/convierte_monedas.php");
 
+// Formatea montos: sin decimales si es entero, 2 decimales si tiene centavos
+if (!function_exists('formatarMonedaCondicional')) {
+    function formatarMonedaCondicional($valorNumerico)
+    {
+        $valorNumerico = (float)$valorNumerico;
+        $esEntero = fmod($valorNumerico, 1.0) === 0.0;
+        
+        // Detectar moneda para formato correcto
+        $moneda = $_SESSION['moneda_sel_sym'] ?? 'US$';
+        
+        // Formato latino (R$, AR$, etc.): 1.234,56
+        // Formato anglosajón (US$, etc.): 1,234.56
+        if ($moneda === 'R$' || $moneda === 'AR$') {
+            return $esEntero
+                ? number_format($valorNumerico, 0, ',', '.')
+                : number_format($valorNumerico, 2, ',', '.');
+        }
+        
+        // Formato por defecto (anglosajón)
+        return $esEntero
+            ? number_format($valorNumerico, 0, '.', ',')
+            : number_format($valorNumerico, 2, '.', ',');
+    }
+}
+
+if (!function_exists('formatarMonedaPorSimbolo')) {
+    function formatarMonedaPorSimbolo($valorNumerico, $simboloMoneda, $decimales = 2)
+    {
+        $valorNumerico = (float)$valorNumerico;
+        
+        // Formato latino (R$, AR$, etc.): 1.234,56
+        if ($simboloMoneda === 'R$' || $simboloMoneda === 'AR$') {
+            return number_format($valorNumerico, $decimales, ',', '.');
+        }
+        
+        // Formato por defecto (anglosajón): 1,234.56
+        return number_format($valorNumerico, $decimales, '.', ',');
+    }
+}
+
 
 // unset($_SESSION['login']);
 // echo '<pre>';
@@ -127,7 +172,15 @@ include("admin/classes/convierte_monedas.php");
 
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["merchant_payment_code"])) {
     $codigoAmigable = $_GET["merchant_payment_code"];
-    $reserva = getReserva($codigoAmigable)[0];
+    $reserva = getReserva($codigoAmigable);
+    
+    if (empty($reserva) || count($reserva) < 1) {
+        alertar("La reserva con el código " . $codigoAmigable . " no existe", "error");
+        redireccionarLento("index");
+        exit();
+    }
+    
+    $reserva = $reserva[0];
     $idReserva = $reserva["idReserva"];
     $moneda = getMoneda($reserva["monedaSel"])[0]["Symbol"];
 }
@@ -136,8 +189,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["reserva"])) {
     $codigoAmigable = $_GET["reserva"];
     $reserva = getReserva($codigoAmigable);
 
-    if (count($reserva) < 1) {
-        alertar($lang["la_reserva_con_el_codigo"] . " " . $codigoAmigable . " " . $lang["no_existe"], "error");
+    if (empty($reserva) || count($reserva) < 1) {
+        $mensaje = isset($lang["la_reserva_con_el_codigo"]) ? 
+            $lang["la_reserva_con_el_codigo"] . " " . $codigoAmigable . " " . $lang["no_existe"] : 
+            "La reserva con el código " . $codigoAmigable . " no existe";
+        alertar($mensaje, "error");
         redireccionarLento("index");
         exit();
     }
@@ -148,6 +204,14 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["reserva"])) {
 }
 $comprobantes = getComprobantesIdReservaDolar($idReserva);
 $total_dolares = $reserva["total_dolares"];
+
+// Si la moneda seleccionada coincide con la moneda original de la reserva, usar el total original
+// Esto evita errores de redondeo en reconversiones
+$monedaOriginalReserva = $reserva["monedaSel"];
+$total_en_moneda_seleccionada = ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"])) 
+    ? $reserva["total"] 
+    : convierteMoneda(188, $_SESSION['moneda_sel'], $total_dolares);
+
 $comprobantes225 = convierteMoneda(188, 225, $comprobantes);
 $comprobantes270 = convierteMoneda(188, 270, $comprobantes);
 $comprobantes271 = convierteMoneda(188, 271, $comprobantes);
@@ -200,6 +264,14 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                     <div class="card card-visitas">
                         <div class="card-body">
                             <h5><?= $lang["resumen_de_compra"] ?></h5>
+                            <?php
+                            $cantCarrito = 0;
+                            $resTmp = getReserva($codigoAmigable);
+                            if (!empty($resTmp)) {
+                                $horTmp = getReservaHorarios($resTmp[0]['idReserva']);
+                                $cantCarrito = count($horTmp);
+                            }
+                            ?>
 
                             <!--ACORDEON CARACTERISTICAS-->
                             <div class="accordion" id="faq1">
@@ -231,78 +303,98 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                 $horarios = getReservaHorarios($idReserva);
 
                                                 // Exibir informações básicas da reserva
-                                                echo "<li><strong>Responsável:</strong> {$reserva[0]['nombreResponsable']} {$reserva[0]['apellidoResponsable']}</li>";
-                                                echo "<li><strong>Email:</strong> {$reserva[0]['emailResponsable']}</li>";
-                                                echo "<li><strong>Telefone:</strong> {$reserva[0]['telefonoResponsable']}</li>";
-                                                echo "<li><strong>Total em Dólares:</strong> {$reserva[0]['total_dolares']}</li>";
-                                                echo "<li><strong>Impostos:</strong> {$reserva[0]['impuestos']}</li>";
+                                                echo "<li><i class=\"fas fa-user text-primary mr-1\"></i><strong>Responsável:</strong> {$reserva[0]['nombreResponsable']} {$reserva[0]['apellidoResponsable']}</li>";
+                                                echo "<li><i class=\"fas fa-envelope text-primary mr-1\"></i><strong>Email:</strong> {$reserva[0]['emailResponsable']}</li>";
+                                                echo "<li><i class=\"fas fa-phone text-primary mr-1\"></i><strong>Telefone:</strong> {$reserva[0]['telefonoResponsable']}</li>";
+                                                echo "<li><i class=\"fas fa-wallet text-success mr-1\"></i><strong>Total em Dólares:</strong> " . formatarMonedaCondicional($total_dolares) . "</li>";
+                                                echo "<li><i class=\"fas fa-receipt text-info mr-1\"></i><strong>Impostos:</strong> {$reserva[0]['impuestos']}</li>";
 
-                                                // Exibir horários, tarifas e adicionais
-                                                for ($i = 0; $i < count($horarios); $i++) {
-                                                    $servicio = getServicio($horarios[$i]["idServicioSeleccionado"]);
-                                                    $idReservaHorarios = $horarios[$i]["idReservaHorarios"];
-                                                    $reservaTarifas = getReservaTarifas($idReservaHorarios);
-                                                    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios); ?>
+                                                                                                // Exibir horários, tarifas e adicionais, em cartões separados
+                                                                                                for ($i = 0; $i < count($horarios); $i++) {
+                                                                                                        $servicio = getServicio($horarios[$i]["idServicioSeleccionado"]);
+                                                                                                        $idReservaHorarios = $horarios[$i]["idReservaHorarios"];
+                                                                                                        $reservaTarifas = getReservaTarifas($idReservaHorarios);
+                                                                                                        $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+                                                                                                        $fechaHora = date("d/m/Y", strtotime($horarios[$i]['fecha'])) . " · Check IN: " . substr($horarios[$i]["horaCheckIn"], 0, 5);
+                                                                                                        ?>
 
-                                                    <li>
-                                                        <strong>Serviço:</strong> <?= $servicio[0]["nombre_servicio"]; ?>
-                                                    </li>
-                                                    <li><strong>Data e
-                                                            Hora:</strong> <?= date("d/m/Y", strtotime($horarios[$i]['fecha'])) . " Check IN: " . substr($horarios[$i]["horaCheckIn"], 0, 5); ?>
-                                                    </li>
+                                                                                                        <li class="mb-3">
+                                                                                                            <div class="card shadow-sm border-0">
+                                                                                                                <div class="card-body p-3">
+                                                                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                                                                        <div>
+                                                                                                                            <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                                                                                                            <strong><?= $servicio[0]["nombre_servicio"]; ?></strong>
+                                                                                                                        </div>
+                                                                                                                        <span class="badge badge-primary badge-pill p-2">
+                                                                                                                            <i class="fas fa-calendar-alt mr-1"></i><?= $fechaHora; ?>
+                                                                                                                        </span>
+                                                                                                                    </div>
 
+                                                                                                                    <ul class="list-unstyled small text-muted mb-0">
+                                                                                                                        <?php for ($j = 0; $j < count($reservaTarifas); $j++) {
+                                                                                                                                $edadFrom = getEdad($reservaTarifas[$j]["idFromEdad"]);
+                                                                                                                                $edadTo = getEdad($reservaTarifas[$j]["idToEdad"]);
+                                                                                                                                $idMonedaSel = $reservaTarifas[$j]["monedaSel"];
+                                                                                                                                $moneda = getMoneda($idMonedaSel)[0]["Symbol"]; ?>
+                                                                                                                                <li>
+                                                                                                                                    <i class="fas fa-ticket-alt text-secondary mr-1"></i><strong>Tarifa:</strong> <?= $reservaTarifas[$j]["cantidad"]; ?> <?= $reservaTarifas[$j]["nombre"]; ?> (<?= $edadFrom[0]["valor"] ?> a <?= $edadTo[0]["valor"] ?> anos)
+                                                                                                                                </li>
+                                                                                                                                <li>
+                                                                                                                                    <i class="fas fa-percent text-warning mr-1"></i><strong>ISS:</strong> <?= $moneda . formatarMonedaPorSimbolo($reservaTarifas[$j]["valorDeIva"], $moneda); ?>
+                                                                                                                                </li>
+                                                                                                                                <li>
+                                                                                                                                    <i class="fas fa-calculator text-muted mr-1"></i><strong>Subtotal:</strong> <?= $moneda . formatarMonedaPorSimbolo($reservaTarifas[$j]["valorSinIva"] + $reservaTarifas[$j]["valorDeIva"], $moneda); ?>
+                                                                                                                                </li>
+                                                                                                                        <?php } ?>
 
-                                                    <?php for ($j = 0; $j < count($reservaTarifas); $j++) {
-                                                        $edadFrom = getEdad($reservaTarifas[$j]["idFromEdad"]);
-                                                        $edadTo = getEdad($reservaTarifas[$j]["idToEdad"]);
-                                                        $idMonedaSel = $reservaTarifas[$j]["monedaSel"];
-                                                        $moneda = getMoneda($idMonedaSel)[0]["Symbol"]; ?>
+                                                                                                                        <?php for ($j = 0; $j < count($adicionales); $j++) { ?>
+                                                                                                                                <li>
+                                                                                                                                    <i class="fas fa-plus-circle text-info mr-1"></i><strong>Adicional:</strong> <?= $adicionales[$j]["cantidad"]; ?> <?= $adicionales[$j]["nombre"]; ?> <?= $moneda . formatarMonedaPorSimbolo($adicionales[$j]["precioIva"], $moneda); ?>
+                                                                                                                                </li>
+                                                                                                                        <?php } ?>
+                                                                                                                    </ul>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </li>
 
-                                                        <li>
-                                                            <strong>Tarifa:</strong> <?= $reservaTarifas[$j]["cantidad"]; ?> <?= $reservaTarifas[$j]["nombre"]; ?>
-                                                            (<?= $edadFrom[0]["valor"] ?> a <?= $edadTo[0]["valor"] ?>
-                                                            anos)
-                                                        </li>
-                                                        <li>
-                                                            <strong>ISS:</strong> <?= $moneda . $reservaTarifas[$j]["valorDeIva"]; ?>
-                                                        </li>
-                                                        <li>
-                                                            <strong>Subtotal:</strong> <?= $moneda . ($reservaTarifas[$j]["valorSinIva"] + $reservaTarifas[$j]["valorDeIva"]); ?>
-                                                        </li>
-
-                                                    <?php } ?>
-
-                                                    <?php for ($j = 0; $j < count($adicionales); $j++) { ?>
-                                                        <li>
-                                                            <strong>Adicional:</strong> <?= $adicionales[$j]["cantidad"]; ?> <?= $adicionales[$j]["nombre"]; ?> <?= $moneda . $adicionales[$j]["precioIva"]; ?>
-                                                        </li>
-                                                    <?php } ?>
-
-                                                    <hr>
-
-                                                <?php } ?>
+                                                                                                <?php } ?>
 
                                                 <?php if ($comprobantes > 0) { ?>
                                                     <li>
-                                                        <strong>Total:</strong> <?= $moneda . convierteMoneda(188, $_SESSION['moneda_sel'], $reserva[0]["total_dolares"]); ?>
+                                                        <strong>Total:</strong> <?= $moneda . formatarMonedaCondicional($total_en_moneda_seleccionada); ?>
                                                     </li>
-                                                    <?php $totalComprobantesAMostrar = $comprobantes;
-                                                    $diferenciaAPagar = $reserva[0]["total_dolares"] - $totalComprobantesAMostrar;
+                                                    <?php 
+                                                    // Calcular comprobantes en moneda seleccionada
+                                                    if ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"]) && $total_dolares > 0) {
+                                                        // Proporcional si es la misma moneda
+                                                        $comprobantes_en_moneda_sel = $comprobantes * ($reserva["total"] / $total_dolares);
+                                                    } else {
+                                                        $comprobantes_en_moneda_sel = convierteMoneda(188, $_SESSION['moneda_sel'], $comprobantes);
+                                                    }
+                                                    
+                                                    $totalComprobantesAMostrar = $comprobantes;
+                                                    $diferenciaAPagar_usd = $total_dolares - $totalComprobantesAMostrar;
+                                                    
+                                                    // Calcular diferencia en moneda seleccionada manteniendo precisión
+                                                    $diferenciaAPagar_moneda_sel = $total_en_moneda_seleccionada - $comprobantes_en_moneda_sel;
 
-                                                    if ($diferenciaAPagar < 1) {
-                                                        $diferenciaAPagar = 0;
+                                                    if ($diferenciaAPagar_usd < 1) {
+                                                        $diferenciaAPagar_usd = 0;
+                                                        $diferenciaAPagar_moneda_sel = 0;
                                                     } ?>
-                                                    <li><strong>Pagamento
-                                                            Realizado:</strong> <?= $moneda . convierteMoneda(188, $_SESSION['moneda_sel'], $totalComprobantesAMostrar) ?>
+                                                        <li><strong>Pagamento
+                                                            Realizado:</strong> <?= $moneda . formatarMonedaCondicional($comprobantes_en_moneda_sel); ?>
                                                     </li>
 
                                                 <?php } else {
-                                                    $diferenciaAPagar = $reserva[0]["total_dolares"]; // Fixed: If no previous payments, remaining is the full total.
+                                                    $diferenciaAPagar_usd = $total_dolares; // Fixed: If no previous payments, remaining is the full total.
+                                                    $diferenciaAPagar_moneda_sel = $total_en_moneda_seleccionada;
                                                     ?>
 
 
                                                     <li id='total-mostrar-moeda'>
-                                                        <strong>Total:</strong> <?= $moneda . convierteMoneda(188, $_SESSION['moneda_sel'], $reserva[0]["total_dolares"]); ?>
+                                                        <strong>Total:</strong> <?= $moneda . formatarMonedaCondicional($total_en_moneda_seleccionada); ?>
                                                     </li>
                                                 <?php } ?>
                                             <?php } else { ?>
@@ -320,7 +412,7 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                             <div class="div-precio-t">
                                 <p class="mb-0 float-left"><strong>Resta pagar</strong></p>
                                 <p class="mb-0 float-right"><strong
-                                            id="total-resta-pagar"><?= $moneda . " " . convierteMoneda(188, $_SESSION['moneda_sel'], $diferenciaAPagar); ?></strong>
+                                            id="total-resta-pagar"><?= $moneda . " " . formatarMonedaCondicional($diferenciaAPagar_moneda_sel); ?></strong>
                                 </p>
                             </div>
                             <!--FIN PRECIO TOTAL-->
@@ -553,7 +645,7 @@ array(9) {
                         $currencyEbanx = 'ARS';
                         $habilita_ebanx = true;
                         $_SESSION['geo']['nombre_pais'] = "Argentina";
-                        $totalEbanx = convierteMoneda(188, 270, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 270, $total_dolares) - $comprobantes;
 
                         break;
                     case 283:
@@ -562,7 +654,7 @@ array(9) {
                         $habilita_pesos_ch = false;
                         $countryEbanx = 'BR';
                         $currencyEbanx = 'BRL';
-                        $totalEbanx = convierteMoneda(188, 283, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 283, $total_dolares) - $comprobantes;
                         $habilita_ebanx = false;
                         $_SESSION['geo']['nombre_pais'] = 'Brasil';
 
@@ -573,7 +665,7 @@ array(9) {
                         $habilita_pesos_ch = true;
                         $countryEbanx = 'CL';
                         $currencyEbanx = 'CLP';
-                        $totalEbanx = convierteMoneda(188, 271, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 271, $total_dolares) - $comprobantes;
                         $habilita_ebanx = true;
                         $_SESSION['geo']['nombre_pais'] = 'Chile';
                         break;
@@ -582,7 +674,7 @@ array(9) {
                         $habilita_dolares = true;
                         $countryEbanx = 'UY';
                         $currencyEbanx = 'USD';
-                        $totalEbanx = convierteMoneda(188, 188, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 188, $total_dolares) - $comprobantes;
                         $habilita_ebanx = true;
                         $_SESSION['geo']['nombre_pais'] = 'Uruguay';
                         break;
@@ -591,7 +683,7 @@ array(9) {
                         $habilita_dolares = true;
                         $countryEbanx = 'PE';
                         $currencyEbanx = 'USD';
-                        $totalEbanx = convierteMoneda(188, 188, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 188, $total_dolares) - $comprobantes;
                         $habilita_ebanx = true;
                         $_SESSION['geo']['nombre_pais'] = 'Peru';
                         break;
@@ -600,7 +692,7 @@ array(9) {
                         $habilita_guaranies = true;
                         $countryEbanx = 'PY';
                         $currencyEbanx = 'USD';
-                        $totalEbanx = convierteMoneda(188, 225, $reserva["total_dolares"]) - $comprobantes;
+                        $totalEbanx = convierteMoneda(188, 225, $total_dolares) - $comprobantes;
                         $habilita_ebanx = true;
                         $_SESSION['geo']['nombre_pais'] = 'Paraguay';
 
@@ -616,6 +708,9 @@ array(9) {
 
 
                     <?php
+                    // Usar el valor en USD para conversiones a otras monedas (pasarelas de pago)
+                    $diferenciaAPagar = $diferenciaAPagar_usd;
+                    
                     $reales = convierteMoneda(188, 283, $diferenciaAPagar);
                     $euro = convierteMoneda(188, 213, $diferenciaAPagar);
                     $dolares = $diferenciaAPagar;
@@ -722,14 +817,45 @@ array(9) {
                                     <h4 style="text-align: center; font-weight: 200; opacity: 0.8;">Qual moeda você deseja pagar?</h4>
                                   </div>
                                   <div class='hr w-100 mt-1 mb-3' style="opacity: 0.3;"></div>
+
+                                                                    <style>
+                                                                        /* Evita que precio y bandera se salgan del recuadro en el selector de moneda */
+                                                                        #container-valores-moedas .container-vm { min-width: 0; }
+                                                                        #container-valores-moedas .container-valor-moeda div { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+                                                                        #container-valores-moedas .container-valor-moeda strong { white-space: normal; }
+                                                                        #container-valores-moedas .flag-icon { flex-shrink: 0; }
+                                                                    </style>
                             
                                   <?php
-                                  function formatarParaDecimal($valor)
-                                  {
-                                    $valorLimpo = preg_replace('/[^\d.,]/', '', $valor);
-                                    $valorFormatado = str_replace(',', '.', str_replace('.', '', $valorLimpo));
-                                    return number_format((float)$valorFormatado, 2, '.', '');
-                                  }
+                                                                    function formatarParaDecimal($valor)
+                                                                    {
+                                                                        // Si ya es numérico, formatearlo directamente
+                                                                        if (is_numeric($valor)) {
+                                                                            return formatarMonedaCondicional((float)$valor);
+                                                                        }
+                                                                        
+                                                                        // Limpiar y convertir string a número
+                                                                        // Detectar si usa coma como decimal (ej: "1.234,56") o punto (ej: "1,234.56")
+                                                                        $valorLimpio = preg_replace('/[^\d.,]/', '', $valor);
+                                                                        
+                                                                        // Si tiene ambos separadores, determinar cuál es el decimal
+                                                                        if (strpos($valorLimpio, '.') !== false && strpos($valorLimpio, ',') !== false) {
+                                                                            // Si el último separador es coma, formato europeo: 1.234,56 → 1234.56
+                                                                            if (strrpos($valorLimpio, ',') > strrpos($valorLimpio, '.')) {
+                                                                                $valorLimpio = str_replace('.', '', $valorLimpio);
+                                                                                $valorLimpio = str_replace(',', '.', $valorLimpio);
+                                                                            } else {
+                                                                                // Formato americano: 1,234.56 → 1234.56
+                                                                                $valorLimpio = str_replace(',', '', $valorLimpio);
+                                                                            }
+                                                                        } elseif (strpos($valorLimpio, ',') !== false) {
+                                                                            // Solo comas: puede ser miles o decimal, asumimos decimal si hay 2 dígitos después
+                                                                            $valorLimpio = str_replace(',', '.', $valorLimpio);
+                                                                        }
+                                                                        // Si solo tiene puntos, ya está en formato correcto
+                                                                        
+                                                                        return formatarMonedaCondicional((float)$valorLimpio);
+                                                                    }
 
 								  $flags = [
 									'BRL' => 'https://flagcdn.com/w20/br.png',
@@ -769,8 +895,8 @@ array(9) {
 								  $html_valor_moeda = "";
 								  $active_set = false;
 								  foreach ($arr_valores_pagamento as $k => $v) {
-									$valor = $v['valor'];
-									$valor_formatado = formatarParaDecimal($valor);
+                                    $valor = $v['valor'];
+                                    $valor_formatado = formatarParaDecimal($valor);
 									$moeda_codigo = $v['moeda']['codigo'];
 									$moeda_simbolo = $v['moeda']['simbolo'];
 									$moeda_nome = $v['moeda']['nome'];
@@ -790,10 +916,10 @@ array(9) {
 									$html_valor_moeda .= "<div class='container-icone-valor-moeda'>";
 									$html_valor_moeda .= "<i></i>";
 									$html_valor_moeda .= "</div>";
-									$html_valor_moeda .= "<div class='container-valor-moeda'>";
-									$html_valor_moeda .= "<div>";
-									$html_valor_moeda .= "<span>{$moeda_simbolo}</span>";
-									$html_valor_moeda .= "<strong>{$valor}</strong>";
+                                    $html_valor_moeda .= "<div class='container-valor-moeda'>";
+                                    $html_valor_moeda .= "<div>";
+                                    $html_valor_moeda .= "<span>{$moeda_simbolo}&nbsp;</span>";
+                                    $html_valor_moeda .= "<strong>{$valor_formatado}</strong>";
 									if ($flag_url) {
 										$html_valor_moeda .= "<img src='{$flag_url}' alt='{$moeda_nome}' class='flag-icon ms-1'>";
 									}
@@ -832,8 +958,8 @@ array(9) {
                                 if ($(v).hasClass('active')) {
                                     codigo_forma_pag_selecionada_start = $(v).data('codigo');
                                     let simbolo = $(this).data('simbolo');
-                                    let valor = $(this).data('valor');
-                                    $('#total-resta-pagar, #total-mostrar-moeda').text(`${simbolo} ${valor}`);
+                                    let valorFormatado = $(this).data('valor-formatado') || $(this).data('valorFormatado') || $(this).data('valor');
+                                    $('#total-resta-pagar, #total-mostrar-moeda').text(`${simbolo} ${valorFormatado}`);
                                     return false;
                                 }
                             })
@@ -859,7 +985,7 @@ array(9) {
                             stopPaymentCheck();
                             let codigo = $(this).data('codigo');
                             let simbolo = $(this).data('simbolo');
-                            let valor = $(this).data('valor');
+                            let valorFormatado = $(this).data('valor-formatado') || $(this).data('valorFormatado') || $(this).data('valor');
 
                             $.when(
                                 $.each($(this).parent().parent().find('.container-vm'), function (i, v) {
@@ -869,7 +995,7 @@ array(9) {
                                 })
                             ).done(() => {
                                 $(this).addClass('active');
-                                $('#total-resta-pagar, #total-mostrar-moeda').text(`${simbolo} ${valor}`);
+                                $('#total-resta-pagar, #total-mostrar-moeda').text(`${simbolo} ${valorFormatado}`);
                                 $.when(
                                     $.each($('.container-formas-pagamento').find('.payment-option'), function (i, v) {
                                         if ($(v).hasClass(codigo)) {
@@ -1097,7 +1223,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>Mercado Pago</p>
-                                                <img class="card-img" src="/img/mercado-pago-logo.png" alt=""
+                                                <img class="card-img" src="img/mercado-pago-logo.png" alt=""
                                                      style="width: 95px;">
                                             </div>
                                         </div>
@@ -1115,7 +1241,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>Pix</p>
-                                                <img class="card-img" src="/img/pix.png" alt="" style="width: 85px;">
+                                                <img class="card-img" src="img/pix.png" alt="" style="width: 85px;">
                                             </div>
                                         </div>
                                         <div class="container-card-pagamento-body">
@@ -1131,7 +1257,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 95px;">
                                             </div>
                                         </div>
@@ -1144,7 +1270,11 @@ array(9) {
                                         </div>
                                     </div>
 
-                                    <?php include("admin/pasarelas/ebanx/ebanx.php");
+                                    <?php 
+                                    // Definir variables necesarias antes de incluir ebanx
+                                    $totalPayPal = isset($totalPayPal) ? $totalPayPal : 0;
+                                    
+                                    include("admin/pasarelas/ebanx/ebanx.php");
 
                                     if (isset($url_ebanx) && $url_ebanx == (-5)) { //alertar($lang["el_metodo_seleccionado_no_puede_cobrar"],$lang["error"]);
                                     }
@@ -1167,7 +1297,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 95px;">
                                             </div>
                                         </div>
@@ -1191,7 +1321,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 95px;">
                                             </div>
                                         </div>
@@ -1215,7 +1345,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 95px;">
                                             </div>
                                         </div>
@@ -1239,7 +1369,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>Mercado Pago</p>
-                                                <img class="card-img" src="/img/mercado-pago-logo.png" alt=""
+                                                <img class="card-img" src="img/mercado-pago-logo.png" alt=""
                                                      style="width: 75px;">
                                             </div>
                                         </div>
@@ -1258,7 +1388,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 85px;">
                                             </div>
                                         </div>
@@ -1282,7 +1412,7 @@ array(9) {
                                             <!-- <span class="checkmark"></span> -->
                                             <div class="secudary-options">
                                                 <p>PayPal</p>
-                                                <img class="card-img" src="/img/Pay_Pal.png" alt=""
+                                                <img class="card-img" src="img/paypal-2.png" alt=""
                                                      style="width: 85px;">
                                             </div>
                                         </div>
@@ -1320,7 +1450,8 @@ array(9) {
                     <?php
                     $total = 0; //0ConvierteMoneda($monedaNativa,270, $totalAPagar);
                     $totalMercadopagoArgentina = convierteMoneda(188, 270, $diferenciaAPagar); // Pesos Argentino
-                    $totalMercadopagoBrasil = convierteMoneda($_SESSION['moneda_sel'], 283, (isset($reserva["total"]) ? $reserva["total"] : 0)) - $comprobantes283;
+                    // Usar el saldo pendiente (diferencia a pagar) convertido a BRL para MP Brasil
+                    $totalMercadopagoBrasil = convierteMoneda(188, 283, $diferenciaAPagar);
                     $totalReales = convierteMoneda(188, 283, $diferenciaAPagar); // Real Brasil
                     $totalPayPal = convierteMoneda($_SESSION['moneda_sel'], 188, (isset($reserva["total"]) ? $reserva["total"] : 0)) - $comprobantes; // Dolar
 
@@ -1778,17 +1909,17 @@ array(9) {
   <div class="payment-carousel">
     <div class="carousel-track d-flex align-items-center justify-content-center">
       <?php for($i=0; $i<2; $i++): ?>
-        <img src="/img/mastercard.png" alt="Mastercard" class="mx-3 payment-logo">
+        <img src="img/mastercard.png" alt="Mastercard" class="mx-3 payment-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" alt="American Express" class="mx-3 payment-logo">
-        <img src="/img/pay-pal.png" alt="PayPal" class="mx-3 payment-logo">
-        <img src="/img/mercado-pago-logo.png" alt="Mercado Pago" class="mx-3 payment-logo">
-        <img src="/img/pix.png" alt="Pix" class="mx-3 payment-logo">
+        <img src="img/paypal-2.png" alt="PayPal" class="mx-3 payment-logo">
+        <img src="img/mercado-pago-logo.png" alt="Mercado Pago" class="mx-3 payment-logo">
+        <img src="img/pix.png" alt="Pix" class="mx-3 payment-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/Logo_Banco_Galicia.svg" alt="Banco Galicia" class="mx-3 payment-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Bitcoin_logo.svg/614px-Bitcoin_logo.svg.png" alt="Banco Galicia" class="mx-3 payment-logo">
         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Banco_Santander_Logotipo.svg" alt="Banco Santander" class="mx-3 payment-logo">
-        <img src="/img/Belo.png" alt="Belo" class="mx-3 payment-logo">
-        <img src="/img/pago-facil.png" alt="Pago Facil" class="mx-3 payment-logo">
-        <img src="/img/rapi-pago.png" alt="rapiPago" class="mx-3 payment-logo">
+        <img src="img/Belo.png" alt="Belo" class="mx-3 payment-logo">
+        <img src="img/pago-facil.png" alt="Pago Facil" class="mx-3 payment-logo">
+        <img src="img/rapi-pago.png" alt="rapiPago" class="mx-3 payment-logo">
       <?php endfor; ?>
     </div>
   </div>
@@ -1914,18 +2045,43 @@ array(9) {
 
         <!--METODOS DE PAGO-->
         <div class="col-md-6 py-3">
-            <div class="card card-visitas" id="cardVisitas">
-                <div class="card-body">
-                    <h3 class="mb-4" id="textoMetodoDePago"><?= $lang["Felicidades"] ?></h5>
-                        <h5 class="success">Reserva confirmada
-                    </h3>
-                    <form method="post" action="voucherCarrito">
+            <div class="card card-visitas shadow-lg border-0" id="cardVisitas">
+                <div class="card-body text-center py-5">
+                    <!-- Icono de éxito -->
+                    <div class="mb-4">
+                        <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                            <i class="fas fa-check text-white" style="font-size: 40px;"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Título -->
+                    <h2 class="text-success font-weight-bold mb-2"><?= $lang["Felicidades"] ?? "¡Felicitações!" ?></h2>
+                    <h4 class="text-dark mb-4">Reserva Confirmada</h4>
+                    
+                    <!-- Código de reserva -->
+                    <div class="alert alert-info mb-4">
+                        <p class="mb-1"><small class="text-muted">Código de reserva</small></p>
+                        <h3 class="mb-0 font-weight-bold"><?= $codigoAmigable; ?></h3>
+                    </div>
+                    
+                    <!-- Mensaje informativo -->
+                    <p class="text-muted mb-4">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Enviamos todos los detalles a tu correo electrónico
+                    </p>
+                    
+                    <!-- Botones de acción -->
+                    <form method="post" action="voucherCarrito" class="mb-3">
                         <button type="submit" name="codigoAmigable" value="<?= $codigoAmigable; ?>"
-                                class="btn btn-secondary btn-lg btn-radius"
-                                style="width: 100% !important;"><?= $lang["detalles_reserva"]; ?></button>
+                                class="btn btn-lg btn-block btn-radius shadow-sm"
+                                style="background-color: rgb(2, 156, 226); border-color: rgb(2, 156, 226); color: white;">
+                            <i class="fas fa-file-alt mr-2"></i><?= $lang["detalles_reserva"] ?? "Detalles de la Reserva"; ?>
+                        </button>
                     </form>
-                    <a href="https://meteleargentina.com" class="btn btn-primary btn-lg btn-radius" id="btnPagar"
-                       style="width: 100% !important;"><?= $lang["volver_al_site"]; ?></a>
+                    
+                    <a href="index.php" class="btn btn-outline-primary btn-lg btn-block btn-radius">
+                        <i class="fas fa-home mr-2"></i><?= $lang["volver_al_site"] ?? "Volver al sitio"; ?>
+                    </a>
                 </div>
             </div>
         </div>

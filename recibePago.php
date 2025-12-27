@@ -20,7 +20,7 @@ include("admin/classes/reserva.php");
 
 //include("admin/classes/reservaEmail.php");
 
-include("admin/classes/moneda.php");
+require_once("admin/classes/moneda.php");
 
 include("admin/classes/usuario.php");
 

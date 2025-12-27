@@ -19,12 +19,12 @@ function getAllServicios() {
     foreach ($resultado as &$row) {
         switch ($idioma) {
             case 'EN': // Inglês
-                $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'];
-                $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'];
+                $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion'] = $row['descripcion_en'] ?? $row['descripcion'] ?? '';
                 break;
             case 'PT': // Português
-                $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'];
-                $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'];
+                $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion'] = $row['descripcion_pt'] ?? $row['descripcion'] ?? '';
                 break;
             // Caso padrão (ES ou qualquer outro idioma)
             default:
@@ -192,7 +192,7 @@ function getServiciosLimit6() {
 
 
 function getServiciosLimit612(){require("conexion.php");
-$consulta = "select * from servicio WHERE habilitado=1 AND destacado=1 LIMIT 6,12";
+$consulta = "select * from servicio WHERE habilitado=1 AND destacado=1 LIMIT 6,99";
 $comando = $pdo->prepare($consulta);
 $comando->execute();
 $cuenta_col = $comando->columnCount();
@@ -1067,4 +1067,4 @@ function haversineKm($lat1, $lon1, $lat2, $lon2) {
     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
     return $R * $c;
 }
-?>
+

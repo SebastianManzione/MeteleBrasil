@@ -15,12 +15,21 @@ $_SESSION["cupon_descuento"]["idUsuario"]=$cupon[0]["idUsuario"];
 $_SESSION["cupon_descuento"]["descuentoPorcentual"]=$cupon[0]["descuentoPorcentual"];
 $_SESSION["cupon_descuento"]["idCuponDescuento"]=$cupon[0]["idCuponDescuento"];
 $_SESSION["cupon_descuento"]["CodigoAmigable"]=$cupon[0]["CodigoAmigable"];
-$_SESSION["cupon_descuento"]["anfitrion"]=getUsuario($idUsuario)[0]["usuario"];
+
+// Obtener nombre del usuario si existe
+$anfitrionNombre = "";
+if ($idUsuario) {
+    $usuarioData = getUsuario($idUsuario);
+    if (!empty($usuarioData) && isset($usuarioData[0]["usuario"])) {
+        $anfitrionNombre = $usuarioData[0]["usuario"];
+    }
+}
+$_SESSION["cupon_descuento"]["anfitrion"]=$anfitrionNombre;
 
 
 	$cuponNuevo=["idCuponDescuento"=>$cupon[0]["idCuponDescuento"],
 "CodigoAmigable"=>$cupon[0]["CodigoAmigable"],
-"anfitrion"=>getUsuario($idUsuario)[0]["usuario"],
+"anfitrion"=>$anfitrionNombre,
 "descuentoPorcentual"=>$cupon[0]["descuentoPorcentual"],
 "cupon_usado"=>$cupon[0]["cupon_usado"]
 

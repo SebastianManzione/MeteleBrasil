@@ -1,55 +1,38 @@
-<?php 
+﻿<?php 
 function getParametros(){
+    require("conexion.php");
+    
+    if (!isset($pdo) || !($pdo instanceof PDO)) {
+        return []; // Tolerancia si PDO no estÃ¡ disponible
+    }
 
-require("conexion.php");
-
-$consulta = "select * from parametros WHERE idParametros=1";
-
-$comando = $pdo->prepare($consulta);
-
-$comando->execute();
-$cuenta_col = $comando->columnCount();
-
-$resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-// Imprimir en pantalla
-return $resultado;
-
-
+    try {
+        $consulta = "select * from parametros WHERE idParametros=1";
+        $comando = $pdo->prepare($consulta);
+        $comando->execute();
+        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+        return $resultado;
+    } catch (Throwable $e) {
+        @file_put_contents(__DIR__ . '/../../logs/parametros.log', date('c') . ' getParametros: ' . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        return [];
+    }
 }
 
 function updateParametros($head, $body){
+    require("conexion.php");
+    
+    if (!isset($pdo) || !($pdo instanceof PDO)) {
+        return false; // Tolerancia
+    }
 
-
-
-        require("conexion.php");
-
-        $data=[ "head"=>$head, "body"=>$body];
-
+    try {
+        $data = ["head" => $head, "body" => $body];
         $consulta = "UPDATE parametros SET head=:head, body=:body WHERE idParametros=1 ";
-
-        
-
         $comando = $pdo->prepare($consulta);
-
-        
-
-        $comando->execute($data);
-
-        
-
-        $id = $pdo->lastInsertId(); 
-
-        $cuenta_col = $comando->columnCount();
-
-        $cuenta_row = $comando->rowCount();
-
-        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-
-        return $cuenta_row;
-
-        
-
+        return $comando->execute($data);
+    } catch (Throwable $e) {
+        @file_put_contents(__DIR__ . '/../../logs/parametros.log', date('c') . ' updateParametros: ' . $e->getMessage() . PHP_EOL, FILE_APPEND);
+        return false;
+    }
 }
 
- ?>

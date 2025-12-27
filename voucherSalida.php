@@ -11,7 +11,7 @@ include("admin/classes/tarifas_ubicacion.php");
 include("admin/classes/servicios_adicionales.php");
 include("admin/classes/reserva.php");
 include("admin/classes/comprobantes.php");
-include("admin/classes/moneda.php");
+require_once("admin/classes/moneda.php");
 include("admin/classes/prestador.php");
 include("admin/classes/accesibilidad.php");
 include("admin/classes/convierte_monedas.php");
@@ -49,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idReservaHorarios"])) 
     }
     $fechaCheckIn = date("d/m/Y", strtotime($salida['fecha']));
     $idReservaHorarios = $horarios[0]["idReservaHorarios"];
+    $codigoVoucherServicio = !empty($horarios[0]['CodigoVoucherServicio']) ? $horarios[0]['CodigoVoucherServicio'] : 'N/A';
     $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
     $reservaTarifas = getReservaTarifas($idReservaHorarios);
 
@@ -56,6 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idReservaHorarios"])) 
     $ubicacion = getUbicacionIdTarifa($reservaTarifas[0]['idServicioSalidasTarifas']); // primera tarifa
     $lat = !empty($horarios[0]['latitud']) ? $horarios[0]['latitud'] : null;
     $lng = !empty($horarios[0]['longitud']) ? $horarios[0]['longitud'] : null;
+    $direccion = !empty($horarios[0]['direccion']) ? $horarios[0]['direccion'] : (!empty($ubicacion[0]['direccion']) ? $ubicacion[0]['direccion'] : 'Dirección no disponible');
     $ubicacion_disponible = $lat && $lng;
 }
 
@@ -175,6 +177,7 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
                 <div class="col-md-4 invoice-col">
                     <b>Comprobante:</b> #<?= $codigoAmigable; ?><br>
                     <b>ID Orden:</b> <?= $codigoAmigable; ?><br>
+                    <b>Código Voucher Servicio:</b> <?= $codigoVoucherServicio; ?><br>
                     <b>Tel Prestador:</b> <?= $prestador['telefono']; ?><br>
                     <b>Email Prestador:</b> <?= $prestador['email']; ?><br>
                 </div>
@@ -304,7 +307,7 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
                         </tr>
                         <tr>
                             <th>Resta pagar:</th>
-                            <td><?= $moneda . " " . $diferenciaAPagar; ?></td>
+                            <td><?= $_SESSION["moneda_sel_sym"] . " " . $diferenciaAPagar; ?></td>
                         </tr>
                     </table>
                 </div>
@@ -319,13 +322,14 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
             <!-- Botones -->
             <div class="row no-print">
                 <div class="col-12 d-flex gap-2 flex-wrap">
-                    <button id="btnImprimir" class="btn btn-success flex-fill"><i class="fas fa-print"></i> Imprimir
-                    </button>
                     <form method="post" action="voucherCarrito" class="flex-fill">
                         <button class="btn btn-secondary w-100" type="submit" name="codigoAmigable"
-                                value="<?= $codigoAmigable; ?>">Volver
+                                value="<?= $codigoAmigable; ?>">
+                            <i class="fas fa-arrow-left"></i> Volver
                         </button>
                     </form>
+                    <button id="btnImprimir" class="btn btn-primary flex-fill"><i class="fas fa-print"></i> Imprimir
+                    </button>
                 </div>
             </div>
 

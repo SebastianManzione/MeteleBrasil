@@ -1,38 +1,46 @@
 <?php
 include("includes/navbar.php"); 
 include("admin/classes/usuario.php"); 
+include("admin/classes/antibot.php");
 
 
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["registro"]) ) {
-
-$email=$_POST['email'];
-$password=md5($_POST['pass1']);
-
-
-$resu=altaUsuario($_POST["nombre"], $email,  $password, 1,0,0,0);
-
-if ($resu>0) {
-$nombre=$_POST["nombre"];
-include("admin/classes/email_registro_correcto.php");
-
-include("admin/classes/reservaEmail.php");
+    
+    // Validación anti-bot
+    $validacion = validarAntiBot('register_form', $_POST['recaptcha_token'] ?? null);
+    
+    if (!$validacion['success']) {
+        alertar($validacion['error'], "error");
+    } else {
+        $email=$_POST['email'];
+        $password=md5($_POST['pass1']);
 
 
-$resumail=enviaMail($email,$lang["bienvenido_a_metelebrasil"], $email_registro_correcto, $parametros[0]["site"]);
+        $resu=altaUsuario($_POST["nombre"], $email,  $password, 1,0,0,0);
+
+        if ($resu>0) {
+            $nombre=$_POST["nombre"];
+            include("admin/classes/email_registro_correcto.php");
+
+            include("admin/classes/reservaEmail.php");
+
+
+            $resumail=enviaMail($email,$lang["bienvenido_a_metelebrasil"], $email_registro_correcto, $parametros[0]["site"]);
 
 
 
 
-  alertar($lang["registro_con_exito"], "success");
-  $login=login($email, $password);
-  redireccionarLento("index");
-  exit();
-}
-else{
-  alertar($lang["error_el_mail"], "warning");
-}
+            alertar($lang["registro_con_exito"], "success");
+            $login=login($email, $password);
+            redireccionarLento("index");
+            exit();
+        }
+        else{
+            alertar($lang["error_el_mail"], "warning");
+        }
+    }
 }
 
 ?>
@@ -173,6 +181,10 @@ else{
                  </div>
            
         </div>
+
+        <!-- Campos Anti-Bot (invisibles) -->
+        <?php echo generarCamposAntiBot(); ?>
+
          <div class="col-lg-12 py-2 d-md-block ">
         <button class="btn btn-info" name="registro"><?=$lang["confirmar_registro"]?></button>
         </div>

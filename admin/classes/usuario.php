@@ -726,4 +726,18 @@ require("conexion.php");
 
     
 
+function borraUsuario($idUsuario){
+    require("conexion.php");
+    // No permitir borrar usuario admin id=1
+    if (!is_numeric($idUsuario) || intval($idUsuario) === 1) {
+        return 0;
+    }
+    $data = ["idUsuario" => intval($idUsuario)];
+    $consulta = "DELETE FROM usuario WHERE idUsuario = :idUsuario";
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($data);
+    $cuenta_row = $comando->rowCount();
+    return $cuenta_row;
+}
+
 ?>

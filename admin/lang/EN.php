@@ -14,6 +14,8 @@ $lang = array(
 	"atencion_al_cliente_247"=>"Customer Support 24/7",
 	"miles_de_opiniones"=>"Thousands of opinions",
 	"sin_sobreprecios"=>"No surcharges",
+	"antes_precio"=>"Before",
+	"ahora_precio"=>"Now",
 	"principales_actividades"=>"Main activities",
 	"ver_mas"=>"See More",
 	"opiniones"=>"Opinions",
@@ -38,6 +40,7 @@ $lang = array(
 	"no_tienes_cuenta"=>"¿Still don't have an account?",
     "registrate"=>"Register",
     "aqui"=>"here",
+    "selecciona_fecha"=>"Select Date",
     "mis_reservas"=>"My reservations",
     "puedes_gestionar_tu_reserva_sin_estar_registrado"=>"You can manage your reservation without being registered",
     "ir_a_reserva"=>"Go to reservation",
@@ -881,6 +884,7 @@ $lang = array(
    "precio" => " Price",
 
    "mas_populas" => " MOST POPULAR",
+   "mas_popular" => " MOST POPULAR",
 
    "detalles_" => " Details",
 

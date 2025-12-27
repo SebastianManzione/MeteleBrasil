@@ -3,18 +3,25 @@
 
 
 <?php 
-
-
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('servicioFotos');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
-require("classes/functions.php");
-require("classes/categoria.php");
-require("classes/fotos_servicio.php");
-require("classes/servicio.php");
+require_once("classes/functions.php");
+require_once("classes/categoria.php");
+require_once("classes/fotos_servicio.php");
+require_once("classes/servicio.php");
+
+// Asegurar que idServicio esté disponible desde GET al cargar la página
+$idServicio = 0;
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["idServicio"])) {
+  $idServicio = (int)$_GET["idServicio"];
+}
 
 if (!$_SESSION["login"]["rol"]==1) {
 
@@ -37,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["portada"])) {
   $idImgServicio=$_POST["portada"];
 $resul=setPortada($idImgServicio, $idServicio);
 if ($resul>0) {
-  alertar("Portada cambiada con exito", "success");
+  alertar_redirect("Portada cambiada con exito", "success", "servicioFotos.php?idServicio=".$idServicio);
 };
 
 }
@@ -46,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["miniatura"])) {
   $idImgServicio=$_POST["miniatura"];
 $resul=setMiniatura($idImgServicio, $idServicio);
 if ($resul>0) {
-  alertar("Miniatura cambiada con exito", "success");
+  alertar_redirect("Miniatura cambiada con exito", "success", "servicioFotos.php?idServicio=".$idServicio);
 };
 
 }
@@ -55,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["altaFotos"])) {
 
 $resul=$fotos=altaFotosServicio($_FILES, $idServicio);
 if ($resul>0) {
-  alertar("Foto agregada con exito", "success");
+  alertar_redirect("Foto agregada con exito", "success", "servicioFotos.php?idServicio=".$idServicio);
 };
 
 }
@@ -66,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["eliminarFoto"])) {
   $idImgServicio=$_POST["eliminarFoto"];
 $resul=borraFoto($idImgServicio);
 if ($resul>0) {
-  alertar("Foto eliminada con exito", "success");
+  alertar_redirect("Foto eliminada con exito", "success", "servicioFotos.php?idServicio=".$idServicio);
 };
 
 }

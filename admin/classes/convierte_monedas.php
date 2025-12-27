@@ -3,6 +3,13 @@
 function ConvierteMoneda($idMonedaOrigen,$idMonedaDestino, $valor){
 
 //echo "or".$idMonedaOrigen."de".$idMonedaDestino;
+
+// Validar que los parámetros sean válidos
+if (empty($idMonedaOrigen) || empty($idMonedaDestino) || !is_numeric($valor)) {
+    error_log("ConvierteMoneda: Parámetros inválidos - origen: $idMonedaOrigen, destino: $idMonedaDestino, valor: $valor");
+    return 0;
+}
+
  require("conexion.php");
  $idMonedaCambio=1;
     $data=["idMonedaCambio"=>$idMonedaCambio];
@@ -14,6 +21,13 @@ function ConvierteMoneda($idMonedaOrigen,$idMonedaDestino, $valor){
     $cuenta_col = $comando->columnCount();
     
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Validar que la consulta retornó datos
+    if (empty($resultado)) {
+        error_log("ConvierteMoneda: No se encontraron tasas de cambio");
+        return 0;
+    }
+    
     // Imprimir en pantalla
         $USS=$resultado[0]["dolar"];
      $ARS=$resultado[0]["pesoArg"];
@@ -21,6 +35,9 @@ function ConvierteMoneda($idMonedaOrigen,$idMonedaDestino, $valor){
      $GUAR=$resultado[0]["guarani"];
      $PCH=$resultado[0]["pesoCh"];
      $EURR=$resultado[0]["euro"];
+
+// Inicializar todas las variables de moneda
+$dolares = $euros = $reales = $guaranis = $pesoArg = $pesoCh = 0;
 
 switch ($idMonedaOrigen) {
 case 188:
@@ -123,7 +140,8 @@ case 271:
 			
 		break;	
 		default: 
-		return " moneda no soportada aun";
+		error_log("ConvierteMoneda: Moneda destino no soportada: $idMonedaDestino (origen: $idMonedaOrigen, valor: $valor)");
+		return 0; // Retornar 0 en lugar de string
 		break;
 	
 					}

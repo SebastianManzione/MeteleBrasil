@@ -1,37 +1,52 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+  session_start();
+}
 include("admin/classes/functions.php");
 include("admin/classes/parametros.php");
 include("admin/classes/geolocalizacion.php");
 include("admin/classes/impuestos_pais.php");
 $parametros = getParametros();
 
-// verificamos la sesion creada
-
-if (isset($_SESSION['idioma'])) {
-
-  // si es true, se crea el require y la variable lang
-
-  $lang = $_SESSION["idioma"];
-
-
-
-  require "admin/lang/" . $lang . ".php";
-
-
-
-  // si no hay sesion por default se carga el lenguaje espanol
-
-} else {
-
-  $_SESSION["idioma_bandera"] = 'img/countries/Brazil-icon.png';
-
-  $_SESSION["idioma"] = "PT";
-
-  require "admin/lang/PT.php";
+// ========== GEOLOCALIZACIÓN (DEBE ir ANTES de determinar idioma) ==========
+if (!isset($_SESSION['geoFinal'])) {
+  require_once("admin/classes/geolocalizacion.php");
+  $geoData = getGeolocalizacionData();
+  $_SESSION['geoFinal'] = $geoData;
 }
 
+// ========== DETERMINAR IDIOMA por País (desde BD: tabla idioma_pais) ==========
+if (!isset($_SESSION['idioma'])) {
+  require_once("admin/classes/idioma_pais.php");
+  $geoFinal = $_SESSION['geoFinal'];
+  $countryCode = strtoupper($geoFinal['countryCode'] ?? '');
+  
+  // Consultar mapeo desde BD
+  $idioma = getIdiomaPorPais($countryCode);
+  
+  // Si no hay mapeo, usar ES por defecto
+  if (!$idioma) {
+    $idioma = 'ES';
+  }
+  
+  $_SESSION['idioma'] = $idioma;
+}
 
+// Cargar archivo de idioma (define $lang array)
+$lang_code = $_SESSION['idioma'];
+require("admin/lang/" . $lang_code . ".php");
+
+// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÓN ==========
+if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
+  if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
+    $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
+    $_SESSION['moneda_sel_sym'] = $_SESSION['geoFinal']['sym'];
+  } else {
+    // Fallback: moneda por defecto (USD)
+    $_SESSION['moneda_sel'] = 188;
+    $_SESSION['moneda_sel_sym'] = 'U$D';
+  }
+}
 
 $url = getUrlGeoUser();
 
@@ -92,7 +107,7 @@ if (!isset($_SESSION["moneda_sel"])) {
   <!-- ESTILOS NECESARIOS -->
 
   <!-- FONT-AWESOME -->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="admin/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <!-- FONT-AWESOME -->
 
   <!-- ANIMATE -->
@@ -106,6 +121,20 @@ if (!isset($_SESSION["moneda_sel"])) {
   <!-- STYLES GENERALES -->
   <link href="css/styles.css" rel="stylesheet">
   <!-- STYLES GENERALES -->
+
+  <!-- ESTILO BOTÓN CERRAR WINDOWS-LIKE PARA CARRITO -->
+  <style>
+    .btn-close-container { position: absolute; top: 6px; right: 6px; }
+    .btn-close-win {
+      width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      border: none; border-radius: 4px; background: transparent;
+      color: #C50F1F; font-weight: 700; font-size: 20px; line-height: 1; cursor: pointer;
+      padding: 0; text-decoration: none; transition: background .15s ease, color .15s ease;
+    }
+    .btn-close-win:hover { background: #C50F1F; color: #fff; }
+    .btn-close-win:focus { outline: none; box-shadow: 0 0 0 2px rgba(197,15,31,.2); }
+  </style>
 
   <!-- RESPONSIVE DESING-->
   <link href="css/responsive.css" rel="stylesheet">

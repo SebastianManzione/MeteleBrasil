@@ -1,12 +1,14 @@
 <?php 
-
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('blogAlta');
 
 include("includes/header.php");
-
 include("includes/navbar.php");
-
 include("includes/sidebar.php");
+
 
 require("classes/functions.php");
 
@@ -33,32 +35,13 @@ exit();
 }
 
  $editar=0;
-
-    $idPost='';
-
-    $articulo='';
-
-    $titulo='';
-
-    $idDestino='';
-
-    $descripcionCorta='';
-
-    $contenido='';
-
-    $tipsYConsejos='';
-
-    $observaciones='';
-
-    $idTextoMiniaturasBlog='';
-
-
-
-
-
-
-
-
+ $titulo='';
+ $idDestino='';
+ $descripcionCorta='';
+ $contenido='';
+ $tipsYConsejos='';
+ $observaciones='';
+ $idTextoMiniaturasBlog='';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" ) {
 
@@ -532,11 +515,11 @@ $idTextoMiniaturasBlog=$_POST["idTextoMiniaturasBlog"];
 
 
 
-                                        <label>Articulo</label>
+                                        <label>Artículo (Contenido Principal)</label>
 
 
 
-                                        <textarea rows="5" name="contenido" id="txtDescripcion"><?=$contenido?></textarea>
+                                        <textarea name="contenido" id="editorContenido"><?=$contenido?></textarea>
 
 
 
@@ -556,11 +539,11 @@ $idTextoMiniaturasBlog=$_POST["idTextoMiniaturasBlog"];
 
 
 
-                                        <label>Tips y cosejos</label>
+                                        <label>Tips y Consejos</label>
 
 
 
-                                        <textarea rows="5" name="tipsYConsejos" id="txtDocumentacionViajero" class="form-control"> <?=$tipsYConsejos?> </textarea>
+                                        <textarea name="tipsYConsejos" id="editorTips"><?=$tipsYConsejos?></textarea>
 
 
 
@@ -798,43 +781,7 @@ $idTextoMiniaturasBlog=$_POST["idTextoMiniaturasBlog"];
 
 
 
-        <script src="https://cdn.tiny.cloud/1/tmziljuhbvkgvh6s3nraitzg8kqwidrdhvdwhhna089a987b/tinymce/6/tinymce.min.js" referrerpolicy="origin">
-
-
-
-           </script>
-
-
-
-            <script>
-
-    tinymce.init({
-
-      selector: 'textarea',
-
-       plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount ',
-
-      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-
-      tinycomments_mode: 'embedded',
-
-      tinycomments_author: 'Author name',
-
-      mergetags_list: [
-
-        { value: 'First.Name', title: 'First Name' },
-
-        { value: 'Email', title: 'Email' },
-
-      ], language : 'pt_BR'
-
-    });
-
-  </script>
-
-
-
-            <!-- /.row -->
+        <!-- /.row -->
 
 
 
@@ -850,4 +797,76 @@ $idTextoMiniaturasBlog=$_POST["idTextoMiniaturasBlog"];
 
 
 
-<?php include "includes/footer.php";?>
+<?php include("includes/footer.php"); ?>
+
+<?php include("includes/ckeditor_init.php"); ?>
+
+<script>
+// Variables para almacenar las instancias de los editores
+let editorContenido;
+let editorTips;
+
+$(document).ready(function() {
+  // Inicializar editor del contenido principal (completo)
+  initCKEditor('editorContenido', {
+    placeholder: 'Escribe el contenido del artículo aquí...',
+    toolbar: {
+      items: [
+        'heading', '|',
+        'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor', '|',
+        'bold', 'italic', 'underline', 'strikethrough', '|',
+        'link', 'uploadImage', 'insertTable', 'blockQuote', 'mediaEmbed', '|',
+        'alignment', '|',
+        'bulletedList', 'numberedList', '|',
+        'outdent', 'indent', '|',
+        'undo', 'redo'
+      ]
+    }
+  }).then(editor => {
+    editorContenido = editor;
+    console.log('Editor de contenido inicializado');
+  }).catch(error => {
+    console.error('Error al inicializar editor de contenido:', error);
+  });
+
+  // Inicializar editor de tips (simplificado)
+  initCKEditor('editorTips', {
+    placeholder: 'Escribe tips y consejos aquí...',
+    toolbar: {
+      items: [
+        'heading', '|',
+        'bold', 'italic', 'underline', '|',
+        'link', 'bulletedList', 'numberedList', '|',
+        'undo', 'redo'
+      ]
+    }
+  }).then(editor => {
+    editorTips = editor;
+    console.log('Editor de tips inicializado');
+  }).catch(error => {
+    console.error('Error al inicializar editor de tips:', error);
+  });
+});
+
+// Validar antes de enviar el formulario
+$('form').on('submit', function(e) {
+  if (editorContenido && editorTips) {
+    // Los editores actualizan automáticamente los textareas
+    return true;
+  } else {
+    e.preventDefault();
+    alert('Los editores aún no están cargados. Por favor espere un momento.');
+    return false;
+  }
+});
+</script>
+
+<style>
+  /* Altura mínima para los editores */
+  .ck-editor__editable {
+    min-height: 400px;
+  }
+  #editorTips .ck-editor__editable {
+    min-height: 200px;
+  }
+</style>

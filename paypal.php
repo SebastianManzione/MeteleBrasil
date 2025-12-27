@@ -1,8 +1,18 @@
+<?php
+// Cargar PayPal Client ID desde BD
+require_once(__DIR__ . '/admin/classes/conexion.php');
+require_once(__DIR__ . '/admin/classes/configuracion.php');
 
+try {
+    $config = new Configuracion();
+    $paypal_client_id = $config->obtener('paypal_client_id_1', 'AeV_6mpCIQUkgigJeObgPjqNJm9dtGpRbtWMZpF4z773Tw-Adj8hfrNA8WxzwM1_psRTaPXAv7akGBk9');
+} catch (Exception $e) {
+    // Fallback si hay error
+    $paypal_client_id = 'AeV_6mpCIQUkgigJeObgPjqNJm9dtGpRbtWMZpF4z773Tw-Adj8hfrNA8WxzwM1_psRTaPXAv7akGBk9';
+}
+?>
 
-  <script
-    src="https://www.paypal.com/sdk/js?client-id=AeV_6mpCIQUkgigJeObgPjqNJm9dtGpRbtWMZpF4z773Tw-Adj8hfrNA8WxzwM1_psRTaPXAv7akGBk9"> // Required. Replace SB_CLIENT_ID with your sandbox client ID.
-  </script>
+  <script src="https://www.paypal.com/sdk/js?client-id=<?php echo htmlspecialchars($paypal_client_id); ?>"></script>
 
     <div id="paypal-button-container"></div>
 

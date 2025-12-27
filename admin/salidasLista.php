@@ -1,17 +1,21 @@
 
 <?php 
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('salidasLista');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
-require("classes/functions.php");
-require("classes/prestador.php");
-require("classes/usuario.php");
-require("classes/reserva.php");
-require("classes/salidas.php");
-require("classes/categoria.php");
-require("classes/servicio.php");
+require_once("classes/functions.php");
+require_once("classes/prestador.php");
+require_once("classes/usuario.php");
+require_once("classes/reserva.php");
+require_once("classes/salidas.php");
+require_once("classes/categoria.php");
+require_once("classes/servicio.php");
 if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
  if($prestador>1){

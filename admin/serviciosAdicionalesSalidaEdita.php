@@ -1,20 +1,24 @@
 
 
 <?php 
-
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('serviciosAdicionalesSalidaEdita');
 
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
-require("classes/functions.php");
-require("classes/prestador.php");
-require("classes/usuario.php");
-require("classes/reserva.php");
-require("classes/salidas.php");
-require("classes/servicio.php");
-require("classes/accesibilidad.php");
-require("classes/convierte_monedas.php");
-require("classes/servicios_adicionales.php");
+require_once("classes/functions.php");
+require_once("classes/prestador.php");
+require_once("classes/usuario.php");
+require_once("classes/reserva.php");
+require_once("classes/salidas.php");
+require_once("classes/servicio.php");
+require_once("classes/accesibilidad.php");
+require_once("classes/convierte_monedas.php");
+require_once("classes/servicios_adicionales.php");
 if (!$_SESSION["login"]["rol"]==1) {
 
   alertar("Usted no tiene acceso a esta seccion del software", "error");
