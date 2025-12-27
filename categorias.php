@@ -1245,7 +1245,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
         <div class="modal-body">
           <h6 class="font-weight-bold mb-3">Ordenar por precio:</h6>
           <div class="btn-group-vertical d-flex w-100 mb-4">
-            <?= generarFiltrosPrecio($queryString, $orden, $lang); ?>
+            <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
             <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>" class="btn btn-outline-secondary filtro-btn">
               <i class="fa fa-times"></i> <?= isset($lang["limpiar_filtros"]) ? $lang["limpiar_filtros"] : "Limpiar Filtros"; ?>
             </a>
