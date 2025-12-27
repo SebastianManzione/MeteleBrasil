@@ -419,9 +419,9 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     /* ========== TARJETAS DE SERVICIOS (HORIZONTAL) ========== */
     .service-card {
       border: 1px solid #e5e5e5;
-      border-radius: 8px;
+      border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       transition: all 0.3s ease;
       background: white;
       display: flex;
@@ -452,6 +452,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       height: 200px;
       background-color: #f0f0f0;
       flex-shrink: 0;
+      padding: 8px;
     }
 
     .card-img-container img {
@@ -459,6 +460,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       height: 100%;
       object-fit: cover;
       transition: transform 0.3s ease;
+      border-radius: 8px;
     }
 
     .service-card:hover .card-img-container img {
@@ -467,23 +469,24 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
     .badge-top {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      background-color: #007bff;
+      top: 15px;
+      left: 15px;
+      background-color: #00b8d4;
       color: white;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
+      padding: 0.4rem 0.9rem;
+      border-radius: 8px;
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 700;
       z-index: 10;
       text-transform: uppercase;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .card-body {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      padding: 1.2rem;
+      padding: 1.5rem;
       justify-content: space-between;
     }
 
