@@ -317,8 +317,8 @@ console.log(servicios);
           } else {
               $precioSugerido = "ESGOTADO";
           }
-          $OpinionesServicio = GetOpinionesServicio($idServicio);
-          $estrellasServicio = GetEstrellasServicio($idServicio);
+          $OpinionesServicio = getOpinionesServicio($idServicio);
+          $estrellasServicio = getEstrellasServicio($idServicio);
           $textoMiniaturaData = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"] ?? 0);
           $textoMiniatura = (!empty($textoMiniaturaData)) ? $textoMiniaturaData[0]["texto"] : "";
           $fotos = getFotoMiniaturaServicio($idServicio);
@@ -326,13 +326,27 @@ console.log(servicios);
       <div class="col-lg-4 col-md-6 mb-4">
         <a href="servicio?id=<?= $idServicio ?>" class="destacados">
           <div class="d-destacado d-md-block d-none">
-            <div class="row">
+            <div class="row wow animated bounceInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: bounceInUp;">
               <div class="col-lg-12 texto-destacado">
-                <p class="title-big mb-0"><?= $servicios[$i]["nombre_servicio"] ?></p>
+                <p class="title-big mb-0" style="margin-bottom:-15px !important; margin-top: 20px; line-height: 24px;"><?= $servicios[$i]["nombre_servicio"] ?></p>
                 <?php if (count($OpinionesServicio) > 0) { ?>
-                <p class="mb-2"><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
+                <div class="d-flex flex-row">
+                  <div class="">
+                    <p class="title-number mb-0"><?= $estrellasServicio ?></p>
+                  </div>
+                  <div class="p-1 my-auto">
+                    <p class="mb-0" style="margin-top:20px;">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </p>
+                    <p><small class="text--rating-total"><?= count($OpinionesServicio) ?>  <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
+                  </div>
+                </div>
                 <?php } ?>
-                <p class="mb-0"><?= $descripcionCorta ?></p>
+                <p class="p-text" style="margin-top:-5px;"><?= $descripcionCorta ?></p>
               </div>
             </div>
           </div>
@@ -342,21 +356,13 @@ console.log(servicios);
               <h5 class="text-uppercase text-white"><?= $textoMiniatura ?></h5>
             </div>
             <div class="card-body card-body-10">
-              <div class="d-flex justify-content-between align-items-start">
+              <div class="d-flex justify-content-between align-items-start mb-2">
                 <h5 class="flex-grow-1 pe-2 mb-0"><?= $servicios[$i]["nombre_servicio"] ?></h5>
                 <h5 class="precio-card mb-0"><?= $precioSugerido ?></h5>
               </div>
               <?php if (count($OpinionesServicio) > 0) { ?>
-              <p class="mb-2"><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
+              <p class="mb-0"><small><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
               <?php } ?>
-              <!-- Mostrar distancia si está disponible -->
-              <?php 
-              $distancia = $servicios[$i]['distancia'] ?? 999999;
-              if ($distancia < 999999) {
-                  $distancia_km = number_format($distancia, 1, ',', '.');
-                  echo "<p class='mb-0' style='color: #666; font-size: 0.85em;'><i class='fas fa-location-dot'></i> " . $distancia_km . " km</p>";
-              }
-              ?>
             </div>
           </div>
         </a>
@@ -390,8 +396,8 @@ console.log(servicios);
           } else {
               $precioSugerido = "ESGOTADO";
           }
-          $OpinionesServicio = GetOpinionesServicio($idServicio);
-          $estrellasServicio = GetEstrellasServicio($idServicio);
+          $OpinionesServicio = getOpinionesServicio($idServicio);
+          $estrellasServicio = getEstrellasServicio($idServicio);
           $textoMiniaturaData = getTextoMiniatura($servicios_restantes[$i]["idTextoMiniaturas"] ?? 0);
           $textoMiniatura = (!empty($textoMiniaturaData)) ? $textoMiniaturaData[0]["texto"] : "";
           $fotos = getFotoMiniaturaServicio($idServicio);
@@ -399,13 +405,27 @@ console.log(servicios);
       <div class="col-lg-4 col-md-6 mb-4">
         <a href="servicio?id=<?= $idServicio ?>" class="destacados">
           <div class="d-destacado d-md-block d-none">
-            <div class="row">
+            <div class="row wow animated bounceInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: bounceInUp;">
               <div class="col-lg-12 texto-destacado">
-                <p class="title-big mb-0"><?= $servicios_restantes[$i]["nombre_servicio"] ?></p>
+                <p class="title-big mb-0" style="margin-bottom:-15px !important; margin-top: 20px; line-height: 24px;"><?= $servicios_restantes[$i]["nombre_servicio"] ?></p>
                 <?php if (count($OpinionesServicio) > 0) { ?>
-                <p class="mb-2"><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
+                <div class="d-flex flex-row">
+                  <div class="">
+                    <p class="title-number mb-0"><?= $estrellasServicio ?></p>
+                  </div>
+                  <div class="p-1 my-auto">
+                    <p class="mb-0" style="margin-top:20px;">
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                      <i class="fa fa-star"></i>
+                    </p>
+                    <p><small class="text--rating-total"><?= count($OpinionesServicio) ?>  <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
+                  </div>
+                </div>
                 <?php } ?>
-                <p class="mb-0"><?= $descripcionCorta ?></p>
+                <p class="p-text" style="margin-top:-5px;"><?= $descripcionCorta ?></p>
               </div>
             </div>
           </div>
@@ -415,21 +435,13 @@ console.log(servicios);
               <h5 class="text-uppercase text-white"><?= $textoMiniatura ?></h5>
             </div>
             <div class="card-body card-body-10">
-              <div class="d-flex justify-content-between align-items-start">
+              <div class="d-flex justify-content-between align-items-start mb-2">
                 <h5 class="flex-grow-1 pe-2 mb-0"><?= $servicios_restantes[$i]["nombre_servicio"] ?></h5>
                 <h5 class="precio-card mb-0"><?= $precioSugerido ?></h5>
               </div>
               <?php if (count($OpinionesServicio) > 0) { ?>
-              <p class="mb-2"><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
+              <p class="mb-0"><small><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
               <?php } ?>
-              <!-- Mostrar distancia si está disponible -->
-              <?php 
-              $distancia = $servicios_restantes[$i]['distancia'] ?? 999999;
-              if ($distancia < 999999) {
-                  $distancia_km = number_format($distancia, 1, ',', '.');
-                  echo "<p class='mb-0' style='color: #666; font-size: 0.85em;'><i class='fas fa-location-dot'></i> " . $distancia_km . " km</p>";
-              }
-              ?>
             </div>
           </div>
         </a>

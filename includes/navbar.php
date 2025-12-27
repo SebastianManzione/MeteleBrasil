@@ -180,9 +180,6 @@ try {
 
 <?= isset($parametros[0]["head"]) ? $parametros[0]["head"] : "" ?>
 
-<script src="https://www.google.com/recaptcha/api.js?render=6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></script>
-<script src="js/antibot.js"></script>
-
 <style>
   html, body { margin: 0 !important; padding: 0 !important; }
   #mainNav .navbar-nav .nav-link { display: flex; align-items: center; }
