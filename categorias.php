@@ -40,7 +40,6 @@ require_once('admin/classes/fotos_servicio.php');
 require_once('admin/classes/tarifas.php');
 require_once('admin/classes/cancelaciones.php');
 require("admin/classes/texto_miniaturas.php");
-require_once('admin/classes/duracion.php');
 
 
 // --- Lógica de obtención de datos (sin cambios) ---
