@@ -113,6 +113,7 @@ $lang = array(
     "menor_precio"=>"Lower price",
     "mayor_precio"=>"Higher price",
     "mas_cercano"=>"Nearest",
+    "mas_lejano"=>"Farthest",
     "visitas_guiadas"=> "Guided tours",
     "accesible"=>"Accessible",
     "duracion"=>"Activity time", 

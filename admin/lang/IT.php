@@ -104,6 +104,7 @@ $lang = array(
 "menor_precio"=>"Prezzo più basso",
 "mayor_precio"=>"Prezzo più alto",
 "mas_cercano"=>"Più vicino",
+"mas_lejano"=>"Più lontano",
 "visitas_guiadas"=>"Visite guidate",
 "accesible"=>"Accessibile",
 "duracion"=>"Durata",

@@ -209,6 +209,7 @@ $lang = array(
     "menor_precio"=>"Menor preço",
     "mayor_precio"=>"Maior preço",
     "mas_cercano"=>"Mais próximo",
+    "mas_lejano"=>"Mais distante",
 
 
 

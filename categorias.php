@@ -56,7 +56,8 @@ if (isset($_GET['pagina'])) {
 }
 
 $queryString = http_build_query($params);
-$orden = isset($_GET['orden']) ? $_GET['orden'] : '';
+$orden_precio = isset($_GET['orden_precio']) ? $_GET['orden_precio'] : '';
+$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : '';
 
 if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   // CASO 1: Categoría específica
@@ -95,8 +96,9 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
-// ========== APLICAR ORDENAMIENTO POR PROXIMIDAD (ANTES DE PAGINACIÓN) ==========
-if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
+// ========== APLICAR ORDENAMIENTO (ANTES DE PAGINACIÓN) ==========
+// Combinable: proximidad (cercano/lejano) + precio (asc/desc)
+if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
     // Obtener TODOS los servicios (sin paginar)
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
@@ -109,9 +111,26 @@ if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['latitud']) && isset(
     // Aplicar ordenamiento por distancia
     $latUsuario = (float)$_SESSION['geoFinal']['latitud'];
     $lonUsuario = (float)$_SESSION['geoFinal']['longitud'];
-    $servicios_ordenados = ordenarPorProximidad($servicios_completos, $latUsuario, $lonUsuario);
+    $servicios_ordenados = ordenarPorProximidad($servicios_completos, $latUsuario, $lonUsuario, $orden_distancia === 'lejano');
+    
+    // Si también hay orden por precio, aplicar como segundo criterio
+    if ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
+        $servicios_ordenados = aplicarOrdenPrecio($servicios_ordenados, $orden_precio);
+    }
     
     // Ahora aplicar la paginación manualmente
+    $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+} elseif ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
+    // Solo ordenamiento por precio (sin distancia)
+    if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
+        $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
+    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
+        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
+    } else {
+        $servicios_completos = getServicios();
+    }
+    
+    $servicios_ordenados = aplicarOrdenPrecio($servicios_completos, $orden_precio);
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
 }
 
@@ -123,9 +142,10 @@ if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['latitud']) && isset(
  * @param array $servicios - Array de servicios
  * @param float $latUsuario - Latitud del usuario
  * @param float $lonUsuario - Longitud del usuario
+ * @param bool $inverso - Si es true, ordena de más lejano a más cercano
  * @return array Servicios ordenados por distancia
  */
-function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario) {
+function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = false) {
     require('admin/classes/conexion.php');
     
     // Para cada servicio, calcular distancia mínima
@@ -160,8 +180,36 @@ function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario) {
     }
     
     // Ordenar por distancia
-    usort($servicios, function($a, $b) {
-        return $a['distancia_km'] <=> $b['distancia_km'];
+    usort($servicios, function($a, $b) use ($inverso) {
+        if ($inverso) {
+            // De mayor a menor (más lejano primero)
+            return $b['distancia_km'] <=> $a['distancia_km'];
+        } else {
+            // De menor a mayor (más cercano primero)
+            return $a['distancia_km'] <=> $b['distancia_km'];
+        }
+    });
+    
+    return $servicios;
+}
+
+/**
+ * Aplica ordenamiento por precio a servicios ya ordenados
+ * @param array $servicios - Array de servicios
+ * @param string $orden - 'price_asc' o 'price_desc'
+ * @return array Servicios con ordenamiento adicional por precio
+ */
+function aplicarOrdenPrecio($servicios, $orden) {
+    // Ordenar por precio (mantiene la estabilidad del orden previo)
+    usort($servicios, function($a, $b) use ($orden) {
+        $precio_a = isset($a['valor']) ? (float)$a['valor'] : 0;
+        $precio_b = isset($b['valor']) ? (float)$b['valor'] : 0;
+        
+        if ($orden === 'price_asc') {
+            return $precio_a <=> $precio_b;
+        } else {
+            return $precio_b <=> $precio_a;
+        }
     });
     
     return $servicios;
@@ -170,37 +218,55 @@ function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario) {
 // ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
 
 /**
- * Genera los botones de filtro por precio
- * @param string $queryString - Query string actual para preservar parámetros
- * @param string $orden - Orden actual (price_asc, price_desc, o vacío)
+ * Genera los botones de filtro por precio y proximidad
+ * @param string $queryString - Query string actual (sin orden_precio ni orden_distancia)
+ * @param string $orden_precio - Orden por precio actual (price_asc, price_desc, o vacío)
+ * @param string $orden_distancia - Orden por distancia actual (cercano, lejano, o vacío)
  * @param array $lang - Array de traducciones
  * @return string HTML de los botones
  */
-function generarFiltrosPrecio($queryString, $orden, $lang) {
+function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang) {
+  // Construir URL base preservando orden_distancia si existe
+  $baseParams = [];
+  parse_str($queryString, $baseParams);
+  unset($baseParams['orden_precio']); // Remover para reconstruir
+  unset($baseParams['orden_distancia']); // Remover para reconstruir
+  $baseQuery = http_build_query($baseParams);
+  
   ob_start();
   ?>
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="filtro-card <?= $orden === 'price_asc' ? 'active' : ''; ?>">
+  <!-- Filtros de Precio -->
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_precio=price_asc<?= !empty($orden_distancia) ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-arrow-up filtro-icon"></i>
       <span><?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?></span>
     </div>
-    <div class="filtro-toggle <?= $orden === 'price_asc' ? 'active' : ''; ?>"></div>
+    <div class="filtro-toggle <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>"></div>
   </a>
   
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="filtro-card <?= $orden === 'price_desc' ? 'active' : ''; ?>">
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_precio=price_desc<?= !empty($orden_distancia) ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_desc' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-arrow-down filtro-icon"></i>
       <span><?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?></span>
     </div>
-    <div class="filtro-toggle <?= $orden === 'price_desc' ? 'active' : ''; ?>"></div>
+    <div class="filtro-toggle <?= $orden_precio === 'price_desc' ? 'active' : ''; ?>"></div>
   </a>
   
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="filtro-card <?= $orden === 'proximidad' ? 'active' : ''; ?>">
+  <!-- Filtros de Proximidad -->
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_distancia=cercano<?= !empty($orden_precio) ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-map-marker-alt filtro-icon"></i>
-      <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?></span>
+      <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más cercano"; ?></span>
     </div>
-    <div class="filtro-toggle <?= $orden === 'proximidad' ? 'active' : ''; ?>"></div>
+    <div class="filtro-toggle <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>"></div>
+  </a>
+  
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_distancia=lejano<?= !empty($orden_precio) ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-map-marker-alt filtro-icon" style="transform: rotate(180deg);"></i>
+      <span><?= isset($lang["mas_lejano"]) ? $lang["mas_lejano"] : "Más lejano"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>"></div>
   </a>
   <?php
   return ob_get_clean();
