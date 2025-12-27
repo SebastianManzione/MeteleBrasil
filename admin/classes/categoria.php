@@ -138,7 +138,7 @@ function getCategoriasLimit612() {
                     guia
                  FROM categoria_servicio 
                  WHERE idCategoria_servicio > 0 AND habilitado = 1 
-                 LIMIT 6 OFFSET 6";
+                 LIMIT 999 OFFSET 6";
 
     $comando = $pdo->prepare($consulta);
     $comando->execute();

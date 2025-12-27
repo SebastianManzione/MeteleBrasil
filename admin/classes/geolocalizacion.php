@@ -112,38 +112,29 @@ function getGeolocalizacionData()
         $ip = '186.22.17.78'; // IP de prueba
     }
 
-    // Geolocalización real con ip-api
-    try {
-        // Configurar contexto con timeout para evitar que se cuelgue
-        $context = stream_context_create([
-            'http' => [
-                'timeout' => 5, // 5 segundos de timeout
-                'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-            ]
-        ]);
+    // Geolocalización real con ip-api (timeout corto para evitar cuelgues)
+    $context = stream_context_create([
+        'http' => [
+            'timeout' => 1, // 1 segundo para no trabar primera carga
+            'user_agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        ]
+    ]);
 
-        $geoJson = @file_get_contents("http://ip-api.com/json/{$ip}?fields=status,country,countryCode,city,lat,lon,timezone,currency", false, $context);
+    $geo = null;
+    $geoJson = @file_get_contents("http://ip-api.com/json/{$ip}?fields=status,country,countryCode,city,lat,lon,timezone,currency", false, $context);
 
-        if ($geoJson === false) {
-            throw new Exception("No se pudo conectar a la API de geolocalización");
-        }
-
+    if ($geoJson !== false) {
         $geo = json_decode($geoJson, true);
-
-        if ($geo === null) {
-            throw new Exception("Error al decodificar respuesta JSON");
+        if (!is_array($geo) || ($geo['status'] ?? '') !== 'success') {
+            $geo = null; // Forzar fallback si status != success
         }
+    }
 
-        if (!isset($geo['status']) || $geo['status'] !== 'success') {
-            throw new Exception("API retornó status: " . ($geo['status'] ?? 'desconocido'));
-        }
-
-    } catch (Exception $e) {
-        // Log del error (opcional)
-        $log_message = "[" . date('Y-m-d H:i:s') . "] GEOLOCALIZACION FALLIDA - IP: {$ip} - Error: " . $e->getMessage() . "\n";
+    if ($geo === null) {
+        // Log liviano y fallback
+        $log_message = "[" . date('Y-m-d H:i:s') . "] GEOLOCALIZACION FALLIDA - IP: {$ip}\n";
         @file_put_contents(__DIR__ . '/../../error_log', $log_message, FILE_APPEND);
 
-        // Valores por defecto para Argentina
         $geo = [
             'status' => 'success',
             'country' => 'Argentina',
@@ -159,7 +150,7 @@ function getGeolocalizacionData()
     $currencyISO = $geo['currency'] ?? 'USD';
     $countryCode = $geo['countryCode'] ?? 'US';
 
-    require_once("moneda.php");
+    require_once(__DIR__ . "/moneda.php");
     $monedas = getMonedas();
 
     $idMoneda = 188;

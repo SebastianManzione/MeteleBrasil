@@ -13,7 +13,17 @@ if (!function_exists('Visitante')) {
 }
 
 $ip = $_SERVER['REMOTE_ADDR'] ?? '186.22.17.78';
-$geoFinal = getGeolocalizacionData();
+$geoFinal = isset($_SESSION['geoFinal']) ? $_SESSION['geoFinal'] : getGeolocalizacionData();
+
+// Si la geo cacheada no tiene coords, reintentar
+$latUsuario = floatval($geoFinal['latitud'] ?? 0);
+$lonUsuario = floatval($geoFinal['longitud'] ?? 0);
+if ($latUsuario == 0 || $lonUsuario == 0) {
+  $geoFinal = getGeolocalizacionData();
+  $_SESSION['geoFinal'] = $geoFinal;
+  $latUsuario = floatval($geoFinal['latitud'] ?? 0);
+  $lonUsuario = floatval($geoFinal['longitud'] ?? 0);
+}
 $visitante = [$ip, $geoFinal['nombre_pais'], 'index.php'];
 Visitante($visitante);
 
@@ -30,8 +40,11 @@ if ($mysqli->connect_error) {
     die("Error de conexión: " . $mysqli->connect_error);
 }
 
+// Coordenadas finales del usuario
 $latUsuario = floatval($geoFinal['latitud'] ?? 0);
 $lonUsuario = floatval($geoFinal['longitud'] ?? 0);
+$latParam = $latUsuario ?: 0;
+$lonParam = $lonUsuario ?: 0;
 
 // Seleccionar el campo de nombre según el idioma
 $idioma = $_SESSION['idioma'] ?? 'ES';
@@ -48,7 +61,10 @@ if ($idioma === 'EN') {
     $campoDescripcion = 'descripcion_corta_it';
 }
 
-$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, s.destacado, s.idTextoMiniaturas, u.latitud, u.longitud FROM servicio s LEFT JOIN servicio_tarifas_ubicacion u ON s.idServicio = u.idServicioSalidasTarifas WHERE s.destacado = 1 AND s.habilitado = 1 LIMIT 12";
+// Ordenar en SQL por distancia si hay coordenadas de usuario
+$distanceExpr = "(CASE WHEN $latParam = 0 OR $lonParam = 0 OR u.latitud IS NULL OR u.longitud IS NULL THEN NULL ELSE (6371 * ACOS( COS(RADIANS($latParam)) * COS(RADIANS(u.latitud)) * COS(RADIANS(u.longitud) - RADIANS($lonParam)) + SIN(RADIANS($latParam)) * SIN(RADIANS(u.latitud)) )) END)";
+
+$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, s.destacado, s.idTextoMiniaturas, u.latitud, u.longitud, $distanceExpr AS distancia FROM servicio s LEFT JOIN servicio_tarifas_ubicacion u ON s.idServicio = u.idServicioSalidasTarifas WHERE s.destacado = 1 AND s.habilitado = 1 ORDER BY (distancia IS NULL), distancia ASC";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
 if ($result && $result->num_rows > 0) {
@@ -67,7 +83,7 @@ if ($latUsuario != 0 && $lonUsuario != 0) {
 }
 
 $servicios = array_slice($servicios_geo, 0, 6);
-$servicios_restantes = array_slice($servicios_geo, 6);
+$servicios_restantes = array_slice($servicios_geo, 6); // Muestra todos los restantes
 
 // Función para calcular distancia entre dos puntos (Haversine)
 function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
@@ -267,11 +283,6 @@ console.log(servicios);
         </a>
       </div>
       <?php } ?>
-      <div class="col-lg-12 text-center mt-4">
-        <button id="btn-ver-menos-VerMasActividades" class="btn btn-white btn-block fade-toggle" type="button" style="display:none;" onclick="toggleDiv('VerMasActividades', null)">
-          <?= $labelVerMenos ?>
-        </button>
-      </div>
     </div>
   </div>
 </section>
@@ -405,11 +416,6 @@ console.log(servicios);
         </a>
       </div>
       <?php } ?>
-      <div class="col-lg-12 text-center mt-4">
-        <button id="btn-ver-menos-VerMasActividades-d" class="btn btn-white btn-block fade-toggle" type="button" style="display:none;" onclick="toggleDiv('VerMasActividades-d', null)">
-          <?= $labelVerMenos ?>
-        </button>
-      </div>
     </div>
   </div>
 </section>

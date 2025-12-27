@@ -33,6 +33,12 @@ if (isset($_SESSION["login"]['idUsuario']) && $_SESSION['login']['idUsuario']==1
 }
 
 
+// Asegurar que $lang sea un array de traducciones; fallback PT
+if (!isset($lang) || !is_array($lang)) {
+  require "admin/lang/PT.php";
+}
+
+
 
 
 
@@ -55,6 +61,30 @@ require("admin/classes/parametros.php");
 include("admin/classes/geolocalizacion.php");
 
 $parametros=getParametros();
+
+// Geolocalización para idioma/moneda por defecto
+$geoFinal = isset($_SESSION['geoFinal']) && !empty($_SESSION['geoFinal'])
+  ? $_SESSION['geoFinal']
+  : getGeolocalizacionData();
+$_SESSION['geoFinal'] = $geoFinal;
+
+// Fijar idioma inicial según geo solo si no hay sesión previa
+if (empty($_SESSION['idioma']) && !empty($geoFinal['lang'])) {
+  $_SESSION['idioma'] = $geoFinal['lang'];
+}
+
+if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
+  if (isset($geoFinal['idMoneda'], $geoFinal['sym'])) {
+    $_SESSION['moneda_sel'] = $geoFinal['idMoneda'];
+    $_SESSION['moneda_sel_sym'] = $geoFinal['sym'];
+  }
+  if (!isset($_SESSION['moneda_sel'])) {
+    $_SESSION['moneda_sel'] = 283;
+  }
+  if (!isset($_SESSION['moneda_sel_sym'])) {
+    $_SESSION['moneda_sel_sym'] = 'R$';
+  }
+}
 
 
 
@@ -82,35 +112,10 @@ if(isset($_SESSION['idioma'])){
 
 
 
-  $lang = $_SESSION["idioma"];
-
-
-
-
-
-
-
-  require "admin/lang/".$lang.".php";
-
-  // Asegurar imagen de banderita según idioma actual
-  if (!isset($_SESSION["idioma_bandera"]) || empty($_SESSION["idioma_bandera"])) {
-    switch ($lang) {
-      case 'ES':
-        $_SESSION["idioma_bandera"] = 'img/countries/Spain-icon.png';
-        break;
-      case 'EN':
-        $_SESSION["idioma_bandera"] = 'img/countries/United-States-of-Americ-icon.png';
-        break;
-      case 'PT':
-        $_SESSION["idioma_bandera"] = 'img/countries/Brazil-icon.png';
-        break;
-      case 'IT':
-        $_SESSION["idioma_bandera"] = 'img/countries/italy-icon.png';
-        break;
-      default:
-        $_SESSION["idioma_bandera"] = 'img/countries/Brazil-icon.png';
-        break;
-    }
+  $langRaw = is_string($_SESSION["idioma"]) ? $_SESSION["idioma"] : '';
+  $langCode = strtoupper(substr((string)$langRaw, 0, 2));
+  if ($langCode === '') {
+    $langCode = 'PT';
   }
 
 
@@ -119,25 +124,61 @@ if(isset($_SESSION['idioma'])){
 
 
 
-  // si no hay sesion por default se carga el lenguaje espanol
+  require "admin/lang/".$langCode.".php";
+
+  // Sincronizar banderita con el idioma actual siempre (ES/EN/PT/IT)
+  $banderas = [
+    'ES' => 'img/countries/Spain-icon.png',
+    'EN' => 'img/countries/United-States-of-Americ-icon.png',
+    'PT' => 'img/countries/Brazil-icon.png',
+    'IT' => 'img/countries/italy-icon.png',
+  ];
+  $_SESSION["idioma_bandera"] = isset($banderas[$langCode]) ? $banderas[$langCode] : 'img/countries/Spain-icon.png';
+
+
+
+
 
 
 
 }else{
 
+  // Sin sesión previa: usar geolocalización; fallback PT
+  $langRaw = (isset($geoFinal['lang']) && is_string($geoFinal['lang'])) ? $geoFinal['lang'] : '';
+  $lang = strtoupper(substr((string)$langRaw, 0, 2));
+  if ($lang === '') {
+    $lang = 'PT';
+  }
+  $_SESSION["idioma"] = $lang;
 
+  $banderas = [
+    'ES' => 'img/countries/Spain-icon.png',
+    'EN' => 'img/countries/United-States-of-Americ-icon.png',
+    'PT' => 'img/countries/Brazil-icon.png',
+    'IT' => 'img/countries/italy-icon.png',
+  ];
 
-  $_SESSION["idioma_bandera"]='img/countries/Brazil-icon.png';
+  if (!is_string($lang) || $lang === '') {
+    $lang = 'PT';
+  }
 
+  $_SESSION["idioma_bandera"] = isset($banderas[$lang]) ? $banderas[$lang] : 'img/countries/Spain-icon.png';
 
-
-   $_SESSION["idioma"]="PT";
-
-
-
-  require "admin/lang/PT.php";
-
-
+  switch ($lang) {
+    case 'ES':
+      require "admin/lang/ES.php";
+      break;
+    case 'EN':
+      require "admin/lang/EN.php";
+      break;
+    case 'IT':
+      require "admin/lang/IT.php";
+      break;
+    case 'PT':
+    default:
+      require "admin/lang/PT.php";
+      break;
+  }
 
 }
 
@@ -1207,7 +1248,7 @@ METELE BRASIL
 
 
 
-    require("admin/classes/moneda.php");
+    require_once("admin/classes/moneda.php");
 
 
 
