@@ -95,6 +95,60 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
+// ========== ORDENAMIENTO POR PROXIMIDAD ==========
+if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SESSION['geoFinal']['lon'])) {
+  $latUsuario = floatval($_SESSION['geoFinal']['lat']);
+  $lonUsuario = floatval($_SESSION['geoFinal']['lon']);
+  
+  // Agregar coordenadas y calcular distancia para cada servicio
+  require_once('admin/classes/conexion.php');
+  foreach ($servicios as &$servicio) {
+    $idServicio = $servicio['idServicio'];
+    
+    // Obtener coordenadas promedio del servicio
+    $sqlCoords = "SELECT IFNULL(AVG(CAST(u.latitud AS DECIMAL(10,7))), 0) as latitud, 
+                         IFNULL(AVG(CAST(u.longitud AS DECIMAL(10,7))), 0) as longitud
+                  FROM servicio s 
+                  LEFT JOIN servicio_salidas ss ON s.idServicio = ss.idServicio 
+                  LEFT JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
+                  LEFT JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
+                  WHERE s.idServicio = :idServicio
+                  GROUP BY s.idServicio";
+    $cmdCoords = $pdo->prepare($sqlCoords);
+    $cmdCoords->bindParam(':idServicio', $idServicio, PDO::PARAM_INT);
+    $cmdCoords->execute();
+    $coords = $cmdCoords->fetch(PDO::FETCH_ASSOC);
+    
+    if ($coords) {
+      $servicio['latitud'] = floatval($coords['latitud']);
+      $servicio['longitud'] = floatval($coords['longitud']);
+      $servicio['distancia'] = calcularDistancia($latUsuario, $lonUsuario, $servicio['latitud'], $servicio['longitud']);
+    } else {
+      $servicio['distancia'] = 999999; // Sin coordenadas = muy lejos
+    }
+  }
+  
+  // Ordenar por distancia (más cercano primero)
+  usort($servicios, function($a, $b) {
+    return ($a['distancia'] ?? PHP_FLOAT_MAX) <=> ($b['distancia'] ?? PHP_FLOAT_MAX);
+  });
+}
+
+// Función para calcular distancia entre dos puntos (Haversine)
+if (!function_exists('calcularDistancia')) {
+  function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
+      if ($lat1 == 0 || $lon1 == 0 || $lat2 == 0 || $lon2 == 0) {
+          return 999999;
+      }
+      $radioTierra = 6371;
+      $dLat = deg2rad($lat2 - $lat1);
+      $dLon = deg2rad($lon2 - $lon1);
+      $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon/2) * sin($dLon/2);
+      $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+      return round($radioTierra * $c, 2);
+  }
+}
+
 // ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
 
 /**
@@ -107,6 +161,9 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 function generarFiltrosPrecio($queryString, $orden, $lang) {
   ob_start();
   ?>
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'proximidad' ? 'active' : ''; ?>">
+    <i class="fa fa-map-marker-alt"></i> <?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?>
+  </a>
   <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
     <i class="fa fa-arrow-up"></i> <?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?>
   </a>
@@ -414,32 +471,63 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
     .accordion .card {
       border: none;
-      border-bottom: 1px solid #f0f0f0;
+      border-bottom: 1px solid #e9ecef;
+      border-radius: 0 !important;
+      margin-bottom: 0.5rem;
     }
 
     .accordion .card:first-child {
-      border-top: 1px solid #f0f0f0;
+      border-top: 1px solid #e9ecef;
     }
 
     .accordion .card-header {
-      background-color: transparent;
+      background-color: #f8f9fa;
       border: none;
       padding: 0;
+      border-radius: 8px !important;
+    }
+
+    .accordion .card-body {
+      padding: 1rem 0.75rem;
+      background-color: white;
     }
 
     .btn-accordion {
       width: 100%;
       text-align: left;
-      padding: 0.8rem 0;
-      color: #333;
+      padding: 1rem 1.25rem;
+      color: #495057;
       font-weight: 600;
       text-decoration: none;
       border: none;
       background: none;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.2s ease;
+      border-radius: 8px;
+    }
+
+    .btn-accordion i:first-child {
+      color: #007bff;
+      width: 20px;
+      text-align: center;
     }
 
     .btn-accordion:hover {
       color: #007bff;
+      background-color: #e7f3ff;
+      text-decoration: none;
+    }
+
+    .btn-accordion .fa-chevron-down {
+      margin-left: auto;
+      transition: transform 0.2s ease;
+      font-size: 0.875rem;
+    }
+
+    .btn-accordion.collapsed .fa-chevron-down {
+      transform: rotate(-90deg);
     }
 
     /* ========== PAGINACIÓN ========== */
@@ -612,7 +700,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingSearch">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="true" aria-controls="collapseSearch">
-                    Búsqueda <i class="fa fa-sort-down float-right"></i>
+                    <i class="fa fa-search"></i> Búsqueda <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
@@ -637,7 +725,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingPrice">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapsePrice" aria-expanded="true" aria-controls="collapsePrice">
-                    Ordenar por Precio <i class="fa fa-sort-down float-right"></i>
+                    <i class="fa fa-sort"></i> Ordenar resultados <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
@@ -655,7 +743,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingCategory">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
-                    Categorías <i class="fa fa-sort-down float-right"></i>
+                    <i class="fa fa-filter"></i> Categorías <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
