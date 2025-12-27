@@ -95,6 +95,91 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
+// ========== APLICAR ORDENAMIENTO POR PROXIMIDAD (ANTES DE PAGINACIÓN) ==========
+if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SESSION['geoFinal']['lon'])) {
+    // Obtener TODOS los servicios (sin paginar)
+    if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
+        $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
+    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
+        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
+    } else {
+        $servicios_completos = getServicios();
+    }
+    
+    // Aplicar ordenamiento por distancia
+    $latUsuario = (float)$_SESSION['geoFinal']['lat'];
+    $lonUsuario = (float)$_SESSION['geoFinal']['lon'];
+    $servicios_ordenados = ordenarPorProximidad($servicios_completos, $latUsuario, $lonUsuario);
+    
+    // Ahora aplicar la paginación manualmente
+    $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+}
+
+// ========== FUNCIONES AUXILIARES ==========
+
+/**
+ * Calcula distancia en km entre dos puntos usando fórmula de Haversine
+ */
+function haversineKm($lat1, $lon1, $lat2, $lon2) {
+    $R = 6371.0; // Radio de la Tierra en km
+    $dLat = deg2rad($lat2 - $lat1);
+    $dLon = deg2rad($lon2 - $lon1);
+    $a = sin($dLat/2) ** 2 +
+         cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+         (sin($dLon/2) ** 2);
+    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+    return $R * $c;
+}
+
+/**
+ * Aplica ordenamiento por proximidad a un array de servicios
+ * @param array $servicios - Array de servicios
+ * @param float $latUsuario - Latitud del usuario
+ * @param float $lonUsuario - Longitud del usuario
+ * @return array Servicios ordenados por distancia
+ */
+function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario) {
+    require('admin/classes/conexion.php');
+    
+    // Para cada servicio, calcular distancia mínima
+    foreach ($servicios as $key => $servicio) {
+        $idServicio = $servicio['idServicio'];
+        $minKm = 99999.0;
+        
+        // Obtener todas las ubicaciones de este servicio
+        $consulta = "
+            SELECT DISTINCT u.latitud, u.longitud
+            FROM servicio_salidas ss
+            JOIN servicio_salidas_tarifas st ON st.idServicioSalidas = ss.idServicioSalidas
+            JOIN servicio_tarifas_ubicacion u ON u.idServicioSalidasTarifas = st.idServicioSalidasTarifas
+            WHERE ss.idServicio = :idServicio
+              AND u.latitud IS NOT NULL
+              AND u.longitud IS NOT NULL
+        ";
+        
+        $comando = $pdo->prepare($consulta);
+        $comando->execute([':idServicio' => $idServicio]);
+        $ubicaciones = $comando->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Calcular distancia mínima
+        foreach ($ubicaciones as $ubi) {
+            $distancia = haversineKm($latUsuario, $lonUsuario, $ubi['latitud'], $ubi['longitud']);
+            if ($distancia < $minKm) {
+                $minKm = $distancia;
+            }
+        }
+        
+        $servicios[$key]['distancia_km'] = round($minKm, 2);
+    }
+    
+    // Ordenar por distancia
+    usort($servicios, function($a, $b) {
+        return $a['distancia_km'] <=> $b['distancia_km'];
+    });
+    
+    return $servicios;
+}
+
 // ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
 
 /**
@@ -112,6 +197,9 @@ function generarFiltrosPrecio($queryString, $orden, $lang) {
   </a>
   <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
     <i class="fa fa-arrow-down"></i> <?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?>
+  </a>
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'proximidad' ? 'active' : ''; ?>">
+    <i class="fa fa-map-marker-alt"></i> <?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?>
   </a>
   <?php
   return ob_get_clean();
