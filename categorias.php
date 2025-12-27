@@ -179,14 +179,28 @@ function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario) {
 function generarFiltrosPrecio($queryString, $orden, $lang) {
   ob_start();
   ?>
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
-    <i class="fa fa-arrow-up"></i> <?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?>
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="filtro-card <?= $orden === 'price_asc' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-arrow-up filtro-icon"></i>
+      <span><?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden === 'price_asc' ? 'active' : ''; ?>"></div>
   </a>
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
-    <i class="fa fa-arrow-down"></i> <?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?>
+  
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="filtro-card <?= $orden === 'price_desc' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-arrow-down filtro-icon"></i>
+      <span><?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden === 'price_desc' ? 'active' : ''; ?>"></div>
   </a>
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'proximidad' ? 'active' : ''; ?>">
-    <i class="fa fa-map-marker-alt"></i> <?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?>
+  
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="filtro-card <?= $orden === 'proximidad' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-map-marker-alt filtro-icon"></i>
+      <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden === 'proximidad' ? 'active' : ''; ?>"></div>
   </a>
   <?php
   return ob_get_clean();
@@ -215,7 +229,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   
   $isActive = ($idCategoria == 0) ? 'active' : '';
   ?>
-  <a href="categorias?<?= $urlParamsAll ?>" class="btn btn-sm btn-block btn-outline-primary filtro-btn mb-2 <?= $isActive ?>">
+  <a href="categorias?<?= $urlParamsAll ?>" class="categoria-link <?= $isActive ?>">
     <?= isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas las categorías"; ?>
   </a>
   
@@ -234,7 +248,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     
     $isActive = ($idCategoria == $idCategoria_item) ? 'active' : '';
     ?>
-    <a href="categorias?<?= $urlParams ?>" class="btn btn-sm btn-block btn-outline-primary filtro-btn mb-2 <?= $isActive ?>">
+    <a href="categorias?<?= $urlParams ?>" class="categoria-link <?= $isActive ?>">
       <?= $nombre_categoria_item ?>
     </a>
   <?php
@@ -634,59 +648,102 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       box-shadow: none;
     }
 
-    /* ========== ESTILOS COMUNES FILTROS (SIDEBAR + MODAL) ========== */
-    .filtro-btn {
-      text-align: left;
-      border-radius: 4px !important;
-      margin-bottom: 0.2rem;
-      padding: 0.4rem 0.6rem;
-      font-size: 0.85rem;
-      border: 1px solid #e0e0e0;
-      background-color: white;
-      color: #555;
-      transition: all 0.15s ease;
-      display: block;
-      width: 100%;
-      font-weight: 400;
-      line-height: 1.3;
-    }
-
-    .filtro-btn i {
-      font-size: 0.8rem;
-      margin-right: 0.4rem;
-      opacity: 0.7;
-      width: 14px;
-      display: inline-block;
-    }
-
-    .filtro-btn:hover {
-      background-color: #e7f3ff;
-      border-color: #029ce2;
-      color: #029ce2;
+    /* ========== FILTROS ESTILO MERCADOLIBRE ========== */
+    
+    /* Cards de filtro con toggle switch */
+    .filtro-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border: 1px solid #e5e5e5;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
       text-decoration: none;
-      transform: translateX(2px);
+      color: #333;
+      transition: all 0.2s ease;
     }
 
-    .filtro-btn.active {
-      background: linear-gradient(135deg, #029ce2 0%, #0277bd 100%);
-      color: white !important;
-      font-weight: 500;
+    .filtro-card:hover {
+      background-color: #f5f5f5;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+
+    .filtro-card.active {
       border-color: #029ce2;
-      box-shadow: 0 2px 8px rgba(2, 156, 226, 0.25);
+      background-color: #e7f3ff;
     }
 
-    .filtro-btn.active i {
+    .filtro-content {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+
+    .filtro-icon {
+      font-size: 1rem;
+      color: #029ce2;
+      opacity: 0.8;
+    }
+
+    .filtro-card.active .filtro-icon {
       opacity: 1;
     }
 
-    .filtro-btn.btn-outline-secondary {
-      border-color: #6c757d;
-      color: #6c757d;
+    /* Toggle switch visual */
+    .filtro-toggle {
+      width: 44px;
+      height: 24px;
+      background-color: #e5e5e5;
+      border-radius: 12px;
+      position: relative;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
     }
 
-    .filtro-btn.btn-outline-secondary:hover {
-      background-color: #6c757d;
-      color: white !important;
+    .filtro-toggle::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .filtro-toggle.active {
+      background-color: #029ce2;
+    }
+
+    .filtro-toggle.active::after {
+      left: 22px;
+    }
+
+    /* Links de categoría estilo MercadoLibre */
+    .categoria-link {
+      display: block;
+      padding: 0.5rem 0;
+      color: #555;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    .categoria-link:hover {
+      color: #029ce2;
+      text-decoration: none;
+    }
+
+    .categoria-link.active {
+      color: #029ce2;
+      font-weight: 500;
     }
 
     /* ========== NO RESULTADOS ========== */
