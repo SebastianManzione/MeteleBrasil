@@ -416,7 +416,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       border-radius: 8px;
     }
 
-    /* ========== TARJETAS DE SERVICIOS (HORIZONTAL) ========== */
+    /* ========== TARJETAS DE SERVICIOS (VERTICAL - 3 COLUMNAS) ========== */
     .service-card {
       border: 1px solid #e5e5e5;
       border-radius: 8px;
@@ -425,10 +425,10 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       transition: all 0.3s ease;
       background: white;
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       text-decoration: none;
       color: inherit;
-      margin-bottom: 1rem;
+      height: 100%;
     }
 
     .service-card:hover {
@@ -440,15 +440,14 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       text-decoration: none;
       color: inherit;
       display: flex;
-      flex-direction: row;
-      width: 100%;
+      flex-direction: column;
+      height: 100%;
     }
 
     .card-img-container {
       position: relative;
       overflow: hidden;
-      width: 250px;
-      min-width: 250px;
+      width: 100%;
       height: 200px;
       background-color: #f0f0f0;
       flex-shrink: 0;
@@ -499,20 +498,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       color: #007bff;
       font-size: 0.9rem;
       margin-bottom: 0.5rem;
-    }
-
-    /* Responsive: Mobile en vertical */
-    @media (max-width: 768px) {
-      .service-card,
-      .service-card a {
-        flex-direction: column !important;
-      }
-
-      .card-img-container {
-        width: 100% !important;
-        min-width: 100% !important;
-        height: 180px !important;
-      }
     }
 
     .rating-text strong {
@@ -1071,8 +1056,8 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
 
             ?>
-              <!-- TARJETA SERVICIO - HORIZONTAL DESKTOP, VERTICAL MÓVIL -->
-              <div class="col-12 mb-3">
+              <!-- TARJETA SERVICIO VERTICAL -->
+              <div class="col-md-4 col-lg-4 mb-4">
                 <div class="service-card">
                   <a href="servicio?id=<?= $idServicio ?>">
                     <div class="card-img-container">
@@ -1082,32 +1067,28 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                       <?php endif; ?>
                     </div>
                     <div class="card-body">
-                      <div>
-                        <h5 class="card-title"><?= $nombre_servicio ?></h5>
-                        <?php if (count($opiniones_servicio) > 0) { ?>
-                        <p class="rating-text">
-                          <strong><?= $estrellas_servicio; ?>/10</strong> 
-                          <span>(<?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?>)</span>
-                        </p>
-                        <?php } ?>
-                        <!-- DESCRIPCIÓN -->
-                        <p class="description-text"><?= $descripcion_corta; ?></p>
+                      <h5 class="card-title"><?= $nombre_servicio ?></h5>
+                      <?php if (count($opiniones_servicio) > 0) { ?>
+                      <p class="rating-text">
+                        <strong><?= $estrellas_servicio; ?>/10</strong> 
+                        <span><?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?></span>
+                      </p>
+                      <?php } ?>
+                      <!-- DESCRIPCIÓN -->
+                      <p class="description-text"><?= $descripcion_corta; ?></p>
 
-                        <!-- DURACIÓN -->
-                        <?php if(!empty($duracion_servicio)): ?>
-                          <ul class="features-list">
-                            <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
-                          </ul>
-                        <?php endif; ?>
-                      </div>
+                      <!-- DURACIÓN -->
+                      <?php if(!empty($duracion_servicio)): ?>
+                        <ul class="features-list">
+                          <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
+                        </ul>
+                      <?php endif; ?>
 
                       <!-- PRECIO Y CANCELACIÓN -->
                       <div class="price-section">
-                        <div>
-                          <?php if (!empty($cancelacion)) : ?>
-                            <h6 class="cancellation-text mb-0"><i class="fa fa-check-circle"></i> <?= $cancelacion ?></h6>
-                          <?php endif; ?>
-                        </div>
+                        <?php if (!empty($cancelacion)) : ?>
+                          <h6 class="cancellation-text mb-1"><i class="fa fa-check-circle"></i> <?= $cancelacion ?></h6>
+                        <?php endif; ?>
                         <p class="price-text mb-0 <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></p>
                       </div>
                     </div>
