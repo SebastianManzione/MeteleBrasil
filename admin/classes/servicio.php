@@ -83,16 +83,54 @@ function getAllServiciosPrestador($idPrestador) {
 
 function getServicios(){
 require("conexion.php");
+
+// Obtém o idioma da sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
+
 $consulta = "select * from servicio WHERE habilitado=1";
 $comando = $pdo->prepare($consulta);
 $comando->execute();
 $cuenta_col = $comando->columnCount();
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+// Ajusta los datos según el idioma
+foreach ($resultado as &$row) {
+    switch ($idioma) {
+        case 'EN':
+            $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_en'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_en'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'PT':
+            $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_pt'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_pt'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'IT':
+            $row['nombre_servicio'] = $row['nombre_servicio_it'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_it'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_it'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        default:
+            break;
+    }
+}
+
 return $resultado; }
 
 
 function getServiciosPaginado($desde, $hasta){
 require("conexion.php");
+
+// Obtém o idioma da sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
+
 $consulta = "select * from servicio  WHERE habilitado=1 LIMIT :desde, :hasta";
 $comando = $pdo->prepare($consulta);
 $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
@@ -100,6 +138,30 @@ $comando->bindParam(":hasta", $hasta, PDO::PARAM_INT);
 $comando->execute();
 $cuenta_col = $comando->columnCount();
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+// Ajusta los datos según el idioma
+foreach ($resultado as &$row) {
+    switch ($idioma) {
+        case 'EN':
+            $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_en'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_en'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'PT':
+            $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_pt'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_pt'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'IT':
+            $row['nombre_servicio'] = $row['nombre_servicio_it'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_it'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_it'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        default:
+            break;
+    }
+}
+
 return $resultado;}
 
 
@@ -118,6 +180,13 @@ return $resultado; }
 
 function getServiciosBusqueda($busqueda){
 require("conexion.php");
+
+// Obtém o idioma da sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
+
 $busqueda="%".$busqueda."%";
 $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
 OR descripcion_servicio LIKE :busqueda  AND habilitado=1
@@ -126,12 +195,42 @@ $comando = $pdo->prepare($consulta);
 $comando->execute(["busqueda"=>$busqueda]);
 $cuenta_col = $comando->columnCount();
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-// Imprimir en pantalla
+
+// Ajusta los datos según el idioma
+foreach ($resultado as &$row) {
+    switch ($idioma) {
+        case 'EN':
+            $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_en'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_en'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'PT':
+            $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_pt'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_pt'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'IT':
+            $row['nombre_servicio'] = $row['nombre_servicio_it'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_it'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_it'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        default:
+            break;
+    }
+}
+
 return $resultado; }
 
 
 function getServiciosBusquedaPaginada($busqueda, $desde, $hasta){
 require("conexion.php");
+
+// Obtém o idioma da sessão
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+$idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
+
 $busqueda="%".$busqueda."%";
 $consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
 OR descripcion_servicio LIKE :busqueda  AND habilitado=1
@@ -143,7 +242,30 @@ $comando->bindParam(":busqueda", $busqueda, PDO::PARAM_STR );
 $comando->execute();
 $cuenta_col = $comando->columnCount();
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-// Imprimir en pantalla
+
+// Ajusta los datos según el idioma
+foreach ($resultado as &$row) {
+    switch ($idioma) {
+        case 'EN':
+            $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_en'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_en'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'PT':
+            $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_pt'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_pt'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        case 'IT':
+            $row['nombre_servicio'] = $row['nombre_servicio_it'] ?? $row['nombre_servicio'] ?? '';
+            $row['descripcion_corta'] = $row['descripcion_corta_it'] ?? $row['descripcion_corta'] ?? '';
+            $row['descripcion_servicio'] = $row['descripcion_servicio_it'] ?? $row['descripcion_servicio'] ?? '';
+            break;
+        default:
+            break;
+    }
+}
+
 return $resultado; }
 
 
@@ -352,6 +474,13 @@ function getServiciosidCategoria_servicio($idCategoria_servicio) {
 
     function getServiciosidCategoria_servicioPaginado($idCategoria_servicio, $desde, $hasta){
     require("conexion.php");
+    
+    // Obtém o idioma da sessão
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
+    
     $consulta = "select * from servicio WHERE idCategoria_servicio=:idCategoria_servicio AND habilitado=1 LIMIT :desde, :hasta";
     $comando = $pdo->prepare($consulta);
     $comando->bindParam(":desde", $desde, PDO::PARAM_INT);
@@ -360,7 +489,30 @@ function getServiciosidCategoria_servicio($idCategoria_servicio) {
     $comando->execute();
     $cuenta_col = $comando->columnCount();
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-    // Imprimir en pantalla
+    
+    // Ajusta los datos según el idioma
+    foreach ($resultado as &$row) {
+        switch ($idioma) {
+            case 'EN':
+                $row['nombre_servicio'] = $row['nombre_servicio_en'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion_corta'] = $row['descripcion_corta_en'] ?? $row['descripcion_corta'] ?? '';
+                $row['descripcion_servicio'] = $row['descripcion_servicio_en'] ?? $row['descripcion_servicio'] ?? '';
+                break;
+            case 'PT':
+                $row['nombre_servicio'] = $row['nombre_servicio_pt'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion_corta'] = $row['descripcion_corta_pt'] ?? $row['descripcion_corta'] ?? '';
+                $row['descripcion_servicio'] = $row['descripcion_servicio_pt'] ?? $row['descripcion_servicio'] ?? '';
+                break;
+            case 'IT':
+                $row['nombre_servicio'] = $row['nombre_servicio_it'] ?? $row['nombre_servicio'] ?? '';
+                $row['descripcion_corta'] = $row['descripcion_corta_it'] ?? $row['descripcion_corta'] ?? '';
+                $row['descripcion_servicio'] = $row['descripcion_servicio_it'] ?? $row['descripcion_servicio'] ?? '';
+                break;
+            default:
+                break;
+        }
+    }
+    
     return $resultado;}
 
 function getServiciosidDestino($idDestino) {
