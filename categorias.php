@@ -416,6 +416,14 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
       padding: 1rem;
       font-size: 1rem;
       border: 1px solid #dee2e6;
+      background-color: white;
+      color: #333;
+    }
+
+    .modal-body .btn-group-vertical .btn:hover {
+      background-color: #f8f9fa;
+      border-color: #007bff;
+      color: #007bff;
     }
 
     .modal-body .btn-group-vertical .btn.active {
@@ -423,6 +431,16 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
       color: white;
       font-weight: bold;
       border-color: #007bff;
+    }
+
+    .modal-body .btn-outline-secondary {
+      border-color: #6c757d;
+      color: #6c757d;
+    }
+
+    .modal-body .btn-outline-secondary:hover {
+      background-color: #6c757d;
+      color: white;
     }
 
     /* ========== NO RESULTADOS ========== */
