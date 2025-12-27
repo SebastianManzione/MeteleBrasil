@@ -96,7 +96,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 }
 
 // ========== APLICAR ORDENAMIENTO POR PROXIMIDAD (ANTES DE PAGINACIÓN) ==========
-if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SESSION['geoFinal']['lon'])) {
+if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
     // Obtener TODOS los servicios (sin paginar)
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
@@ -107,8 +107,8 @@ if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SE
     }
     
     // Aplicar ordenamiento por distancia
-    $latUsuario = (float)$_SESSION['geoFinal']['lat'];
-    $lonUsuario = (float)$_SESSION['geoFinal']['lon'];
+    $latUsuario = (float)$_SESSION['geoFinal']['latitud'];
+    $lonUsuario = (float)$_SESSION['geoFinal']['longitud'];
     $servicios_ordenados = ordenarPorProximidad($servicios_completos, $latUsuario, $lonUsuario);
     
     // Ahora aplicar la paginación manualmente
