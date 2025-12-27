@@ -845,7 +845,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       <!-- SIDEBAR FILTROS (DESKTOP ONLY) -->
       <div class="col-lg-3 d-none d-lg-block">
         <div class="sidebar-container">
-          <h3 class="sidebar-title">Filtrar resultados</h3>
+          <h3 class="sidebar-title"><?= isset($lang["filtrar_resultados"]) ? $lang["filtrar_resultados"] : "Filtrar resultados"; ?></h3>
 
           <!-- FILTRO DE BÚSQUEDA EN SIDEBAR -->
           <div class="accordion" id="accordionSearch">
@@ -853,7 +853,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingSearch">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="true" aria-controls="collapseSearch">
-                    <i class="fa fa-search"></i> Búsqueda <i class="fa fa-chevron-down float-right"></i>
+                    <i class="fa fa-search"></i> <?= isset($lang["buscar"]) ? $lang["buscar"] : "Búsqueda"; ?> <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
@@ -861,7 +861,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                 <div class="card-body">
                   <form method="get">
                     <div class="input-group">
-                      <input type="text" class="form-control form-control-sm" name="buscar" placeholder="Buscar..." value="<?= htmlspecialchars($busqueda) ?>">
+                      <input type="text" class="form-control form-control-sm" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>">
                       <div class="input-group-append">
                         <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i></button>
                       </div>
@@ -878,7 +878,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingPrice">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapsePrice" aria-expanded="true" aria-controls="collapsePrice">
-                    <i class="fa fa-sort"></i> Ordenar resultados <i class="fa fa-chevron-down float-right"></i>
+                    <i class="fa fa-sort"></i> <?= isset($lang["ordenar_resultados"]) ? $lang["ordenar_resultados"] : "Ordenar resultados"; ?> <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
@@ -896,7 +896,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="card-header" id="headingCategory">
                 <h5 class="mb-0">
                   <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
-                    <i class="fa fa-filter"></i> Categorías <i class="fa fa-chevron-down float-right"></i>
+                    <i class="fa fa-filter"></i> <?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?> <i class="fa fa-chevron-down float-right"></i>
                   </a>
                 </h5>
               </div>
