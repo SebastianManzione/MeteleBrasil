@@ -95,6 +95,78 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
+// ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
+
+/**
+ * Genera los botones de filtro por precio
+ * @param string $queryString - Query string actual para preservar parámetros
+ * @param string $orden - Orden actual (price_asc, price_desc, o vacío)
+ * @param array $lang - Array de traducciones
+ * @return string HTML de los botones
+ */
+function generarFiltrosPrecio($queryString, $orden, $lang) {
+  ob_start();
+  ?>
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
+    <i class="fa fa-arrow-up"></i> <?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?>
+  </a>
+  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
+    <i class="fa fa-arrow-down"></i> <?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?>
+  </a>
+  <?php
+  return ob_get_clean();
+}
+
+/**
+ * Genera los botones de filtro por categoría
+ * @param int $idCategoria - ID de categoría actual
+ * @param string $busqueda - Término de búsqueda actual
+ * @param string $orden - Orden actual
+ * @param array $lang - Array de traducciones
+ * @return string HTML de los botones
+ */
+function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
+  ob_start();
+  $todas_las_categorias = getCategorias();
+  
+  // URL para "Todas las categorías"
+  $urlParamsAll = "";
+  if (!empty($busqueda)) {
+    $urlParamsAll .= "buscar=" . urlencode($busqueda);
+  }
+  if (!empty($orden)) {
+    $urlParamsAll .= (!empty($urlParamsAll) ? "&" : "") . "orden=" . urlencode($orden);
+  }
+  
+  $isActive = ($idCategoria == 0) ? 'active' : '';
+  ?>
+  <a href="categorias?<?= $urlParamsAll ?>" class="btn btn-sm btn-block btn-outline-primary filtro-btn mb-2 <?= $isActive ?>">
+    <?= isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas las categorías"; ?>
+  </a>
+  
+  <?php
+  for ($i = 0; $i < count($todas_las_categorias); $i++) {
+    $idCategoria_item = $todas_las_categorias[$i]["idCategoria_servicio"];
+    $nombre_categoria_item = $todas_las_categorias[$i]["nombre_categoria_servicio"];
+    
+    $urlParams = "idCategoria=" . $idCategoria_item;
+    if (!empty($busqueda)) {
+      $urlParams .= "&buscar=" . urlencode($busqueda);
+    }
+    if (!empty($orden)) {
+      $urlParams .= "&orden=" . urlencode($orden);
+    }
+    
+    $isActive = ($idCategoria == $idCategoria_item) ? 'active' : '';
+    ?>
+    <a href="categorias?<?= $urlParams ?>" class="btn btn-sm btn-block btn-outline-primary filtro-btn mb-2 <?= $isActive ?>">
+      <?= $nombre_categoria_item ?>
+    </a>
+  <?php
+  }
+  return ob_get_clean();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -571,12 +643,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               </div>
               <div id="collapsePrice" class="collapse show" aria-labelledby="headingPrice" data-parent="#accordionPrice">
                 <div class="card-body">
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary mb-2 filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
-                    <i class="fa fa-arrow-up"></i> Menor Precio
-                  </a>
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
-                    <i class="fa fa-arrow-down"></i> Mayor Precio
-                  </a>
+                  <?= generarFiltrosPrecio($queryString, $orden, $lang); ?>
                 </div>
               </div>
             </div>
@@ -594,49 +661,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               </div>
               <div id="collapseCategory" class="collapse show" aria-labelledby="headingCategory" data-parent="#accordionCategory">
                 <div class="card-body">
-                  <?php
-                  $todas_las_categorias = getCategorias();
-                  $urlParamsAll = "";
-                  if (!empty($busqueda)) {
-                    $urlParamsAll .= "buscar=" . urlencode($busqueda);
-                  }
-                  if (!empty($orden)) {
-                    $urlParamsAll .= (!empty($urlParamsAll) ? "&" : "") . "orden=" . urlencode($orden);
-                  }
-
-                  $checkedAll = ($idCategoria == 0) ? "checked" : "";
-                  echo '<a href="categorias?' . $urlParamsAll . '">
-                         <div class="custom-control custom-checkbox mb-2">
-                          <input type="' . ($idCategoria == 0 ? 'radio' : '') . '" class="custom-control-input" id="" ' . $checkedAll . '>
-                          <label class="custom-control-label" for="">' . (isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : 'Todas las categorías') . '</label>
-                        </div></a>';
-
-                  for ($i = 0; $i < count($todas_las_categorias); $i++) {
-                    $idCategoria_todas = $todas_las_categorias[$i]["idCategoria_servicio"];
-                    $nombre_categoria_servicio_todas = $todas_las_categorias[$i]["nombre_categoria_servicio"];
-                    $checked = "";
-                    $type = "";
-
-                    if ($idCategoria == $idCategoria_todas) {
-                      $checked = "checked";
-                      $type = "radio";
-                    }
-
-                    $urlParams = "idCategoria=" . $idCategoria_todas;
-                    if (!empty($busqueda)) {
-                      $urlParams .= "&buscar=" . urlencode($busqueda);
-                    }
-                    if (!empty($orden)) {
-                      $urlParams .= "&orden=" . urlencode($orden);
-                    }
-
-                    echo '<a href="categorias?' . $urlParams . '">
-                         <div class="custom-control custom-checkbox mb-2">
-                          <input type="' . $type . '" class="custom-control-input" id="" ' . $checked . '>
-                          <label class="custom-control-label" for="">' . $nombre_categoria_servicio_todas . '</label>
-                        </div></a>';
-                  }
-                  ?>
+                  <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang); ?>
                 </div>
               </div>
             </div>
@@ -910,47 +935,15 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         <div class="modal-body">
           <h6 class="font-weight-bold mb-3">Ordenar por precio:</h6>
           <div class="btn-group-vertical d-flex w-100 mb-4">
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
-              <i class="fa fa-arrow-up"></i> Menor Precio
-            </a>
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
-              <i class="fa fa-arrow-down"></i> Mayor Precio
-            </a>
+            <?= generarFiltrosPrecio($queryString, $orden, $lang); ?>
             <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>" class="btn btn-outline-secondary filtro-btn">
-              <i class="fa fa-times"></i> Limpiar Filtros
+              <i class="fa fa-times"></i> <?= isset($lang["limpiar_filtros"]) ? $lang["limpiar_filtros"] : "Limpiar Filtros"; ?>
             </a>
           </div>
 
-          <h6 class="font-weight-bold mb-3">Categorías:</h6>
+          <h6 class="font-weight-bold mb-3"><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>:</h6>
           <div class="btn-group-vertical d-flex w-100">
-            <?php
-            $todas_las_categorias = getCategorias();
-            $urlParamsAll = "";
-            if (!empty($busqueda)) {
-              $urlParamsAll .= "buscar=" . urlencode($busqueda);
-            }
-            if (!empty($orden)) {
-              $urlParamsAll .= (!empty($urlParamsAll) ? "&" : "") . "orden=" . urlencode($orden);
-            }
-
-            echo '<a href="categorias?' . $urlParamsAll . '" class="btn btn-outline-primary ' . ($idCategoria == 0 ? 'active' : '') . '">' . (isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : 'Todas') . '</a>';
-
-            for ($i = 0; $i < count($todas_las_categorias); $i++) {
-              $idCategoria_todas = $todas_las_categorias[$i]["idCategoria_servicio"];
-              $nombre_categoria_servicio_todas = $todas_las_categorias[$i]["nombre_categoria_servicio"];
-
-              $urlParams = "idCategoria=" . $idCategoria_todas;
-              if (!empty($busqueda)) {
-                $urlParams .= "&buscar=" . urlencode($busqueda);
-              }
-              if (!empty($orden)) {
-                $urlParams .= "&orden=" . urlencode($orden);
-              }
-
-              $isActive = ($idCategoria == $idCategoria_todas) ? 'active' : '';
-              echo '<a href="categorias?' . $urlParams . '" class="btn btn-outline-primary ' . $isActive . '">' . $nombre_categoria_servicio_todas . '</a>';
-            }
-            ?>
+            <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang); ?>
           </div>
         </div>
       </div>
