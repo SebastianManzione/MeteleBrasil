@@ -950,7 +950,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               </div>
               <div id="collapsePrice" class="collapse show" aria-labelledby="headingPrice" data-parent="#accordionPrice">
                 <div class="card-body">
-                  <?= generarFiltrosPrecio($queryString, $orden, $lang); ?>
+                  <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
                 </div>
               </div>
             </div>
