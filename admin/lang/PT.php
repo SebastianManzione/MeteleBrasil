@@ -195,6 +195,19 @@ $lang = array(
 
 /* CATEGORIAS */
 
+    "viajeros_lo_han_disfrutado"=>"viajantes já desfrutaram",
+    "opiniones_reales"=>"opiniões reais",
+    "asi_nos_puntuan"=>"assim nos avaliam",
+    "disponibilidad"=>"Disponibilidade",
+    "hoy"=>"Hoje",
+    "manana"=>"Amanhã",
+    "categoria"=>"Categorias",
+    "categorias"=>"Categorias",
+    "ordenar"=>"Ordenar",
+    "ordenar_resultados"=>"Ordenar resultados",
+    "filtrar_resultados"=>"Filtrar resultados",
+    "menor_precio"=>"Menor preço",
+
 
 
     "viajeros_lo_han_disfrutado"=>"viajeros que ja curtiram",
