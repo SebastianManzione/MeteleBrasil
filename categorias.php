@@ -953,7 +953,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               </div>
               <div id="collapseCategory" class="collapse show" aria-labelledby="headingCategory" data-parent="#accordionCategory">
                 <div class="card-body">
-                  <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang); ?>
+                  <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
                 </div>
               </div>
             </div>
