@@ -514,25 +514,6 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
             </div>
           </div>
 
-          <!-- FILTRO DE PRECIO -->
-          <div class="accordion" id="accordionPrice">
-            <div class="card">
-              <div class="card-header" id="headingPrice">
-                <h5 class="mb-0">
-                  <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapsePrice" aria-expanded="true" aria-controls="collapsePrice">
-                    Ordenar por Precio <i class="fa fa-sort-down float-right"></i>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapsePrice" class="collapse show" aria-labelledby="headingPrice" data-parent="#accordionPrice">
-                <div class="card-body">
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary mb-2">Menor Precio</a>
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary">Mayor Precio</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
           <!-- FILTRO DE CATEGORÍAS -->
           <div class="accordion" id="accordionCategory">
             <div class="card">
