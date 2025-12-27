@@ -95,60 +95,6 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
-// ========== ORDENAMIENTO POR PROXIMIDAD ==========
-if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SESSION['geoFinal']['lon'])) {
-  $latUsuario = floatval($_SESSION['geoFinal']['lat']);
-  $lonUsuario = floatval($_SESSION['geoFinal']['lon']);
-  
-  // Agregar coordenadas y calcular distancia para cada servicio
-  require_once('admin/classes/conexion.php');
-  foreach ($servicios as &$servicio) {
-    $idServicio = $servicio['idServicio'];
-    
-    // Obtener coordenadas promedio del servicio
-    $sqlCoords = "SELECT IFNULL(AVG(CAST(u.latitud AS DECIMAL(10,7))), 0) as latitud, 
-                         IFNULL(AVG(CAST(u.longitud AS DECIMAL(10,7))), 0) as longitud
-                  FROM servicio s 
-                  LEFT JOIN servicio_salidas ss ON s.idServicio = ss.idServicio 
-                  LEFT JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-                  LEFT JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
-                  WHERE s.idServicio = :idServicio
-                  GROUP BY s.idServicio";
-    $cmdCoords = $pdo->prepare($sqlCoords);
-    $cmdCoords->bindParam(':idServicio', $idServicio, PDO::PARAM_INT);
-    $cmdCoords->execute();
-    $coords = $cmdCoords->fetch(PDO::FETCH_ASSOC);
-    
-    if ($coords) {
-      $servicio['latitud'] = floatval($coords['latitud']);
-      $servicio['longitud'] = floatval($coords['longitud']);
-      $servicio['distancia'] = calcularDistancia($latUsuario, $lonUsuario, $servicio['latitud'], $servicio['longitud']);
-    } else {
-      $servicio['distancia'] = 999999; // Sin coordenadas = muy lejos
-    }
-  }
-  
-  // Ordenar por distancia (más cercano primero)
-  usort($servicios, function($a, $b) {
-    return ($a['distancia'] ?? PHP_FLOAT_MAX) <=> ($b['distancia'] ?? PHP_FLOAT_MAX);
-  });
-}
-
-// Función para calcular distancia entre dos puntos (Haversine)
-if (!function_exists('calcularDistancia')) {
-  function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
-      if ($lat1 == 0 || $lon1 == 0 || $lat2 == 0 || $lon2 == 0) {
-          return 999999;
-      }
-      $radioTierra = 6371;
-      $dLat = deg2rad($lat2 - $lat1);
-      $dLon = deg2rad($lon2 - $lon1);
-      $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * sin($dLon/2) * sin($dLon/2);
-      $c = 2 * atan2(sqrt($a), sqrt(1-$a));
-      return round($radioTierra * $c, 2);
-  }
-}
-
 // ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
 
 /**
@@ -161,9 +107,6 @@ if (!function_exists('calcularDistancia')) {
 function generarFiltrosPrecio($queryString, $orden, $lang) {
   ob_start();
   ?>
-  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=proximidad" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'proximidad' ? 'active' : ''; ?>">
-    <i class="fa fa-map-marker-alt"></i> <?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más Cercano"; ?>
-  </a>
   <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
     <i class="fa fa-arrow-up"></i> <?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?>
   </a>
@@ -460,6 +403,26 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       top: 120px;
       position: sticky;
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+    }
+
+    .sidebar-container::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb {
+      background: #007bff;
+      border-radius: 10px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb:hover {
+      background: #0056b3;
     }
 
     .sidebar-title {
