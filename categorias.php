@@ -116,20 +116,7 @@ if ($orden === 'proximidad' && isset($_SESSION['geoFinal']['lat']) && isset($_SE
 }
 
 // ========== FUNCIONES AUXILIARES ==========
-
-/**
- * Calcula distancia en km entre dos puntos usando fórmula de Haversine
- */
-function haversineKm($lat1, $lon1, $lat2, $lon2) {
-    $R = 6371.0; // Radio de la Tierra en km
-    $dLat = deg2rad($lat2 - $lat1);
-    $dLon = deg2rad($lon2 - $lon1);
-    $a = sin($dLat/2) ** 2 +
-         cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-         (sin($dLon/2) ** 2);
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-    return $R * $c;
-}
+// Nota: haversineKm() ya está definida en admin/classes/servicio.php
 
 /**
  * Aplica ordenamiento por proximidad a un array de servicios
