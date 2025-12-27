@@ -251,3 +251,110 @@
 5. Revisar `financieroLista.php` para comisiones
 6. Explorar `admin/prestadores.php` para gestión de proveedores
 
+---
+
+## Sistema de Filtros Combinables (Implementado - Dic 2025)
+
+### Arquitectura de Filtros en categorias.php
+
+**Parámetros GET duales e independientes:**
+- `orden_precio`: `price_asc` (menor precio) o `price_desc` (mayor precio)
+- `orden_distancia`: `cercano` (más cercano) o `lejano` (más lejano)
+
+**Combinabilidad:** Los filtros funcionan simultáneamente. Ejemplo:
+```
+?orden_distancia=cercano&orden_precio=price_asc
+```
+Ordena primero por distancia (más cercano primero), luego por precio (menor primero) como criterio secundario.
+
+### Funciones Críticas
+
+**`ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = false)`**
+- Ubicación: `categorias.php` líneas 127-149
+- Calcula distancias con Haversine desde `$_SESSION['geoFinal']['latitud']`
+- Parámetro `$inverso = true`: ordena de más lejano a más cercano (nuevo en esta implementación)
+- Si no hay geolocalización, los filtros de distancia se ignoran
+
+**`aplicarOrdenPrecio($servicios, $orden)`**
+- Ubicación: `categorias.php` líneas 171-181
+- Ordenamiento secundario por precio sin romper agrupación por distancia
+- Usa operador spaceship `<=>` sobre `precio_min`
+
+**`generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang)`**
+- Ubicación: `categorias.php` líneas 216-262
+- **IMPORTANTE:** Requiere 4 parámetros (se agregaron 2 nuevos)
+- Genera HTML de 4 filtros con estilo MercadoLibre (toggle switches)
+- Preserva parámetros existentes en URLs (categoría, búsqueda, paginación)
+- Llamadas en: línea ~945 (desktop sidebar), línea 1248 (modal móvil)
+
+**`generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang)`**
+- Tercer parámetro cambió: `$orden` → `$orden_precio`
+- Llamadas en: línea 956 (desktop sidebar), línea 1256 (modal móvil)
+
+### Traducciones Multi-Idioma
+
+**Nuevo string agregado en todos los idiomas:**
+```php
+// admin/lang/ES.php (línea ~118)
+"mas_lejano" => "Más lejano",
+
+// admin/lang/EN.php (línea ~116)
+"mas_lejano" => "Farthest",
+
+// admin/lang/PT.php (línea ~212)
+"mas_lejano" => "Mais distante",
+
+// admin/lang/IT.php (línea ~107)
+"mas_lejano" => "Più lontano",
+```
+
+### Diseño UI/UX
+
+**Filtros estilo MercadoLibre:**
+- Cards con borde (`border: 1px solid #e5e5e5`)
+- Toggle switch visual animado (44x24px)
+- Estado activo: background `#e7f3ff`, border `#029ce2`
+- Iconos: flechas (↑↓) para precio, marcador de mapa para distancia
+- **Icono especial "más lejano":** marcador rotado 180° (`transform: rotate(180deg)`)
+
+**Responsive:**
+- Desktop: Sidebar sticky con accordion colapsable
+- Móvil: Modal (`#filterModal`) con botón "Filtrar y Ordenar"
+
+### Errores Comunes Corregidos
+
+**Durante implementación se encontraron:**
+1. **Variable `$orden` undefined** en 3 ubicaciones (líneas 956, 1248, 1256)
+   - Solución: Cambiar a `$orden_precio` en todas las llamadas
+2. **ArgumentCountError** en `generarFiltrosPrecio()`
+   - Solución: Agregar parámetros `$orden_precio` y `$orden_distancia`
+3. **Headers already sent** en `navbar.php` línea 287
+   - Solución: Eliminar `setcookie()` después de output HTML
+
+### Testing Checklist
+
+- ✅ Filtros individuales (precio solo, distancia solo)
+- ✅ Filtros combinados (todas las combinaciones)
+- ✅ Sin geolocalización (filtros distancia desactivados)
+- ✅ Mobile modal funcional
+- ✅ Preservación de filtros en paginación
+- ✅ Multi-idioma (ES/EN/PT/IT)
+- ✅ Layout horizontal de tarjetas de servicio
+
+### Mantenimiento Futuro
+
+**Al agregar nuevos filtros:**
+1. Crear variable GET en líneas 58-60 de `categorias.php`
+2. Actualizar firmas de `generarFiltrosPrecio()` y `generarFiltrosCategorias()`
+3. Buscar TODAS las llamadas (desktop + móvil) y actualizar parámetros
+4. Agregar traducciones en 4 archivos de idioma
+5. Preservar nuevos parámetros en URLs de paginación
+
+**Archivo de referencia completa:** `INSTRUCCIONES_FILTROS_COMBINABLES.md`
+
+**Branch actual:** `feature/sin-horario-ux`
+
+**Commits clave:**
+- `1b283f6` - Implementación inicial filtros combinables
+- `680c646` - Corrección final de errores
+
