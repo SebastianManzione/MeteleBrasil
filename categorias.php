@@ -689,12 +689,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       color: white !important;
     }
 
-    /* Ajustes específicos para modal móvil */
-    .modal-body .filtro-btn {
-      padding: 0.7rem 0.9rem;
-      font-size: 0.95rem;
-    }
-
     /* ========== NO RESULTADOS ========== */
     .no-results {
       text-align: center;
