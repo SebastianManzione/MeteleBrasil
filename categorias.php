@@ -364,12 +364,19 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
     /* ========== PAGINACIÓN ========== */
     .pagination .page-item .page-link {
-      border-radius: 50px;
-      margin: 0 5px;
+      border-radius: 0;
+      margin: 0;
       border: none;
-      background-color: #e9ecef;
+      background-color: #f8f9fa;
       color: #007bff;
       font-weight: 600;
+      padding: 0.5rem 0.75rem;
+      transition: all 0.2s ease;
+    }
+
+    .pagination .page-item .page-link:hover:not(.disabled .page-link) {
+      background-color: #e9ecef;
+      color: #0056b3;
     }
 
     .pagination .page-item.active .page-link {
@@ -381,6 +388,16 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
     .pagination .page-item.disabled .page-link {
       background-color: #f8f9fa;
       color: #6c757d;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .pagination .page-item:first-child .page-link {
+      border-radius: 50px 0 0 50px;
+    }
+
+    .pagination .page-item:last-child .page-link {
+      border-radius: 0 50px 50px 0;
     }
 
     /* ========== MODAL FILTROS MÓVIL ========== */
@@ -720,29 +737,74 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
             ?>
           </div>
 
-          <!-- PAGINACIÓN -->
+          <!-- PAGINACIÓN MEJORADA -->
           <?php
           $cantidad_de_paginas = ceil($cantidad_servicios_categoria / $cantidad_por_pagina);
           if ($cantidad_de_paginas > 1) {
+            // Calcular rango de páginas a mostrar (máximo 5 botones numéricos)
+            $rango_paginas = 5;
+            $inicio_rango = max(1, $pagina - floor($rango_paginas / 2));
+            $fin_rango = min($cantidad_de_paginas, $inicio_rango + $rango_paginas - 1);
+            
+            // Ajustar inicio si fin se acerca al final
+            if ($fin_rango - $inicio_rango < $rango_paginas - 1) {
+              $inicio_rango = max(1, $fin_rango - $rango_paginas + 1);
+            }
           ?>
-            <nav aria-label="Paginación de resultados" class="mt-4">
-              <ul class="pagination justify-content-center">
+            <nav aria-label="Paginación de resultados" class="mt-5 mb-4">
+              <ul class="pagination justify-content-center" style="flex-wrap: wrap;">
+                <!-- BOTÓN ANTERIOR -->
                 <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?pagina=<?= $pagina - 1 ?>&<?= $queryString ?>" aria-label="Anterior">
+                  <a class="page-link" href="?pagina=1&<?= $queryString ?>" aria-label="Primera página" style="border-radius: 50px 0 0 50px;">
+                    <i class="fa fa-chevron-left"></i> Primera
+                  </a>
+                </li>
+                <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
+                  <a class="page-link" href="?pagina=<?= $pagina - 1 ?>&<?= $queryString ?>" aria-label="Anterior" style="border: none; border-left: 1px solid #dee2e6;">
                     <span aria-hidden="true">&laquo;</span>
                   </a>
                 </li>
 
-                <li class="page-item disabled d-none d-sm-block">
-                  <span class="page-link">Página <?= $pagina ?> de <?= $cantidad_de_paginas ?></span>
-                </li>
+                <!-- NÚMEROS DE PÁGINA -->
+                <?php if ($inicio_rango > 1) : ?>
+                  <li class="page-item disabled d-none d-sm-block" style="border: none;">
+                    <span class="page-link" style="border: none;">...</span>
+                  </li>
+                <?php endif; ?>
 
-                <li class="page-item <?= ($pagina >= $cantidad_de_paginas) ? 'disabled' : '' ?>">
-                  <a class="page-link" href="?pagina=<?= $pagina + 1 ?>&<?= $queryString ?>" aria-label="Siguiente">
+                <?php for ($p = $inicio_rango; $p <= $fin_rango; $p++) : ?>
+                  <li class="page-item <?= ($p === $pagina) ? 'active' : '' ?>" style="<?= ($p !== $inicio_rango) ? 'border-left: 1px solid #dee2e6;' : ''; ?>">
+                    <a class="page-link" href="?pagina=<?= $p ?>&<?= $queryString ?>" style="border: none; min-width: 40px; text-align: center;">
+                      <?= $p ?>
+                    </a>
+                  </li>
+                <?php endfor; ?>
+
+                <?php if ($fin_rango < $cantidad_de_paginas) : ?>
+                  <li class="page-item disabled d-none d-sm-block" style="border: none;">
+                    <span class="page-link" style="border: none;">...</span>
+                  </li>
+                <?php endif; ?>
+
+                <!-- BOTÓN SIGUIENTE -->
+                <li class="page-item <?= ($pagina >= $cantidad_de_paginas) ? 'disabled' : '' ?>" style="border-left: 1px solid #dee2e6;">
+                  <a class="page-link" href="?pagina=<?= $pagina + 1 ?>&<?= $queryString ?>" aria-label="Siguiente" style="border: none;">
                     <span aria-hidden="true">&raquo;</span>
                   </a>
                 </li>
+                <li class="page-item <?= ($pagina >= $cantidad_de_paginas) ? 'disabled' : '' ?>">
+                  <a class="page-link" href="?pagina=<?= $cantidad_de_paginas ?>&<?= $queryString ?>" aria-label="Última página" style="border-radius: 0 50px 50px 0; border-left: 1px solid #dee2e6;">
+                    Última <i class="fa fa-chevron-right"></i>
+                  </a>
+                </li>
               </ul>
+              
+              <!-- INFORMACIÓN DE PAGINACIÓN MÓVIL -->
+              <div class="d-sm-none text-center mt-2">
+                <small style="color: #6c757d; font-weight: 600;">
+                  Página <?= $pagina ?> de <?= $cantidad_de_paginas ?>
+                </small>
+              </div>
             </nav>
           <?php } ?>
 
