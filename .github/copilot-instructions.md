@@ -267,33 +267,143 @@
 ```
 Ordena primero por distancia (más cercano primero), luego por precio (menor primero) como criterio secundario.
 
+### Lógica de Ordenamiento (categorias.php líneas 99-139)
+
+**Código completo de la lógica principal:**
+```php
+// Líneas 58-60: Inicialización de variables
+$orden_precio = isset($_GET['orden_precio']) ? $_GET['orden_precio'] : '';
+$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : '';
+
+// Líneas 99-123: Lógica combinable
+if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($_SESSION['geoFinal']['latitud'])) {
+    // Primero ordenar por distancia (principal)
+    $servicios_ordenados = ordenarPorProximidad($servicios_completos, $latUsuario, $lonUsuario, $orden_distancia === 'lejano');
+    
+    // Luego aplicar ordenamiento secundario de precio si está activo
+    if ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
+        $servicios_ordenados = aplicarOrdenPrecio($servicios_ordenados, $orden_precio);
+    }
+    
+    $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_ordenados);
+} else if ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
+    // Fallback: solo precio sin distancia
+    $servicios_ordenados = aplicarOrdenPrecio($servicios_completos, $orden_precio);
+    $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_ordenados);
+}
+```
+
 ### Funciones Críticas
 
-**`ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = false)`**
-- Ubicación: `categorias.php` líneas 127-149
-- Calcula distancias con Haversine desde `$_SESSION['geoFinal']['latitud']`
-- Parámetro `$inverso = true`: ordena de más lejano a más cercano (nuevo en esta implementación)
-- Si no hay geolocalización, los filtros de distancia se ignoran
+#### `ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = false)`
+**Ubicación:** `categorias.php` líneas 127-149
 
-**`aplicarOrdenPrecio($servicios, $orden)`**
-- Ubicación: `categorias.php` líneas 171-181
-- Ordenamiento secundario por precio sin romper agrupación por distancia
-- Usa operador spaceship `<=>` sobre `precio_min`
+**Código completo:**
+```php
+function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = false) {
+    foreach ($servicios as &$servicio) {
+        $latServicio = floatval($servicio['latitud']);
+        $lonServicio = floatval($servicio['longitud']);
+        
+        // Haversine formula para calcular distancia
+        $radioTierra = 6371; // en kilómetros
+        $dLat = deg2rad($latServicio - $latUsuario);
+        $dLon = deg2rad($lonServicio - $lonUsuario);
+        
+        $a = sin($dLat/2) * sin($dLat/2) + cos(deg2rad($latUsuario)) * cos(deg2rad($latServicio)) * sin($dLon/2) * sin($dLon/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $distancia_km = $radioTierra * $c;
+        
+        $servicio['distancia_km'] = $distancia_km;
+    }
+    
+    // Ordenar por distancia
+    usort($servicios, function($a, $b) use ($inverso) {
+        if ($inverso) {
+            return $b['distancia_km'] <=> $a['distancia_km']; // Más lejano primero
+        } else {
+            return $a['distancia_km'] <=> $b['distancia_km']; // Más cercano primero
+        }
+    });
+    
+    return $servicios;
+}
+```
 
-**`generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang)`**
-- Ubicación: `categorias.php` líneas 216-262
-- **IMPORTANTE:** Requiere 4 parámetros (se agregaron 2 nuevos)
-- Genera HTML de 4 filtros con estilo MercadoLibre (toggle switches)
-- Preserva parámetros existentes en URLs (categoría, búsqueda, paginación)
-- Llamadas en: línea ~945 (desktop sidebar), línea 1248 (modal móvil)
+**Parámetros:**
+- `$inverso = false`: Más cercano primero (default)
+- `$inverso = true`: Más lejano primero (nuevo filtro)
+- Usa `$_SESSION['geoFinal']['latitud']` y `['longitud']` del usuario
 
-**`generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang)`**
-- Tercer parámetro cambió: `$orden` → `$orden_precio`
-- Llamadas en: línea 956 (desktop sidebar), línea 1256 (modal móvil)
+#### `aplicarOrdenPrecio($servicios, $orden)`
+**Ubicación:** `categorias.php` líneas 171-181
+
+**Código completo:**
+```php
+function aplicarOrdenPrecio($servicios, $orden) {
+    usort($servicios, function($a, $b) use ($orden) {
+        if ($orden === 'price_asc') {
+            return $a['precio_min'] <=> $b['precio_min']; // Menor precio primero
+        } else {
+            return $b['precio_min'] <=> $a['precio_min']; // Mayor precio primero
+        }
+    });
+    return $servicios;
+}
+```
+
+**Propósito:** Ordenamiento secundario sin romper agrupación por distancia
+
+#### `generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang)`
+**Ubicación:** `categorias.php` líneas 216-262
+
+**Firma actualizada (CRÍTICO - 4 parámetros requeridos):**
+```php
+function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang) {
+    // Parsea $queryString para preservar otros parámetros (categoría, búsqueda)
+    parse_str($queryString, $params);
+    unset($params['orden_precio'], $params['orden_distancia']); // Remover para regenerar
+    $baseQuery = http_build_query($params);
+    
+    // Genera 4 cards de filtro (2 precio + 2 distancia)
+    // Cada URL preserva el otro filtro activo
+    // Retorna HTML completo con toggle switches estilo MercadoLibre
+}
+```
+
+**Llamadas actualizadas:**
+1. **Sidebar desktop** (línea ~945): 
+   ```php
+   <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
+   ```
+
+2. **Modal móvil** (línea 1248):
+   ```php
+   <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
+   ```
+
+#### `generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang)`
+**Ubicación:** Función helper para sidebar
+
+**Tercer parámetro cambió:** `$orden` → `$orden_precio`
+
+**Llamadas actualizadas:**
+1. **Sidebar desktop** (línea 956):
+   ```php
+   <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
+   ```
+
+2. **Modal móvil** (línea 1256):
+   ```php
+   <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
+   ```
 
 ### Traducciones Multi-Idioma
 
-**Nuevo string agregado en todos los idiomas:**
+**Nuevo string "mas_lejano" agregado en 4 idiomas:**
+
 ```php
 // admin/lang/ES.php (línea ~118)
 "mas_lejano" => "Más lejano",
@@ -308,53 +418,236 @@ Ordena primero por distancia (más cercano primero), luego por precio (menor pri
 "mas_lejano" => "Più lontano",
 ```
 
-### Diseño UI/UX
+### Diseño UI/UX - Estilo MercadoLibre
 
-**Filtros estilo MercadoLibre:**
-- Cards con borde (`border: 1px solid #e5e5e5`)
-- Toggle switch visual animado (44x24px)
-- Estado activo: background `#e7f3ff`, border `#029ce2`
-- Iconos: flechas (↑↓) para precio, marcador de mapa para distancia
-- **Icono especial "más lejano":** marcador rotado 180° (`transform: rotate(180deg)`)
+**Cards de filtro con toggle switches (líneas 216-262):**
+
+```php
+<!-- Ejemplo: Filtro Más Lejano -->
+<a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_distancia=lejano<?= !empty($orden_precio) ? '&orden_precio=' . $orden_precio : ''; ?>" 
+   class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
+  <div class="filtro-content">
+    <i class="fa fa-map-marker-alt filtro-icon" style="transform: rotate(180deg);"></i>
+    <span><?= $lang["mas_lejano"] ?></span>
+  </div>
+  <div class="filtro-toggle <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>"></div>
+</a>
+```
+
+**Características CSS:**
+```css
+.filtro-card {
+  border: 1px solid #e5e5e5;
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.filtro-card.active {
+  background-color: #e7f3ff;
+  border-color: #029ce2;
+}
+
+.filtro-toggle {
+  width: 44px;
+  height: 24px;
+  background-color: #e5e5e5;
+  border-radius: 12px;
+  position: relative;
+}
+
+.filtro-toggle::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: all 0.3s ease;
+}
+
+.filtro-toggle.active {
+  background-color: #029ce2;
+}
+
+.filtro-toggle.active::after {
+  left: 22px;
+}
+```
+
+**Iconos descriptivos:**
+- Precio menor: `<i class="fa fa-arrow-up"></i>`
+- Precio mayor: `<i class="fa fa-arrow-down"></i>`
+- Más cercano: `<i class="fa fa-map-marker-alt"></i>`
+- Más lejano: `<i class="fa fa-map-marker-alt" style="transform: rotate(180deg);"></i>`
 
 **Responsive:**
 - Desktop: Sidebar sticky con accordion colapsable
 - Móvil: Modal (`#filterModal`) con botón "Filtrar y Ordenar"
 
+### Estructura de URLs
+
+#### Filtros individuales:
+```
+?orden_precio=price_asc          # Solo menor precio
+?orden_precio=price_desc         # Solo mayor precio
+?orden_distancia=cercano         # Solo más cercano
+?orden_distancia=lejano          # Solo más lejano
+```
+
+#### Filtros combinados:
+```
+?orden_distancia=cercano&orden_precio=price_asc   # Cercano + Menor precio
+?orden_distancia=lejano&orden_precio=price_desc   # Lejano + Mayor precio
+?orden_distancia=cercano&orden_precio=price_desc  # Cercano + Mayor precio
+```
+
+#### Con categoría:
+```
+?idCategoria=2&orden_precio=price_desc&orden_distancia=lejano
+```
+
+#### Con búsqueda:
+```
+?buscar=campeche&orden_precio=price_asc&orden_distancia=cercano
+```
+
+#### Con paginación (preservación de filtros):
+```
+?pagina=2&idCategoria=2&orden_precio=price_asc&orden_distancia=cercano
+```
+
+### Ubicaciones de Código Crítico en categorias.php
+
+| Líneas | Descripción | Criticidad |
+|--------|-------------|------------|
+| 58-60 | Inicialización `$orden_precio` y `$orden_distancia` | ⚠️ CRÍTICO |
+| 99-123 | Lógica principal de filtros combinables | ⚠️ CRÍTICO |
+| 125-139 | Fallback solo precio (sin geolocalización) | Alta |
+| 127-149 | Función `ordenarPorProximidad()` con `$inverso` | ⚠️ CRÍTICO |
+| 171-181 | Función `aplicarOrdenPrecio()` | Alta |
+| 216-262 | Función `generarFiltrosPrecio()` - 4 parámetros | ⚠️ CRÍTICO |
+| ~945 | Llamada `generarFiltrosPrecio()` sidebar desktop | ⚠️ CRÍTICO |
+| 956 | Llamada `generarFiltrosCategorias()` sidebar desktop | ⚠️ CRÍTICO |
+| 1051-1103 | HTML tarjetas de servicio (layout horizontal) | Media |
+| 1248 | Llamada `generarFiltrosPrecio()` modal móvil | ⚠️ CRÍTICO |
+| 1256 | Llamada `generarFiltrosCategorias()` modal móvil | ⚠️ CRÍTICO |
+
 ### Errores Comunes Corregidos
 
-**Durante implementación se encontraron:**
-1. **Variable `$orden` undefined** en 3 ubicaciones (líneas 956, 1248, 1256)
-   - Solución: Cambiar a `$orden_precio` en todas las llamadas
+**Durante implementación se encontraron y resolvieron:**
+
+1. **Variable `$orden` undefined** (3 ubicaciones)
+   - **Línea 956**: `generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang)`
+   - **Línea 1248**: `generarFiltrosPrecio($queryString, $orden, $lang)` (faltaban 2 parámetros)
+   - **Línea 1256**: `generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang)`
+   - **Solución**: Cambiar todas las referencias de `$orden` → `$orden_precio` + agregar `$orden_distancia`
+
 2. **ArgumentCountError** en `generarFiltrosPrecio()`
-   - Solución: Agregar parámetros `$orden_precio` y `$orden_distancia`
+   - **Error**: `Too few arguments to function generarFiltrosPrecio(), 3 passed and exactly 4 expected`
+   - **Ubicación**: Línea 1248 (modal móvil)
+   - **Solución**: Actualizar firma a 4 parámetros: `($queryString, $orden_precio, $orden_distancia, $lang)`
+
 3. **Headers already sent** en `navbar.php` línea 287
-   - Solución: Eliminar `setcookie()` después de output HTML
+   - **Error**: `Cannot modify header information - headers already sent`
+   - **Causa**: `setcookie()` después de output HTML (línea 182)
+   - **Solución**: Eliminar completamente el bloque de `setcookie()` innecesario
 
-### Testing Checklist
+### Testing Checklist Completo
 
-- ✅ Filtros individuales (precio solo, distancia solo)
-- ✅ Filtros combinados (todas las combinaciones)
-- ✅ Sin geolocalización (filtros distancia desactivados)
-- ✅ Mobile modal funcional
-- ✅ Preservación de filtros en paginación
+**Filtros individuales:**
+- ✅ Solo menor precio (`?orden_precio=price_asc`)
+- ✅ Solo mayor precio (`?orden_precio=price_desc`)
+- ✅ Solo más cercano (`?orden_distancia=cercano`)
+- ✅ Solo más lejano (`?orden_distancia=lejano`)
+
+**Filtros combinados (16 casos):**
+- ✅ Cercano + Menor precio
+- ✅ Cercano + Mayor precio
+- ✅ Lejano + Menor precio
+- ✅ Lejano + Mayor precio
+- ✅ Preservación en paginación
+- ✅ Preservación con categoría
+- ✅ Preservación con búsqueda
+
+**Edge cases:**
+- ✅ Sin geolocalización (filtros distancia disabled)
+- ✅ Modal móvil funcional
 - ✅ Multi-idioma (ES/EN/PT/IT)
-- ✅ Layout horizontal de tarjetas de servicio
+- ✅ Layout horizontal tarjetas
+- ✅ Toggle switches visuales
+- ✅ URLs limpias y preservadas
+
+### Commits Git de Esta Sesión
+
+**Historial completo (orden cronológico):**
+
+1. **b192bee** (inicial): `fix: corregir llamada a generarFiltrosPrecio con parámetros correctos`
+2. **1b283f6** (feat): `feat: filtros combinables de precio y proximidad + filtro más lejano`
+3. **1be7d92** (fix UI): `fix: restaurar diseño de tarjetas horizontal desde backup`
+4. **6cba767** (fix): `fix: corregir variable $orden undefined en generarFiltrosCategorias`
+5. **cdeb6e3** (fix): `fix: corregir llamada a generarFiltrosPrecio en modal móvil`
+6. **680c646** (fix final): `fix: corregir último $orden undefined y eliminar setcookie`
+7. **cdeaaaf** (docs): `docs: agregar documentación completa de filtros combinables`
+8. **321a0d3** (docs): `docs: actualizar copilot-instructions con sistema de filtros`
+
+**Branch:** `feature/sin-horario-ux`
 
 ### Mantenimiento Futuro
 
-**Al agregar nuevos filtros:**
-1. Crear variable GET en líneas 58-60 de `categorias.php`
-2. Actualizar firmas de `generarFiltrosPrecio()` y `generarFiltrosCategorias()`
-3. Buscar TODAS las llamadas (desktop + móvil) y actualizar parámetros
-4. Agregar traducciones en 4 archivos de idioma
-5. Preservar nuevos parámetros en URLs de paginación
+**Al agregar nuevos filtros (ej: rating, duración):**
 
-**Archivo de referencia completa:** `INSTRUCCIONES_FILTROS_COMBINABLES.md`
+1. **Inicializar variable** en líneas 58-60:
+   ```php
+   $orden_rating = isset($_GET['orden_rating']) ? $_GET['orden_rating'] : '';
+   ```
 
-**Branch actual:** `feature/sin-horario-ux`
+2. **Actualizar lógica** en líneas 99-139:
+   ```php
+   if ($orden_rating === 'best_rated') {
+       $servicios_ordenados = ordenarPorRating($servicios_ordenados);
+   }
+   ```
 
-**Commits clave:**
-- `1b283f6` - Implementación inicial filtros combinables
-- `680c646` - Corrección final de errores
+3. **Actualizar firmas** de funciones generadoras:
+   ```php
+   function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_rating, $lang) {
+   ```
+
+4. **Buscar TODAS las llamadas** y actualizar:
+   - Sidebar desktop (línea ~945)
+   - Modal móvil (línea ~1248)
+   - Cualquier otra invocación
+
+5. **Agregar traducciones** en 4 archivos:
+   - `admin/lang/ES.php`
+   - `admin/lang/EN.php`
+   - `admin/lang/PT.php`
+   - `admin/lang/IT.php`
+
+6. **Preservar en URLs de paginación**:
+   ```php
+   $queryString .= "&orden_rating=$orden_rating";
+   ```
+
+**Errores comunes a evitar:**
+- ❌ Olvidar pasar todos los parámetros a funciones generadoras (causa ArgumentCountError)
+- ❌ No preservar filtros existentes al generar nuevas URLs (se pierden filtros activos)
+- ❌ Usar variables `$orden` en lugar de nombres específicos como `$orden_precio`
+- ❌ Olvidar actualizar llamadas en modal móvil (líneas ~1248, ~1256)
+- ❌ No agregar traducciones en los 4 idiomas (causa textos en blanco)
+- ❌ Enviar headers después de output HTML (causa "headers already sent")
+
+**Posibles extensiones futuras:**
+1. **Filtro por valoración**: `orden_rating` (best_rated, worst_rated)
+2. **Filtro por duración**: `orden_duracion` (shortest, longest)
+3. **Filtro por disponibilidad**: `orden_disponibilidad` (most_available)
+4. **Rango de precios**: Slider con min/max usando `precio_min` y `precio_max`
+5. **Radio de distancia**: Filtrar servicios dentro de X km (requires Haversine)
+
+**Archivo de referencia completa:** `INSTRUCCIONES_FILTROS_COMBINABLES.md` (264 líneas con código completo)
 
