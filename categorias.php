@@ -408,39 +408,49 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
       border-radius: 0 50px 50px 0;
     }
 
-    /* ========== MODAL FILTROS MÓVIL ========== */
-    .modal-body .btn-group-vertical .btn {
+    /* ========== ESTILOS COMUNES FILTROS (SIDEBAR + MODAL) ========== */
+    .filtro-btn {
       text-align: left;
       border-radius: 8px !important;
       margin-bottom: 0.5rem;
-      padding: 1rem;
-      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
       border: 1px solid #dee2e6;
       background-color: white;
       color: #333;
+      transition: all 0.2s ease;
+      display: block;
+      width: 100%;
     }
 
-    .modal-body .btn-group-vertical .btn:hover {
+    .filtro-btn:hover {
       background-color: #f8f9fa;
       border-color: #007bff;
       color: #007bff;
+      text-decoration: none;
     }
 
-    .modal-body .btn-group-vertical .btn.active {
+    .filtro-btn.active {
       background-color: #007bff;
-      color: white;
-      font-weight: bold;
+      color: white !important;
+      font-weight: 600;
       border-color: #007bff;
     }
 
-    .modal-body .btn-outline-secondary {
+    .filtro-btn.btn-outline-secondary {
       border-color: #6c757d;
       color: #6c757d;
     }
 
-    .modal-body .btn-outline-secondary:hover {
+    .filtro-btn.btn-outline-secondary:hover {
       background-color: #6c757d;
-      color: white;
+      color: white !important;
+    }
+
+    /* Ajustes específicos para modal móvil */
+    .modal-body .filtro-btn {
+      padding: 1rem;
+      font-size: 1rem;
     }
 
     /* ========== NO RESULTADOS ========== */
@@ -561,8 +571,12 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               </div>
               <div id="collapsePrice" class="collapse show" aria-labelledby="headingPrice" data-parent="#accordionPrice">
                 <div class="card-body">
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary mb-2">Menor Precio</a>
-                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary">Mayor Precio</a>
+                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-sm btn-block btn-outline-primary mb-2 filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
+                    <i class="fa fa-arrow-up"></i> Menor Precio
+                  </a>
+                  <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-sm btn-block btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
+                    <i class="fa fa-arrow-down"></i> Mayor Precio
+                  </a>
                 </div>
               </div>
             </div>
@@ -896,13 +910,13 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         <div class="modal-body">
           <h6 class="font-weight-bold mb-3">Ordenar por precio:</h6>
           <div class="btn-group-vertical d-flex w-100 mb-4">
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-outline-primary <?= $orden === 'price_asc' ? 'active' : ''; ?>">
+            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_asc" class="btn btn-outline-primary filtro-btn <?= $orden === 'price_asc' ? 'active' : ''; ?>">
               <i class="fa fa-arrow-up"></i> Menor Precio
             </a>
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-outline-primary <?= $orden === 'price_desc' ? 'active' : ''; ?>">
+            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>orden=price_desc" class="btn btn-outline-primary filtro-btn <?= $orden === 'price_desc' ? 'active' : ''; ?>">
               <i class="fa fa-arrow-down"></i> Mayor Precio
             </a>
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>" class="btn btn-outline-secondary">
+            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>" class="btn btn-outline-secondary filtro-btn">
               <i class="fa fa-times"></i> Limpiar Filtros
             </a>
           </div>
