@@ -318,6 +318,11 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
       color: #28a745;
     }
 
+    .price-text.agotado {
+      color: #dc3545;
+      font-size: 1.2rem;
+    }
+
     /* ========== SIDEBAR DESKTOP ========== */
     .sidebar-container {
       background: white;
@@ -662,28 +667,33 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
               $fecha = date("Y-m-d");
               $salidas = getSalidasFechaLuegoIdServicio($fecha, $idServicio);
 
-              // Inicializar valores por defecto
-              $precioSugerido = "Consultar";
-              $cancelacion = "";
-
-              if (!empty($salidas)) {
-                $idMoneda = $salidas[0]['idMoneda'];
+              // Usar misma lógica que index.php
+              if (count($salidas) > 0) {
                 $idServicioSalidas = $salidas[0]['idServicioSalidas'];
                 $tarifas = getTarifas($idServicioSalidas);
-
                 if (!empty($tarifas)) {
-                  $tarifa = calculaTarifa($tarifas[0]['idServicioSalidasTarifas'], 1);
-                  $precioSugerido = ($tarifa[0]["valorSym"]);
-
+                  $tarifa = @calculaTarifa($tarifas[0]['idServicioSalidasTarifas'] ?? null, 1);
+                  $precioSugerido = (!empty($tarifa) && isset($tarifa[0]["valorSym"])) ? $tarifa[0]["valorSym"] : "ESGOTADO";
+                  
+                  // Obtener cancelación
+                  $cancelacion = "";
                   $cancelaciones = getTipoCancelaciones($tarifas[0]['idCancelaciones']);
-                  switch ($cancelaciones[0]["idCancelacion"]) {
-                    case 1:
-                    case 3:
-                    case 7:
-                      $cancelacion = isset($lang["cancelamento_gratis"]) ? $lang["cancelamento_gratis"] : "Cancelamento gratis!";
-                      break;
+                  if (!empty($cancelaciones)) {
+                    switch ($cancelaciones[0]["idCancelacion"]) {
+                      case 1:
+                      case 3:
+                      case 7:
+                        $cancelacion = isset($lang["cancelamento_gratis"]) ? $lang["cancelamento_gratis"] : "Cancelamento gratis!";
+                        break;
+                    }
                   }
+                } else {
+                  $precioSugerido = "ESGOTADO";
+                  $cancelacion = "";
                 }
+              } else {
+                $precioSugerido = "ESGOTADO";
+                $cancelacion = "";
               }
 
               $nombre_servicio = $servicios[$i]["nombre_servicio"];
@@ -709,10 +719,12 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
                     </div>
                     <div class="card-body">
                       <h5 class="card-title"><?= $nombre_servicio ?></h5>
+                      <?php if (count($opiniones_servicio) > 0) { ?>
                       <p class="rating-text">
                         <strong><?= $estrellas_servicio; ?>/10</strong> 
-                        <span>(<?= $cantidad_opiniones_servicio; ?> opiniones)</span>
+                        <span>(<?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?>)</span>
                       </p>
+                      <?php } ?>
                       <!-- DESCRIPCIÓN: SOLO DESKTOP -->
                       <p class="description-text d-none d-md-block"><?= $descripcion_corta; ?></p>
 
@@ -730,7 +742,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
                             <h6 class="cancellation-text mb-0"><i class="fa fa-check-circle"></i> <?= $cancelacion ?></h6>
                           <?php endif; ?>
                         </div>
-                        <p class="price-text mb-0"><?= $precioSugerido; ?></p>
+                        <p class="price-text mb-0 <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></p>
                       </div>
                     </div>
                   </a>
