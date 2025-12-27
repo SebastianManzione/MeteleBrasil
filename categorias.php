@@ -568,6 +568,33 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       transform: rotate(-90deg);
     }
 
+    .btn-accordion {
+      background-color: #f8f9fa !important;
+      border: 1px solid #e0e0e0 !important;
+      padding: 0.6rem 0.8rem !important;
+      font-weight: 500 !important;
+      color: #333 !important;
+    }
+
+    .btn-accordion:hover,
+    .btn-accordion:not(.collapsed) {
+      background-color: #e7f3ff !important;
+      border-color: #029ce2 !important;
+      color: #029ce2 !important;
+    }
+
+    .accordion .card {
+      border: 1px solid #e0e0e0;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .accordion .card-body {
+      padding: 0.8rem;
+      background-color: #fafafa;
+    }
+
     /* ========== PAGINACIÓN ========== */
     .pagination .page-item .page-link {
       border-radius: 0;
@@ -965,7 +992,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             }
           ?>
             <nav aria-label="Paginación de resultados" class="mt-5 mb-4">
-              <ul class="pagination justify-content-center" style="flex-wrap: wrap;">
+              <ul class="pagination justify-content-center" style="display: inline-flex; flex-wrap: nowrap; overflow-x: auto;">
                 <!-- BOTÓN ANTERIOR -->
                 <li class="page-item <?= ($pagina <= 1) ? 'disabled' : '' ?>">
                   <a class="page-link" href="?pagina=1&<?= $queryString ?>" aria-label="Primera página" style="border-radius: 50px 0 0 50px;">
