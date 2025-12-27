@@ -1253,7 +1253,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
           <h6 class="font-weight-bold mb-3"><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>:</h6>
           <div class="btn-group-vertical d-flex w-100">
-            <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang); ?>
+            <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
           </div>
         </div>
       </div>

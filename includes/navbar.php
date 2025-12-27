@@ -283,10 +283,6 @@ try {
         }
     }
 
-<?php 
-setcookie("googtrans","/en/en", time()+3600, "/",'.metelebrasil.com');
- ?>
-
     function trocarIdioma(sigla) {
         if (comboGoogleTradutor) {
             comboGoogleTradutor.value = sigla;
