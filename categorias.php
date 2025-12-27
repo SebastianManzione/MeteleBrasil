@@ -1,7 +1,8 @@
 <?php
 
-// Session will be started by navbar.php when included
-// Initialize session variables with defaults if not set
+include('includes/navbar.php');
+
+// Initialize session variables with defaults if not set (AFTER navbar.php)
 if (!isset($_SESSION["idioma"])) {
     $_SESSION["idioma"] = "es";
 }
@@ -17,8 +18,6 @@ if (!isset($_SESSION["impuestos_pais"])) {
 if (!isset($_SESSION["cupon_descuento"])) {
     $_SESSION["cupon_descuento"] = [];
 }
-
-include('includes/navbar.php');
 
 // Initialize $lang if not defined by navbar.php
 if (!isset($lang)) {
@@ -594,6 +593,34 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
             </div>
           </div>
 
+          <!-- ÚLTIMAS OPINIONES (si hay) -->
+          <?php if (!empty($opiniones_categoria) && count($opiniones_categoria) > 0) : ?>
+            <div class="card" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); margin-top: 2rem;">
+              <div class="card-header" style="background-color: #f8f9fa; border-bottom: 1px solid #dee2e6; padding: 1rem;">
+                <h5 class="mb-0" style="color: #333; font-weight: 700;">
+                  <i class="fa fa-comments" style="margin-right: 0.5rem; color: #007bff;"></i>
+                  <?= isset($lang["ultimas_opiniones"]) ? $lang["ultimas_opiniones"] : "Últimas opiniones"; ?>
+                </h5>
+              </div>
+              <div class="card-body" style="padding: 0;">
+                <?php 
+                $opiniones_mostradas = 0;
+                for ($b = 0; $b < count($opiniones_categoria) && $opiniones_mostradas < 3; $b++, $opiniones_mostradas++) : 
+                ?>
+                  <div style="padding: 1rem; border-bottom: 1px solid #f0f0f0;">
+                    <p style="color: #007bff; font-weight: 600; margin-bottom: 0.5rem; font-style: italic;">
+                      "<?= htmlspecialchars(substr($opiniones_categoria[$b]['opinion'], 0, 150)); ?><?= strlen($opiniones_categoria[$b]['opinion']) > 150 ? '...' : ''; ?>"
+                    </p>
+                    <p style="margin-bottom: 0; color: #6c757d; font-size: 0.9rem;">
+                      <i class="fa fa-star" style="color: #007bff;"></i>
+                      <strong><?= $opiniones_categoria[$b]['nombre']; ?></strong>
+                    </p>
+                  </div>
+                <?php endfor; ?>
+              </div>
+            </div>
+          <?php endif; ?>
+
         </div>
       </div>
 
@@ -731,6 +758,36 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
           <div class="no-results">
             <h3>No se encontraron resultados</h3>
             <p>Intenta cambiar tus filtros o términos de búsqueda.</p>
+          </div>
+        <?php endif; ?>
+
+        <!-- TARJETA GUÍA (DESKTOP ONLY) -->
+        <?php if ($idCategoria > 0) : ?>
+          <div class="card card-guia d-none d-lg-block mt-5" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+            <div class="card-body" style="padding: 0;">
+              <form action="guias.php" method="get" style="display: flex; height: 250px; text-decoration: none; color: inherit;">
+                <input type="hidden" name="idCategoria" value="<?= $idCategoria; ?>">
+                
+                <!-- IMAGEN IZQUIERDA -->
+                <div style="flex: 0 0 40%; background-color: #f0f0f0; overflow: hidden;">
+                  <img src="admin/img/categoria_servicio/<?= $fotos; ?>" class="img-fluid w-100" style="height: 100%; object-fit: cover;">
+                </div>
+
+                <!-- CONTENIDO DERECHA -->
+                <div style="flex: 1; padding: 2rem; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);">
+                  <h4 style="color: white; font-weight: 700; margin-bottom: 0.5rem;">
+                    <i class="fa fa-map" style="margin-right: 0.5rem;"></i>
+                    <?= isset($lang["conoce_nuestra_guia_de"]) ? $lang["conoce_nuestra_guia_de"] : "Conoce nuestra guía de"; ?>
+                  </h4>
+                  <p style="color: rgba(255,255,255,0.9); font-size: 1.2rem; margin: 0;">
+                    <?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?>
+                  </p>
+                  <button type="submit" class="btn btn-light mt-3" style="align-self: flex-start;">
+                    Ver Guía <i class="fa fa-arrow-right ml-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         <?php endif; ?>
 
