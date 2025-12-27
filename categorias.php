@@ -315,11 +315,11 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
     .price-text {
       font-size: 1.5rem;
       font-weight: 700;
-      color: #28a745;
+      color: #029ce2;
     }
 
     .price-text.agotado {
-      color: #dc3545;
+      color: #029ce2;
       font-size: 1.2rem;
     }
 
