@@ -1056,45 +1056,72 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
 
             ?>
-              <!-- TARJETA SERVICIO VERTICAL -->
-              <div class="col-md-4 col-lg-4 mb-4">
-                <div class="service-card">
-                  <a href="servicio?id=<?= $idServicio ?>">
-                    <div class="card-img-container">
-                      <img src="admin/classes/imgServicio/<?= $ruta_foto; ?>" class="img-fluid w-100" alt="<?= htmlspecialchars($nombre_servicio) ?>">
-                      <?php if (!empty($textoMiniatura)) : ?>
-                        <div class="badge-top"><?= $textoMiniatura; ?></div>
-                      <?php endif; ?>
-                    </div>
-                    <div class="card-body">
-                      <h5 class="card-title"><?= $nombre_servicio ?></h5>
-                      <?php if (count($opiniones_servicio) > 0) { ?>
-                      <p class="rating-text">
-                        <strong><?= $estrellas_servicio; ?>/10</strong> 
-                        <span><?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?></span>
-                      </p>
-                      <?php } ?>
-                      <!-- DESCRIPCIÓN -->
-                      <p class="description-text"><?= $descripcion_corta; ?></p>
-
-                      <!-- DURACIÓN -->
-                      <?php if(!empty($duracion_servicio)): ?>
-                        <ul class="features-list">
-                          <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
-                        </ul>
-                      <?php endif; ?>
-
-                      <!-- PRECIO Y CANCELACIÓN -->
-                      <div class="price-section">
-                        <?php if (!empty($cancelacion)) : ?>
-                          <h6 class="cancellation-text mb-1"><i class="fa fa-check-circle"></i> <?= $cancelacion ?></h6>
+              <!-- TARJETA SERVICIO HORIZONTAL -->
+              <a href="servicio?id=<?= $idServicio ?>">
+                <div class="mb-4">
+                  <div class="card card-visitas">
+                    <div class="row no-gutters d-md-none" style="position: absolute;z-index: 999;">
+                      <div class="col-6">
+                        <?php if (!empty($textoMiniatura)) : ?>
+                          <div class="badge badge-primary badge-destacado"><?= $textoMiniatura; ?></div>
                         <?php endif; ?>
-                        <p class="price-text mb-0 <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></p>
                       </div>
                     </div>
-                  </a>
+                    <div class="card-body padding-body">
+                      <div class="row">
+                        <div class="col-md-4 col-4">
+                          <img src="admin/classes/imgServicio/<?= $ruta_foto; ?>" class="w-100 img-fluid img-card-destinos">
+                        </div>
+                        <div class="col-md-8 col-8" style="padding-left:0px !important;">
+                          <div class="card-block">
+                            <h4 class="text-left titulo-card-destinos semibold"><?= $nombre_servicio ?></h4>
+                            <?php if (count($opiniones_servicio) > 0) { ?>
+                              <h5 class="texto-opinion-desta"><strong><?= $estrellas_servicio; ?>/10</strong> <small class="text-gris"><?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?></small></h5>
+                            <?php } ?>
+                            <p class="text-gris d-md-block"><?= $descripcion_corta; ?></p>
+                          </div>
+                          <?php if(!empty($duracion_servicio)): ?>
+                            <ul class="lista-caracteristicas d-md-none">
+                              <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
+                            </ul>
+                          <?php endif; ?>
+                          <?php if (!empty($cancelacion)) : ?>
+                            <h4 class="text-success text-cancelacion float-left d-md-none semibold"><?= $cancelacion ?></h4>
+                          <?php endif; ?>
+                          <p class="float-right d-md-none semibold <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></p>
+                        </div>
+                      </div>
+
+                      <div class="d-md-block mt-2 d-none">
+                        <div class="row no-gutters">
+                          <div class="col-lg-4 col-12">
+                            <?php if(!empty($duracion_servicio)): ?>
+                              <ul class="lista-caracteristicas">
+                                <li><i class="fa fa-hourglass-half"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?></li>
+                              </ul>
+                            <?php endif; ?>
+                          </div>
+                          <div class="col-lg-4 col-12">
+                            <?php if (!empty($cancelacion)) : ?>
+                              <h4 class="text-success text-cancelacion semibold"><?= $cancelacion; ?></h4>
+                            <?php endif; ?>
+                          </div>
+                          <div class="col-lg-4 col-12">
+                            <h4 class="float-right semibold <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></h4>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+
+                    <div class="destacado d-md-block d-none">
+                      <?php if (!empty($textoMiniatura)) : ?>
+                        <h5 class="text-uppercase text-white"><?= $textoMiniatura; ?></h5>
+                      <?php endif; ?>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </a>
 
             <?php } ?>
           </div>
