@@ -16,6 +16,8 @@ require_once("admin/classes/accesibilidad.php");
 require_once("admin/classes/texto_viajeros.php");
 require_once("admin/classes/tarifas.php");
 require_once("admin/classes/cancelaciones.php");
+require_once("admin/classes/fotos_servicio.php");
+require_once("admin/classes/salidas.php");
 
 if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
   $idServicio = (int)$_GET['id'];
@@ -52,7 +54,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
       $tarifasSalida = getTarifas($s['idServicioSalidas']);
       if (!empty($tarifasSalida)) {
         foreach ($tarifasSalida as $t) {
-          if (!empty($t['idCancelaciones'])) {
+          if (isset($t['idCancelaciones']) && !empty($t['idCancelaciones'])) {
             $c = getTipoCancelaciones($t['idCancelaciones']);
             if (!empty($c) && isset($c[0]['texto'])) {
               $textoC = $c[0]['texto'];
@@ -177,10 +179,19 @@ include('servicioHead.php');
                 <!-- CANCELACIONES -->
                 <h2 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h2>
                 <div id="divCancelaciones">
-                  <?php if (!empty($cancelacionesArr)) { ?>
+                  <?php 
+                  // Debug temporal
+                  if ($isAdmin && !empty($salidas)) {
+                    echo "<!-- DEBUG: Total salidas: " . count($salidas) . " -->";
+                    echo "<!-- DEBUG: Total cancelaciones encontradas: " . count($cancelacionesArr) . " -->";
+                  }
+                  
+                  if (!empty($cancelacionesArr)) { ?>
                     <ul class="mb-0">
                       <?php foreach ($cancelacionesArr as $txt) { echo '<li>'. $txt .'</li>'; } ?>
                     </ul>
+                  <?php } else { ?>
+                    <p class="mx-4"><?=$lang["consultar_politica_cancelacion"] ?? "Consultar política de cancelación al momento de reservar.";?></p>
                   <?php } ?>
                 </div>
               </div>
@@ -420,5 +431,133 @@ setTimeout(function(){
 </script>
 
 <script type="text/javascript" src="js/traeHorarios_unificado.js?v=<?=time()?>" charset="UTF-8"></script>
+
+<!--CARDS DE INTERES - TAMBIÉN TE PUEDE INTERESAR-->
+<?php
+// Preparar servicios relacionados
+$serviciosRelacionados = [];
+$mostrados = 0;
+$maxMostrar = 3;
+
+// 1. Primero intentar por categoría
+if (!empty($idCategoria_servicio)) {
+  $serviciosRelacionados = getServiciosidCategoria_servicio($idCategoria_servicio);
+}
+
+// 2. Si no hay suficientes, intentar por destino
+if (count($serviciosRelacionados) < 4 && !empty($idDestino)) {
+  $serviciosPorDestino = getServiciosidDestino($idDestino);
+  // Combinar sin duplicados
+  foreach ($serviciosPorDestino as $servDest) {
+    $yaExiste = false;
+    foreach ($serviciosRelacionados as $servRel) {
+      if ($servRel['idServicio'] == $servDest['idServicio']) {
+        $yaExiste = true;
+        break;
+      }
+    }
+    if (!$yaExiste) {
+      $serviciosRelacionados[] = $servDest;
+    }
+  }
+}
+
+// 3. Si aún no hay suficientes, obtener servicios aleatorios
+if (count($serviciosRelacionados) < 4) {
+  require_once("admin/classes/conexion.php");
+  $consultaRandom = "SELECT * FROM servicio WHERE habilitado=1 ORDER BY RAND() LIMIT 10";
+  $comandoRandom = $pdo->prepare($consultaRandom);
+  $comandoRandom->execute();
+  $serviciosAleatorios = $comandoRandom->fetchAll(PDO::FETCH_ASSOC);
+  
+  foreach ($serviciosAleatorios as $servAle) {
+    $yaExiste = false;
+    foreach ($serviciosRelacionados as $servRel) {
+      if ($servRel['idServicio'] == $servAle['idServicio']) {
+        $yaExiste = true;
+        break;
+      }
+    }
+    if (!$yaExiste) {
+      $serviciosRelacionados[] = $servAle;
+    }
+  }
+}
+
+// Mostrar sección solo si hay servicios disponibles
+if (!empty($serviciosRelacionados) && is_array($serviciosRelacionados)):
+?>
+<section class="py-5" style="clear: both; position: relative; z-index: 1;">
+  <div class="container mb-5">
+    <h2 class="text-center mb-4"><?=$lang["tambien_te_puede_interesar"]?></h2>
+    <div class="row">
+      <?php 
+      foreach ($serviciosRelacionados as $servicioRel) {
+        if ($mostrados >= $maxMostrar) break;
+        if (!isset($servicioRel["idServicio"])) continue;
+        
+        $idServicioRelacionado = $servicioRel["idServicio"];
+        
+        // Evitar mostrar el servicio actual
+        if ($idServicioRelacionado == $idServicio) continue;
+        
+        // Obtener salidas desde hoy en adelante
+        require_once("admin/classes/conexion.php");
+        $fechaHoy = date("Y-m-d");
+        $consultaSalidas = "SELECT * FROM servicio_salidas WHERE idServicio = :idServicio AND fecha >= :fechaHoy ORDER BY fecha ASC LIMIT 1";
+        $cmdSalidas = $pdo->prepare($consultaSalidas);
+        $cmdSalidas->execute(['idServicio' => $idServicioRelacionado, 'fechaHoy' => $fechaHoy]);
+        $salidasFuturas = $cmdSalidas->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Solo mostrar si tiene salidas futuras
+        if (empty($salidasFuturas)) continue;
+        
+        // Calcular precio desde la primera salida disponible
+        $precioSugerido = $lang["consultar"] ?? "Consultar";
+        $idServicioSalidas = $salidasFuturas[0]['idServicioSalidas'];
+        $tarifas = getTarifas($idServicioSalidas);
+        if (!empty($tarifas)) {
+          $tarifa = calculaTarifa($tarifas[0]['idServicioSalidasTarifas'], 1);
+          if (!empty($tarifa) && isset($tarifa[0]["valorSym"])) {
+            $precioSugerido = $tarifa[0]["valorSym"];
+          }
+        }
+        
+        $textoMiniaturaData = getTextoMiniatura($servicioRel["idTextoMiniaturas"] ?? 0);
+        $textoMiniatura = (!empty($textoMiniaturaData) && isset($textoMiniaturaData[0]["texto"])) ? $textoMiniaturaData[0]["texto"] : "";
+        
+        $OpinionesServicio = GetOpinionesServicio($idServicioRelacionado);
+        $estrellasServicio = getEstrellasServicio($idServicioRelacionado);
+        $fotos = getFotoMiniaturaServicio($idServicioRelacionado);
+        
+        if (!empty($fotos) && isset($fotos[0]['ruta'])) {
+          $mostrados++;
+      ?>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card card-destacadas shadow" style="height: auto; min-height: 450px;">
+          <img src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="img-fluid img-card-top img-destacada" alt="<?=$servicioRel["nombre_servicio"] ?? '';?>">
+          <?php if (!empty($textoMiniatura)): ?>
+          <div class="destacado">
+            <h5 class="text-uppercase text-white"><?=$textoMiniatura;?></h5>
+          </div>
+          <?php endif; ?>
+          <div class="card-body">
+            <h3><a href="servicio?id=<?=$idServicioRelacionado?>"><?=$servicioRel["nombre_servicio"] ?? 'Servicio';?></a></h3>
+            <p class="text-primary mb-2"><strong><?=$estrellasServicio;?>/10</strong> <span class="text-gris"><?= count($OpinionesServicio);?> <?=$lang["opiniones"];?></span></p>
+            <p class="mb-3"><?=$servicioRel["descripcion_corta"] ?? '';?></p>
+            <h3 class="text-primary mb-0"><?=$precioSugerido;?></h3>
+          </div>
+          <a href="servicio?id=<?=$idServicioRelacionado?>" class="btn-reserva-destacada"><?=$lang["reservar"]?></a>
+        </div>
+      </div>
+      <?php
+        }
+      }
+      ?>
+    </div>
+  </div>
+</section>
+<?php endif; ?>
+<!--FIN CARDS DE INTERES-->
 
 <?php include("footer.php"); ?>

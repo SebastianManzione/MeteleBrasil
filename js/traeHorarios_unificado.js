@@ -94,14 +94,45 @@ function formatPrice(amount) {
 }
 
 function actualizaPrecios(){
-  if (precioTotal >= 0) {
-    var total = Number(precioTotal) || 0;
-    $('#precioTotal0').text(formatPrice(total));
-    $('#precio-nav').text(formatPrice(total));
-    
-    var precioTotalSinDescuento = total * 1.1356987;
-    $('#precioTotalSinDescuento').text(formatPrice(precioTotalSinDescuento));
+  // Recalcular total desde los arrays de reserva
+  var totalTarifas = 0;
+  var totalAdicionales = 0;
+  
+  console.log('=== ACTUALIZANDO PRECIOS ===');
+  console.log('reserva:', reserva);
+  console.log('reservaAdicionales:', reservaAdicionales);
+  
+  // Sumar tarifas - leer desde los labels actualizados
+  for (var i = 0; i < reserva.length; i++) {
+    var idTarifa = reserva[i]["idServicioSalidasTarifas"];
+    var cantidad = reserva[i]["cantidad"] || 0;
+    if (cantidad > 0) {
+      var textoLabel = $('.lblTotal.tarifa-' + idTarifa).text();
+      console.log('Tarifa ' + idTarifa + ' texto:', textoLabel);
+      var valor = parseFloat(textoLabel.replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
+      console.log('Tarifa ' + idTarifa + ' valor parseado:', valor);
+      totalTarifas += valor;
+    }
   }
+  
+  // Sumar adicionales - usar valores guardados directamente
+  for (var j = 0; j < reservaAdicionales.length; j++) {
+    var valorTotal = reservaAdicionales[j]["valorTotal"] || 0;
+    console.log('Adicional ' + j + ' valorTotal:', valorTotal);
+    totalAdicionales += valorTotal;
+  }
+  
+  console.log('Total tarifas:', totalTarifas);
+  console.log('Total adicionales:', totalAdicionales);
+  var total = totalTarifas + totalAdicionales;
+  console.log('Total final:', total);
+  precioTotal = total;
+  
+  $('#precioTotal0').text(formatPrice(total));
+  $('#precio-nav').text(formatPrice(total));
+  
+  var precioTotalSinDescuento = total * 1.1356987;
+  $('#precioTotalSinDescuento').text(formatPrice(precioTotalSinDescuento));
 }
 
 function limpiarTarifaYAdicionales(){
@@ -143,27 +174,17 @@ function enviar(){
 // ==================== CALENDARIO ====================
 
 function traeHorarios($fecha, $idServicio){
-  console.log('🔵 traeHorarios INICIADA');
-  console.log('  - fecha:', $fecha);
-  console.log('  - idServicio:', $idServicio);
-  
   limpiarTarifaYAdicionales();
   
   $.post("admin/ctrl/ctrlHorarios", {
     fecha: $fecha,
     idServicio: $idServicio
   }, function(data, status){
-    console.log('📡 Respuesta AJAX:', data);
-    
     try {
       salidas = JSON.parse(data);
     } catch (e) {
-      console.error('❌ ERROR al parsear JSON:', e);
-      console.error('Contenido de data:', data);
       salidas = [];
     }
-    
-    console.log('salidas después parse:', salidas);
     
     var salidasDisponibles = [];
     for (var i = 0; i < salidas.length; i++) {
@@ -172,10 +193,7 @@ function traeHorarios($fecha, $idServicio){
       }
     }
     
-    console.log('salidasDisponibles:', salidasDisponibles.length);
-    
     if (salidasDisponibles.length === 0) {
-      console.warn('⚠️ No hay salidas disponibles');
       $('#divhora').html('<div class="alert alert-warning m-3">No hay salidas disponibles para esta fecha</div>');
       return;
     }
@@ -213,19 +231,14 @@ function traeHorarios($fecha, $idServicio){
       }
     }
     
-    console.log('✅ HTML generado, poblando #divhoraBody');
-    console.log('htmlHorarios length:', htmlHorarios.length);
     $('#divhoraBody').html(htmlHorarios);
-    console.log('post-insert innerHTML length:', $('#divhoraBody').html().length);
     
-    // Forzar apertura visual del acordeón de horarios
-    console.log('Forzando apertura de #divhora');
+    // Abrir acordeón de horarios
     $('#divhora').addClass('show').css('display', 'block');
     $('a[data-target="#divhora"]').attr('aria-expanded', 'true').removeClass('collapsed');
     
     // Auto-seleccionar primera salida
     if (salidasDisponibles.length > 0) {
-      console.log('Auto-seleccionando primera salida:', salidasDisponibles[0]["idServicioSalidas"]);
       setTimeout(function() {
         traeTarifas(salidasDisponibles[0]["idServicioSalidas"]);
       }, 300);
@@ -236,7 +249,6 @@ function traeHorarios($fecha, $idServicio){
 // ==================== TARIFAS ====================
 
 function traeTarifas($idSalida){
-  console.log('🟢 traeTarifas INICIADA con idSalida:', $idSalida);
     // Marcar botón seleccionado
   $('.btn-hora').removeClass('btn-primary').addClass('btn-outline-primary');
   $('#btnSalida' + $idSalida).removeClass('btn-outline-primary').addClass('btn-primary');
@@ -252,20 +264,13 @@ function traeTarifas($idSalida){
   $.post("admin/ctrl/ctrlHorarios", {
     idSalida: $idSalida
   }, function(data, status){
-    console.log('📡 Respuesta traeTarifas AJAX:', data);
-    
     var tarifas = [];
     try {
       tarifas = JSON.parse(data);
     } catch (e) {
-      console.error('❌ ERROR al parsear tarifas:', e);
-      console.error('Contenido data:', data);
     }
     
-    console.log('tarifas después parse:', tarifas);
-    
     if (!tarifas || tarifas.length === 0) {
-      console.warn('⚠️ No hay tarifas disponibles');
       $('#seleccionar_personas').html('<div class="alert alert-warning">No hay tarifas disponibles</div>');
       return;
     }
@@ -298,16 +303,14 @@ function traeTarifas($idSalida){
       htmlTarifas += '        <i class="fa fa-plus-circle fa-2x text-dark"></i>';
       htmlTarifas += '      </a>';
       htmlTarifas += '    </div>';
-      htmlTarifas += '    <strong class="text-primary lblTotal tarifa-' + tarifa.idServicioSalidasTarifas + '" style="text-align: right;">AR$ 0</strong>';
+      htmlTarifas += '    <strong class="text-primary lblTotal tarifa-' + tarifa.idServicioSalidasTarifas + '" style="text-align: right;">' + symMoneda + ' 0</strong>';
       htmlTarifas += '  </div>';
       htmlTarifas += '</div>';
     }
     
-    console.log('✅ Poblando #seleccionar_personas con:', htmlTarifas.length, 'caracteres');
     $('#seleccionar_personas').html(htmlTarifas);
     
     // Forzar apertura visual del acordeón de personas
-    console.log('Forzando apertura de #seleccionar_personas');
     $('#seleccionar_personas').addClass('show').css('display', 'block');
     $('a[data-target="#seleccionar_personas"]').attr('aria-expanded', 'true').removeClass('collapsed');
     
@@ -330,7 +333,6 @@ function traeTarifas($idSalida){
       }
       
       $('#rowCirculosPrecios').html(htmlPrecios);
-      console.log('✅ Precios populares cargados en rowCirculosPrecios');
     }
     
     // Actualizar información adicional - idiomas en todos los lugares
@@ -343,19 +345,36 @@ function traeTarifas($idSalida){
     // Procesar cancelaciones
     if (tarifas[0]["cancelaciones"]) {
       var htmlCancelaciones = '';
-      for (var j = 0; j < tarifas[0]["cancelaciones"].length; j++) {
-        htmlCancelaciones += '<p>' + tarifas[0]["cancelaciones"][j]["texto"] + '</p>';
+      var cancelaciones = tarifas[0]["cancelaciones"];
+      
+      // Si es un objeto (respuesta antigua [0]), convertir a array
+      if (!Array.isArray(cancelaciones)) {
+        cancelaciones = [cancelaciones];
+      }
+      
+      if (cancelaciones.length > 0 && cancelaciones[0]) {
+        htmlCancelaciones = '<ul class="mb-0">';
+        for (var j = 0; j < cancelaciones.length; j++) {
+          if (cancelaciones[j] && cancelaciones[j]["texto"]) {
+            htmlCancelaciones += '<li>' + cancelaciones[j]["texto"] + '</li>';
+          }
+        }
+        htmlCancelaciones += '</ul>';
+      } else {
+        htmlCancelaciones = '<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>';
       }
       $('#divCancelaciones').html(htmlCancelaciones);
       
       var tieneGratuita = false;
-      for (var j = 0; j < tarifas[0]["cancelaciones"].length; j++) {
-        if (tarifas[0]["cancelaciones"][j]["idCancelacion"] == 1) {
+      for (var j = 0; j < cancelaciones.length; j++) {
+        if (cancelaciones[j] && cancelaciones[j]["idCancelacion"] == 1) {
           tieneGratuita = true;
           break;
         }
       }
       $('#textoCancelacionGratuita').toggle(tieneGratuita);
+    } else {
+      $('#divCancelaciones').html('<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>');
     }
     
     // Procesar incluidos
@@ -393,7 +412,7 @@ function traeTarifas($idSalida){
         htmlAdicionalesDiv += '        <i class="fa fa-plus-circle fa-2x text-dark"></i>';
         htmlAdicionalesDiv += '      </a>';
         htmlAdicionalesDiv += '    </div>';
-        htmlAdicionalesDiv += '    <strong class="text-primary lblTotalAdicional adicional-' + adicional.idServicioSalidasAdicionales + '" id="lblTotalAdicionales' + adicional.idServicioSalidasAdicionales + '">AR$ 0</strong>';
+        htmlAdicionalesDiv += '    <strong class="text-primary lblTotalAdicional adicional-' + adicional.idServicioSalidasAdicionales + '" id="lblTotalAdicionales' + adicional.idServicioSalidasAdicionales + '">' + symMoneda + ' 0</strong>';
         htmlAdicionalesDiv += '  </div>';
         htmlAdicionalesDiv += '</div>';
       }
@@ -558,7 +577,15 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
     idServicioSalidasAdicionales: idServicioSalidasAdicionales,
     cantidad: cantidad
   }, function(data, status){
-    var response = JSON.parse(data);
+    console.log('Respuesta servidor adicionales:', data);
+    var response;
+    try {
+      response = JSON.parse(data);
+    } catch(e) {
+      console.error('Error parseando JSON adicionales:', e);
+      console.error('Data recibida:', data);
+      return;
+    }
     var valor = getPrecioValor(response[0]);
     var total = valor * cantidad;
     
@@ -571,6 +598,8 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
       for (var i = 0; i < reservaAdicionales.length; i++) {
         if (reservaAdicionales[i]["idServicioSalidasAdicionales"] == idServicioSalidasAdicionales) {
           reservaAdicionales[i]["cantidad"] = cantidad;
+          reservaAdicionales[i]["valorUnitario"] = valor;
+          reservaAdicionales[i]["valorTotal"] = total;
           if (cantidad < 1) {
             reservaAdicionales.splice(i, 1);
           }
@@ -582,7 +611,9 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
     if (exito < 1 && cantidad > 0) {
       reservaAdicionales.push({
         idServicioSalidasAdicionales: idServicioSalidasAdicionales,
-        cantidad: cantidad
+        cantidad: cantidad,
+        valorUnitario: valor,
+        valorTotal: total
       });
     }
     
@@ -593,23 +624,9 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
 // ==================== INICIALIZACIÓN ====================
 
 $(document).ready(function(){
-  // Logs iniciales de depuración
-  console.log('=== INICIANDO TRAEHORARIOS_UNIFICADO ===');
-  console.log('idServicioSeleccionado:', idServicioSeleccionado);
-  console.log('eventArray:', eventArray);
-  console.log('eventArray length:', eventArray.length);
-  console.log('symMoneda:', symMoneda);
-  console.log('HTML calendar exists:', $('#calendar').length);
-  console.log('HTML collapseCalendario exists:', $('#collapseCalendario').length);
-  console.log('HTML divhora exists:', $('#divhora').length);
-  console.log('HTML seleccionar_personas exists:', $('#seleccionar_personas').length);
-  
   // Inicializar calendario CLNDR unificado - UNA SOLA VEZ
   if ($('#calendar').length && !$('#calendar').data('clndr-initialized')) {
-    console.log('Inicializando CLNDR calendario...');
-    
     if (eventArray.length === 0) {
-      console.warn('⚠️ ADVERTENCIA: eventArray está vacío!');
     }
     
     $('#calendar').clndr({
@@ -622,7 +639,6 @@ $(document).ready(function(){
         click: function (target) {
           if ($(target.element).hasClass('event')) {
             var fechaSeleccionada = target.date._i;
-            console.log('Día clickeado:', fechaSeleccionada);
             
             // Colorear día seleccionado
             $('#calendar .day.event').css({
@@ -637,13 +653,11 @@ $(document).ready(function(){
             });
             
             // Cargar horarios
-            console.log('Llamando traeHorarios con:', fechaSeleccionada, idServicioSeleccionado);
             traeHorarios(fechaSeleccionada, idServicioSeleccionado);
           }
         }
       },
       doneRendering: function() {
-        console.log('CLNDR rendering completo');
         // Traducir encabezado del mes (fallback en caso de que moment.locale no esté disponible con locales)
         try {
           var currentMonthMoment = this.month; // instancia de CLNDR
@@ -651,11 +665,10 @@ $(document).ready(function(){
           var anio = currentMonthMoment.year();
           var nombreMes = (mesesMap[idiomaSistema] || mesesMap['ES'])[idxMes];
           $('#calendar .month').text(nombreMes + ' ' + anio);
-        } catch(e) { console.warn('No se pudo traducir el nombre del mes:', e); }
+        } catch(e) { }
         // Colorear primer día con eventos
         setTimeout(function() {
           var primerDia = $('#calendar .day.event').first();
-          console.log('Primer día encontrado:', primerDia.length);
           if (primerDia.length) {
             primerDia.css({
               'background': '#029ce2',

@@ -315,7 +315,8 @@ $idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
 
 
 
-			$retorno[$i]['cancelaciones']=getTipoCancelaciones($tarifas[$i]['idCancelaciones'])[0];
+			$cancelacionData = getTipoCancelaciones($tarifas[$i]['idCancelaciones']);
+			$retorno[$i]['cancelaciones'] = !empty($cancelacionData) ? $cancelacionData : [];
 
 
 

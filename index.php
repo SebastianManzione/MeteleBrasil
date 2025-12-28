@@ -17,30 +17,25 @@ $geoFinal = getGeolocalizacionData();
 $visitante = [$ip, $geoFinal['nombre_pais'] ?? 'Desconocido', 'index.php'];
 Visitante($visitante);
 
-// La conexión ya está disponible desde navbar.php que incluyó admin/classes/db.php
-// Usar la conexión centralizada ($pdo o $mysqli)
-// Si es necesario MySQLi, usar la ya inicializada
+// Usar la conexión global desde navbar.php que ya cargó db.php
 $mysqli = $GLOBALS['mysqli'] ?? null;
 
-// Si no hay MySQLi global, intentar crear conexión DEV primero (XAMPP local)
+// Si no hay MySQLi global, usar configuración centralizada
 if (!($mysqli instanceof mysqli)) {
-    @$mysqli = new mysqli("127.0.0.1", "root", "", "metelebrasil");
+    require_once(__DIR__ . '/config/config.php');
+    @$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if ($mysqli->connect_error) {
-        // Fallback a PROD (si está configurado)
-        @$mysqli = new mysqli("localhost", "u925692129_metelebrasil", "Cambiar2026", "u925692129_metelebrasil");
-        if ($mysqli->connect_error) {
-            die("Error de conexión: " . $mysqli->connect_error);
-        }
+        die("Error de conexión: " . $mysqli->connect_error);
     }
 }
 
 $latUsuario = floatval($geoFinal['latitud'] ?? 0);
 $lonUsuario = floatval($geoFinal['longitud'] ?? 0);
 
-// Seleccionar el campo de nombre según el idioma
+// Seleccionar el campo de nombre seg├║n el idioma
 $idioma = $_SESSION['idioma'] ?? 'ES';
-$campoNombre = 'nombre_servicio'; // Por defecto es español
-$campoDescripcion = 'descripcion_corta'; // Por defecto es español
+$campoNombre = 'nombre_servicio'; // Por defecto es espa├▒ol
+$campoDescripcion = 'descripcion_corta'; // Por defecto es espa├▒ol
 if ($idioma === 'EN') {
     $campoNombre = 'nombre_servicio_en';
     $campoDescripcion = 'descripcion_corta_en';
@@ -66,12 +61,12 @@ $result = $mysqli->query($sql);
 $servicios_geo = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $row['distancia'] = 999999; // Placeholder, se calcula después
+        $row['distancia'] = 999999; // Placeholder, se calcula despu├®s
         $servicios_geo[] = $row;
     }
 }
 
-// Calcular distancia y ordenar servicios por proximidad (más cercanos primero)
+// Calcular distancia y ordenar servicios por proximidad (m├ís cercanos primero)
 if ($latUsuario != 0 && $lonUsuario != 0) {
     foreach ($servicios_geo as &$servicio) {
         $servicio['distancia'] = calcularDistancia($latUsuario, $lonUsuario, floatval($servicio['latitud'] ?? 0), floatval($servicio['longitud'] ?? 0));
@@ -87,7 +82,7 @@ if ($latUsuario != 0 && $lonUsuario != 0) {
 $servicios = array_slice($servicios_geo, 0, 6);
 $servicios_restantes = array_slice($servicios_geo, 6);
 
-// Función para calcular distancia entre dos puntos (Haversine)
+// Funci├│n para calcular distancia entre dos puntos (Haversine)
 function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     if ($lat2 == 0 && $lon2 == 0) return PHP_FLOAT_MAX; // Si no tiene coordenadas, ponerlo al final
     $R = 6371; // Radio de la Tierra en km
@@ -98,54 +93,6 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     return $R * $c;
 }
 ?>
-<script>
-var latUsuario = <?= $geoFinal['latitud'] ?? 0 ?>;
-var lngUsuario = <?= $geoFinal['longitud'] ?? 0 ?>;
-function distancia(lat1, lng1, lat2, lng2) {
-    var R = 6371;
-    var dLat = (lat2 - lat1) * Math.PI / 180;
-    var dLng = (lng2 - lng1) * Math.PI / 180;
-    var a = Math.sin(dLat/2)**2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng/2)**2;
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-}
-var servicios = <?= json_encode($servicios_geo) ?>;
-servicios.sort((a, b) => distancia(a.latitud, a.longitud, latUsuario, lngUsuario) - distancia(b.latitud, b.longitud, latUsuario, lngUsuario));
-console.log(servicios);
-</script>
-<style>
-/* Animación de las secciones Ver más/Ver menos */
-.toggle-section { 
-  transition: max-height 350ms ease, opacity 350ms ease; 
-  max-height: 0;
-  opacity: 0; 
-  overflow: hidden;
-  will-change: max-height, opacity; 
-}
-.toggle-section.open { 
-  opacity: 1; 
-}
-/* Aparición suave del botón Ver menos */
-.fade-toggle { 
-  opacity: 0; 
-  transform: translateY(6px); 
-  transition: opacity 250ms ease, transform 250ms ease; 
-}
-.fade-toggle.show { 
-  opacity: 1; 
-  transform: translateY(0); 
-}
-@media (max-width: 576px) {
-  #btn-ver-menos-VerMasActividades,
-  #btn-ver-menos-VerMasActividades-d { 
-    margin-top: 8px; 
-  }
-}
-</style>
-<style>
-#capa1 { position: absolute; z-index: 1; }
-#capa2 { position: absolute; z-index: 0; }
-</style>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
     <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -177,9 +124,9 @@ console.log(servicios);
           <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
         </h1>
         <form class="form-buscar mb-5" action="categorias" method="get">
-          <label class="sr-only" for="buscar"><?= $lang["que_hacemos"] ?? "¿Qué hacemos?" ?></label>
+          <label class="sr-only" for="buscar"><?= $lang["que_hacemos"] ?? "┬┐Qu├® hacemos?" ?></label>
           <div class="input-group">
-            <input class="field form-control form-control-search" id="buscar" name="buscar" type="text" placeholder="<?= $lang["que_hacemos"] ?? "¿Qué hacemos?" ?>" value="">
+            <input class="field form-control form-control-search" id="buscar" name="buscar" type="text" placeholder="<?= $lang["que_hacemos"] ?? "┬┐Qu├® hacemos?" ?>" value="">
             <span class="input-group-append">
               <button class="submit btn btn-primary" name="submit" type="submit"><?= $lang["buscar"] ?? "Buscar" ?> <i class="fa fa-arrow-right"></i></button>
             </span>
@@ -236,7 +183,7 @@ console.log(servicios);
       <?php } ?>
       <?php
       $idiomaSel = $_SESSION['idioma'] ?? 'ES';
-      $labelVerMas = $lang["ver_mas"] ?? ($idiomaSel === 'EN' ? 'See more' : ($idiomaSel === 'PT' ? 'Ver mais' : ($idiomaSel === 'IT' ? 'Vedi di più' : 'Ver más')));
+      $labelVerMas = $lang["ver_mas"] ?? ($idiomaSel === 'EN' ? 'See more' : ($idiomaSel === 'PT' ? 'Ver mais' : ($idiomaSel === 'IT' ? 'Vedi di pi├╣' : 'Ver m├ís')));
       $labelVerMenos = $lang["ver_menos"] ?? ($idiomaSel === 'EN' ? 'See less' : ($idiomaSel === 'PT' ? 'Ver menos' : ($idiomaSel === 'IT' ? 'Vedi meno' : 'Ver menos')));
       ?>
     </div>
@@ -285,7 +232,7 @@ console.log(servicios);
         </a>
       </div>
       <?php } ?>
-      <!-- Botón Ver menos removido -->
+      <!-- Bot├│n Ver menos removido -->
     </div>
   </div>
 </section>
@@ -447,7 +394,7 @@ console.log(servicios);
         </a>
       </div>
       <?php } ?>
-      <!-- Botón Ver menos removido -->
+      <!-- Bot├│n Ver menos removido -->
     </div>
   </div>
 </section>
@@ -460,9 +407,9 @@ console.log(servicios);
       </div>
       <div class="modal-body">
         <form class="form-buscar">
-          <label class="sr-only" for="buscar"><?= $lang["donde_vamos"] ?? "¿Dónde vamos?" ?></label>
+          <label class="sr-only" for="buscar"><?= $lang["donde_vamos"] ?? "┬┐D├│nde vamos?" ?></label>
           <div class="input-group">
-            <input class="field form-control" id="buscar" name="buscar" type="text" placeholder="<?= $lang["donde_vamos"] ?? "¿Dónde vamos?" ?>" value="">
+            <input class="field form-control" id="buscar" name="buscar" type="text" placeholder="<?= $lang["donde_vamos"] ?? "┬┐D├│nde vamos?" ?>" value="">
             <span class="input-group-append">
               <button class="submit btn btn-primary" name="submit" type="submit"><?= $lang["buscar"] ?? "Buscar" ?><i class="fa fa-arrow-right"></i></button>
             </span>
@@ -479,7 +426,7 @@ console.log(servicios);
       <div class="col-8">
         <p class="text-white mb-0 text-justify cookies-sm" style="font-size:14px;">
           <?= $lang["utilizamos_cookies_propias"] ?? "Utilizamos cookies propias" ?>
-          <a href="cookies.php"><?= $lang["politicas_de_cookies"] ?? "Política de cookies" ?></a>
+          <a href="cookies.php"><?= $lang["politicas_de_cookies"] ?? "Pol├¡tica de cookies" ?></a>
         </p>
       </div>
       <div class="col-4">
@@ -489,7 +436,7 @@ console.log(servicios);
   </div>
 </div>
 <?php } ?>
-<!-- jQuery ya está cargado en navbar.php; remover duplicado para evitar conflictos con Bootstrap modal -->
+<!-- jQuery ya est├í cargado en navbar.php; remover duplicado para evitar conflictos con Bootstrap modal -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
 <script src="js/wow.min.js?v=<?php echo $version ?? '1.0'; ?>"></script>
@@ -497,13 +444,13 @@ console.log(servicios);
 <script src="vendor/jquery-easing/jquery.easing.min.js?v=<?php echo $version ?? '1.0'; ?>"></script>
 <script src="js/script.js?v=<?php echo $version ?? '1.0'; ?>"></script>
 <script type="text/javascript">
-// Reinitializar dropdowns de Bootstrap después de cargar DOM
+// Reinitializar dropdowns de Bootstrap despu├®s de cargar DOM
 $(document).ready(function(){
   // Asegurar que Bootstrap dropdowns funcionen correctamente
   $('[data-toggle="dropdown"]').dropdown();
 });
 
-// Animaciones vivas para expansión/colapso
+// Animaciones vivas para expansi├│n/colapso
 var _toggleAnimating = {};
 function toggleDiv(divId) {
   var div = document.getElementById(divId);

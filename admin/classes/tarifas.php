@@ -437,7 +437,8 @@ $cantidad){
 
 			 if ($descuentoTarifa > 0) {
 			 	$descuentoTarifaConvertido=convierteMoneda( $salida[0]["idMoneda"],$_SESSION['moneda_sel'],$descuentoTarifa);
-			 	$descuentoTarifaConvertido=$descuentoTarifaConvertido*($_SESSION["impuestos_pais"]+1);
+			 	$impuestos_pais = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
+			 	$descuentoTarifaConvertido=$descuentoTarifaConvertido*($impuestos_pais+1);
 			 	$descuentoTarifaConvertido=round($descuentoTarifaConvertido,2, PHP_ROUND_HALF_UP);
 			 	$totalDescuentos+=$descuentoTarifaConvertido;
 			 }
@@ -481,7 +482,8 @@ $cantidad){
             }
 
             
-            $retorno[$i]['valor']=(float)$retorno[$i]['valor']*((float)$_SESSION["impuestos_pais"]+1);
+            $impuestos_pais = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
+            $retorno[$i]['valor']=(float)$retorno[$i]['valor']*((float)$impuestos_pais+1);
 
             $retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
 
@@ -516,8 +518,9 @@ $cantidad){
             $retorno[$i]['valorSym']=$_SESSION['moneda_sel_sym'].' '.$retorno[$i]['valorFormateado'];
             $retorno[$i]['valorSinIva']=$retorno[$i]['valor'];
             $retorno[$i]['valorSinIvaSym']=$_SESSION['moneda_sel_sym'].' '.number_format($retorno[$i]['valor'], $decimales, ',', '.');
-            $retorno[$i]['valorDeIva']=$retorno[$i]['valor']*($_SESSION["impuestos_pais"]);
-            $retorno[$i]['valorDeIvaSym']=$_SESSION['moneda_sel_sym']." ".number_format($retorno[$i]['valor']*($_SESSION["impuestos_pais"]), $decimales, ',', '.');
+            $impuestos_pais_final = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
+            $retorno[$i]['valorDeIva']=$retorno[$i]['valor']*($impuestos_pais_final);
+            $retorno[$i]['valorDeIvaSym']=$_SESSION['moneda_sel_sym']." ".number_format($retorno[$i]['valor']*($impuestos_pais_final), $decimales, ',', '.');
 
             $retorno[$i]['valor']=$retorno[$i]['valor'];            $retorno[$i]['minimo']=$tarifas[$i]['minimo'];
 

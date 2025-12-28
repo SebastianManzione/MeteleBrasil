@@ -788,6 +788,8 @@ font-size: 18px;
 
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 
+  pointer-events: auto;
+
 }
 
 
@@ -797,6 +799,23 @@ font-size: 18px;
 border-top-right-radius: 25px;
 
 border-bottom-right-radius: 25px;
+
+pointer-events: auto;
+
+}
+
+/* Asegurar que el contenido esté sobre el buscador */
+section.py-5 {
+  position: relative;
+  z-index: 2;
+}
+
+section.py-5 .container {
+  background: white;
+}
+
+.toggle-section {
+  background: white;
 
 }
 
@@ -4137,11 +4156,13 @@ color: #ffff !important;
 
 position:absolute;
 
-z-index:999;
+z-index:1;
 
 top:20%;
 
 width:100%;
+
+pointer-events: none;
 
   }
 

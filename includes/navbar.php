@@ -1,5 +1,5 @@
 <?php
-// ========== INICIALIZACIÓN DE SESIÓN Y HEADERS ==========
+// ========== INICIALIZACIÃ“N DE SESIÃ“N Y HEADERS ==========
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
@@ -34,14 +34,14 @@ if (isset($_SESSION["login"]['idUsuario']) && $_SESSION['login']['idUsuario']==1
   print_r($_SESSION);
 }
 
-// ========== GEOLOCALIZACIÓN (DEBE ir ANTES de determinar idioma) ==========
+// ========== GEOLOCALIZACIÃ“N (DEBE ir ANTES de determinar idioma) ==========
 if (!isset($_SESSION['geoFinal'])) {
   require_once("admin/classes/geolocalizacion.php");
   $geoData = getGeolocalizacionData();
   $_SESSION['geoFinal'] = $geoData;
 }
 
-// ========== DETERMINAR IDIOMA por País (desde BD: tabla idioma_pais) ==========
+// ========== DETERMINAR IDIOMA por PaÃ­s (desde BD: tabla idioma_pais) ==========
 if (!isset($_SESSION['idioma'])) {
   require_once("admin/classes/idioma_pais.php");
   $geoFinal = $_SESSION['geoFinal'];
@@ -73,7 +73,7 @@ if (!isset($_SESSION['idioma_bandera']) || empty($_SESSION['idioma_bandera'])) {
   }
 }
 
-// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÓN ==========
+// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÃ“N ==========
 if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
   if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
     $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
@@ -88,7 +88,7 @@ if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
 // ========== METADATOS Y VARIABLES DE CARRITO ==========
 $version = date('Y-m-d H:i:s');
 $nombre_servicio = "Metele Brasil";
-$descripcion_corta = "Atividades, excursões, visitas guiadas em Brasil. Reserve online! preço mínimo antecipado e garantido.";
+$descripcion_corta = "Atividades, excursÃµes, visitas guiadas em Brasil. Reserve online! preÃ§o mÃ­nimo antecipado e garantido.";
 $carrito = $_SESSION['reserva'] ?? [];
 $cantCarrito = is_array($carrito) ? count($carrito) : 0;
 
@@ -100,7 +100,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
   $_SESSION['login']['idVendedor'] = 0;
 }
 
-// ========== AQUÍ COMIENZA EL HTML HEAD/NAVBAR ==========
+// ========== AQUÃ COMIENZA EL HTML HEAD/NAVBAR ==========
 ?>
 
 <head>
@@ -116,7 +116,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <meta property="og:url" content="https://www.metelebrasil.com/servicio" />
 <meta property="og:title"  content="<?=$servicio["nombre_servicio"];?> | Metele Brasil" />
 <meta property="og:description" content="<?=$servicio["descripcion_corta"];?>" />
-<meta name="keywords" content="excursões, visitas guiadas, passeios, atividades, traslados, circuitos, guias turísticos, guias de viagem" />
+<meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta property="og:type" content="article" />
@@ -135,7 +135,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 ?>
 <meta property="og:title"  content="<?=$titulo;?> | Metele Brasil" />
 <meta property="og:description" content="<?=$descripcionCorta;?>" />
-<meta name="keywords" content="excursões, visitas guiadas, passeios, atividades, traslados, circuitos, guias turísticos, guias de viagem" />
+<meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta property="og:type" content="article" />
@@ -146,8 +146,8 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <?php } else { ?>
 <meta property="og:title"  content="Metele Brasil" />
 <meta property="og:url" content="https://metelebrasil.com" />
-<meta property="og:description" content="Atividades, excursões, visitas guiadas em Brasil. Reserve online! preço mínimo antecipado e garantido." />
-<meta name="keywords" content="excursões, visitas guiadas, passeios, atividades, traslados, circuitos, guias turísticos, guias de viagem" />
+<meta property="og:description" content="Atividades, excursÃµes, visitas guiadas em Brasil. Reserve online! preÃ§o mÃ­nimo antecipado e garantido." />
+<meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta property="og:image" content="https://metelebrasil.com/img/slider4.jpg" />  
@@ -265,12 +265,15 @@ try {
  var comboGoogleTradutor = null;
 
     function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-            pageLanguage: 'es',
-            includedLanguages: 'es,pt,en,fr,it',
-            layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
-        }, 'google_translate_element');
-        comboGoogleTradutor = document.getElementById("google_translate_element").querySelector(".goog-te-combo");
+        var googleTranslateEl = document.getElementById("google_translate_element");
+        if (googleTranslateEl) {
+            new google.translate.TranslateElement({
+                pageLanguage: 'es',
+                includedLanguages: 'es,pt,en,fr,it',
+                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
+            }, 'google_translate_element');
+            comboGoogleTradutor = googleTranslateEl.querySelector(".goog-te-combo");
+        }
     }
 
     function changeEvent(el) {
@@ -291,7 +294,7 @@ try {
       			var novaimg = '';
 
             if(sigla == 'es'){
-                 novalng = 'Español';	
+                 novalng = 'EspaÃ±ol';	
                  novaimg = 'img/countries/Spain-icon.png';
             } else if(sigla == 'en'){
                 novalng = 'Ingles';
@@ -327,7 +330,7 @@ trocarIdioma("en");
       </a>
         <ul class="navbar-nav ml-auto">
             <form class="search-menu form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2 text-white" type="search" id="search-pc" placeholder="O que você quer fazer?" aria-label="Search">
+              <input class="form-control mr-sm-2 text-white" type="search" id="search-pc" placeholder="O que vocÃª quer fazer?" aria-label="Search">
             </form>
           <div class="mostrarenmobile">
             <li class="nav-item mx-0 mx-lg-1">
@@ -452,7 +455,7 @@ setTimeout(location.reload(), 5000);
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
                     <div class="nav-password-wrapper">
-                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="Contraseña">
+                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="ContraseÃ±a">
                       <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <small class="float-right text-primary py-2"><a href="recuperar_contrasena"><?=$lang["he_olvidado_mi_contrasena"];?></a></small>
@@ -759,7 +762,7 @@ for ($i=0; $i < count($carrito); $i++) {
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
                     <div class="nav-password-wrapper">
-                      <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contraseña">
+                      <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="ContraseÃ±a">
                       <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <small class="float-right text-primary py-2"><a href=""><?=$lang["he_olvidado_mi_contrasena"];?></a></small>

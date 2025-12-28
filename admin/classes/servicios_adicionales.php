@@ -553,8 +553,9 @@ function getServiciosAdicionalesSalidaNoIncluidos($idServicioSalidas)
 
     $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] = convierteMoneda($idMoneda, $_SESSION['moneda_sel'], $resultado[$i]["valor"]);
 
-
-    $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] = $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] * ($_SESSION["impuestos_pais"] + 1);
+    // Aplicar impuestos del país si existen
+    $impuestos_pais = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
+    $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] = $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] * ($impuestos_pais + 1);
 
 
     $serviciosAdicionalesSalidaNoIncluidos[$i]['valor'] = round($serviciosAdicionalesSalidaNoIncluidos[$i]['valor'], 2, PHP_ROUND_HALF_UP);
@@ -616,7 +617,8 @@ function getValorServiciosAdicionalesSalida($idServicioSalidasAdicionales, $cant
 
     $precio = $resultado[$i]["valor"] * $cantidad;
 
-    $valorIva = $precio * $_SESSION["impuestos_pais"];
+    $impuestos_pais_valor = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
+    $valorIva = $precio * $impuestos_pais_valor;
 
     $precioConIva = $precio + $valorIva;
 
