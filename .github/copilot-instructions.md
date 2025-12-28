@@ -651,3 +651,223 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
 
 **Archivo de referencia completa:** `INSTRUCCIONES_FILTROS_COMBINABLES.md` (264 líneas con código completo)
 
+---
+
+## Sistema de Servicios Relacionados "También te puede interesar" (Implementado - Dic 2025)
+
+### Arquitectura en servicio.php
+
+**Ubicación:** Antes del footer (líneas ~435-555)
+
+**Lógica de selección escalonada:**
+
+1. **Nivel 1 - Categoría:** Busca servicios de la misma categoría con `getServiciosidCategoria_servicio($idCategoria_servicio)`
+2. **Nivel 2 - Destino:** Si hay menos de 4, agrega servicios del mismo destino con `getServiciosidDestino($idDestino)`
+3. **Nivel 3 - Aleatorios:** Si aún faltan, consulta `SELECT * FROM servicio WHERE habilitado=1 ORDER BY RAND() LIMIT 10`
+4. **Filtros aplicados:**
+   - Excluye el servicio actual (`$idServicio`)
+   - Evita duplicados entre niveles
+   - Solo muestra servicios con salidas futuras (`fecha >= hoy`)
+   - Requiere foto de miniatura válida
+   - Máximo 3 servicios mostrados
+
+### Código crítico de consulta de salidas futuras
+
+```php
+// Línea ~495-502
+require_once("admin/classes/conexion.php");
+$fechaHoy = date("Y-m-d");
+$consultaSalidas = "SELECT * FROM servicio_salidas 
+                    WHERE idServicio = :idServicio 
+                    AND fecha >= :fechaHoy 
+                    ORDER BY fecha ASC LIMIT 1";
+$cmdSalidas = $pdo->prepare($consultaSalidas);
+$cmdSalidas->execute(['idServicio' => $idServicioRelacionado, 'fechaHoy' => $fechaHoy]);
+```
+
+**IMPORTANTE:** Tabla `servicio_salidas` NO tiene campo `habilitado`, usar solo `fecha >= :fechaHoy`
+
+### Funciones requeridas
+
+**Requires agregados en servicio.php (líneas 7-20):**
+```php
+require_once("admin/classes/fotos_servicio.php");  // getFotoMiniaturaServicio()
+require_once("admin/classes/salidas.php");          // getSalidasServicio()
+```
+
+**Funciones utilizadas:**
+- `getServiciosidCategoria_servicio($id)` → `admin/classes/servicio.php:435`
+- `getServiciosidDestino($id)` → `admin/classes/servicio.php:518`
+- `getFotoMiniaturaServicio($id)` → `admin/classes/fotos_servicio.php:42`
+- `getEstrellasServicio($id)` → `admin/classes/servicio_opiniones.php:70` (minúscula inicial)
+- `GetOpinionesServicio($id)` → `admin/classes/servicio_opiniones.php` (mayúscula inicial)
+- `getTextoMiniatura($id)` → `admin/classes/texto_miniaturas.php`
+- `getTarifas($idSalida)` → `admin/classes/tarifas.php`
+- `calculaTarifa($idTarifa, $cantidad)` → `admin/classes/tarifas.php`
+
+### Estructura HTML de tarjeta
+
+```php
+<div class="col-lg-4 col-md-6 mb-4">
+  <div class="card card-destacadas shadow" style="height: auto; min-height: 450px;">
+    <img src="admin/classes/imgServicio/<?=$fotos[0]['ruta'];?>" class="img-fluid img-card-top img-destacada">
+    <div class="destacado">
+      <h5 class="text-uppercase text-white"><?=$textoMiniatura;?></h5>
+    </div>
+    <div class="card-body">
+      <h3><a href="servicio?id=<?=$idServicioRelacionado?>"><?=$nombre;?></a></h3>
+      <p class="text-primary mb-2"><strong><?=$estrellas;?>/10</strong> <span class="text-gris"><?=$cantOpiniones;?> opiniones</span></p>
+      <p class="mb-3"><?=$descripcion_corta;?></p>
+      <h3 class="text-primary mb-0"><?=$precio;?></h3>
+    </div>
+    <a href="servicio?id=<?=$idServicioRelacionado?>" class="btn-reserva-destacada">Reservar</a>
+  </div>
+</div>
+```
+
+**Estilos CSS existentes:**
+- `.card-destacadas` → `css/styles.css:972`
+- `.btn-reserva-destacada` → `css/styles.css:1498`
+
+**Layout responsivo:**
+- Desktop: `col-lg-4` (3 columnas)
+- Tablet: `col-md-6` (2 columnas)
+- Móvil: `col-12` (1 columna)
+
+### String de traducción
+
+**Clave:** `tambien_te_puede_interesar`
+
+**Ubicaciones:**
+- `admin/lang/ES.php:967` → "También te puede interesar"
+- `admin/lang/EN.php:961` → "It may also interest you"
+- `admin/lang/PT.php:1916` → "Também pode interessar a você"
+- `admin/lang/IT.php:805` → "Potrebbe interessarti anche"
+
+### Manejo de Cancelaciones Dinámicas
+
+**Problema resuelto:** Las políticas de cancelación varían por tarifa/salida
+
+**Flujo correcto:**
+
+1. **Carga inicial (PHP - líneas 48-67):**
+```php
+$cancelacionesArr = [];
+if (!empty($salidas)) {
+  foreach ($salidas as $s) {
+    $tarifasSalida = getTarifas($s['idServicioSalidas']);
+    foreach ($tarifasSalida as $t) {
+      if (isset($t['idCancelaciones']) && !empty($t['idCancelaciones'])) {
+        $c = getTipoCancelaciones($t['idCancelaciones']);
+        if (!empty($c) && isset($c[0]['texto'])) {
+          $textoC = $c[0]['texto'];
+          if (!in_array($textoC, $cancelacionesArr)) $cancelacionesArr[] = $textoC;
+        }
+      }
+    }
+  }
+}
+```
+
+2. **Actualización dinámica (JavaScript):**
+
+**CRÍTICO - ctrlHorarios.php línea 318:**
+```php
+// ANTES (INCORRECTO):
+$retorno[$i]['cancelaciones'] = getTipoCancelaciones($tarifas[$i]['idCancelaciones'])[0];
+
+// DESPUÉS (CORRECTO):
+$cancelacionData = getTipoCancelaciones($tarifas[$i]['idCancelaciones']);
+$retorno[$i]['cancelaciones'] = !empty($cancelacionData) ? $cancelacionData : [];
+```
+
+**CRÍTICO - traeHorarios_unificado.js línea 346:**
+```javascript
+if (tarifas[0]["cancelaciones"]) {
+  var cancelaciones = tarifas[0]["cancelaciones"];
+  
+  // Compatibilidad: convertir objeto único a array
+  if (!Array.isArray(cancelaciones)) {
+    cancelaciones = [cancelaciones];
+  }
+  
+  if (cancelaciones.length > 0 && cancelaciones[0]) {
+    var htmlCancelaciones = '<ul class="mb-0">';
+    for (var j = 0; j < cancelaciones.length; j++) {
+      if (cancelaciones[j] && cancelaciones[j]["texto"]) {
+        htmlCancelaciones += '<li>' + cancelaciones[j]["texto"] + '</li>';
+      }
+    }
+    htmlCancelaciones += '</ul>';
+  } else {
+    htmlCancelaciones = '<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>';
+  }
+  $('#divCancelaciones').html(htmlCancelaciones);
+}
+```
+
+**HTML en servicio.php línea 179:**
+```php
+<h2 class="py-4 text-primary"><?=$lang["cancelaciones_"]?></h2>
+<div id="divCancelaciones">
+  <?php 
+  if ($isAdmin && !empty($salidas)) {
+    echo "<!-- DEBUG: Total salidas: " . count($salidas) . " -->";
+    echo "<!-- DEBUG: Total cancelaciones: " . count($cancelacionesArr) . " -->";
+  }
+  
+  if (!empty($cancelacionesArr)) { ?>
+    <ul class="mb-0">
+      <?php foreach ($cancelacionesArr as $txt) { echo '<li>'. $txt .'</li>'; } ?>
+    </ul>
+  <?php } else { ?>
+    <p class="mx-4"><?=$lang["consultar_politica_cancelacion"] ?? "Consultar política de cancelación al momento de reservar.";?></p>
+  <?php } ?>
+</div>
+```
+
+### Errores comunes resueltos
+
+1. **`Column 'habilitado' not found`** → Tabla `servicio_salidas` no tiene ese campo
+2. **Cancelaciones desaparecen** → JavaScript sobrescribía con array vacío
+3. **Solo muestra primera cancelación** → Usar array completo, no `[0]`
+4. **Footer superpuesto** → Cambiar `h-100` a `height: auto; min-height: 450px;`
+5. **No valida salidas futuras** → Agregar `fecha >= CURDATE()` en consulta SQL
+
+### Testing Checklist
+
+- ✅ Servicios de misma categoría aparecen primero
+- ✅ Si no hay suficientes, agrega del mismo destino
+- ✅ Fallback a aleatorios si aún faltan
+- ✅ No muestra el servicio actual
+- ✅ Solo servicios con salidas futuras (desde hoy)
+- ✅ Muestra precio desde primera salida disponible
+- ✅ Máximo 3 servicios mostrados
+- ✅ Cancelaciones cambian al seleccionar fecha/horario
+- ✅ Layout responsive funciona correctamente
+- ✅ No hay superposición con footer
+- ✅ Traducciones en 4 idiomas funcionan
+
+### Commits de esta sesión
+
+**Branch:** `feature/sin-horario-ux`
+
+**Commit principal (4ab14c2):**
+```
+feat: agregar sección 'También te puede interesar' en servicio.php 
+con filtrado por salidas futuras y corrección de cancelaciones dinámicas
+
+- Agregado sistema de servicios relacionados con 3 niveles de fallback
+- Consulta SQL directa para filtrar salidas futuras (fecha >= hoy)
+- Corregido ctrlHorarios.php para enviar array completo de cancelaciones
+- Mejorado traeHorarios_unificado.js para manejar array de cancelaciones
+- Agregado fallback de mensaje cuando no hay política configurada
+- Requires de fotos_servicio.php y salidas.php
+- Layout responsive con min-height para evitar superposiciones
+```
+
+**Archivos modificados:**
+- `servicio.php` (+120 líneas)
+- `admin/ctrl/ctrlHorarios.php` (línea 318)
+- `js/traeHorarios_unificado.js` (línea 346-375)
+- `.github/copilot-instructions.md` (esta sección)
