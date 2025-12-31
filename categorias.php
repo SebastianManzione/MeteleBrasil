@@ -915,18 +915,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
         <div class="sidebar-container">
           <h3 class="sidebar-title"><?= isset($lang["filtrar_resultados"]) ? $lang["filtrar_resultados"] : "Filtrar resultados"; ?></h3>
 
-          <!-- FILTRO DE BÚSQUEDA EN SIDEBAR -->
-          <div class="mb-3">
-            <form method="get">
-              <div class="input-group">
-                <input type="text" class="form-control" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>" style="border-radius: 8px 0 0 8px; border-right: none;">
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" style="border-radius: 0 8px 8px 0;"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
-            </form>
-          </div>
-
           <!-- FILTRO DE PRECIO -->
           <div class="mb-4">
             <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
@@ -1233,18 +1221,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           </button>
         </div>
         <div class="modal-body">
-          <!-- Búsqueda -->
-          <div class="mb-4">
-            <form method="get">
-              <div class="input-group">
-                <input type="text" class="form-control" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>" style="border-radius: 8px 0 0 8px; border-right: none;">
-                <div class="input-group-append">
-                  <button class="btn btn-primary" type="submit" style="border-radius: 0 8px 8px 0;"><i class="fa fa-search"></i></button>
-                </div>
-              </div>
-            </form>
-          </div>
-
           <!-- Ordenar -->
           <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
             <i class="fa fa-sort" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["ordenar"]) ? $lang["ordenar"] : "Ordenar"; ?>
