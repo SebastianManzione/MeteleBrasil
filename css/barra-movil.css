@@ -1,0 +1,41 @@
+/* Barra flotante móvil - precio y reservar */
+.barra-precio-movil {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+  padding: 15px 0;
+  z-index: 1000;
+  border-top: 1px solid #e0e0e0;
+}
+
+.barra-precio-movil h4 {
+  font-size: 24px;
+  color: #029ce2;
+}
+
+.barra-precio-movil .btn-primary {
+  background-color: #029ce2;
+  border-color: #029ce2;
+  font-weight: 600;
+}
+
+.barra-precio-movil .btn-primary:hover {
+  background-color: #0284c7;
+  border-color: #0284c7;
+}
+
+@media (min-width: 768px) {
+  .barra-precio-movil {
+    display: none !important;
+  }
+}
+
+/* Padding para body en móvil cuando hay barra flotante */
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 85px;
+  }
+}

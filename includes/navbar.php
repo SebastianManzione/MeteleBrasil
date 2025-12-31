@@ -174,6 +174,7 @@ try {
 <link rel="stylesheet" href="css/animate.min.css?v=<?php echo $version?>">
 <link href="css/bootstrap.css?v=<?php echo $version?>" rel="stylesheet">
 <link href="css/styles.css?v=<?php echo $version?>" rel="stylesheet">
+<link href="css/barra-movil.css?v=<?php echo $version?>" rel="stylesheet">
 <link href="css/responsive.css?v=<?php echo $version?>" rel="stylesheet">
 <link href="css/clnr.css?v=<?php echo $version?>" rel="stylesheet">
 
