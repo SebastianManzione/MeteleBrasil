@@ -400,8 +400,9 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   
   $isActive = ($idCategoria == 0) ? 'active' : '';
   ?>
-  <a href="categorias?<?= $urlParamsAll ?>" class="categoria-link <?= $isActive ?>">
-    <?= isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas las categorías"; ?>
+  <a href="categorias?<?= $urlParamsAll ?>" class="categoria-btn <?= $isActive ?>">
+    <i class="fa fa-list-ul categoria-icono"></i>
+    <span><?= isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas las categorías"; ?></span>
   </a>
   
   <?php
@@ -418,9 +419,21 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     }
     
     $isActive = ($idCategoria == $idCategoria_item) ? 'active' : '';
+    
+    // Iconos por categoría
+    $iconos = array(
+      2 => 'fa-ship',        // PASEOS DE BARCO
+      4 => 'fa-suitcase',    // PAQUETES TURÍSTICOS
+      6 => 'fa-hiking',      // EXCURSIONES
+      7 => 'fa-camera',      // TOURS FOTOGRÁFICOS (si existe)
+      8 => 'fa-utensils'     // GASTRONOMÍA (si existe)
+    );
+    
+    $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
     ?>
-    <a href="categorias?<?= $urlParams ?>" class="categoria-link <?= $isActive ?>">
-      <?= $nombre_categoria_item ?>
+    <a href="categorias?<?= $urlParams ?>" class="categoria-btn <?= $isActive ?>">
+      <i class="fa <?= $icono ?> categoria-icono"></i>
+      <span><?= $nombre_categoria_item ?></span>
     </a>
   <?php
   }
@@ -832,6 +845,53 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     .categoria-link.active {
       color: #029ce2;
       font-weight: 500;
+    }
+
+    /* Botones de categoría estilo MercadoLibre */
+    .categoria-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: white;
+      border: 1.5px solid #e5e5e5;
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 0.6rem;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .categoria-btn:hover {
+      background-color: #f5f5f5;
+      border-color: #ccc;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .categoria-btn.active {
+      background: linear-gradient(135deg, #029ce2 0%, #0277bd 100%);
+      border-color: #029ce2;
+      color: white;
+      box-shadow: 0 3px 10px rgba(2, 156, 226, 0.25);
+    }
+
+    .categoria-icono {
+      font-size: 1.1rem;
+      min-width: 20px;
+      text-align: center;
+      opacity: 0.8;
+    }
+
+    .categoria-btn.active .categoria-icono {
+      opacity: 1;
+    }
+
+    .categoria-btn span {
+      flex-grow: 1;
+      font-weight: 500;
+      font-size: 0.95rem;
     }
 
     /* ========== NO RESULTADOS ========== */
