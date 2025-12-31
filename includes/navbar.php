@@ -102,7 +102,8 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 
 // ========== AQUÃ COMIENZA EL HTML HEAD/NAVBAR ==========
 ?>
-
+<!DOCTYPE html>
+<html lang="es">
 <head>
 
 <title>Metele Brasil</title>
@@ -115,7 +116,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 ?>
 <meta property="og:url" content="https://www.metelebrasil.com/servicio" />
 <meta property="og:title"  content="<?=$servicio["nombre_servicio"];?> | Metele Brasil" />
-<meta property="og:description" content="<?=$servicio["descripcion_corta"];?>" />
+<meta property="og:description" content="<?=strip_tags($servicio["descripcion_corta"]);?>" />
 <meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -123,7 +124,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <meta property="og:image:width" content="400" />
 <meta property="og:image:height" content="300" />
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
-<meta property="og:image" content="https://metelebrasil.com/admin/classes/imgServicio/<?=($fotos[0]['ruta'] ?? '');?>" /> 
+<meta property="og:image" content="https://metelebrasil.com/admin/classes/imgServicio/<?=($fotos[0]['ruta'] ?? '');?>" />
 <?php } else if(isset($_GET['post'])){
   require("admin/classes/blog.php"); 
   require("admin/classes/fotos_blog.php");
@@ -134,7 +135,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
   $titulo=$articulo[0]["titulo"] ?? '';
 ?>
 <meta property="og:title"  content="<?=$titulo;?> | Metele Brasil" />
-<meta property="og:description" content="<?=$descripcionCorta;?>" />
+<meta property="og:description" content="<?=strip_tags($descripcionCorta);?>" />
 <meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -142,15 +143,15 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <meta property="og:image:width" content="400" />
 <meta property="og:image:height" content="300" />
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
-<meta property="og:image" content="https://metelebrasil.com/admin/classes/imgBlog/<?=($fotos[0]['ruta'] ?? '');?>" /> 
+<meta property="og:image" content="https://metelebrasil.com/admin/classes/imgBlog/<?=($fotos[0]['ruta'] ?? '');?>" />
 <?php } else { ?>
 <meta property="og:title"  content="Metele Brasil" />
 <meta property="og:url" content="https://metelebrasil.com" />
-<meta property="og:description" content="Atividades, excursÃµes, visitas guiadas em Brasil. Reserve online! preÃ§o mÃ­nimo antecipado e garantido." />
+<meta property="og:description" content="<?=strip_tags("Atividades, excursões, visitas guiadas em Brasil. Reserve online! preço mínimo antecipado e garantido.");?>" />
 <meta name="keywords" content="excursÃµes, visitas guiadas, passeios, atividades, traslados, circuitos, guias turÃ­sticos, guias de viagem" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta property="og:image" content="https://metelebrasil.com/img/slider4.jpg" />  
+<meta property="og:image" content="https://metelebrasil.com/img/slider4.jpg" />
 <meta property="og:image:width" content="1280" />
 <meta property="og:image:height" content="720" />
 <meta property="og:type" content="website" />

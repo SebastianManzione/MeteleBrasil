@@ -1,6 +1,6 @@
 <!--SECCION HEADER-->
 
-<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgServicio/<?=$fotoPortada[0]["ruta"];?>'); " >
+<section id="header-visitas" class="menu-h" style="background-image: url('admin/classes/imgServicio/<?=$fotoPortada[0]["ruta"];?>');">
 
   <div class="container d-md-block d-none">
 

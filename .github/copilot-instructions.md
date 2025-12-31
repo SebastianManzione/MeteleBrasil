@@ -871,3 +871,118 @@ con filtrado por salidas futuras y corrección de cancelaciones dinámicas
 - `admin/ctrl/ctrlHorarios.php` (línea 318)
 - `js/traeHorarios_unificado.js` (línea 346-375)
 - `.github/copilot-instructions.md` (esta sección)
+
+---
+
+## Sistema de Hover en Actividades y Beneficios Banner (Implementado - Dic 2025)
+
+### Problema Inicial
+Las tarjetas de categorías en `index.php` no mostraban el efecto hover con información de viajeros y opiniones/estrellas. Las clases Bootstrap `d-none` y `d-md-block` estaban conflictuando con los estilos CSS de overlay.
+
+### Solución Implementada
+
+#### Estructura HTML en index.php (líneas 150-235)
+
+**Patrón de tarjeta de categoría:**
+```html
+<a href="categorias?idCategoria=..." class="imagen" 
+   style="background-image: url('admin/classes/imgServicio/...');...">
+  <div class="info">
+    <div class="texto-categoria">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 class="headline">Nombre</h3>
+        </div>
+        <div class="col-md-6 text-right">
+          <p><strong>N</strong> viajeros</p>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-12">
+          <p>Opiniones</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>
+```
+
+**Crítico:** 
+- `div.info` contiene el overlay con fondo #029ce2
+- `.texto-categoria` agrupa contenido en 2 columnas: nombre + viajeros
+- Estructura copiada del patrón probado en servicios destacados
+
+#### CSS en styles.css
+
+**Modificaciones clave:**
+
+1. **div.info (línea ~1372):**
+```
+div.info {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background-color: #029ce2;
+  transition: opacity 0.3s ease;
+  visibility: hidden;
+}
+```
+
+2. **a.imagen:hover div.info (línea ~1404):**
+```
+a.imagen:hover div.info {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+```
+
+3. **.texto-categoria (línea ~1637+):**
+```
+.texto-categoria {
+  padding: 30px;
+  position: relative;
+}
+```
+
+#### JavaScript en index.php (líneas ~495+)
+
+**Necesario para override de clases Bootstrap:**
+Agregados event listeners mouseenter/mouseleave que usan estilos inline para vencer `display: none !important` de Bootstrap.
+
+### Sección de Beneficios en Banner (líneas 126-154)
+
+**Ubicación correcta:** Dentro del `div-absolute#capa2` (banner) en `div-bottom`
+
+**4 beneficios con iconos:**
+- Calendario: Las mejores actividades
+- Audífono: Atención al cliente 24/7  
+- Comentarios: Miles de opiniones
+- Dinero: Sin sobreprecios ni costos ocultos
+
+**Responsive:** 4 columnas desktop, 2 tablet, 1 móvil
+
+### Cambios Principales
+
+1. **Hover funcional:** JavaScript + CSS override de Bootstrap
+2. **Beneficios en banner:** Correcta ubicación en banner original
+3. **CSS limpio:** Removido `.section-beneficios` y `.beneficio-item` duplicados
+
+### Commits de esta sesión
+
+**Branch:** `feature/sin-horario-ux`
+
+**Commit principal:**
+```
+fix: corregir hover de actividades y agregar beneficios en banner
+
+- JavaScript para override de clases Bootstrap d-none
+- HTML restructurado con .texto-categoria
+- Beneficios movidos al banner (div-bottom)
+- CSS duplicado removido
+- Tested: desktop, tablet, móvil OK
+```
+
+**Archivos modificados:**
+- `index.php` (líneas 150-235, 126-154)
+- `css/styles.css` (removidas líneas 1643-1664)

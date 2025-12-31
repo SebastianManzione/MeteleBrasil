@@ -7,19 +7,10 @@ include("config/mercadopago.php");
 $envFromVar = getenv('APP_ENV');
 $productionMode = $envFromVar ? ($envFromVar === 'prod') : true;
 
-if ($productionMode) {
-    $mysqli = new mysqli('localhost', 'u925692129_metelebrasil', 'Cambiar2026', 'u925692129_metelebrasil');
-    if ($mysqli->connect_errno) {
-        $status = false;
-        $retorno = "Erro ao conectar ao banco de dados: " . $mysqli->connect_error;
-        echo json_encode(['status' => $status, 'retorno' => $retorno]);
-        exit;
-    }
-    $mysqli->set_charset("utf8mb4");
-} else {
+
     // Dev: usa configuración compartida (root sin password, DB metelebrasil)
     include("config/db.php");
-}
+
 
 
 $ajax_pagamento = isset($_POST['ajax_pagamento']) ? $_POST['ajax_pagamento'] : '';

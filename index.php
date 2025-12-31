@@ -133,6 +133,29 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
           </div>
         </form>
       </div>
+      <!-- Beneficios en el Banner -->
+      <div class="col-lg-12 text-center text-white div-bottom">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-3 col-md-3 col-3">
+              <i class="text-white fa fa-calendar-check fa-2x mb-2"></i>
+              <p class="texto-bottom">Las mejores actividades</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              <i class="text-white fa fa-headset fa-2x mb-2"></i>
+              <p class="texto-bottom">Atención al cliente 24/7</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              <i class="text-white fa fa-comment-dots fa-2x mb-2"></i>
+              <p class="texto-bottom">Miles de opiniones</p>
+            </div>
+            <div class="col-lg-3 col-md-3 col-3">
+              <i class="text-white fa fa-hand-holding-usd fa-2x mb-2"></i>
+              <p class="texto-bottom">Sin sobreprecios ni costos ocultos</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -158,17 +181,15 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
         <a href="categorias?idCategoria=<?= $categorias[$i]['idCategoria_servicio'] ?>" class="imagen">
           <div class="img-c" style="background-image: url(admin/img/categoria_servicio/<?= $categorias[$i]['img_categoria_servicio'] ?>)">
             <div class="info d-md-block d-none">
-              <h3 class="headline text-uppercase semibold"><?= $categorias[$i]['nombre_categoria_servicio'] ?></h3>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="descripcion text-white">
+              <div class="row">
+                <div class="col-lg-12 texto-categoria">
+                  <h3 class="headline text-uppercase semibold mb-3"><?= $categorias[$i]['nombre_categoria_servicio'] ?></h3>
+                  <div class="row">
+                    <div class="col-md-6">
                       <p class="mb-0"><strong style="font-size:30px;"><?= $categorias[$i]['nViajeros'] ?></strong></p>
                       <p class="mb-0 p"><?= $lang["viajeros_ya_lo_han_disfrutado"] ?? "Viajeros lo disfrutaron" ?></p>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="descrip-opinion text-white">
+                    <div class="col-md-6">
                       <p class="mb-0"><strong style="font-size:30px;"><?= $estrellas ?>*****</strong></p>
                       <p class="mb-0 p"><?= $CantOpinionesCategoria ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
                     </div>
@@ -209,17 +230,15 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
         <a href="categorias?idCategoria=<?= $categorias[$i]['idCategoria_servicio'] ?>" class="imagen">
           <div class="img-c" style="background-image: url(admin/img/categoria_servicio/<?= $categorias[$i]['img_categoria_servicio'] ?>)">
             <div class="info d-md-block d-none">
-              <h3 class="headline text-uppercase semibold"><?= $categorias[$i]['nombre_categoria_servicio'] ?></h3>
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="descripcion text-white">
+              <div class="row">
+                <div class="col-lg-12 texto-categoria">
+                  <h3 class="headline text-uppercase semibold mb-3"><?= $categorias[$i]['nombre_categoria_servicio'] ?></h3>
+                  <div class="row">
+                    <div class="col-md-6">
                       <p class="mb-0"><strong style="font-size:30px;"><?= $categorias[$i]['nViajeros'] ?></strong></p>
                       <p class="mb-0 p"><?= $lang["viajeros_ya_lo_han_disfrutado"] ?? "Viajeros lo disfrutaron" ?></p>
                     </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="descrip-opinion text-white">
+                    <div class="col-md-6">
                       <p class="mb-0"><strong style="font-size:30px;"><?= $estrellas ?>*****</strong></p>
                       <p class="mb-0 p"><?= $CantOpinionesCategoria ?> <?= $lang["opiniones"] ?? "Opiniones" ?></p>
                     </div>
@@ -398,6 +417,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     </div>
   </div>
 </section>
+
 <?php include "footer.php"; ?>
 <div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -496,6 +516,23 @@ $(document).ready(function(){
   }
   var btn1 = document.getElementById('cerrar-cookies');
   if (btn1) btn1.onclick = cerrarCookies;
+  
+  // Hover para mostrar info en categorías
+  var enlaces = document.querySelectorAll('a.imagen');
+  enlaces.forEach(function(enlace) {
+    var info = enlace.querySelector('div.info');
+    if (info) {
+      enlace.addEventListener('mouseenter', function() {
+        info.style.opacity = '1';
+        info.style.visibility = 'visible';
+        info.style.display = 'block';
+      });
+      enlace.addEventListener('mouseleave', function() {
+        info.style.opacity = '0';
+        info.style.visibility = 'hidden';
+      });
+    }
+  });
 })();
 </script>
 

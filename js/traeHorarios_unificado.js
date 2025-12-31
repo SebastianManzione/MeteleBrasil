@@ -393,7 +393,7 @@ function traeTarifas($idSalida){
       
       for (var k = 0; k < tarifas[0]["adicionalesNoIncluidos"].length; k++) {
         var adicional = tarifas[0]["adicionalesNoIncluidos"][k];
-        htmlNoIncluidos += '<li>' + adicional["nombre"] + ' ' + adicional["descripcion"] + ' ' + adicional["valor"] + '</li>';
+        htmlNoIncluidos += '<li>' + adicional["nombre"] + ' ' + adicional["descripcion"] + ' ' + formatPrice(getPrecioValor(adicional)) + '</li>';
         
         htmlAdicionalesDiv += '<div class="py-3 border-bottom">';
         htmlAdicionalesDiv += '  <p class="mb-2"><strong>' + adicional["nombre"] + '</strong>';
