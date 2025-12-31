@@ -205,7 +205,7 @@ function aplicarOrdenPrecio($servicios, $orden) {
     require_once('admin/classes/salidas.php');
     require_once('admin/classes/tarifas.php');
     
-    // Calcular precio mínimo para cada servicio
+    // Calcular precio mínimo para cada servicio (CON conversión de moneda)
     foreach ($servicios as $key => &$servicio) {
         $idServicio = $servicio['idServicio'];
         $fecha = date("Y-m-d");
@@ -218,8 +218,15 @@ function aplicarOrdenPrecio($servicios, $orden) {
                 $tarifas = getTarifas($salida['idServicioSalidas']);
                 if (!empty($tarifas)) {
                     foreach ($tarifas as $tarifa) {
-                        if (isset($tarifa['valor']) && $tarifa['valor'] > 0) {
-                            $precioMinimo = min($precioMinimo, floatval($tarifa['valor']));
+                        // Usar calculaTarifa() para obtener precio convertido a moneda del usuario
+                        if (isset($tarifa['idServicioSalidasTarifas'])) {
+                            $tarifaCalculada = @calculaTarifa($tarifa['idServicioSalidasTarifas'], 1);
+                            if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]["valor"])) {
+                                $precioConvertido = floatval($tarifaCalculada[0]["valor"]);
+                                if ($precioConvertido > 0) {
+                                    $precioMinimo = min($precioMinimo, $precioConvertido);
+                                }
+                            }
                         }
                     }
                 }
