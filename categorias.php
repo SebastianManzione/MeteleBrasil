@@ -266,7 +266,7 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
   ob_start();
   ?>
   <!-- Filtros de Precio -->
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_precio=price_asc<?= !empty($orden_distancia) ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>">
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_precio === 'price_asc' ? '' : 'orden_precio=price_asc'; ?><?= !empty($orden_distancia) && $orden_precio !== 'price_asc' ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-arrow-up filtro-icon"></i>
       <span><?= isset($lang["menor_precio"]) ? $lang["menor_precio"] : "Menor Precio"; ?></span>
@@ -274,7 +274,7 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
     <div class="filtro-toggle <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>"></div>
   </a>
   
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_precio=price_desc<?= !empty($orden_distancia) ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_desc' ? 'active' : ''; ?>">
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_precio === 'price_desc' ? '' : 'orden_precio=price_desc'; ?><?= !empty($orden_distancia) && $orden_precio !== 'price_desc' ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_desc' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-arrow-down filtro-icon"></i>
       <span><?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?></span>
@@ -283,7 +283,7 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
   </a>
   
   <!-- Filtros de Proximidad -->
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_distancia=cercano<?= !empty($orden_precio) ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>">
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'cercano' ? '' : 'orden_distancia=cercano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'cercano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-map-marker-alt filtro-icon"></i>
       <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más cercano"; ?></span>
@@ -291,7 +291,7 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
     <div class="filtro-toggle <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>"></div>
   </a>
   
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?>orden_distancia=lejano<?= !empty($orden_precio) ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'lejano' ? '' : 'orden_distancia=lejano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'lejano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
     <div class="filtro-content">
       <i class="fa fa-map-marker-alt filtro-icon" style="transform: rotate(180deg);"></i>
       <span><?= isset($lang["mas_lejano"]) ? $lang["mas_lejano"] : "Más lejano"; ?></span>
