@@ -120,6 +120,7 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
     
     // Ahora aplicar la paginación manualmente
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_ordenados);
 } elseif ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
     // Solo ordenamiento por precio (sin distancia)
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
@@ -132,6 +133,7 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
     
     $servicios_ordenados = aplicarOrdenPrecio($servicios_completos, $orden_precio);
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_ordenados);
 }
 
 // ========== FUNCIONES AUXILIARES ==========
@@ -200,10 +202,38 @@ function ordenarPorProximidad($servicios, $latUsuario, $lonUsuario, $inverso = f
  * @return array Servicios con ordenamiento adicional por precio
  */
 function aplicarOrdenPrecio($servicios, $orden) {
-    // Ordenar por precio (mantiene la estabilidad del orden previo)
+    require_once('admin/classes/salidas.php');
+    require_once('admin/classes/tarifas.php');
+    
+    // Calcular precio mínimo para cada servicio
+    foreach ($servicios as $key => &$servicio) {
+        $idServicio = $servicio['idServicio'];
+        $fecha = date("Y-m-d");
+        $salidas = getSalidasFechaLuegoIdServicio($fecha, $idServicio);
+        
+        $precioMinimo = 999999;
+        
+        if (!empty($salidas)) {
+            foreach ($salidas as $salida) {
+                $tarifas = getTarifas($salida['idServicioSalidas']);
+                if (!empty($tarifas)) {
+                    foreach ($tarifas as $tarifa) {
+                        if (isset($tarifa['valor']) && $tarifa['valor'] > 0) {
+                            $precioMinimo = min($precioMinimo, floatval($tarifa['valor']));
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Si no se encontró precio, asignar valor alto para que quede al final
+        $servicio['precio_orden'] = ($precioMinimo == 999999) ? PHP_FLOAT_MAX : $precioMinimo;
+    }
+    
+    // Ordenar por precio
     usort($servicios, function($a, $b) use ($orden) {
-        $precio_a = isset($a['valor']) ? (float)$a['valor'] : 0;
-        $precio_b = isset($b['valor']) ? (float)$b['valor'] : 0;
+        $precio_a = isset($a['precio_orden']) ? $a['precio_orden'] : PHP_FLOAT_MAX;
+        $precio_b = isset($b['precio_orden']) ? $b['precio_orden'] : PHP_FLOAT_MAX;
         
         if ($orden === 'price_asc') {
             return $precio_a <=> $precio_b;
