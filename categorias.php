@@ -205,7 +205,7 @@ function aplicarOrdenPrecio($servicios, $orden) {
     require_once('admin/classes/salidas.php');
     require_once('admin/classes/tarifas.php');
     
-    // Calcular precio mínimo para cada servicio (CON conversión de moneda)
+    // Calcular precio mínimo para cada servicio (CON conversión de moneda - OPTIMIZADO)
     foreach ($servicios as $key => &$servicio) {
         $idServicio = $servicio['idServicio'];
         $fecha = date("Y-m-d");
@@ -213,22 +213,14 @@ function aplicarOrdenPrecio($servicios, $orden) {
         
         $precioMinimo = 999999;
         
+        // OPTIMIZACIÓN: Solo tomar la primera salida disponible (igual que en el display)
         if (!empty($salidas)) {
-            foreach ($salidas as $salida) {
-                $tarifas = getTarifas($salida['idServicioSalidas']);
-                if (!empty($tarifas)) {
-                    foreach ($tarifas as $tarifa) {
-                        // Usar calculaTarifa() para obtener precio convertido a moneda del usuario
-                        if (isset($tarifa['idServicioSalidasTarifas'])) {
-                            $tarifaCalculada = @calculaTarifa($tarifa['idServicioSalidasTarifas'], 1);
-                            if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]["valor"])) {
-                                $precioConvertido = floatval($tarifaCalculada[0]["valor"]);
-                                if ($precioConvertido > 0) {
-                                    $precioMinimo = min($precioMinimo, $precioConvertido);
-                                }
-                            }
-                        }
-                    }
+            $tarifas = getTarifas($salidas[0]['idServicioSalidas']);
+            if (!empty($tarifas)) {
+                // OPTIMIZACIÓN: Solo calcular la primera tarifa
+                $tarifaCalculada = @calculaTarifa($tarifas[0]['idServicioSalidasTarifas'] ?? null, 1);
+                if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]["valor"])) {
+                    $precioMinimo = floatval($tarifaCalculada[0]["valor"]);
                 }
             }
         }
