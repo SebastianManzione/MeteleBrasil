@@ -604,7 +604,7 @@ else{
 
   if ($duracionMinima>24 ) {
 
-   $duracionMinima=($duracionMinima/24)." Dias ";
+   $duracionMinima=ceil($duracionMinima/24)." Dias ";
 
 }
 elseif (  $duracionMinima<1) {
@@ -614,7 +614,7 @@ elseif (  $duracionMinima<1) {
 }
 else{
 
-    $duracionMinima=($duracionMinima)." HS ";
+    $duracionMinima=round($duracionMinima)." HS ";
 
 }
 
@@ -622,7 +622,7 @@ else{
 
 if ($duracionMaxima>24) {
 
-   $duracionMaxima=($duracionMaxima/24)." Dias ";
+   $duracionMaxima=ceil($duracionMaxima/24)." Dias ";
 
 }
 elseif($duracionMaxima<1){
@@ -632,7 +632,7 @@ $duracionMaxima=round(($duracionMaxima*60))." Minutos ";
 
 else{
 
-    $duracionMaxima=($duracionMaxima)." HS ";
+    $duracionMaxima=round($duracionMaxima)." HS ";
 
 }
 
