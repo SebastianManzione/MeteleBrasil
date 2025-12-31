@@ -100,6 +100,7 @@ $lang = array(
 "categorias"=>"Categorie",
 "ordenar"=>"Ordina",
 "ordenar_resultados"=>"Ordina risultati",
+"filtros"=>"Filtri",
 "filtrar_resultados"=>"Filtra risultati",
 "menor_precio"=>"Prezzo più basso",
 "mayor_precio"=>"Prezzo più alto",

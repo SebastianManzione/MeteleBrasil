@@ -592,94 +592,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       color: #333;
     }
 
-    .accordion .card {
-      border: none;
-      border-bottom: 1px solid #e9ecef;
-      border-radius: 0 !important;
-      margin-bottom: 0.5rem;
-    }
-
-    .accordion .card:first-child {
-      border-top: 1px solid #e9ecef;
-    }
-
-    .accordion .card-header {
-      background-color: #f8f9fa;
-      border: none;
-      padding: 0;
-      border-radius: 8px !important;
-    }
-
-    .accordion .card-body {
-      padding: 1rem 0.75rem;
-      background-color: white;
-    }
-
-    .btn-accordion {
-      width: 100%;
-      text-align: left;
-      padding: 1rem 1.25rem;
-      color: #495057;
-      font-weight: 600;
-      text-decoration: none;
-      border: none;
-      background: none;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      transition: all 0.2s ease;
-      border-radius: 8px;
-    }
-
-    .btn-accordion i:first-child {
-      color: #007bff;
-      width: 20px;
-      text-align: center;
-    }
-
-    .btn-accordion:hover {
-      color: #007bff;
-      background-color: #e7f3ff;
-      text-decoration: none;
-    }
-
-    .btn-accordion .fa-chevron-down {
-      margin-left: auto;
-      transition: transform 0.2s ease;
-      font-size: 0.875rem;
-    }
-
-    .btn-accordion.collapsed .fa-chevron-down {
-      transform: rotate(-90deg);
-    }
-
-    .btn-accordion {
-      background-color: #f8f9fa !important;
-      border: 1px solid #e0e0e0 !important;
-      padding: 0.6rem 0.8rem !important;
-      font-weight: 500 !important;
-      color: #333 !important;
-    }
-
-    .btn-accordion:hover,
-    .btn-accordion:not(.collapsed) {
-      background-color: #e7f3ff !important;
-      border-color: #029ce2 !important;
-      color: #029ce2 !important;
-    }
-
-    .accordion .card {
-      border: 1px solid #e0e0e0;
-      margin-bottom: 0.5rem;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .accordion .card-body {
-      padding: 0.8rem;
-      background-color: #fafafa;
-    }
-
     /* ========== PAGINACIÓN ========== */
     .pagination {
       gap: 0.3rem;
@@ -899,63 +811,34 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           <h3 class="sidebar-title"><?= isset($lang["filtrar_resultados"]) ? $lang["filtrar_resultados"] : "Filtrar resultados"; ?></h3>
 
           <!-- FILTRO DE BÚSQUEDA EN SIDEBAR -->
-          <div class="accordion" id="accordionSearch">
-            <div class="card">
-              <div class="card-header" id="headingSearch">
-                <h5 class="mb-0">
-                  <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseSearch" aria-expanded="true" aria-controls="collapseSearch">
-                    <i class="fa fa-search"></i> <?= isset($lang["buscar"]) ? $lang["buscar"] : "Búsqueda"; ?> <i class="fa fa-chevron-down float-right"></i>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseSearch" class="collapse show" aria-labelledby="headingSearch" data-parent="#accordionSearch">
-                <div class="card-body">
-                  <form method="get">
-                    <div class="input-group">
-                      <input type="text" class="form-control form-control-sm" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>">
-                      <div class="input-group-append">
-                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i></button>
-                      </div>
-                    </div>
-                  </form>
+          <div class="mb-3">
+            <form method="get">
+              <div class="input-group">
+                <input type="text" class="form-control" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>" style="border-radius: 8px 0 0 8px; border-right: none;">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit" style="border-radius: 0 8px 8px 0;"><i class="fa fa-search"></i></button>
                 </div>
               </div>
-            </div>
+            </form>
           </div>
 
           <!-- FILTRO DE PRECIO -->
-          <div class="accordion" id="accordionPrice">
-            <div class="card">
-              <div class="card-header" id="headingPrice">
-                <h5 class="mb-0">
-                  <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapsePrice" aria-expanded="true" aria-controls="collapsePrice">
-                    <i class="fa fa-sort"></i> <?= isset($lang["ordenar_resultados"]) ? $lang["ordenar_resultados"] : "Ordenar resultados"; ?> <i class="fa fa-chevron-down float-right"></i>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapsePrice" class="collapse show" aria-labelledby="headingPrice" data-parent="#accordionPrice">
-                <div class="card-body">
-                  <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
-                </div>
-              </div>
+          <div class="mb-4">
+            <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+              <i class="fa fa-sort" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["ordenar"]) ? $lang["ordenar"] : "Ordenar"; ?>
+            </h6>
+            <div>
+              <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
             </div>
           </div>
 
           <!-- FILTRO DE CATEGORÍAS -->
-          <div class="accordion" id="accordionCategory">
-            <div class="card">
-              <div class="card-header" id="headingCategory">
-                <h5 class="mb-0">
-                  <a class="btn-accordion" href="#" data-toggle="collapse" data-target="#collapseCategory" aria-expanded="true" aria-controls="collapseCategory">
-                    <i class="fa fa-filter"></i> <?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?> <i class="fa fa-chevron-down float-right"></i>
-                  </a>
-                </h5>
-              </div>
-              <div id="collapseCategory" class="collapse show" aria-labelledby="headingCategory" data-parent="#accordionCategory">
-                <div class="card-body">
-                  <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
-                </div>
-              </div>
+          <div class="mb-4">
+            <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+              <i class="fa fa-filter" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
+            </h6>
+            <div>
+              <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
             </div>
           </div>
 
@@ -1236,24 +1119,48 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   <div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="filterModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="filterModalLabel">Filtrar y Ordenar</h5>
+        <div class="modal-header" style="border-bottom: 2px solid #029ce2;">
+          <h5 class="modal-title font-weight-bold" id="filterModalLabel" style="color: #029ce2;">
+            <i class="fa fa-filter"></i> <?= isset($lang["filtros"]) ? $lang["filtros"] : "Filtros"; ?>
+          </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <h6 class="font-weight-bold mb-3">Ordenar por precio:</h6>
-          <div class="btn-group-vertical d-flex w-100 mb-4">
-            <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
-            <a href="?<?php echo !empty($queryString) ? $queryString . '&' : ''; ?>" class="btn btn-outline-secondary filtro-btn">
-              <i class="fa fa-times"></i> <?= isset($lang["limpiar_filtros"]) ? $lang["limpiar_filtros"] : "Limpiar Filtros"; ?>
-            </a>
+          <!-- Búsqueda -->
+          <div class="mb-4">
+            <form method="get">
+              <div class="input-group">
+                <input type="text" class="form-control" name="buscar" placeholder="<?= isset($lang["buscar"]) ? $lang["buscar"] : "Buscar..."; ?>" value="<?= htmlspecialchars($busqueda) ?>" style="border-radius: 8px 0 0 8px; border-right: none;">
+                <div class="input-group-append">
+                  <button class="btn btn-primary" type="submit" style="border-radius: 0 8px 8px 0;"><i class="fa fa-search"></i></button>
+                </div>
+              </div>
+            </form>
           </div>
 
-          <h6 class="font-weight-bold mb-3"><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>:</h6>
-          <div class="btn-group-vertical d-flex w-100">
+          <!-- Ordenar -->
+          <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa fa-sort" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["ordenar"]) ? $lang["ordenar"] : "Ordenar"; ?>
+          </h6>
+          <div class="mb-4">
+            <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
+          </div>
+
+          <!-- Categorías -->
+          <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa fa-filter" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
+          </h6>
+          <div class="mb-3">
             <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
+          </div>
+
+          <!-- Limpiar filtros -->
+          <div class="mt-4">
+            <a href="?" class="btn btn-outline-secondary btn-block" style="border-radius: 8px;">
+              <i class="fa fa-times"></i> <?= isset($lang["limpiar_filtros"]) ? $lang["limpiar_filtros"] : "Limpiar Filtros"; ?>
+            </a>
           </div>
         </div>
       </div>
