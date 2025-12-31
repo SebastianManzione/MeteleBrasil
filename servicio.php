@@ -72,6 +72,27 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
   $destino = $idDestino ? getDestino($idDestino) : [];
   $idPais = (!empty($destino) && isset($destino[0]["idPais"])) ? $destino[0]["idPais"] : null;
   $pais = $idPais ? getPais($idPais) : [];
+  
+  // Calcular precio mínimo del servicio
+  $precioMinimo = 0;
+  if (!empty($salidas)) {
+    $preciosArray = [];
+    foreach ($salidas as $salida) {
+      if (isset($salida['idServicioSalidas'])) {
+        $tarifasSalida = getTarifas($salida['idServicioSalidas']);
+        if (!empty($tarifasSalida)) {
+          foreach ($tarifasSalida as $tarifa) {
+            if (isset($tarifa['valor']) && $tarifa['valor'] > 0) {
+              $preciosArray[] = floatval($tarifa['valor']);
+            }
+          }
+        }
+      }
+    }
+    if (!empty($preciosArray)) {
+      $precioMinimo = min($preciosArray);
+    }
+  }
     
   // Determinar si es administrador (idUsuario == 1)
   $isAdmin = isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1;
@@ -585,7 +606,11 @@ if (!empty($serviciosRelacionados) && is_array($serviciosRelacionados)):
       <div class="col-6">
         <p class="mb-0 text-muted" style="font-size: 14px;"><?=$lang["desde"] ?? "Desde";?></p>
         <h4 class="mb-0 text-primary font-weight-bold" id="precioMovilSticky">
-          <?=$_SESSION['moneda_sel_sym']?><?=number_format($precioMinimo, 2, ',', '.');?>
+          <?php if ($precioMinimo > 0): ?>
+            <?=$_SESSION['moneda_sel_sym']?><?=number_format($precioMinimo, 2, ',', '.');?>
+          <?php else: ?>
+            <?=$lang["consultar"] ?? "Consultar";?>
+          <?php endif; ?>
         </h4>
       </div>
       <div class="col-6 text-right">
