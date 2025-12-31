@@ -432,6 +432,24 @@ setTimeout(function(){
 
 <script type="text/javascript" src="js/traeHorarios_unificado.js?v=<?=time()?>" charset="UTF-8"></script>
 
+<!-- JavaScript para barra flotante móvil -->
+<script>
+$(document).ready(function() {
+  // Botón reservar móvil - hacer scroll al calendario
+  $('#btnReservarMovil').on('click', function() {
+    var calendarioPos = $('#calendario-fijo').offset().top - 80; // 80px para el header
+    $('html, body').animate({
+      scrollTop: calendarioPos
+    }, 800);
+  });
+  
+  // Función para actualizar precio en barra móvil (se llamará desde traeHorarios_unificado.js)
+  window.actualizarPrecioMovil = function(precio) {
+    $('#precioMovilSticky').html(precio);
+  };
+});
+</script>
+
 <!--CARDS DE INTERES - TAMBIÉN TE PUEDE INTERESAR-->
 <?php
 // Preparar servicios relacionados
@@ -559,5 +577,24 @@ if (!empty($serviciosRelacionados) && is_array($serviciosRelacionados)):
 </section>
 <?php endif; ?>
 <!--FIN CARDS DE INTERES-->
+
+<!-- Barra flotante móvil precio y reservar -->
+<div class="barra-precio-movil d-md-none">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <div class="col-6">
+        <p class="mb-0 text-muted" style="font-size: 14px;"><?=$lang["desde"] ?? "Desde";?></p>
+        <h4 class="mb-0 text-primary font-weight-bold" id="precioMovilSticky">
+          <?=$_SESSION['moneda_sel_sym']?><?=number_format($precioMinimo, 2, ',', '.');?>
+        </h4>
+      </div>
+      <div class="col-6 text-right">
+        <button class="btn btn-primary btn-block" id="btnReservarMovil" style="font-size: 18px; padding: 12px;">
+          <?=$lang["reservar"] ?? "Reservar";?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <?php include("footer.php"); ?>

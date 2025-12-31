@@ -131,6 +131,11 @@ function actualizaPrecios(){
   $('#precioTotal0').text(formatPrice(total));
   $('#precio-nav').text(formatPrice(total));
   
+  // Actualizar precio en barra flotante móvil
+  if (typeof window.actualizarPrecioMovil === 'function') {
+    window.actualizarPrecioMovil(formatPrice(total));
+  }
+  
   var precioTotalSinDescuento = total * 1.1356987;
   $('#precioTotalSinDescuento').text(formatPrice(precioTotalSinDescuento));
 }
