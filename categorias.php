@@ -58,6 +58,7 @@ if (isset($_GET['pagina'])) {
 $queryString = http_build_query($params);
 $orden_precio = isset($_GET['orden_precio']) ? $_GET['orden_precio'] : '';
 $orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : '';
+$orden_duracion = isset($_GET['orden_duracion']) ? $_GET['orden_duracion'] : '';
 
 if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   // CASO 1: Categoría específica
@@ -118,6 +119,11 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
         $servicios_ordenados = aplicarOrdenPrecio($servicios_ordenados, $orden_precio);
     }
     
+    // Si también hay orden por duración, aplicar como tercer criterio
+    if ($orden_duracion === 'duracion_asc' || $orden_duracion === 'duracion_desc') {
+        $servicios_ordenados = aplicarOrdenDuracion($servicios_ordenados, $orden_duracion);
+    }
+    
     // Ahora aplicar la paginación manualmente
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
     $total_registros = count($servicios_ordenados);
@@ -132,6 +138,19 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
     }
     
     $servicios_ordenados = aplicarOrdenPrecio($servicios_completos, $orden_precio);
+    $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_ordenados);
+} elseif ($orden_duracion === 'duracion_asc' || $orden_duracion === 'duracion_desc') {
+    // Solo ordenamiento por duración (sin distancia ni precio)
+    if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
+        $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
+    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
+        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
+    } else {
+        $servicios_completos = getServicios();
+    }
+    
+    $servicios_ordenados = aplicarOrdenDuracion($servicios_completos, $orden_duracion);
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
     $total_registros = count($servicios_ordenados);
 }
@@ -244,21 +263,61 @@ function aplicarOrdenPrecio($servicios, $orden) {
     return $servicios;
 }
 
+/**
+ * Aplica ordenamiento por duración
+ * @param array $servicios - Array de servicios
+ * @param string $orden - 'duracion_asc' o 'duracion_desc'
+ * @return array Servicios ordenados por duración
+ */
+function aplicarOrdenDuracion($servicios, $orden) {
+    require_once('admin/classes/salidas.php');
+    
+    // Calcular duración máxima en horas para cada servicio
+    foreach ($servicios as $key => &$servicio) {
+        $idServicio = $servicio['idServicio'];
+        $fecha = date("Y-m-d");
+        $salidas = getSalidasFechaLuegoIdServicio($fecha, $idServicio);
+        
+        // Tomar duracionMaxima de la primera salida (en horas)
+        $duracionHoras = 0;
+        if (!empty($salidas) && isset($salidas[0]['duracionMaxima'])) {
+            $duracionHoras = floatval($salidas[0]['duracionMaxima']);
+        }
+        
+        $servicio['duracion_orden'] = $duracionHoras;
+    }
+    
+    // Ordenar por duración
+    usort($servicios, function($a, $b) use ($orden) {
+        $duracion_a = isset($a['duracion_orden']) ? $a['duracion_orden'] : 0;
+        $duracion_b = isset($b['duracion_orden']) ? $b['duracion_orden'] : 0;
+        
+        if ($orden === 'duracion_asc') {
+            return $duracion_a <=> $duracion_b; // Más corta primero
+        } else {
+            return $duracion_b <=> $duracion_a; // Más larga primero
+        }
+    });
+    
+    return $servicios;
+}
+
 // ========== FUNCIONES PARA GENERAR HTML DE FILTROS (REUTILIZABLE) ==========
 
 /**
- * Genera los botones de filtro por precio y proximidad
- * @param string $queryString - Query string actual (sin orden_precio ni orden_distancia)
+ * Genera los botones de filtro por precio, proximidad y duración
+ * @param string $queryString - Query string actual (sin orden_precio, orden_distancia ni orden_duracion)
  * @param string $orden_precio - Orden por precio actual (price_asc, price_desc, o vacío)
  * @param string $orden_distancia - Orden por distancia actual (cercano, lejano, o vacío)
+ * @param string $orden_duracion - Orden por duración actual (duracion_asc, duracion_desc, o vacío)
  * @param array $lang - Array de traducciones
  * @return string HTML de los botones
  */
-function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang) {
+function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang) {
   // Construir URL base preservando orden_distancia si existe
   $baseParams = [];
   parse_str($queryString, $baseParams);
-  unset($baseParams['orden_precio']); // Remover para reconstruir
+  unset($baseParams['orden_precio'], $baseParams['orden_duracion']); // Remover para reconstruir
   unset($baseParams['orden_distancia']); // Remover para reconstruir
   $baseQuery = http_build_query($baseParams);
   
@@ -296,6 +355,23 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $la
       <span><?= isset($lang["mas_lejano"]) ? $lang["mas_lejano"] : "Más lejano"; ?></span>
     </div>
     <div class="filtro-toggle <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>"></div>
+  </a>
+  
+  <!-- Filtros de Duración -->
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_duracion === 'duracion_asc' ? '' : 'orden_duracion=duracion_asc'; ?><?= !empty($orden_precio) && $orden_duracion !== 'duracion_asc' ? '&orden_precio=' . $orden_precio : ''; ?><?= !empty($orden_distancia) && $orden_duracion !== 'duracion_asc' ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_duracion === 'duracion_asc' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-clock filtro-icon"></i>
+      <span><?= isset($lang["duracion_corta"]) ? $lang["duracion_corta"] : "Duración más corta"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden_duracion === 'duracion_asc' ? 'active' : ''; ?>"></div>
+  </a>
+  
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_duracion === 'duracion_desc' ? '' : 'orden_duracion=duracion_desc'; ?><?= !empty($orden_precio) && $orden_duracion !== 'duracion_desc' ? '&orden_precio=' . $orden_precio : ''; ?><?= !empty($orden_distancia) && $orden_duracion !== 'duracion_desc' ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_duracion === 'duracion_desc' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-hourglass-half filtro-icon"></i>
+      <span><?= isset($lang["duracion_larga"]) ? $lang["duracion_larga"] : "Duración más larga"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden_duracion === 'duracion_desc' ? 'active' : ''; ?>"></div>
   </a>
   <?php
   return ob_get_clean();
@@ -857,7 +933,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <i class="fa fa-sort" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["ordenar"]) ? $lang["ordenar"] : "Ordenar"; ?>
             </h6>
             <div>
-              <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
+              <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
             </div>
           </div>
 
@@ -1174,7 +1250,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             <i class="fa fa-sort" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["ordenar"]) ? $lang["ordenar"] : "Ordenar"; ?>
           </h6>
           <div class="mb-4">
-            <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $lang); ?>
+            <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
           </div>
 
           <!-- Categorías -->

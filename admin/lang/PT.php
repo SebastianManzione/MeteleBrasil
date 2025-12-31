@@ -211,6 +211,8 @@ $lang = array(
     "mayor_precio"=>"Maior preço",
     "mas_cercano"=>"Mais próximo",
     "mas_lejano"=>"Mais distante",
+    "duracion_corta"=>"Duração mais curta",
+    "duracion_larga"=>"Duração mais longa",
 
 
 
