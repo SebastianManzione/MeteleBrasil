@@ -213,7 +213,8 @@ $lang = array(
     "mas_lejano"=>"Mais distante",
     "duracion_corta"=>"Duração mais curta",
     "duracion_larga"=>"Duração mais longa",
-
+    "conoce_nuestra_guia"=>"Conheça nosso guia de",
+    "ver_guias"=>"Ver Guias",
 
 
     "viajeros_lo_han_disfrutado"=>"viajeros que ja curtiram",
