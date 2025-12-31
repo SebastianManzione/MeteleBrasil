@@ -80,7 +80,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $cantidad_servicios_categoria = count(getServiciosBusqueda($_GET["buscar"]));
   $categorias = getCategorias();
   $nViajeros = rand(690, 1200);
-  $nombre_categoria = "todas_las_categorias";
+  $nombre_categoria = isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas Las Categorías";
   $opiniones_categoria = array();
   $cantidad_opiniones_categoria = rand(100, 500);
   $fotos = "sinCategoria.jpg";
@@ -91,7 +91,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $cantidad_servicios_categoria = count(getServicios());
   $categorias = getCategorias();
   $nViajeros = rand(690, 1200);
-  $nombre_categoria = "todas_las_categorias";
+  $nombre_categoria = isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas Las Categorías";
   $opiniones_categoria = array();
   $cantidad_opiniones_categoria = rand(100, 500);
   $fotos = "sinCategoria.jpg";
@@ -1048,12 +1048,12 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           <div class="card-body" style="padding: 1.5rem;">
             <h4 style="margin-bottom: 1rem; color: #333; font-weight: 700;">
               <i class="fa fa-map" style="color: #029ce2; margin-right: 0.5rem;"></i>
-              <?= isset($lang["conoce_nuestra_guia"]) ? $lang["conoce_nuestra_guia"] : "Conoce nuestra guía de"; ?> <?= isset($nombre_categoria) ? $nombre_categoria : (isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas Las Categorías"); ?>
+              <?= isset($lang["conoce_nuestra_guia"]) ? $lang["conoce_nuestra_guia"] : "Conoce nuestra guía de"; ?> <?= $nombre_categoria; ?>
             </h4>
             <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" style="text-decoration: none; color: inherit;">
               <img src="admin/img/categoria_servicio/<?= isset($fotos) ? $fotos : 'sinCategoria.jpg'; ?>" class="img-fluid img-guia mx-auto d-block" style="border-radius: 8px; margin-bottom: 1rem; max-height: 200px; object-fit: cover;">
               <h4 class="text-guia2" style="text-align: center; color: #029ce2; font-weight: 700; margin-bottom: 1rem;">
-                <?= isset($nombre_categoria) ? $nombre_categoria : (isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas Las Categorías"); ?>
+                <?= $nombre_categoria; ?>
               </h4>
             </a>
             <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" class="btn btn-primary btn-block" style="border-radius: 8px; font-weight: 600;">
