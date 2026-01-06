@@ -1575,6 +1575,8 @@ $lang = array(
 
 "foto" => "Foto",
 
+"imagenes" => "Immagini",
+
 "acción" => "Azione",
 
 "habilitar" => "Abilitare",

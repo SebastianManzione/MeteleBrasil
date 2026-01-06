@@ -1866,6 +1866,8 @@ $lang = array(
 
 "foto"=>"Foto",
 
+"imagenes"=>"Images",
+
 "acción"=>"Action",
 
 "habilitar"=>"Enable",

@@ -48,6 +48,7 @@ $lang = array(
 	"aqui"=>"aquí",
 	"selecciona_fecha"=>"Selecciona Fecha",
 	"mis_reservas"=>"Mis reservas",
+	"imagenes"=>"Imágenes",
 	"puedes_gestionar_tu_reserva_sin_estar_registrado"=>"Puedes gestionar tu reserva sin estar registrado",
 	"ir_a_reserva"=>"Ir a reserva",
 	"preguntas_frecuentes"=>"Preguntas Frecuentes",
@@ -1890,6 +1891,8 @@ $lang = array(
 "fecha_alta"=>"Fecha alta",
 
 "foto"=>"Foto",
+
+"imagenes"=>"Imágenes",
 
 "acción"=>"Acción",
 
