@@ -70,41 +70,23 @@ if (empty($reserva) || count($reserva)<1) {
 
 
 
-// Correctly calculate totalComprobantesAMostrar by summing individual amounts and then converting.
-
-// Assuming getComprobantesIdReservaDolar returns an array of records, where each record has a 'monto' field
-
-// and these 'monto' values are all in USD (currency ID 188, inferred from the original code's usage).
-
-$comprobante_records_dolar = getComprobantesIdReservaDolar($idReserva);
-
-$sum_comprobantes_usd = 0;
-
-if (!empty($comprobante_records_dolar) && is_array($comprobante_records_dolar)) {
-
-    foreach ($comprobante_records_dolar as $comp_record) {
-
-        $sum_comprobantes_usd += (float)$comp_record['monto'];
-
-    }
-
-}
-
-// Convert the total sum of payments (which are in USD) to the reservation's selected currency ($monedaSel)
-
-$totalComprobantesAMostrar = ConvierteMoneda(188, $monedaSel, $sum_comprobantes_usd); // Total paid in reservation's currency
+$comprobantes = getComprobantesIdReservaDolar($idReserva);
+$total_dolares = $reserva["total_dolares"];
 
 
 
-// FIX: Correct floating point comparison and capping for remaining balance
+$diferenciaAPagar = round($reserva["total"] - $totalComprobantesAMostrar, 2); 
+// Si la moneda seleccionada coincide con la moneda original de la reserva, usar el total original
+// Esto evita errores de redondeo en reconversiones
+$monedaOriginalReserva = $reserva["monedaSel"];
+$total_en_moneda_seleccionada = ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"])) 
+    ? $reserva["total"] 
+    : convierteMoneda(188, $_SESSION['moneda_sel'], $total_dolares);
 
-$diferenciaAPagar = round($reserva["total"] - $totalComprobantesAMostrar, 2); // Round to 2 decimal places for currency precision
-
-if (abs($diferenciaAPagar) < 0.01) { // If difference is very small (e.g., due to floating point), treat as 0
-
-    $diferenciaAPagar = 0; 
-
-}
+$comprobantes225 = convierteMoneda(188, 225, $comprobantes);
+$comprobantes270 = convierteMoneda(188, 270, $comprobantes);
+$comprobantes271 = convierteMoneda(188, 271, $comprobantes);
+$comprobantes283 = convierteMoneda(188, 283, $comprobantes);
 
 ?>
 
@@ -878,7 +860,7 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
 
         <div class="text-end mb-3 d-flex gap-2 justify-content-end no-print">
 
-            <a href="consultaReserva.php?reserva=<?= $codigoAmigable; ?>" class="btn btn-secondary btn-imprimir">
+            <a href="consultaReserva?reserva=<?= $codigoAmigable; ?>" class="btn btn-secondary btn-imprimir">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
 

@@ -130,10 +130,10 @@ $idReserva=$_POST["detallesCarrito"];
 
 $reserva=getReservaId($idReserva);
 
-$codigo_telefonico=getCodigoTelefonico($reserva[0]["idCountry"]);
+$codigo_telefonico=getCodigoTelefonicoNomPais($reserva[0]["idCountry"]);
 
-$nombre_pais = (is_array($codigo_telefonico) && isset($codigo_telefonico[0]['nicename'])) ? $codigo_telefonico[0]['nicename'] : 'N/A';
-
+$nombre_pais = (isset($codigo_telefonico['nicename'])) ? $codigo_telefonico['nicename'] : 'N/A';
+$codigo_telefonico=$codigo_telefonico['phonecode'];
 $idioma=$reserva[0]["idioma"];
 
 $codigoAmigable=$reserva[0]["codigoAmigable"];
@@ -482,7 +482,7 @@ $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
 
 
 
-                                          <td>+<?=$codigo_telefonico.$telefonoResponsable;?></td>
+                                          <td>+<?=$codigo_telefonico. $telefonoResponsable;?></td>
 
 
 
@@ -579,7 +579,7 @@ $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
 
 
                                    <th scope="col">Servicio</th>
-
+                                     <th scope="col">Codigo Voucher Servicio</th>
                                       <th scope="col">Prestador</th>
 
 
@@ -675,7 +675,7 @@ $nombre_servicio=$servicio[0]["nombre_servicio"];
 
 
     $salida=getSalida($horarios[$i]['idServicioSalidas']);
-
+$CodigoVoucherServicio=$horarios[$i]['CodigoVoucherServicio'];
     // Validar que salida existe antes de acceder
     if (empty($salida) || !isset($salida[0])) {
         error_log("WARNING carritoDetalles: getSalida retornó vacío para idServicioSalidas: ".$horarios[$i]['idServicioSalidas']);
@@ -797,7 +797,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
                                 <td><?=$nombre_servicio; ?></td>
-
+   <td><?=$CodigoVoucherServicio; ?></td>
                                   <td><?=$prestador_nombre; ?></td>
 
                                 <td> <?=$fecha_checkIn;?></td>

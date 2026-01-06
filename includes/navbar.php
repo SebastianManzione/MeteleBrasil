@@ -263,63 +263,7 @@ try {
 
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_ES/sdk.js#xfbml=1&version=v11.0&appId=964551587611699&autoLogAppEvents=1" nonce="uv9I2f53"></script>
 
-<script>
- var comboGoogleTradutor = null;
 
-    function googleTranslateElementInit() {
-        var googleTranslateEl = document.getElementById("google_translate_element");
-        if (googleTranslateEl) {
-            new google.translate.TranslateElement({
-                pageLanguage: 'es',
-                includedLanguages: 'es,pt,en,fr,it',
-                layout: google.translate.TranslateElement.InlineLayout.HORIZONTAL
-            }, 'google_translate_element');
-            comboGoogleTradutor = googleTranslateEl.querySelector(".goog-te-combo");
-        }
-    }
-
-    function changeEvent(el) {
-        if (el.fireEvent) {
-            el.fireEvent('onchange');
-        } else {
-            var evObj = document.createEvent("HTMLEvents");
-            evObj.initEvent("change", false, true);
-            el.dispatchEvent(evObj);
-        }
-    }
-
-    function trocarIdioma(sigla) {
-        if (comboGoogleTradutor) {
-            comboGoogleTradutor.value = sigla;
-      			document.cookie = "sigla=" + sigla;
-      			var novalng = '';
-      			var novaimg = '';
-
-            if(sigla == 'es'){
-                 novalng = 'EspaÃ±ol';	
-                 novaimg = 'img/countries/Spain-icon.png';
-            } else if(sigla == 'en'){
-                novalng = 'Ingles';
-                novaimg = 'img/countries/United-States-of-Americ-icon.png';			 
-            } else if(sigla == 'pt'){
-                 novalng = 'Portugues';		
-                 novaimg = 'img/countries/Brazil-icon.png';
-            }
-
-            $(".dropdown a.nomelinguagem span.nomelinguagemx").html(novalng);
-            $(".dropdown a.nomelinguagem img#iconbandeira").attr({'src':novaimg});
-            $("#txtIdiomaSelMovil img#iconbandeira").attr({'src':novaimg});
-            $("#idioma").css('display','none');
-
-            changeEvent(comboGoogleTradutor);
-        }
-    }
-
-trocarIdioma("en");
-
-</script>
-
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
   <!-- MENU PC-->
   <nav class="navbar navbar-expand-lg bg-celeste text-uppercase  d-none d-lg-block" id="mainNav">
@@ -627,7 +571,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
  				<a  class="cursor  collapse text-white" id="cerrar-menu">X</a>
  			</div>
       <div class="col-5 text-left" >
-          <a style="margin-right: 5px;margin-left: 5px;" class="navbar-brand navbar-movil  " href="index.php"><h4 class="mb-0 text-white">METELE BRASIL</h4> </a>
+          <a style="margin-right: 5px;margin-left: 5px;" class="navbar-brand navbar-movil  " href="index"><h4 class="mb-0 text-white">METELE BRASIL</h4> </a>
       </div>
 
 <div class="col-6  text-right" style="padding-right: 0px;">
@@ -696,7 +640,7 @@ for ($i=0; $i < count($carrito); $i++) {
 
    <?php if (count($carrito)>0 ){?>
 <div class="col-md-12 col-12 carrinhovazio" style="margin-top:15px !important; margin-bottom:10px !important">
-                   <a href="carrito.php" class="btn-finalizar-carrito"> <?=$lang["finalizar_reserva"];?> <i class="fas fa-arrow-right ml-1"></i> </a>
+                   <a href="carrito" class="btn-finalizar-carrito"> <?=$lang["finalizar_reserva"];?> <i class="fas fa-arrow-right ml-1"></i> </a>
 </div> 
    <?php } ?>
             </div>
@@ -781,7 +725,7 @@ for ($i=0; $i < count($carrito); $i++) {
           </li>
 
 			      <li class="nav-item">
-			        <a class="nav-link text-white" href="faq.php"><?=$lang["preguntas_frecuentes"];?></a>
+			        <a class="nav-link text-white" href="faq"><?=$lang["preguntas_frecuentes"];?></a>
 			      </li>
 			      <li class="nav-item">
 			        <a class="nav-link text-white" href="contact.php"><?=$lang["contactar_con_metelebrasil.com"];?></a>

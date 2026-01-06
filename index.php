@@ -115,7 +115,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
   </a>
 </div>
-<section class="div-absolute" id="capa2">
+<section class="div-absolute" id="capa2" >
   <div class="container">
     <div class="row">
       <div class="col-lg-6 offset-lg-3 mb-5">
@@ -134,7 +134,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
         </form>
       </div>
       <!-- Beneficios en el Banner -->
-      <div class="col-lg-12 text-center text-white div-bottom">
+      <div class="col-lg-12 text-center text-white div-bottom" >
         <div class="container">
           <div class="row">
             <div class="col-lg-3 col-md-3 col-3">
@@ -159,8 +159,8 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     </div>
   </div>
 </section>
-<section class="py-5">
-  <div class="container">
+<section class="py-5"  style="background-color: rgb(245, 244, 245);">
+  <div class="container" style="background-color: rgb(245, 244, 245);" >
     <div class="row mb-4">
       <div class="col-lg-12">
         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
@@ -168,7 +168,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
         </h2>
       </div>
     </div>
-    <div class="row">
+    <div class="row" >
       <?php
       $categorias = getCategoriasLimit6();
       for ($i = 0; $i < count($categorias); $i++) {
@@ -177,7 +177,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
           $CantOpinionesCategoria = count($OpinionesCategoria);
           $estrellas = getEstrellasCategoria($idCategoria_servicio);
       ?>
-      <div class="col-lg-4 col-md-6 col-12 mb-4">
+      <div class="col-lg-4 col-md-6 col-12 mb-4" >
         <a href="categorias?idCategoria=<?= $categorias[$i]['idCategoria_servicio'] ?>" class="imagen">
           <div class="img-c" style="background-image: url(admin/img/categoria_servicio/<?= $categorias[$i]['img_categoria_servicio'] ?>)">
             <div class="info d-md-block d-none">
@@ -229,7 +229,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       <div class="col-lg-4 col-md-6 col-12 mb-4">
         <a href="categorias?idCategoria=<?= $categorias[$i]['idCategoria_servicio'] ?>" class="imagen">
           <div class="img-c" style="background-image: url(admin/img/categoria_servicio/<?= $categorias[$i]['img_categoria_servicio'] ?>)">
-            <div class="info d-md-block d-none">
+            <div class="info d-md-block d-none" >
               <div class="row">
                 <div class="col-lg-12 texto-categoria">
                   <h3 class="headline text-uppercase semibold mb-3"><?= $categorias[$i]['nombre_categoria_servicio'] ?></h3>
@@ -255,8 +255,8 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     </div>
   </div>
 </section>
-<section class="py-5">
-  <div class="container">
+<section class="py-5"  style="background-color: rgb(245, 244, 245);">
+  <div class="container"  style="background-color: rgb(245, 244, 245);">
     <div class="row mb-4">
       <div class="col-lg-12">
         <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">
@@ -289,9 +289,9 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
           $textoMiniatura = (!empty($textoMiniaturaData)) ? $textoMiniaturaData[0]["texto"] : "";
           $fotos = getFotoMiniaturaServicio($idServicio);
       ?>
-      <div class="col-lg-4 col-md-6 mb-4">
+      <div class="col-lg-4 col-md-6 mb-4" >
         <a href="servicio?id=<?= $idServicio ?>" class="destacados">
-          <div class="d-destacado d-md-block d-none">
+          <div class="d-destacado d-md-block d-none" >
             <div class="row wow animated bounceInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: bounceInUp;">
               <div class="col-lg-12 texto-destacado">
                 <p class="title-big mb-0" style="margin-bottom:-15px !important; margin-top: 20px; line-height: 24px;"><?= $servicios[$i]["nombre_servicio"] ?></p>
@@ -316,7 +316,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
               </div>
             </div>
           </div>
-          <div class="card card-destacadas">
+          <div class="card card-destacadas" >
             <img src="admin/classes/imgServicio/<?= (!empty($fotos) && isset($fotos[0]['ruta'])) ? $fotos[0]['ruta'] : 'placeholder.jpg' ?>" class="img-fluid img-card-top img-destacada">
             <div class="destacado">
               <h5 class="text-uppercase text-white"><?= $textoMiniatura ?></h5>
@@ -336,7 +336,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       <?php } ?>
     </div>
     <?php if (count($servicios_restantes) > 0) { ?>
-    <div class="row mt-4">
+    <div class="row mt-4"  >
       <div class="col-lg-12 text-center">
         <button id="btn-ver-mas-VerMasActividades-d" class="btn btn-white" type="button" onclick="toggleDiv('VerMasActividades-d', this)">
           <?= $labelVerMas ?>
@@ -344,7 +344,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       </div>
     </div>
     <?php } ?>
-    <div class="row toggle-section" id="VerMasActividades-d" style="max-height:0; overflow:hidden;">
+    <div class="row toggle-section" id="VerMasActividades-d" style="max-height:0; overflow:hidden; background-color: rgb(245, 244, 245);">
       <?php
       for ($i = 0; $i < count($servicios_restantes); $i++) {
           $idServicio = $servicios_restantes[$i]["idServicio"];

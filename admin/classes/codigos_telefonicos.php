@@ -70,7 +70,39 @@ function getCodigoTelefonico($idCountry){
 
     }
 
+function getCodigoTelefonicoNomPais($idCountry){
 
+
+
+    require("conexion.php");
+
+  $data=["id"=>$idCountry];
+
+    $consulta = "select * from country WHERE id=:id ";
+
+    
+
+    $comando = $pdo->prepare($consulta);
+
+    
+
+    $comando->execute($data);
+
+    $cuenta_col = $comando->columnCount();
+
+    
+
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+
+    // Imprimir en pantalla
+
+    return $resultado[0];
+
+    
+
+    
+
+    }
 
    /* 
 

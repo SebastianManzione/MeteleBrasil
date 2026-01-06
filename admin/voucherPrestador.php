@@ -33,7 +33,7 @@ include("classes/servicio.php");
 include("classes/comisiones.php");
 
 include("classes/edades.php");
-
+include("classes/paises.php");
 include("classes/cancelaciones.php");
 
 include("classes/tarifas_ubicacion.php");
@@ -126,7 +126,9 @@ $fechaAlta=date("d/m/Y",strtotime($reserva["fechaAlta"]));
 $nombreResponsable=$reserva['nombreResponsable']." ".$reserva['apellidoResponsable'];
 
 $emailResponsable=$reserva['emailResponsable'];
-$codTelefonico=getCodigoTelefonico($reserva["idCountry"]);
+$codTelefonico=getCodigoTelefonicoNomPais($reserva["idCountry"]);
+$paisCliente=getPais($reserva['idCountry']);
+
 $telefonoResponsable=$reserva['telefonoResponsable'];
 
 $totalReserva=$reserva["total"];
@@ -180,6 +182,7 @@ $horaSalida=$salida['horaSalida'];
 $horaCheckIn=$salida['horaCheckIn'];
 
 $destino=getDestino($servicio[0]['idDestino']);
+$paisDestino=getPais($destino[0]['idPais']);
 
 
 
@@ -303,15 +306,15 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
                 <div class="col-sm-4 invoice-col">
 
-                  Responsavél da reserva
+                <strong>  Responsavél da reserva </strong>: <?=$nombreResponsable;?>
 
                   <address>
 
-               <strong><?=$nombreResponsable;?></strong><br>
+           
+                    <b>Pais Responsavél:</b> <?=$codTelefonico['nicename']?> <br>
+                    <b>Email:</b> <?=$emailResponsable; ?><br>
 
-                    <b>Responsavél:</b> <?=$emailResponsable; ?><br>
-
-                    <b>Telefone Responsavél:</b>+<?=$codTelefonico;?> <?=$telefonoResponsable; ?><br>
+                    <b>Telefone Responsavél:</b>+<?=$codTelefonico['phonecode'];?> <?=$telefonoResponsable; ?><br>
 
                     <b>Responsavél do pagamento:</b><?= $nombreResponsable;?><br>
 
@@ -331,11 +334,11 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
                 <div class="col-sm-4 invoice-col">
 
-                  Pais
+                 
 
                   <address>
 
-               <strong><?=$destino[0]['nombre'];?></strong><br>
+               <strong>Pais:</strong> <?=$paisDestino[0]['nombre'];?><br>
 
                     <b>Idioma:</b> <?= $idiomasSalidaTxt;?><br>
 
@@ -343,7 +346,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
                     <b>Horario de check in:</b> <?=$horaCheckIn;?><br>
 
-                    <b>Horario de saída:</b><?= $horaSalida ?><br>
+                    <b>Horario de saída:</b> <?= $horaSalida ?><br>
 
                     
 
@@ -360,6 +363,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
                   <b>Numero de comprovante</b><b> #<?= $codigoAmigable;?></b><br>
 
                   <b>Numero de ordem ID:</b> <?= $codigoAmigable;?><br>
+                    <b>Nome do prestador:</b><b> <?=$prestador['nombre'];?><br></b>
 
                   <b>Telefone do prestador:</b><b> <?=$prestador['telefono'];?></b><br>
 

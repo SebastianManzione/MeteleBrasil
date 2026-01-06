@@ -195,7 +195,7 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
 
 
             <div class="table-responsive mb-4">
-                <table class="table table-striped">
+                <table class="table ">
                     <thead>
                     <tr>
                         <th>Nombre</th>
@@ -217,20 +217,21 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
 
                         $valorSinIva = $tarifa["valorSinIva"] / $tarifa["cantidad"];
                         $valorDelIva = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['valorDeIva']);
-                        $totalIva += $valorDelIva;
-                        $totalCarrito += $valorSinIva;
 
                         $edadFrom = getEdad($tarifa["idFromEdad"]);
                         $edadTo = getEdad($tarifa["idToEdad"]);
                         $pasajeros = getPasajeros($tarifa['idReservaTarifas']);
                         foreach ($pasajeros as $p) {
-                            echo "<tr>
+                    echo "<tr>
                         <td>{$p['nombrePasajero']} {$p['apellidoPasajero']}</td>
                         <td>{$tarifa['nombre']}</td>
                         <td>{$edadFrom[0]['valor']} A {$edadTo[0]['valor']} años</td>
                         <td>{$fechaCheckIn} {$horaCheckIn}</td>
                         <td>{$_SESSION['moneda_sel_sym']}{$valorSinIva}</td>
                     </tr>";
+                       $totalIva += $valorDelIva;
+                        $totalCarrito += $valorSinIva;
+
                         }
                     }
 
@@ -245,7 +246,7 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
                     }
 
                     $diferenciaAPagar = $reserva["total"] - $totalComprobantesAMostrar;
-                    if ($diferenciaAPagar < 1) $diferenciaAPagar = 0;
+                    if ($diferenciaAPagar < 10) $diferenciaAPagar = 0;
 
 
                     ?>

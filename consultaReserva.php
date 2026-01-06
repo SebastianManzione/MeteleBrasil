@@ -112,7 +112,7 @@ include("admin/classes/cancelaciones.php");
 include("admin/classes/servicios_adicionales.php");
 include("admin/classes/reserva.php");
 include("admin/classes/comprobantes.php");
-include("admin/classes/moneda.php");
+require_once("admin/classes/moneda.php");
 include("admin/classes/convierte_monedas.php");
 
 // Formatea montos: sin decimales si es entero, 2 decimales si tiene centavos

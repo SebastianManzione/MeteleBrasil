@@ -75,4 +75,4 @@ require("conexion.php");
     
     }*/
     
-?>
+?>Questo servizio non è rimborsabile, il che significa che ti verrà addebitato il 100% del costo del servizio, anche se arrivi in ritardo o non ti presenti; non verrà offerto alcun rimborso.

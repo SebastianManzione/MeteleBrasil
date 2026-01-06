@@ -40,7 +40,7 @@ if (!$_SESSION["login"]["rol"]==1) {
     <div class="container-fluid">
 
       <div class="card shadow-sm rounded-lg border-0">
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title m-0">Prestadores</h3>
           <div class="card-tools">
             <!-- Botón de colapsar queda -->
@@ -51,7 +51,7 @@ if (!$_SESSION["login"]["rol"]==1) {
 
         <div class="card-body">
           <div class="table-responsive">
-            <table id="example1" class="table table-striped table-hover table-bordered table-modern w-100">
+            <table id="example1" class="table table-striped table-hover table-bordered w-100">
               <thead class="thead-dark">
                 <tr class="text-center">
                   <th>Nombre</th>
@@ -62,6 +62,8 @@ if (!$_SESSION["login"]["rol"]==1) {
                   <th>Usuario sistema</th>
                   <th>Celular</th>
                   <th>Acciones</th>
+<th></th>
+<th></th>
                 </tr>
               </thead>
               <tbody>
@@ -72,7 +74,7 @@ if (!$_SESSION["login"]["rol"]==1) {
                   $idUsuario = $prestadores[$i]["idUsuario"];
                   $usuario = getUsuario($idUsuario);
                 ?>
-                <tr class="align-middle">
+                <tr >
                   <td><?= $prestadores[$i]["nombre"]; ?></td>
                   <td><?= $prestadores[$i]["razonSocial"]; ?></td>
                   <td><?= $prestadores[$i]["documento"]; ?></td>
@@ -80,14 +82,21 @@ if (!$_SESSION["login"]["rol"]==1) {
                   <td><?= $prestadores[$i]["email"]; ?></td>
                   <td><?= $usuario[0]["email"]; ?></td>
                   <td><?= $prestadores[$i]["celular"]; ?></td>
-                  <td class="text-center">
-                    <form method="post" action="altaPrestador" class="d-inline">
+                  <td class="form-group">
+                    <div class="form-group form-inline">
+                     <form method="post" action="altaPrestador" >
                       <button name="editaPrestador" value="<?=$idPrestador;?>" type="submit" class="btn btn-sm btn-success">Editar</button>
                     </form>
-                    <form method="post" action="comisionesprestador.php" class="d-inline">
+                   
+                </div>
+                  </td>
+                  <td>
+                     <form method="post" action="comisionesprestador">
                       <button name="idPrestador" value="<?=$idPrestador;?>" type="submit" class="btn btn-sm btn-primary">Comisiones</button>
                     </form>
-                    <button class="btn btn-sm btn-danger" onclick="borraPrestador('<?=$idPrestador;?>')">Eliminar</button>
+                  </td>
+                  <td>
+                      <button class="btn btn-xs btn-danger" onclick="borraPrestador('<?=$idPrestador;?>')">Eliminar</button> 
                   </td>
                 </tr>
                 <?php } ?>
