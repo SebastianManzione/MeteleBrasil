@@ -70,23 +70,67 @@ if (empty($reserva) || count($reserva)<1) {
 
 
 
+// Obtener políticas de cancelación de las tarifas de la reserva
+$cancelacionesArr = [];
+$horariosReserva = getReservaHorarios($idReserva);
+if (!empty($horariosReserva)) {
+    foreach ($horariosReserva as $hr) {
+        $tarifasReserva = getReservaTarifas($hr['idReservaHorarios']);
+        if (!empty($tarifasReserva)) {
+            foreach ($tarifasReserva as $tr) {
+                if (isset($tr['idCancelaciones']) && !empty($tr['idCancelaciones'])) {
+                    $cancelacionData = getTipoCancelaciones($tr['idCancelaciones']);
+                    if (!empty($cancelacionData) && isset($cancelacionData[0]['texto'])) {
+                        $textoC = $cancelacionData[0]['texto'];
+                        if (!in_array($textoC, $cancelacionesArr)) {
+                            $cancelacionesArr[] = $textoC;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Obtener comprobantes de pago en USD
 $comprobantes = getComprobantesIdReservaDolar($idReserva);
 $total_dolares = $reserva["total_dolares"];
+$monedaOriginalReserva = $reserva["monedaSel"];
 
-
-
-$diferenciaAPagar = round($reserva["total"] - $totalComprobantesAMostrar, 2); 
+// Calcular total en la moneda seleccionada
 // Si la moneda seleccionada coincide con la moneda original de la reserva, usar el total original
 // Esto evita errores de redondeo en reconversiones
-$monedaOriginalReserva = $reserva["monedaSel"];
 $total_en_moneda_seleccionada = ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"])) 
     ? $reserva["total"] 
-    : convierteMoneda(188, $_SESSION['moneda_sel'], $total_dolares);
+    : ConvierteMoneda(188, $_SESSION['moneda_sel'], $total_dolares);
 
-$comprobantes225 = convierteMoneda(188, 225, $comprobantes);
-$comprobantes270 = convierteMoneda(188, 270, $comprobantes);
-$comprobantes271 = convierteMoneda(188, 271, $comprobantes);
-$comprobantes283 = convierteMoneda(188, 283, $comprobantes);
+// Calcular comprobantes en la moneda seleccionada
+if ($comprobantes > 0) {
+    if ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"]) && $total_dolares > 0) {
+        // Proporcional si es la misma moneda
+        $comprobantes_en_moneda_sel = $comprobantes * ($reserva["total"] / $total_dolares);
+    } else {
+        $comprobantes_en_moneda_sel = ConvierteMoneda(188, $_SESSION['moneda_sel'], $comprobantes);
+    }
+    
+    $totalComprobantesAMostrar = $comprobantes;
+    $diferenciaAPagar_usd = $total_dolares - $totalComprobantesAMostrar;
+    
+    // Calcular diferencia en moneda seleccionada manteniendo precisión
+    $diferenciaAPagar_moneda_sel = $total_en_moneda_seleccionada - $comprobantes_en_moneda_sel;
+    
+    // Si la diferencia es menor a 1 USD, considerarla como 0 (totalmente pagado)
+    if ($diferenciaAPagar_usd < 1) {
+        $diferenciaAPagar_usd = 0;
+        $diferenciaAPagar_moneda_sel = 0;
+    }
+} else {
+    // No hay pagos previos, resta pagar es el total
+    $totalComprobantesAMostrar = 0;
+    $comprobantes_en_moneda_sel = 0;
+    $diferenciaAPagar_usd = $total_dolares;
+    $diferenciaAPagar_moneda_sel = $total_en_moneda_seleccionada;
+}
 
 ?>
 
@@ -167,54 +211,25 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
                 <small>Consulta hoy: <?= date('d/m/Y');?></small>
 
             </div>
-
         </div>
-
-
 
         <!-- INFO RESPONSABLE -->
-
         <div class="row invoice-info mb-4">
-
             <div class="col-md-6">
-
                 <strong>Responsável da reserva:</strong>
-
                 <?= $nombreResponsable;?><br>
-
                 <address>
-
                     <b>Email:</b> <?=$emailResponsable; ?><br>
-
                     <b>Responsável do pagamento:</b> <?= $nombreResponsable;?><br>
-
                 </address>
-
             </div>
-
             <div class="col-md-6">
-
                 <b>Data de Compra:</b> <?=$fechaAlta;?><br>
-
                 <b>Numero de comprovante:</b> #<?= $codigoAmigable;?><br>
-
                 <b>Numero de ordem ID:</b> <?= $codigoAmigable;?><br>
-
                 <b>Passageiros Totais:</b> <span id="total_passengers_display"></span><br>
-
             </div>
-
         </div>
-
-
-
-
-
-
-
-
-
-
 
 <!-- TABLA SERVICIOS -->
 
@@ -476,7 +491,7 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
 
                         <th>Pagamento realizado:</th>
 
-                        <td><?=$_SESSION["moneda_sel_sym"].number_format(ConvierteMoneda($monedaSel, $_SESSION["moneda_sel"], $totalComprobantesAMostrar), 2, ',', '.');?></td>
+                        <td><?=$_SESSION["moneda_sel_sym"].number_format($comprobantes_en_moneda_sel, 2, ',', '.');?></td>
 
                     </tr>
 
@@ -484,7 +499,7 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
 
                         <th>Resta pagar:</th>
 
-                        <td><?=$_SESSION["moneda_sel_sym"].number_format(ConvierteMoneda($monedaSel, $_SESSION["moneda_sel"], $diferenciaAPagar), 2, ',', '.');?></td>
+                        <td><?=$_SESSION["moneda_sel_sym"].number_format($diferenciaAPagar_moneda_sel, 2, ',', '.');?></td>
 
                     </tr>
 
@@ -497,387 +512,34 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
 
 
         <!-- POLITICAS -->
-
         <div class="callout">
-
             <h5><i class="fas fa-info"></i> Políticas do Voucher:</h5>
-
             
-
-            
-
-            
-
-            <!-- Política de Cancelación multilíngüe responsive -->
-
-<style>
-
-  .cancel-card {
-
-    max-width: 100%;
-
-    border: 1px solid #e0e0e0;
-
-    border-radius: 8px;
-
-    overflow: hidden;
-
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-
-    font-family: Arial, Helvetica, sans-serif;
-
-    background: #ffffff;
-
-  }
-
-
-
-  .cancel-card summary {
-
-    list-style: none;
-
-    cursor: pointer;
-
-    padding: 14px 18px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 10px;
-
-    font-weight: 600;
-
-    font-size: 15px;
-
-    background: linear-gradient(90deg, #f9fafb, #ffffff);
-
-    border-bottom: 1px solid #f1f1f1;
-
-  }
-
-
-
-  .cancel-card summary::-webkit-details-marker { display: none; }
-
-
-
-  .toggle-arrow {
-
-    transition: transform .22s ease;
-
-  }
-
-
-
-  details[open] .toggle-arrow {
-
-    transform: rotate(180deg);
-
-  }
-
-
-
-  .cancel-content {
-
-      width: 100%;
-
-    padding: 16px 18px;
-
-    line-height: 1.45;
-
-    color: #222;
-
-  }
-
-
-
-  .lang-block {
-
-    margin-bottom: 12px;
-
-    padding: 10px;
-
-    border-left: 3px solid #efefef;
-
-    background: #fbfbfb;
-
-    border-radius: 6px;
-
-  }
-
-
-
-  .lang-title {
-
-    font-weight: 700;
-
-    margin-bottom: 8px;
-
-  }
-
-
-
-  @media (max-width:480px){
-
-    .cancel-card { padding: 0 8px; }
-
-    .cancel-card summary { padding: 12px; font-size: 14px; }
-
-    .cancel-content { padding: 12px; }
-
-  }
-
-  
-
-  .btn-imprimir {
-
-    display: block;
-
-    width: 100%;
-
-    max-width: 100%;
-
-    margin: 16px auto 0 auto;
-
-    padding: 12px 0;
-
-    font-size: 16px;
-
-    font-weight: 600;
-
-    border-radius: 6px;
-
-  }
-
-  
-
-</style>
-
-
-
-<details class="cancel-card" aria-live="polite">
-
-  <summary>
-
-    Política de Cancelación / Política de Cancelamento / Cancellation Policy / Politica di Cancellazione
-
-    <svg class="toggle-arrow" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
-
-      <path fill="currentColor" d="M7 10l5 5 5-5z"/>
-
-    </svg>
-
-  </summary>
-
-
-
-  <div class="cancel-content">
-
-
-
-    <!-- Português -->
-
-    <div class="lang-block" lang="pt">
-
-      <div class="lang-title">🇧🇷 Política de Cancelamento (Português)</div>
-
-      <ul>
-
-        <li>Cancelamentos feitos com <strong>mais de 72 horas de antecedência</strong> da data do passeio terão <strong>reembolso total</strong>.</li>
-
-        <li>Cancelamentos feitos <strong>dentro de 72 horas</strong> não são reembolsáveis.</li>
-
-        <li>Em caso de <strong>condições climáticas adversas</strong> que impeçam a saída, o passeio poderá ser <strong>remarcado</strong> ou será oferecido <strong>reembolso total</strong>.</li>
-
-        <li><strong>Não comparecimentos</strong> (sem aviso prévio) não terão direito a reembolso.</li>
-
-        <li>Para <strong>tours internacionais</strong>:
-
-          <ul>
-
-            <li>Cancelamentos com <strong>45 dias de antecedência</strong> – reembolso de <strong>100%</strong>.</li>
-
-            <li>Cancelamentos com <strong>30 dias de antecedência</strong> – reembolso de <strong>50%</strong>.</li>
-
-            <li>Cancelamentos com menos de <strong>30 dias</strong> – <strong>sem reembolso</strong>.</li>
-
-          </ul>
-
-        </li>
-
-        <li>A empresa reserva-se o direito de alterar ou cancelar a atividade por motivos operacionais ou de segurança.</li>
-
-      </ul>
-
-    </div>
-
-
-
-    <!-- Español -->
-
-    <div class="lang-block" lang="es">
-
-      <div class="lang-title">🇪🇸 Política de Cancelación (Español)</div>
-
-      <ul>
-
-        <li>Las cancelaciones realizadas con <strong>más de 72 horas de antelación</strong> a la fecha del paseo recibirán un <strong>reembolso completo</strong>.</li>
-
-        <li>Las cancelaciones realizadas <strong>dentro de las 72 horas previas</strong> no son reembolsables.</li>
-
-        <li>En caso de <strong>condiciones climáticas adversas</strong> que impidan la salida, el paseo podrá <strong>reprogramarse</strong> o se ofrecerá un <strong>reembolso total</strong>.</li>
-
-        <li>Los <strong>no shows</strong> (ausencias sin aviso previo) no tendrán derecho a reembolso.</li>
-
-        <li>Para <strong>tours internacionales</strong>:
-
-          <ul>
-
-            <li>Cancelaciones con <strong>45 días de anticipación</strong> – reembolso del <strong>100%</strong>.</li>
-
-            <li>Cancelaciones con <strong>30 días de anticipación</strong> – reembolso del <strong>50%</strong>.</li>
-
-            <li>Cancelaciones con menos de <strong>30 días</strong> – <strong>sin reembolso</strong>.</li>
-
-          </ul>
-
-        </li>
-
-        <li>La empresa se reserva el derecho de modificar o cancelar la actividad por motivos operativos o de seguridad.</li>
-
-      </ul>
-
-    </div>
-
-
-
-    <!-- English -->
-
-    <div class="lang-block" lang="en">
-
-      <div class="lang-title">🇬🇧 Cancellation Policy (English)</div>
-
-      <ul>
-
-        <li>Cancellations made <strong>more than 72 hours before</strong> the scheduled tour will receive a <strong>full refund</strong>.</li>
-
-        <li>Cancellations made <strong>within 72 hours</strong> of the tour date are <strong>non-refundable</strong>.</li>
-
-        <li>In case of <strong>adverse weather conditions</strong> that prevent the tour from departing, the tour may be <strong>rescheduled</strong> or a <strong>full refund</strong> will be offered.</li>
-
-        <li><strong>No-shows</strong> (without prior notice) will not be eligible for a refund.</li>
-
-        <li>For <strong>international tours</strong>:
-
-          <ul>
-
-            <li>Cancellations made <strong>45 days prior</strong> – <strong>100% refund</strong>.</li>
-
-            <li>Cancellations made <strong>30 days prior</strong> – <strong>50% refund</strong>.</li>
-
-            <li>Cancellations made in less than <strong>30 days</strong> – <strong>no refund</strong>.</li>
-
-          </ul>
-
-        </li>
-
-        <li>The company reserves the right to modify or cancel the activity for operational or safety reasons.</li>
-
-      </ul>
-
-    </div>
-
-
-
-    <!-- Italiano -->
-
-    <div class="lang-block" lang="it">
-
-      <div class="lang-title">🇮🇹 Politica di Cancellazione (Italiano)</div>
-
-      <ul>
-
-        <li>Le cancellazioni effettuate con <strong>più di 72 ore</strong> di anticipo rispetto alla data dell’escursione riceveranno un <strong>rimborso completo</strong>.</li>
-
-        <li>Le cancellazioni effettuate <strong>entro 72 ore</strong> dalla data dell’escursione non sono rimborsabili.</li>
-
-        <li>In caso di <strong>condizioni meteorologiche avverse</strong> che impediscano la partenza, l’escursione potrà essere <strong>riprogrammata</strong> o sarà offerto un <strong>rimborso totale</strong>.</li>
-
-        <li>I <strong>no-show</strong> (assenze senza preavviso) non avranno diritto a rimborso.</li>
-
-        <li>Per i <strong>tour internazionali</strong>:
-
-          <ul>
-
-            <li>Cancellazioni effettuate con <strong>45 giorni di anticipo</strong> – rimborso del <strong>100%</strong>.</li>
-
-            <li>Cancellazioni effettuate con <strong>30 giorni di anticipo</strong> – rimborso del <strong>50%</strong>.</li>
-
-            <li>Cancellazioni con menos de <strong>30 giorni</strong> – <strong>nessun rimborso</strong>.</li>
-
-          </ul>
-
-        </li>
-
-        <li>L’azienda si riserva il diritto di modificare o cancellare l’attività per motivi operativi o di sicurezza.</li>
-
-      </ul>
-
-    </div>
-
-
-
-  </div>
-
-</details>
-
-
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            
-
-            <?php if(isset($cancelacionesArr)) { foreach($cancelacionesArr as $canc) { echo $canc."<br>"; }} ?>
-
+            <!-- Política de Cancelación dinámica desde BD -->
+            <?php if (!empty($cancelacionesArr)) { ?>
+                <h6 class="mt-3"><i class="fas fa-info-circle"></i> Política de Cancelamento:</h6>
+                <ul class="mb-0">
+                    <?php foreach ($cancelacionesArr as $cancelacionTexto) { ?>
+                        <li><?= $cancelacionTexto; ?></li>
+                    <?php } ?>
+                </ul>
+            <?php } else { ?>
+                <p class="text-muted"><small><i class="fas fa-info-circle"></i> Consultar política de cancelación al momento de reservar.</small></p>
+            <?php } ?>
         </div>
 
-
-
         <!-- BOTON IMPRIMIR Y VOLVER -->
-
         <div class="text-end mb-3 d-flex gap-2 justify-content-end no-print">
-
             <a href="consultaReserva?reserva=<?= $codigoAmigable; ?>" class="btn btn-secondary btn-imprimir">
                 <i class="fas fa-arrow-left"></i> Volver
             </a>
-
             <button class="btn btn-primary btn-imprimir" onclick="window.print()">
                 <i class="fas fa-print"></i> Imprimir
             </button>
-
         </div>
-
     </div>
-
 </div>
-
 </section>
 
-
-
 </body>
-
 </html>

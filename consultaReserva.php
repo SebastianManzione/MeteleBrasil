@@ -101,19 +101,19 @@ if ($ajax_pagamento) {
     ]);
     exit();
 }
-include("includes/headPagos.php");
-include("admin/classes/salidas.php");
-include("admin/classes/tarifas.php");
-include("admin/classes/idiomas.php");
-include("admin/classes/servicio.php");
-include("admin/classes/comisiones.php");
-include("admin/classes/edades.php");
-include("admin/classes/cancelaciones.php");
-include("admin/classes/servicios_adicionales.php");
-include("admin/classes/reserva.php");
-include("admin/classes/comprobantes.php");
+require_once("includes/headPagos.php");
+require_once("admin/classes/salidas.php");
+require_once("admin/classes/tarifas.php");
+require_once("admin/classes/idiomas.php");
+require_once("admin/classes/servicio.php");
+require_once("admin/classes/comisiones.php");
+require_once("admin/classes/edades.php");
+require_once("admin/classes/cancelaciones.php");
+require_once("admin/classes/servicios_adicionales.php");
+require_once("admin/classes/reserva.php");
+require_once("admin/classes/comprobantes.php");
 require_once("admin/classes/moneda.php");
-include("admin/classes/convierte_monedas.php");
+require_once("admin/classes/convierte_monedas.php");
 
 // Formatea montos: sin decimales si es entero, 2 decimales si tiene centavos
 if (!function_exists('formatarMonedaCondicional')) {

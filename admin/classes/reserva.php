@@ -1592,7 +1592,7 @@ return $resultado;
 
     require("conexion.php");
     $data=["idReservaHorarios"=>$idReservaHorarios];
-    $consulta = "SELECT rt.*, sst.nombre as nombreTarifa, sst.idTipoTarifa 
+    $consulta = "SELECT rt.*, sst.nombre as nombreTarifa, sst.idTipoTarifa, sst.idCancelaciones 
                  FROM reserva_tarifas rt 
                  LEFT JOIN servicio_salidas_tarifas sst ON rt.idServicioSalidasTarifas = sst.idServicioSalidasTarifas
                  WHERE rt.idReservaHorarios=:idReservaHorarios ORDER BY rt.idReservaHorarios";

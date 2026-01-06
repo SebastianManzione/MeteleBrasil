@@ -75,6 +75,30 @@ table {
     background:#999;
     border-color: #999;
 }
+
+/* Acordeones (desktop y móvil) en gris oscuro unificado */
+.btn.btn-accordion {
+  background: #555 !important;
+  border-color: #555 !important;
+  color: #fff !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn.btn-accordion:hover,
+.btn.btn-accordion:focus,
+.btn.btn-accordion:active,
+.btn.btn-accordion:active:focus {
+  background: #444 !important;
+  border-color: #444 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* Separador sutil entre acordeones (mobile/desktop) */
+.accordion .card-accordion + .card-accordion {
+  border-top: 1px solid #6b6b6b;
+}
 .clndr .clndr-table {
     border: none;
 }

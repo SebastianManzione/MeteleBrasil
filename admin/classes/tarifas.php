@@ -427,7 +427,11 @@ $cantidad){
 
                  if ($_SESSION['moneda_sel_sym'] != 'AR$') {
 					$descuentoTarifa=$tarifas[$i]['valor']* $descuentoCupon;
+					$valorAntes = $tarifas[$i]['valor'];
 					$tarifas[$i]['valor']=$tarifas[$i]['valor']-$descuentoTarifa;
+					// Redondear inmediatamente después del descuento
+					$tarifas[$i]['valor']=round($tarifas[$i]['valor'], 4, PHP_ROUND_HALF_UP);
+					error_log("DEBUG DESCUENTO - Valor antes: $valorAntes, descuento: $descuentoTarifa, valor después: {$tarifas[$i]['valor']}");
 				}
 
 
@@ -445,6 +449,8 @@ $cantidad){
 			 
  $retorno[$i]['idMonedaPrestador']=$salida[0]["idMoneda"];
             $retorno[$i]['valor']=convierteMoneda( $salida[0]["idMoneda"],$_SESSION['moneda_sel'],$tarifas[$i]['valor']);
+            // Redondear después de convertir moneda
+            $retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
 
             if ($tarifas[$i]['comisiona']==1) {
 

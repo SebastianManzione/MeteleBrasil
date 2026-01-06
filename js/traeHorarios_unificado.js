@@ -86,6 +86,10 @@ function formatPrice(amount) {
   var numeric = toNumeric(amount);
   var symbol = (typeof symMoneda !== 'undefined' && symMoneda !== null) ? String(symMoneda).trim() : '';
   var decimals = (symbol.toUpperCase().indexOf('AR') !== -1) ? 0 : 2;
+  // Redondeo controlado para evitar deriva (ej: 90.009999 -> 90.00)
+  if (decimals === 2) {
+    numeric = Math.round(numeric * 100) / 100;
+  }
   
   return symbol + ' ' + numeric.toLocaleString('es-ES', {
     minimumFractionDigits: decimals,
@@ -107,10 +111,12 @@ function actualizaPrecios(){
     var idTarifa = reserva[i]["idServicioSalidasTarifas"];
     var cantidad = reserva[i]["cantidad"] || 0;
     if (cantidad > 0) {
-      var textoLabel = $('.lblTotal.tarifa-' + idTarifa).text();
+      var textoLabel = $('.lblTotal.tarifa-' + idTarifa).first().text();
       console.log('Tarifa ' + idTarifa + ' texto:', textoLabel);
       var valor = parseFloat(textoLabel.replace(/[^\d.,]/g, '').replace(/\./g, '').replace(',', '.')) || 0;
-      console.log('Tarifa ' + idTarifa + ' valor parseado:', valor);
+      // Redondear inmediatamente después del parseo
+      valor = Math.round(valor * 100) / 100;
+      console.log('Tarifa ' + idTarifa + ' valor parseado y redondeado:', valor);
       totalTarifas += valor;
     }
   }
@@ -125,19 +131,26 @@ function actualizaPrecios(){
   console.log('Total tarifas:', totalTarifas);
   console.log('Total adicionales:', totalAdicionales);
   var total = totalTarifas + totalAdicionales;
-  console.log('Total final:', total);
-  precioTotal = total;
+  // Evitar desbordes por flotantes (ej: 90.009999 -> 90.01)
+  var totalRounded = Math.round(total * 100) / 100;
+  console.log('Total final (raw):', total, 'rounded:', totalRounded);
+  precioTotal = totalRounded;
   
-  $('#precioTotal0').text(formatPrice(total));
-  $('#precio-nav').text(formatPrice(total));
+  $('#precioTotal0').text(formatPrice(totalRounded));
+  $('#precio-nav').text(formatPrice(totalRounded));
+  $('#precioTotalMovil').text(formatPrice(totalRounded)); // Barra fija móvil
+  if ($('#precioTotalFooterNavCelular').length) {
+    $('#precioTotalFooterNavCelular').text(formatPrice(totalRounded));
+  }
   
   // Actualizar precio en barra flotante móvil
   if (typeof window.actualizarPrecioMovil === 'function') {
-    window.actualizarPrecioMovil(formatPrice(total));
+    window.actualizarPrecioMovil(formatPrice(totalRounded));
   }
   
-  var precioTotalSinDescuento = total * 1.1356987;
-  $('#precioTotalSinDescuento').text(formatPrice(precioTotalSinDescuento));
+  var precioTotalSinDescuento = totalRounded * 1.1356987;
+  var precioTotalSinDescuentoRounded = Math.round(precioTotalSinDescuento * 100) / 100;
+  $('#precioTotalSinDescuento').text(formatPrice(precioTotalSinDescuentoRounded));
 }
 
 function limpiarTarifaYAdicionales(){
@@ -230,23 +243,53 @@ function traeHorarios($fecha, $idServicio){
         }
       }
       
-      htmlHorarios += '<button id="btnSalida' + idSalida + '" class="btn btn-outline-primary btn-hora btn-block m-2" data-idsalida="' + idSalida + '" onclick="traeTarifas(' + idSalida + ')">' + textoMostrar + '</button>';
+      // IMPORTANTE: El PRIMER botón debe estar seleccionado con btn-primary
+      var claseBoton = (i === 0) ? 'btn-primary' : 'btn-outline-primary';
+      
+      htmlHorarios += '<button id="btnSalida' + idSalida + '" class="btn ' + claseBoton + ' btn-hora btn-block m-2" data-idsalida="' + idSalida + '" onclick="traeTarifas(' + idSalida + ')" style="font-weight: 600;">' + textoMostrar;
+      
+      // Mostrar disponibilidad en horarios si es admin
+      if (isAdmin && salidas[i]["disponibilidad"]) {
+        var availabilityText = parseInt(salidas[i]["disponibilidad"]) > 0 ? 'Disp: ' + salidas[i]["disponibilidad"] : 'Agotado';
+        htmlHorarios += ' <small class="text-muted">(' + availabilityText + ')</small>';
+      }
+      
+      htmlHorarios += '</button>';
       if (i < salidasDisponibles.length - 1) {
         htmlHorarios += '<hr class="my-1">';
       }
     }
     
     $('#divhoraBody').html(htmlHorarios);
+    $('#divhora-movil').html(htmlHorarios); // Acordeón móvil horarios
     
-    // Abrir acordeón de horarios
+    // Abrir acordeón de horarios (desktop)
     $('#divhora').addClass('show').css('display', 'block');
     $('a[data-target="#divhora"]').attr('aria-expanded', 'true').removeClass('collapsed');
     
-    // Auto-seleccionar primera salida
+    // Agregar event handlers para cambiar estilos cuando el usuario clickea
+    $('.btn-hora').off('click').on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      var idSalida = $(this).attr('id').replace('btnSalida', '');
+      
+      // Resetear todos los botones a estado no seleccionado
+      $('.btn-hora').removeClass('btn-primary').addClass('btn-outline-primary');
+      
+      // Pintar el clickeado
+      $(this).removeClass('btn-outline-primary').addClass('btn-primary');
+      
+      // Cargar tarifas
+      traeTarifas(idSalida);
+      return false;
+    });
+    
+    // Auto-seleccionar y cargar tarifas del primer botón
     if (salidasDisponibles.length > 0) {
       setTimeout(function() {
         traeTarifas(salidasDisponibles[0]["idServicioSalidas"]);
-      }, 300);
+      }, 100);
     }
   });
 }
@@ -254,9 +297,7 @@ function traeHorarios($fecha, $idServicio){
 // ==================== TARIFAS ====================
 
 function traeTarifas($idSalida){
-    // Marcar botón seleccionado
-  $('.btn-hora').removeClass('btn-primary').addClass('btn-outline-primary');
-  $('#btnSalida' + $idSalida).removeClass('btn-outline-primary').addClass('btn-primary');
+    // La clase ya fue cambiada por el evento click, solo cargar tarifas
     $('#seleccionar_personas').empty();
   $('#divAdicionalesNoIncluidos').empty();
   $('#Seleccionar_adicionales_b').hide();
@@ -290,12 +331,6 @@ function traeTarifas($idSalida){
       
       htmlTarifas += '<div class="py-3 border-bottom">';
       htmlTarifas += '  <p class="mb-2"><strong>' + tarifa.nombre + '</strong> (' + tarifa.edadFrom + ' a ' + tarifa.edadTo + ' años) ' + tipoTarifa + ' ' + badgeAgotado;
-      
-      // Mostrar disponibilidad solo si es admin
-      if (isAdmin) {
-        htmlTarifas += ' <small class="text-muted">| Disp: ' + disponibilidad + '</small>';
-      }
-      
       htmlTarifas += '</p>';
         htmlTarifas += '  <div class="d-flex align-items-center justify-content-between flex-nowrap" style="gap: 5px;">';
       htmlTarifas += '    <span class="font-weight-bold text-primary">' + formatPrice(getPrecioValor(tarifa)) + '</span>';
@@ -314,8 +349,9 @@ function traeTarifas($idSalida){
     }
     
     $('#seleccionar_personas').html(htmlTarifas);
+    $('#seleccionar_personasMovil').html(htmlTarifas); // Acordeón móvil personas
     
-    // Forzar apertura visual del acordeón de personas
+    // Forzar apertura visual del acordeón de personas (desktop)
     $('#seleccionar_personas').addClass('show').css('display', 'block');
     $('a[data-target="#seleccionar_personas"]').attr('aria-expanded', 'true').removeClass('collapsed');
     
@@ -338,13 +374,66 @@ function traeTarifas($idSalida){
       }
       
       $('#rowCirculosPrecios').html(htmlPrecios);
+      $('#rowCirculosPreciosMovil').html(htmlPrecios); // Acordeón móvil precio
     }
+    
+    // Manejar estilo de botones de punto de embarque después de llenar divLugares
+    $(document).on('click', '.btn-lugar', function() {
+      var $this = $(this);
+      
+      // Remover clase activa de todos los botones de lugar
+      $('.btn-lugar').removeClass('btn-primary').addClass('btn-outline-primary');
+      
+      // Agregar clase activa al botón clickeado
+      $this.removeClass('btn-outline-primary').addClass('btn-primary');
+    });
     
     // Actualizar información adicional - idiomas en todos los lugares
     if (tarifas[0]["idiomas"]) {
       $('#pIdiomas').text(tarifas[0]["idiomas"]);
       $('#pIdiomasNav').text(tarifas[0]["idiomas"]);
       $('#pIdiomasNavCelular').text(tarifas[0]["idiomas"]);
+      $('#pIdiomasMovil').text(tarifas[0]["idiomas"]); // Acordeón móvil detalles
+    }
+    
+    // Actualizar duración si existe
+    if (salidas && salidas[0] && salidas[0]["duracionMinima"]) {
+      var duracionMin = parseFloat(salidas[0]["duracionMinima"]);
+      var duracionMax = parseFloat(salidas[0]["duracionMaxima"]);
+      var categoriaServicio = salidas[0]["idCategoria_servicio"];
+      var duracionTexto = "";
+      
+      // Formatear según categoría y duración (igual que en PHP)
+      if (categoriaServicio == 4) { // Paquete
+        duracionTexto = duracionMin + " Dias  - " + duracionMax + " Noches ";
+      } else {
+        var duracionMinTexto = "";
+        var duracionMaxTexto = "";
+        
+        // Formatear duración mínima
+        if (duracionMin > 24) {
+          duracionMinTexto = Math.ceil(duracionMin / 24) + " Dias ";
+        } else if (duracionMin < 1) {
+          duracionMinTexto = Math.round(duracionMin * 60) + " Minutos ";
+        } else {
+          duracionMinTexto = Math.round(duracionMin) + " HS ";
+        }
+        
+        // Formatear duración máxima
+        if (duracionMax > 24) {
+          duracionMaxTexto = Math.ceil(duracionMax / 24) + " Dias ";
+        } else if (duracionMax < 1) {
+          duracionMaxTexto = Math.round(duracionMax * 60) + " Minutos ";
+        } else {
+          duracionMaxTexto = Math.round(duracionMax) + " HS ";
+        }
+        
+        duracionTexto = duracionMinTexto + " - " + duracionMaxTexto;
+      }
+      
+      $('#txtDuracion').text(duracionTexto);
+      $('#txtDuracionMovil').text(duracionTexto); // Header móvil
+      $('#txtDuracionMovilDetalle').text(duracionTexto); // Acordeón móvil detalles
     }
     
     // Procesar cancelaciones
@@ -369,6 +458,7 @@ function traeTarifas($idSalida){
         htmlCancelaciones = '<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>';
       }
       $('#divCancelaciones').html(htmlCancelaciones);
+      $('#divCancelacionesMovil').html(htmlCancelaciones); // Acordeón móvil
       
       var tieneGratuita = false;
       for (var j = 0; j < cancelaciones.length; j++) {
@@ -379,7 +469,9 @@ function traeTarifas($idSalida){
       }
       $('#textoCancelacionGratuita').toggle(tieneGratuita);
     } else {
-      $('#divCancelaciones').html('<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>');
+      var msgCancelacion = '<p class="mx-4">Consultar política de cancelación al momento de reservar.</p>';
+      $('#divCancelaciones').html(msgCancelacion);
+      $('#divCancelacionesMovil').html(msgCancelacion); // Acordeón móvil
     }
     
     // Procesar incluidos
@@ -389,6 +481,7 @@ function traeTarifas($idSalida){
         htmlIncluidos += '<li>' + tarifas[0]["adicionalesIncluidos"][j]["nombre"] + '</li>';
       }
       $('#ulIncluidos').html(htmlIncluidos);
+      $('#ulIncluidosMovil').html(htmlIncluidos); // Acordeón móvil
     }
     
     // Procesar no incluidos
@@ -423,10 +516,14 @@ function traeTarifas($idSalida){
       }
       
       $('#ulNoIncluidos').html(htmlNoIncluidos);
+      $('#ulNoIncluidosMovil').html(htmlNoIncluidos); // Acordeón móvil
       $('#divAdicionalesNoIncluidos').html(htmlAdicionalesDiv);
+      $('#divAdicionalesNoIncluidosMovil').html(htmlAdicionalesDiv); // Acordeón móvil
       $('#Seleccionar_adicionales_b').show();
     } else {
       $('#Seleccionar_adicionales_b').hide();
+      $('#divNoIncluidosCuerpo').hide(); // Ocultar sección desktop
+      $('#divNoIncluidosCuerpoMovil').hide(); // Ocultar sección móvil
     }
     
     // Incrementar primero
@@ -494,7 +591,13 @@ function CalculaPersonas(idServicioSalidasTarifas, operacion){
       cantidad: cantidad
     }, function(data, status){
       var tarifas = JSON.parse(data);
+      console.log("DEBUG: Tarifa recibida del servidor:", tarifas[0]);
       var valorTarifaActual = getPrecioValor(tarifas[0]);
+      console.log("DEBUG: valorTarifaActual ANTES de redondeo:", valorTarifaActual);
+      
+      // Redondear para evitar deriva de flotantes
+      valorTarifaActual = Math.round(valorTarifaActual * 100) / 100;
+      console.log("DEBUG: valorTarifaActual DESPUÉS de redondeo:", valorTarifaActual);
       
       $('.lblTotal.tarifa-' + idServicioSalidasTarifas).text(formatPrice(valorTarifaActual));
       
@@ -691,6 +794,67 @@ $(document).ready(function(){
     
     // Marcar como inicializado
     $('#calendar').data('clndr-initialized', true);
+  }
+  
+  // Inicializar calendario MÓVIL - UNA SOLA VEZ
+  if ($('#mini-clndr-movil').length && !$('#mini-clndr-movil').data('clndr-initialized')) {
+    if (eventArray.length === 0) {
+      console.warn('No hay eventos disponibles para el calendario móvil');
+    }
+    
+    $('#mini-clndr-movil').clndr({
+      events: eventArray,
+      startWithMonth: eventArray.length > 0 ? eventArray[0]["date"] : new Date(),
+      daysOfTheWeek: diasSemanaHeader,
+      showAdjacentMonths: false,
+      weekOffset: weekOffset,
+      clickEvents: {
+        click: function (target) {
+          if ($(target.element).hasClass('event')) {
+            var fechaSeleccionada = target.date._i;
+            
+            // Colorear día seleccionado
+            $('#mini-clndr-movil .day.event').css({
+              'background': '#FFF',
+              'color': 'black',
+              'border-radius': '0px'
+            });
+            $(target.element).css({
+              'background': '#029ce2',
+              'color': '#FFF',
+              'border-radius': '50%'
+            });
+            
+            // Cargar horarios
+            traeHorarios(fechaSeleccionada, idServicioSeleccionado);
+          }
+        }
+      },
+      doneRendering: function() {
+        // Traducir encabezado del mes
+        try {
+          var currentMonthMoment = this.month;
+          var idxMes = currentMonthMoment.month();
+          var anio = currentMonthMoment.year();
+          var nombreMes = (mesesMap[idiomaSistema] || mesesMap['ES'])[idxMes];
+          $('#mini-clndr-movil .month').text(nombreMes + ' ' + anio);
+        } catch(e) { }
+        // Colorear primer día con eventos
+        setTimeout(function() {
+          var primerDia = $('#mini-clndr-movil .day.event').first();
+          if (primerDia.length) {
+            primerDia.css({
+              'background': '#029ce2',
+              'color': '#FFF',
+              'border-radius': '50%'
+            });
+          }
+        }, 500);
+      }
+    });
+    
+    // Marcar como inicializado
+    $('#mini-clndr-movil').data('clndr-initialized', true);
   }
   
   // Inicializar precios
