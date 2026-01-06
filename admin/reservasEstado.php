@@ -195,16 +195,14 @@ function getFechaProximaReserva($idReserva) {
 
 
 $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
-
   $hoy=strtotime(date('Y-m-d'));
-
-
+  $reservasYaMostradas = [];
 
  for ($i=0; $i < count($reservas); $i++) { 
-
-
-
   $idReserva=$reservas[$i]['idReserva'];
+  
+  if (in_array($idReserva, $reservasYaMostradas)) continue;
+  $reservasYaMostradas[] = $idReserva;
 
   $horarios=getReservaHorarios($idReserva);
 
@@ -241,20 +239,14 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                        $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
                    }
 
-                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
-                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
-                    
                     if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento>=$hoy) {
-
-                      // code...
-
-                   
-
-                     
-
-  
-
-?>
+                        if (!isset($primeraFecha) || $fechaEvento < $primeraFecha) {
+                            $primeraFecha = $fechaEvento;
+                            $idReservaHorariosMostrar = $idReservaHorarios;
+                            $salidaMostrar = $salida;
+                            $tarifasFinales = $tarifas;
+                        }
+                    }
 
 
 
@@ -274,17 +266,18 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
                                     <td><?=count($tarifas);?></td>
 
-                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].round(ConvierteMoneda($reservas[$i]["monedaSel"], $_SESSION["moneda_sel"], $reservas[$i]["total"]), 2);?></td>
 
                                     <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
 
 
                              <?php
 
-                                          }    
+                                          }     }
 
-  }
 
+
+} ?>
 
 
 } ?>
