@@ -196,6 +196,7 @@ function getFechaProximaReserva($idReserva) {
 
 $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
   $hoy=strtotime(date('Y-m-d'));
+  
   $reservasYaMostradas = [];
 
  for ($i=0; $i < count($reservas); $i++) { 
@@ -239,6 +240,9 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                        $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
                    }
 
+                    // Verificar si el servicio pertenece al prestador o si es admin sin filtro
+                    $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
+                    
                     if (($verTodasReservas || $salida[0]["idPrestador"]==$idPrestador) && $fechaEvento>=$hoy) {
                         if (!isset($primeraFecha) || $fechaEvento < $primeraFecha) {
                             $primeraFecha = $fechaEvento;
@@ -247,6 +251,7 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                             $tarifasFinales = $tarifas;
                         }
                     }
+?>
 
 
 
@@ -270,17 +275,15 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
                                     <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
 
+                                </tr>
 
                              <?php
 
-                                          }     }
+                                          }     
 
+}
 
-
-} ?>
-
-
-} ?>
+?>
 
                         </tbody>
 
@@ -369,6 +372,9 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 $reservas=getReservasPendientes($idPrestador);
 
    $hoy=strtotime(date('Y-m-d'));
+
+
+  $reservasYaMostradas = [];
 
  for ($i=0; $i < count($reservas); $i++) { 
 
@@ -551,6 +557,9 @@ $reservas=getReservasPendientes($idPrestador);
 
    $hoy=strtotime(date('Y-m-d'));
 
+
+  $reservasYaMostradas = [];
+
  for ($i=0; $i < count($reservas); $i++) { 
 
 
@@ -576,20 +585,17 @@ $reservas=getReservasPendientes($idPrestador);
                    
                    for ($k=0; $k < count($tarifas); $k++) { 
 
-                
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"], $_SESSION["moneda_sel"], $tarifas[$k]["valor"]);
 
-                        $nombre_tarifa=($tarifas[$k]["nombre"]);
-
-                        $monedaSel=$tarifas[$k]["monedaSel"];
-
-                        $valorSinIva=$tarifas[$k]["valorSinIva"];
-
-                       $cantidad=($tarifas[$k]["cantidad"]);
-
-                        $totalTarifa=$valorSinIva*$cantidad;
-
-                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-
+                   }
+                   
+                   // Agregar servicios adicionales (solo los con precio > 0)
+                   $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+                   foreach ($adicionales as $adic) {
+                       // El precio del adicional ya está en la moneda de la salida (la del horario)
+                       $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                   }
+                   
                      $fechaEvento=strtotime($salida[0]['fecha']);
 
     }
@@ -629,7 +635,7 @@ $reservas=getReservasPendientes($idPrestador);
 
                                     <td><?=count($tarifas);?></td>
 
-                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].round($total, 2);?></td>
 
                              <?php
 
@@ -637,9 +643,9 @@ $reservas=getReservasPendientes($idPrestador);
 
   }
 
+}
 
-
-} ?>
+?>
 
                         </tbody>
 
@@ -652,8 +658,6 @@ $reservas=getReservasPendientes($idPrestador);
              </div>
 
     </div>
-
-  <?php } ?>
 
   <div class="card">
 
@@ -718,6 +722,8 @@ $reservas=getReservasPendientes($idPrestador);
 $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
    $hoy=strtotime(date('Y-m-d'));
+  $reservasYaMostradas = [];
+
 
  for ($i=0; $i < count($reservas); $i++) { 
 
@@ -747,25 +753,18 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                    
                    for ($k=0; $k < count($tarifas); $k++) { 
 
-                
+                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"], $_SESSION["moneda_sel"], $tarifas[$k]["valor"]);
 
-                        $nombre_tarifa=($tarifas[$k]["nombre"]);
-
-                        $monedaSel=$tarifas[$k]["monedaSel"];
-
-                        $valorSinIva=$tarifas[$k]["valorSinIva"];
-
-                       $cantidad=($tarifas[$k]["cantidad"]);
-
-                        $totalTarifa=$valorSinIva*$cantidad;
-
-                        $total += ConvierteMoneda($tarifas[$k]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
-
-
-
+                   }
+                   
+                   // Agregar servicios adicionales (solo los con precio > 0)
+                   $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+                   foreach ($adicionales as $adic) {
+                       // El precio del adicional ya está en la moneda de la salida (la del horario)
+                       $total += ConvierteMoneda($salida[0]["idMoneda"], $_SESSION["moneda_sel"], $adic["precio"]);
+                   }
+                   
                      $fechaEvento=strtotime($salida[0]['fecha']);
-
-}
 
                     // Verificar si el servicio pertenece al prestador o si es admin sin filtro
                     $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrestador']));
@@ -802,7 +801,7 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
                                     <td><?=count($tarifas);?></td>
 
-                                    <td><?=$_SESSION["moneda_sel_sym"].$total;?></td>
+                                    <td><?=$_SESSION["moneda_sel_sym"].round($total, 2);?></td>
 
                                     <td><form method="post" action="voucherPrestador"><button type="submit" class="btn btn-info" name="idReservaHorarios" value="<?=$idReservaHorarios;?>"><?=$lang["voucher_prestador"];?></button></form></td>
 
@@ -821,7 +820,7 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
 
 }
 
- ?>
+?>
                         </tbody>
 
                       </table>
@@ -831,6 +830,8 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
                  </div>
 
              </div>
+
+    </div>
 
     </div>
 
@@ -959,3 +960,5 @@ $reservas=getReservasConfirmadas($idPrestador, $vistaAdmin);
   <?php 
 
    include("includes/footer.php"); ?>
+
+
