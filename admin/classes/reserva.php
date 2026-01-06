@@ -191,6 +191,12 @@ $totalComprobantesDolar=getComprobantesIdReservaDolar($idReserva);
 
 $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 
+// VALIDACIÓN CRÍTICA: Solo mostrar si está pagado 100% (diferencia <= 0)
+if ($diferenciaComprobantesPrecio > 0.01) {
+    // Hay dinero pendiente, no es realmente confirmada
+    continue;
+}
+
 // Determinar si debe ver todas las reservas (admin sin filtro de prestador)
 $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && $vistaAdmin);
 
@@ -491,7 +497,7 @@ $verTodasReservas = ($_SESSION['login']['idUsuario']==1 && !isset($_GET['idPrest
 
 
 
-       if (($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) && $diferenciaComprobantesPrecioDolar > 1) {
+       if (($verTodasReservas || $horarios[$i]["idPrestador"]==$idPrestador) && (($value['idEstado'] != 3) || ($diferenciaComprobantesPrecioDolar > 1) || ($diferenciaComprobantesPrecio > 0.01))) {
 
         $envia=true; 
 
