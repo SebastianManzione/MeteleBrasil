@@ -35,6 +35,25 @@ if ($_SESSION['login']['idUsuario'] == 1) {
     $prestadores = getPrestadores();
 }
 
+// Función helper: obtener fecha más próxima de una reserva
+function getFechaProximaReserva($idReserva) {
+    $horarios = getReservaHorarios($idReserva);
+    $fechasMinimas = [];
+    
+    foreach ($horarios as $h) {
+        $salida = getSalida($h['idServicioSalidas']);
+        if (!empty($salida) && isset($salida[0]['fecha'])) {
+            $fechasMinimas[] = strtotime($salida[0]['fecha']);
+        }
+    }
+    
+    if (empty($fechasMinimas)) {
+        return PHP_INT_MAX; // Retornar valor alto si no hay fechas
+    }
+    
+    return min($fechasMinimas);
+}
+
 
 
 
@@ -479,7 +498,7 @@ $reservas=getReservasPendientes($idPrestador);
 
       <h5 class="mb-0">
 
-        <button class="btn btn-secondary btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseThree"><i class="fas fa-clock"></i> 
+        <button class="btn btn-secondary btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><i class="fas fa-clock"></i> 
 
           <?=$lang["pasadas"];?>
 
@@ -643,7 +662,23 @@ $reservas=getReservasPendientes($idPrestador);
 
   <?php } ?>
 
-        <div id="collapseFour" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+  <div class="card">
+
+    <div class="card-header" id="headingFour">
+
+      <h5 class="mb-0">
+
+        <button class="btn btn-info btn-lg btn-block collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive"><i class="fas fa-check"></i> 
+
+          <?=$lang["lista_de_reservas_confirmadas_pasadas"];?>
+
+        </button>
+
+      </h5>
+
+    </div>
+
+    <div id="collapseFive" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
 
       <div class="card-body">
 
