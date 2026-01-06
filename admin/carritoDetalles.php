@@ -143,7 +143,12 @@ $fechaReserva=date("d-m-Y H:i:s", strtotime($reserva[0]['fechaAlta']));
 $idUsuario=$reserva[0]['idUsuario'];
 
 $usuario=getUsuario($idUsuario);
-
+$nombreVendedor="metelebrasil";
+$idUsuarioCupon=$reserva[0]['idUsuarioCupon'];
+if ($idUsuarioCupon>0) {
+   $usuarioVendedor=getUsuario($idUsuarioCupon); 
+   $nombreVendedor=$usuarioVendedor[0]['nombre'];
+}
 $nombre_usuario=$usuario[0]["usuario"];
 
 $nombreResponsable=$reserva[0]["nombreResponsable"]." ".$reserva[0]["apellidoResponsable"];
@@ -490,7 +495,7 @@ $diferenciaComprobantesPrecio=$precio-$totalComprobantes;
 
 
 
-                                          <td>Destino Florianopolis Agencia</td>
+                                          <td><?=$nombreVendedor?></td>
 
 
 

@@ -92,6 +92,11 @@ if (!$_SESSION["login"]["rol"]==1) {
           $_SESSION["moneda_sel"] = 283;
           $_SESSION["moneda_sel_sym"] = 'R$';
       }
+
+        // Helper para formatear montos con el formato estándar del sitio
+        function formatCurrency($value) {
+          return $_SESSION["moneda_sel_sym"].number_format((float)$value, 2, ',', '.');
+        }
       
       $totalIva=0;
 
@@ -136,6 +141,9 @@ $totalReserva=$reserva["total"];
 $impuestos=$reserva["impuestos"];
 
 $monedaSel=$reserva["monedaSel"];
+
+// Código de voucher específico por horario
+$codigoVoucherServicio = !empty($horarios[0]['CodigoVoucherServicio']) ? $horarios[0]['CodigoVoucherServicio'] : 'N/A';
 
 $comentario=$horarios[0]['comentario'];
 
@@ -360,9 +368,7 @@ $fechaCheckIn= date("d/m/Y",strtotime($salida['fecha']));
 
                 <div class="col-sm-4 invoice-col">
 
-                  <b>Numero de comprovante</b><b> #<?= $codigoAmigable;?></b><br>
-
-                  <b>Numero de ordem ID:</b> <?= $codigoAmigable;?><br>
+                  <b>Código Voucher Servicio:</b> <?= $codigoVoucherServicio;?><br>
                     <b>Nome do prestador:</b><b> <?=$prestador['nombre'];?><br></b>
 
                   <b>Telefone do prestador:</b><b> <?=$prestador['telefono'];?></b><br>
@@ -462,9 +468,11 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                     $valorDelIvaUnitario=$reservaTarifas[$j]['valorDeIva']/$cantidad; 
 
-                       $valorDelIva=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
+                      $valorDelIva=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $valorDelIva);
 
-                      $totalNetoTarifa=$valorSinIva;
+                      // Convertir neto e IVA a la moneda seleccionada
+                      $valorSinIvaConvertido = ConvierteMoneda($reservaTarifas[$j]["monedaSel"], $_SESSION["moneda_sel"], $valorSinIva);
+                      $totalNetoTarifa=$valorSinIvaConvertido;
 
                         $totalTarifa=$valorSinIva/$cantidad;
 
@@ -474,7 +482,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                   
 
-            $total=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
+                   $total=ConvierteMoneda($reservaTarifas[$j]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);
 
                    $totalCarrito+=$totalNetoTarifa;
 
@@ -504,7 +512,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                       <td><?= date("d/m/Y",strtotime($horarios[0]['fecha']))?> <?=$horarios[0]['horaCheckIn']?></td>
 
-                      <td><?=$_SESSION["moneda_sel_sym"].($total);?></td>
+                      <td><?=formatCurrency($total);?></td>
 
                       
 
@@ -559,7 +567,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
   <td colspan="4"><?=$adicionales[$k]['cantidad'];?> <?=$adicionales[$k]['nombre'];?></td>
 
-  <td ><?= $_SESSION["moneda_sel_sym"].($precioAdicional+$valorIva)?></td>
+  <td ><?= formatCurrency($precioAdicional+$valorIva)?></td>
 
 
 
@@ -583,7 +591,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                       <th>ISS</th>
 
-                      <th><?=$_SESSION["moneda_sel_sym"].$totalIva;?></th>
+                      <th><?=formatCurrency($totalIva);?></th>
 
                     </tr>
 
@@ -593,7 +601,7 @@ if (in_array($cancelacion[0]['texto'],$cancelacionesArr)==0) {
 
                       <th>Total</th>
 
-                      <th><?=$_SESSION["moneda_sel_sym"].($totalIva+$totalCarrito);?></th>
+                      <th><?=formatCurrency($totalIva+$totalCarrito);?></th>
 
                     </tr>
 

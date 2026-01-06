@@ -220,6 +220,7 @@ $config_data = [
     'parametros_head' => $config->obtener('parametros_head', ''),
     'parametros_body' => $config->obtener('parametros_body', '')
 ];
+
 ?>
 
 <!-- Content Wrapper -->
@@ -760,7 +761,7 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en &lt;head&gt;</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_head" name="parametros_head" rows="8"></textarea>
+                                        <textarea class="form-control" id="parametros_head" name="parametros_head" rows="8"><?=config('head');?></textarea>
                                         <small class="form-text text-muted">
                                             Scripts, meta tags, CSS, Google Analytics, Facebook Pixel, etc.
                                         </small>
