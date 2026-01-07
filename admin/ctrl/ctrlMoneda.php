@@ -14,6 +14,7 @@ include("../classes/moneda.php");
 if (is_array($moneda)) {
 $_SESSION["moneda_sel"]=$moneda[0]["idMoneda"];
 $_SESSION["moneda_sel_sym"]=$moneda[0]["Symbol"];
+$_SESSION["moneda_manual"] = 1;
 	
 	echo 1;
 }

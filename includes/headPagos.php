@@ -15,8 +15,9 @@ if (!isset($_SESSION['geoFinal'])) {
   $_SESSION['geoFinal'] = $geoData;
 }
 
-// ========== DETERMINAR IDIOMA por País (desde BD: tabla idioma_pais) ==========
-if (!isset($_SESSION['idioma'])) {
+// ========== DETERMINAR IDIOMA ==========
+// Respeta selección manual (idioma_manual); si no hay, usa geo/BD; fallback ES.
+if (empty($_SESSION['idioma_manual']) && !isset($_SESSION['idioma'])) {
   require_once("admin/classes/idioma_pais.php");
   $geoFinal = $_SESSION['geoFinal'];
   $countryCode = strtoupper($geoFinal['countryCode'] ?? '');

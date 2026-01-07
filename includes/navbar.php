@@ -41,9 +41,11 @@ if (!isset($_SESSION['geoFinal'])) {
   $_SESSION['geoFinal'] = $geoData;
 }
 
-// ========== DETERMINAR IDIOMA por País (desde geoFinal.lang o BD) ==========
-// Siempre actualizar idioma desde geoFinal si está disponible
-if (isset($_SESSION['geoFinal']['lang']) && !empty($_SESSION['geoFinal']['lang'])) {
+// ========== DETERMINAR IDIOMA ==========
+// Respeta selección manual (idioma_manual). Si no hay, usa geoFinal; si tampoco, BD; si falla, ES.
+if (!empty($_SESSION['idioma_manual'])) {
+  // Mantener selección manual.
+} elseif (isset($_SESSION['geoFinal']['lang']) && !empty($_SESSION['geoFinal']['lang'])) {
   $_SESSION['idioma'] = $_SESSION['geoFinal']['lang'];
 } elseif (!isset($_SESSION['idioma'])) {
   require_once("admin/classes/idioma_pais.php");
@@ -76,9 +78,11 @@ if (!isset($_SESSION['idioma_bandera']) || empty($_SESSION['idioma_bandera'])) {
   }
 }
 
-// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÓN ==========
-// Siempre usar moneda de geoFinal si está disponible (permite cambios dinámicos)
-if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
+// ========== ESTABLECER MONEDA ==========
+// Respeta selección manual (se marca en ctrlMoneda); si no hay, usa geoFinal como fallback.
+if (!empty($_SESSION['moneda_manual'])) {
+  // Mantener selección manual.
+} elseif (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
   $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
   $_SESSION['moneda_sel_sym'] = $_SESSION['geoFinal']['sym'];
 } elseif (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {

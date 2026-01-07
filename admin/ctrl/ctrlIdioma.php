@@ -12,6 +12,7 @@ include("../classes/moneda.php");
   	$idiomaNuevo=$_POST["cambiaIdioma"];
 
 $_SESSION["idioma"]=$_POST["cambiaIdioma"];
+$_SESSION["idioma_manual"] = 1;
 switch ($idiomaNuevo) {
 		case 'ES':
 		$_SESSION["idioma_bandera"]='img/countries/Spain-icon.png';
