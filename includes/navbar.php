@@ -235,9 +235,9 @@ try {
   }
   .nav-eye-inline {
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 50%;
     right: 6px;
+    transform: translateY(-50%);
     border: 0;
     background: transparent;
     padding: 0;
