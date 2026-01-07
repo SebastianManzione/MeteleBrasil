@@ -169,9 +169,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['index_categorias_ver_mas'])) {
         $config->guardar('index_categorias_ver_mas', (int)$_POST['index_categorias_ver_mas'], 'number', 'Categorías al hacer Ver Más');
     }
-    if (isset($_POST['index_orden_servicios'])) {
-        $config->guardar('index_orden_servicios', $_POST['index_orden_servicios'], 'string', 'Orden de servicios destacados');
-    }
     
     // Configuración Servicios Destacados
     if (isset($_POST['index_servicios_iniciales'])) {
@@ -179,9 +176,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (isset($_POST['index_servicios_ver_mas'])) {
         $config->guardar('index_servicios_ver_mas', (int)$_POST['index_servicios_ver_mas'], 'number', 'Servicios al hacer Ver Más');
-    }
-    if (isset($_POST['index_orden_destacados'])) {
-        $config->guardar('index_orden_destacados', $_POST['index_orden_destacados'], 'string', 'Orden de servicios destacados');
     }
     
     // Mantenimiento
@@ -249,12 +243,10 @@ $config_data = [
     // Configuración Index
     'index_categorias_iniciales' => $config->obtener('index_categorias_iniciales', 6),
     'index_categorias_ver_mas' => $config->obtener('index_categorias_ver_mas', 99),
-    'index_orden_servicios' => $config->obtener('index_orden_servicios', 'aleatorio'),
     
     // Configuración Servicios Destacados
     'index_servicios_iniciales' => $config->obtener('index_servicios_iniciales', 6),
-    'index_servicios_ver_mas' => $config->obtener('index_servicios_ver_mas', 18),
-    'index_orden_destacados' => $config->obtener('index_orden_destacados', 'proximidad')
+    'index_servicios_ver_mas' => $config->obtener('index_servicios_ver_mas', 18)
 ];
 
 ?>
@@ -868,23 +860,6 @@ $config_data = [
                                         </small>
                                     </div>
                                 </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Orden de Servicios Destacados</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" name="index_orden_servicios">
-                                            <option value="aleatorio" <?=$config_data['index_orden_servicios'] === 'aleatorio' ? 'selected' : ''?>>Aleatorio (RAND())</option>
-                                            <option value="recientes" <?=$config_data['index_orden_servicios'] === 'recientes' ? 'selected' : ''?>>Más recientes primero</option>
-                                            <option value="populares" <?=$config_data['index_orden_servicios'] === 'populares' ? 'selected' : ''?>>Más populares (más reservas)</option>
-                                            <option value="mejor_valorados" <?=$config_data['index_orden_servicios'] === 'mejor_valorados' ? 'selected' : ''?>>Mejor valorados</option>
-                                            <option value="precio_asc" <?=$config_data['index_orden_servicios'] === 'precio_asc' ? 'selected' : ''?>>Precio: menor a mayor</option>
-                                            <option value="precio_desc" <?=$config_data['index_orden_servicios'] === 'precio_desc' ? 'selected' : ''?>>Precio: mayor a menor</option>
-                                        </select>
-                                        <small class="form-text text-muted">
-                                            Cómo se ordenan los servicios destacados en la página de inicio
-                                        </small>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -917,23 +892,6 @@ $config_data = [
                                         <input type="number" class="form-control" name="index_servicios_ver_mas" value="<?=$config_data['index_servicios_ver_mas']?>" min="1" max="100">
                                         <small class="form-text text-muted">
                                             Número de servicios adicionales al hacer clic en "Ver más" (por defecto: 18)
-                                        </small>
-                                    </div>
-                                </div>
-
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Orden de Servicios Destacados</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control" name="index_orden_destacados">
-                                            <option value="proximidad" <?=$config_data['index_orden_destacados'] === 'proximidad' ? 'selected' : ''?>>Más cercanos primero</option>
-                                            <option value="aleatorio" <?=$config_data['index_orden_destacados'] === 'aleatorio' ? 'selected' : ''?>>Aleatorio (RAND())</option>
-                                            <option value="recientes" <?=$config_data['index_orden_destacados'] === 'recientes' ? 'selected' : ''?>>Más recientes primero</option>
-                                            <option value="mejor_valorados" <?=$config_data['index_orden_destacados'] === 'mejor_valorados' ? 'selected' : ''?>>Mejor valorados</option>
-                                            <option value="precio_asc" <?=$config_data['index_orden_destacados'] === 'precio_asc' ? 'selected' : ''?>>Precio: menor a mayor</option>
-                                            <option value="precio_desc" <?=$config_data['index_orden_destacados'] === 'precio_desc' ? 'selected' : ''?>>Precio: mayor a menor</option>
-                                        </select>
-                                        <small class="form-text text-muted">
-                                            Cómo se ordenan los servicios destacados en la página de inicio
                                         </small>
                                     </div>
                                 </div>
