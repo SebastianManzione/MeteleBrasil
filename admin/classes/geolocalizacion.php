@@ -101,11 +101,25 @@ function geoLocalizacionIp($url, $option, $cCode)
 
 function getGeolocalizacionData()
 {
-    // Verificar si ya tenemos los datos en la sesión
-   // if (isset($_SESSION['geoFinal']) && !empty($_SESSION['geoFinal'])) {
-//        return $_SESSION['geoFinal'];
- //   }
-
+    // PRODUCCIÓN: Deshabilitada por rendimiento (ip-api.com no responde rápido)
+    // Usar valores por defecto para Argentina para evitar timeouts
+    
+    $geo = [
+        'status' => 'success',
+        'country' => 'Argentina',
+        'countryCode' => 'AR',
+        'nombre_pais' => 'Argentina',
+        'ciudad' => 'Buenos Aires',
+        'latitud' => -34.6037,
+        'longitud' => -58.3816,
+        'timezone' => 'America/Argentina/Buenos_Aires',
+        'currency' => 'ARS'
+    ];
+    
+    return $geo;
+    
+    /* CÓDIGO ORIGINAL - DESHABILITADO POR TIMEOUTS EN PRODUCCIÓN
+    
     // Detectar IP
     $ip = $_SERVER['REMOTE_ADDR'];
     if ($ip == '127.0.0.1' || $ip == '::1') {
