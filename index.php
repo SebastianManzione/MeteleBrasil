@@ -47,32 +47,21 @@ if ($idioma === 'EN') {
     $campoDescripcion = 'descripcion_corta_it';
 }
 
-// Query simplificada sin JOINs innecesarios - solo servicios destacados
-$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, 
-        s.destacado, s.idTextoMiniaturas, s.latitud, s.longitud
+// Query con JOINs para obtener coordenadas, pero limitada a 24 servicios para velocidad
+$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, s.destacado, s.idTextoMiniaturas, 
+        IFNULL(AVG(CAST(u.latitud AS DECIMAL(10,7))), 0) as latitud, 
+        IFNULL(AVG(CAST(u.longitud AS DECIMAL(10,7))), 0) as longitud
         FROM servicio s 
+        LEFT JOIN servicio_salidas ss ON s.idServicio = ss.idServicio 
+        LEFT JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
+        LEFT JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
         WHERE s.destacado = 1 AND s.habilitado = 1 
+        GROUP BY s.idServicio
         LIMIT 24";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // Si no tiene coordenadas en servicio, intentar obtenerlas de la primera salida
-        if (empty($row['latitud']) || empty($row['longitud'])) {
-            $sqlGeo = "SELECT u.latitud, u.longitud 
-                       FROM servicio_salidas ss 
-                       JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-                       JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
-                       WHERE ss.idServicio = " . intval($row['idServicio']) . " 
-                       AND u.latitud IS NOT NULL AND u.longitud IS NOT NULL
-                       LIMIT 1";
-            $resGeo = $mysqli->query($sqlGeo);
-            if ($resGeo && $resGeo->num_rows > 0) {
-                $geoData = $resGeo->fetch_assoc();
-                $row['latitud'] = $geoData['latitud'];
-                $row['longitud'] = $geoData['longitud'];
-            }
-        }
         $row['distancia'] = 999999; // Placeholder, se calcula después
         $servicios_geo[] = $row;
     }
