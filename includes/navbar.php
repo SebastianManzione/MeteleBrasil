@@ -230,7 +230,7 @@ try {
   .nav-password-wrapper {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
   }
   .nav-password-wrapper .form-control {
     flex: 1;
@@ -238,9 +238,9 @@ try {
   .nav-eye-inline {
     border: 0;
     background: transparent;
-    padding: 5px;
-    width: 30px;
-    height: 38px;
+    padding: 2px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
