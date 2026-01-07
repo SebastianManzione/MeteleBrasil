@@ -37,12 +37,13 @@ if (empty($_SESSION['idioma_manual']) && !isset($_SESSION['idioma'])) {
 $lang_code = $_SESSION['idioma'];
 require("admin/lang/" . $lang_code . ".php");
 
-// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÓN ==========
-if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
+// ========== ESTABLECER MONEDA ==========
+// Respeta selección manual (moneda_manual); si no hay, usa geo; si no, fallback USD.
+if (empty($_SESSION['moneda_manual'])) {
   if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
     $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
     $_SESSION['moneda_sel_sym'] = $_SESSION['geoFinal']['sym'];
-  } else {
+  } elseif (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
     // Fallback: moneda por defecto (USD)
     $_SESSION['moneda_sel'] = 188;
     $_SESSION['moneda_sel_sym'] = 'U$D';
@@ -70,18 +71,6 @@ $impuestos_pais = getImpuestosPais($_SESSION['geo']['idPais']);
 
 
 $_SESSION['impuestos_pais'] = $impuestos_pais;
-
-if (!isset($_SESSION["moneda_sel"])) {
-
-  $_SESSION['moneda_sel'] = 283;
-
-  $_SESSION['moneda_sel_sym'] = 'R$';
-
-  $monedaSelSym = 'R$';
-}
-
-
-
 
 
 ?>
