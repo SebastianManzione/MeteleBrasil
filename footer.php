@@ -227,7 +227,8 @@
            </div>
     <!--acordeon #5-->
       </div>
-      <!-- Botón Mi Cuenta Mobile -->
+      <!-- Botón Mi Cuenta Mobile - Solo si NO está logueado -->
+      <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
       <div class="row mt-3 mb-3">
         <div class="col-12">
           <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginMobile">
@@ -235,6 +236,7 @@
           </button>
         </div>
       </div>
+      <?php } ?>
  </div>
 </div>
       
