@@ -45,6 +45,18 @@
 
 <!---- Fin de modal servicios ---------->
 <footer class="footer ">
+  <!-- Botón Mi Cuenta Desktop - Arriba del Footer -->
+  <div class="bg-light py-3 d-md-block d-none" style="border-top: 1px solid #ddd;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 text-center">
+          <button class="btn btn-primary" onclick="jQuery('#modalLoginForm').modal('show');">
+            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   
     <div class="container d-md-none mb-4">
       <div class="row">
@@ -385,14 +397,6 @@
         </div>
         <div class="col-lg-2 col-4">
           <img src="img/visa-2.png" class="img-fluid img-foter">
-        </div>
-      </div>
-      <!-- Botón Mi Cuenta Desktop -->
-      <div class="row mt-5 d-md-block d-none">
-        <div class="col-lg-12 text-center">
-          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalLoginForm">
-            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-          </button>
         </div>
       </div>
     </div>
