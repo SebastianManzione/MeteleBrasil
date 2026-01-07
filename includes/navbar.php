@@ -235,14 +235,14 @@ try {
   }
   .nav-eye-inline {
     position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 6px;
-    transform: none;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
     border: 0;
     background: transparent;
     padding: 0;
-    width: 22px;
+    width: 24px;
+    height: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -404,7 +404,7 @@ setTimeout(location.reload(), 5000);
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
                     <div class="nav-password-wrapper">
-                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="ContraseÃ±a">
+                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="Contrase&ntilde;a">
                       <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <small class="float-right text-primary py-2"><a href="recuperar_contrasena"><?=$lang["he_olvidado_mi_contrasena"];?></a></small>
@@ -711,7 +711,7 @@ for ($i=0; $i < count($carrito); $i++) {
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
                     <div class="nav-password-wrapper">
-                      <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="ContraseÃ±a">
+                      <input type="password" name="clave" id="nav-clave-mobile" class="form-control" placeholder="Contrase&ntilde;a">
                       <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave-mobile', this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <small class="float-right text-primary py-2"><a href=""><?=$lang["he_olvidado_mi_contrasena"];?></a></small>
