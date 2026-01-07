@@ -44,7 +44,8 @@
 </div>
 
 <!---- Fin de modal servicios ---------->
-<!-- Botón Mi Cuenta Desktop -->
+<!-- Botón Mi Cuenta Desktop - Solo si NO está logueado -->
+<?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
 <div class="container-fluid bg-light py-2 d-md-block d-none">
   <div class="container">
     <div class="text-center">
@@ -54,6 +55,7 @@
     </div>
   </div>
 </div>
+<?php } ?>
 <footer class="footer ">
   
     <div class="container d-md-none mb-4">
