@@ -47,16 +47,23 @@ if ($idioma === 'EN') {
     $campoDescripcion = 'descripcion_corta_it';
 }
 
-// Query con JOINs para obtener coordenadas, pero limitada a 24 servicios para velocidad
-$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, s.destacado, s.idTextoMiniaturas, 
-        IFNULL(AVG(CAST(u.latitud AS DECIMAL(10,7))), 0) as latitud, 
-        IFNULL(AVG(CAST(u.longitud AS DECIMAL(10,7))), 0) as longitud
+// Query optimizada: subqueries para coordenadas en lugar de JOINs que causan producto cartesiano
+$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, 
+        s.destacado, s.idTextoMiniaturas,
+        (SELECT u.latitud 
+         FROM servicio_salidas ss 
+         JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
+         JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
+         WHERE ss.idServicio = s.idServicio AND u.latitud IS NOT NULL
+         LIMIT 1) as latitud,
+        (SELECT u.longitud 
+         FROM servicio_salidas ss 
+         JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
+         JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
+         WHERE ss.idServicio = s.idServicio AND u.longitud IS NOT NULL
+         LIMIT 1) as longitud
         FROM servicio s 
-        LEFT JOIN servicio_salidas ss ON s.idServicio = ss.idServicio 
-        LEFT JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-        LEFT JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
         WHERE s.destacado = 1 AND s.habilitado = 1 
-        GROUP BY s.idServicio
         LIMIT 24";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
