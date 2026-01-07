@@ -44,10 +44,24 @@
 </div>
 
 <!---- Fin de modal servicios ---------->
-
+<div class="row">
+      <div class="col"></div>
+      <div class="col">
+               <div class="row mt-4 d-md-block d-none">
+        <div class="col-lg-12 text-center">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
+            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+          </button>
+        </div>
+      </div>
+      </div>
+      <div class="col"></div>
+    </div>
 <footer class="footer ">
+  
     <div class="container d-md-none mb-4">
       <div class="row">
+        
          <div class="col-lg-3 py-2">
           <h5 class="text-uppercase mb-4 text-m-footer"><?=$lang["recibe_las_ultimas_ofertas"];?></h5>
           <form class="form-buscar">
@@ -61,6 +75,7 @@
         </div>
       </div>
     </div>
+    
   <!--ACORDEON FOOTER-->
 <div class="container d-md-none">
    <div class="row mb-2 ">
@@ -223,6 +238,7 @@
       </div>
  </div>
 </div>
+      
   <!-- FIN ACORDEON FOOTER-->
   <!-- Modal login mobile separado para evitar desbordes -->
   <div class="modal fade" id="modalLoginMobile" tabindex="-1" role="dialog" aria-labelledby="modalLoginMobileLabel" aria-hidden="true">
@@ -271,11 +287,14 @@
       </div>
     </div>
   </div>
+
   <div class="container">
+
       <div class="row mb-2 ">
 
         <!-- Footer Location -->
         <div class="col-lg-3 mb-5 mb-lg-0 d-md-block d-none ">
+     
           <h4 class="text-uppercase mb-4"> METELE BRASIL</h4>
           <ul class="footer-ul">
             <li><a href="acercaDe"><?=$lang["quienes_somos"]?></a></li>
@@ -382,13 +401,7 @@
         </div>
       </div>
       <!-- Botón Mi Cuenta Desktop -->
-      <div class="row mt-4 d-md-block d-none">
-        <div class="col-lg-12">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
-            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-          </button>
-        </div>
-      </div>
+    
     </div>
 </footer>
   <!-- Copyright Section -->
