@@ -266,17 +266,17 @@ function verDetallePasajeros(idReservaHorarios) {
     success: function(response) {
       console.log('Response:', response); // Debug
       if (response.success && response.pasajeros && response.pasajeros.length > 0) {
-        var html = '<table class="table table-sm table-bordered"><thead><tr><th>Pasajero</th><th>Tarifa</th><th>Valor</th></tr></thead><tbody>';
+        var html = '<table class="table table-sm table-bordered"><thead><tr><th>Pasajero</th><th>Tarifa</th><th>A Pagar Prestador</th></tr></thead><tbody>';
         response.pasajeros.forEach(function(p) {
-          html += '<tr><td>' + p.nombre + '</td><td>' + p.tarifa + '</td><td>' + p.valor + '</td></tr>';
+          html += '<tr><td>' + p.nombre + '</td><td>' + p.tarifa + '</td><td class="text-success font-weight-bold">' + (p.aPagar || 'N/A') + '</td></tr>';
         });
         html += '</tbody></table>';
         
         Swal.fire({
-          title: 'Pasajeros de la Salida',
+          title: '<i class="fas fa-users"></i> Pasajeros del Voucher Servicio',
           html: html,
-          width: '600px',
-          icon: 'info'
+          width: '650px',
+          showCloseButton: true
         });
       } else {
         var mensaje = response.message || 'No se encontraron pasajeros para esta salida.';

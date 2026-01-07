@@ -36,26 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idPrestador"]) && isse
             $response['message'] = 'Este prestador no tiene comisiones asignadas a este servicio';
         }
     } else {
-        // PARA servicioComisionPrestador.php: Obtener comisiones disponibles del prestador
-        // (comisiones que NO están asignadas al servicio actual)
+        // PARA servicioComisionPrestador.php: Obtener TODAS las comisiones del prestador
         $todasComisiones = getComisionesPrestador($idPrestador);
-        $comisionesAsignadas = getComisionesPrestadorServicioIdPrestadorIdServicio($idServicio, $idPrestador);
 
-        // Filtrar para mostrar solo las comisiones que NO están asignadas aún
-        $comisionesDisponibles = array_filter($todasComisiones, function($comision) use ($comisionesAsignadas) {
-            foreach ($comisionesAsignadas as $asignada) {
-                // Si esta comisión específica ya está asignada, no la mostramos
-                if ($asignada['idPrestadorComision'] == $comision["idPrestadorComision"]) {
-                    return false;
-                }
-            }
-            return true; // No está asignada aún
-        });
-
-        if (count($comisionesDisponibles) > 0) {
+        if (count($todasComisiones) > 0) {
             $response['success'] = true;
             $response['comisiones'] = array();
-            foreach ($comisionesDisponibles as $comision) {
+            foreach ($todasComisiones as $comision) {
                 $response['comisiones'][] = array(
                     'id' => $comision["idPrestadorComision"],
                     'nombre' => $comision["nombre"] ?? "Comisión",
@@ -65,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["idPrestador"]) && isse
             }
         } else {
             $response['success'] = false;
-            $response['message'] = 'Este prestador no tiene comisiones disponibles para asignar';
+            $response['message'] = 'Este prestador no tiene comisiones disponibles';
         }
     }
 

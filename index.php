@@ -5,6 +5,7 @@ require_once("admin/classes/salidas.php");
 require("admin/classes/categoria.php");
 require("admin/classes/servicio_opiniones.php");
 require("admin/classes/texto_miniaturas.php");
+require_once("admin/classes/servicio_destacado_index.php");
 
 if (!function_exists('Visitante')) {
     function Visitante($arr) {
@@ -229,11 +230,17 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       <?php } ?>
       <?php
       $idiomaSel = $_SESSION['idioma'] ?? 'ES';
-      $labelVerMas = $lang["ver_mas"] ?? ($idiomaSel === 'EN' ? 'See more' : ($idiomaSel === 'PT' ? 'Ver mais' : ($idiomaSel === 'IT' ? 'Vedi di pi├╣' : 'Ver m├ís')));
+      $labelVerMas = $lang["ver_mas"] ?? ($idiomaSel === 'EN' ? 'See more' : ($idiomaSel === 'PT' ? 'Ver mais' : ($idiomaSel === 'IT' ? 'Vedi di più' : 'Ver más')));
       $labelVerMenos = $lang["ver_menos"] ?? ($idiomaSel === 'EN' ? 'See less' : ($idiomaSel === 'PT' ? 'Ver menos' : ($idiomaSel === 'IT' ? 'Vedi meno' : 'Ver menos')));
+      
+      // Obtener límite configurado
+      require_once("admin/classes/configuracion.php");
+      $configIndex = new Configuracion();
+      $limiteInicial = $configIndex->obtener('index_categorias_iniciales', 6);
+      $totalCategorias = count(getCategorias()); // Total de categorías habilitadas
       ?>
     </div>
-    <?php if (count(getCategoriasLimit6()) > 6) { ?>
+    <?php if ($totalCategorias > $limiteInicial) { ?>
     <div class="row mt-4">
       <div class="col-lg-12 text-center">
         <button id="btn-ver-mas-VerMasActividades" class="btn btn-white" type="button" onclick="toggleDiv('VerMasActividades', this)">

@@ -227,7 +227,7 @@
   <!-- Modal login mobile separado para evitar desbordes -->
   <div class="modal fade" id="modalLoginMobile" tabindex="-1" role="dialog" aria-labelledby="modalLoginMobileLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
+      <div class="modal-content text-dark">
         <div class="modal-header">
           <h5 class="modal-title" id="modalLoginMobileLabel"><?=$lang["mi_cuenta"]?></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -235,48 +235,37 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <div class="col-12 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="text-primary mb-3"><?=$lang["mi_cuenta"]?></h5>
-                  <p class="mb-3"><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"]?></p>
-                  <form action="ctrlLogin" method="post">
-                    <input type="hidden" name="login" value="1">
-                    <div class="form-group">
-                      <label><?=$lang["email"] ?? "Email"?></label>
-                      <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Email">
-                    </div>
-                    <div class="form-group">
-                      <label><?=$lang["contrasena"] ?? "Contraseña"?></label>
-                      <input type="password" name="clave" class="form-control" placeholder="<?=$lang["contrasena"] ?? "Contraseña"?>">
-                    </div>
-                    <div class="d-flex justify-content-end mb-3">
-                      <a href="recuperar_contrasena" class="text-primary"><?=$lang["he_olvidado_mi_contrasena"]?></a>
-                    </div>
-                    <button class="btn btn-primary btn-block" type="submit"><?=$lang["iniciar_sesion"]?></button>
-                  </form>
-                  <div class="mt-3">
-                    <small><?=$lang["no_tienes_cuenta"]?> <a href="registro" class="text-primary"><?=$lang["aqui"]?></a></small>
-                  </div>
-                </div>
+          <div class="mb-4">
+            <h5 class="text-primary mb-3"><?=$lang["mi_cuenta"]?></h5>
+            <p class="mb-3"><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"]?></p>
+            <form action="ctrlLogin" method="post">
+              <input type="hidden" name="login" value="1">
+              <div class="form-group">
+                <label><?=$lang["email"] ?? "Email"?></label>
+                <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Email">
               </div>
-            </div>
-            <div class="col-12 col-md-6 mb-4">
-              <div class="card h-100">
-                <div class="card-body">
-                  <h5 class="text-primary mb-3"><?=$lang["mis_reservas"]?></h5>
-                  <p class="mb-3"><?=$lang["puedes_gestionar_tu_reserva_sin_estar_registrado"]?></p>
-                  <form action="consultaReserva">
-                    <div class="form-group">
-                      <label><?=$lang["codigo_reserva"] ?? "Código Reserva"?></label>
-                      <input type="text" name="reserva" class="form-control" placeholder="Codigo Reserva">
-                    </div>
-                    <button class="btn btn-primary btn-block" type="submit"><?=$lang["ir_a_reserva"]?></button>
-                  </form>
-                </div>
+              <div class="form-group">
+                <label><?=$lang["contrasena"] ?? "Contraseña"?></label>
+                <input type="password" name="clave" class="form-control" placeholder="<?=$lang["contrasena"] ?? "Contraseña"?>">
               </div>
-            </div>
+              <div class="d-flex justify-content-end mb-3">
+                <a href="recuperar_contrasena" class="text-primary"><?=$lang["he_olvidado_mi_contrasena"]?></a>
+              </div>
+              <button class="btn btn-primary btn-block mb-2" type="submit"><?=$lang["iniciar_sesion"]?></button>
+              <div class="text-center"><small><?=$lang["no_tienes_cuenta"]?> <a href="registro" class="text-primary"><?=$lang["aqui"]?></a></small></div>
+            </form>
+          </div>
+          <hr>
+          <div class="mt-4">
+            <h5 class="text-primary mb-3"><?=$lang["mis_reservas"]?></h5>
+            <p class="mb-3"><?=$lang["puedes_gestionar_tu_reserva_sin_estar_registrado"]?></p>
+            <form action="consultaReserva">
+              <div class="form-group">
+                <label><?=$lang["codigo_reserva"] ?? "Código Reserva"?></label>
+                <input type="text" name="reserva" class="form-control" placeholder="Codigo Reserva">
+              </div>
+              <button class="btn btn-primary btn-block" type="submit"><?=$lang["ir_a_reserva"]?></button>
+            </form>
           </div>
         </div>
       </div>
@@ -426,6 +415,17 @@
       </div>
     </div>
   </section>
+
+<?php
+// Inyección de código de footer (configuración unificada)
+if (!isset($parametros)) {
+  require_once(__DIR__ . '/admin/classes/parametros.php');
+  $parametros = getParametros();
+}
+if (isset($parametros[0]["footer"]) && $parametros[0]["footer"] !== '') {
+  echo $parametros[0]["footer"];
+}
+?>
 
 </body>
 </html>

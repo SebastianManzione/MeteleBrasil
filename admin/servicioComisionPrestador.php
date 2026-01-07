@@ -33,12 +33,8 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["setComisionPrestador"]) 
   $idComision=$_POST["idComision"];
   $idPrestador=$_POST["idPrestador"];
 
-  // Validar que se haya seleccionado un prestador
-  if (empty($idPrestador)) {
-    alertar2("Debe seleccionar un prestador", "error");
-  }
-  // Validar que la comisión existe y pertenece al prestador seleccionado
-  elseif (empty($idComision)) {
+  // Validar que la comisión existe
+  if (empty($idComision)) {
     alertar2("Debe seleccionar una comisión válida", "error");
   } else {
     // Verificar que la comisión existe
@@ -76,9 +72,50 @@ if ($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["borraComisionServicio"])
 
 $comisiones=getComisionesPrestadorServicio($idServicio);
 
-
-  
  ?>
+<script>
+// Función para cargar comisiones disponibles del prestador
+function cargarComisionesPrestador(idPrestador, idServicio) {
+    if(idPrestador != "") {
+            $.ajax({
+                url: '/metelebrasil_dev/admin/ajax_get_comisiones_prestador.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    idPrestador: idPrestador,
+                    idServicio: idServicio
+                },
+            success: function(response) {
+                var options = '<option value="">Seleccione una comisión disponible</option>';
+
+                if (response.success && response.comisiones && response.comisiones.length > 0) {
+                    response.comisiones.forEach(function(comision) {
+                        var nombreComision = comision.nombre + ' - Vendedor: ' + comision.vendedor + '% / Sistema: ' + comision.sistema + '%';
+                        options += '<option value="' + comision.id + '">' + nombreComision + '</option>';
+                    });
+                    $("#selComisionDisponible").html(options).prop('disabled', false);
+                    // Habilitar el botón cuando hay comisiones disponibles
+                    $("#btnAsignarComision").prop('disabled', false).attr('title', 'Haga clic para asignar la comisión seleccionada');
+                } else {
+                    var mensaje = response.message || 'No hay comisiones disponibles para este prestador';
+                    $("#selComisionDisponible").html('<option value="">' + mensaje + '</option>');
+                    // Deshabilitar el botón cuando no hay comisiones disponibles
+                    $("#btnAsignarComision").prop('disabled', true).attr('title', 'No hay comisiones disponibles para el prestador seleccionado');
+                }
+            },
+            error: function(xhr, status, error) {
+                $("#selComisionDisponible").html('<option value="">Error al cargar comisiones</option>');
+                // Deshabilitar el botón en caso de error
+                $("#btnAsignarComision").prop('disabled', true).attr('title', 'Error al cargar las comisiones. Intente nuevamente.');
+            }
+        });
+    } else {
+        $("#selComisionDisponible").html('<option value="">Primero seleccione un prestador</option>').prop('disabled', true);
+        // También deshabilitar el botón inicialmente
+        $("#btnAsignarComision").prop('disabled', true).attr('title', 'Seleccione un prestador y una comisión para habilitar esta opción');
+    }
+}
+</script>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -99,6 +136,7 @@ $comisiones=getComisionesPrestadorServicio($idServicio);
     </div>
     <section class="content">
       <div class="container-fluid">
+        
         <!-- SELECT2 EXAMPLE -->
       
 
@@ -125,7 +163,7 @@ $comisiones=getComisionesPrestadorServicio($idServicio);
                                                <input type="hidden" name="idServicio" value="<?=$idServicio;?>">
 
                                                   <label for="idPrestador" class="col-form-label">Prestador:</label>
-                                                         <select name="idPrestador" id="selPrestadorComision" class="form-control" required>
+                                                         <select name="idPrestador" id="selPrestadorComision" class="form-control" required onchange="var idServ = <?php echo $idServicio; ?>; cargarComisionesPrestador(this.value, idServ);">
                                                          <option value="">Seleccione un prestador</option>
                                                          <?php for ($i=0; $i < count($prestadores) ; $i++) {
                                                           $idPrestador=$prestadores[$i]["idPrestador"];
@@ -208,9 +246,11 @@ $comisiones=getComisionesPrestadorServicio($idServicio);
         <i class="fas fa-trash"></i> Eliminar
       </button>
     <?php else: ?>
-      <button class="btn btn-sm btn-danger" onclick="borrarComisionServicio('<?=$comisiones[$i]["idServicioComisionPrestador"];?>')">
-        <i class="fas fa-trash"></i> Eliminar
-      </button>
+      <form method="post" style="display:inline;" onsubmit="return confirm('¿Está seguro de que desea eliminar esta asignación?');">
+        <button type="submit" name="borraComisionServicio" value="<?=$comisiones[$i]["idServicioComisionPrestador"];?>" class="btn btn-sm btn-danger">
+          <i class="fas fa-trash"></i> Eliminar
+        </button>
+      </form>
     <?php endif; ?>
   </td>
 </tr>
@@ -238,55 +278,9 @@ $comisiones=getComisionesPrestadorServicio($idServicio);
 
              <script type="text/javascript">
 
-
-
 function uploadForm(){
 
 $("#formulario").submit();
-}
-
-// Función para cargar comisiones disponibles del prestador
-function cargarComisionesPrestador(idPrestador, idServicio) {
-    if(idPrestador != "") {
-            $.ajax({
-                url: 'ajax_get_comisiones_prestador.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    idPrestador: idPrestador,
-                    idServicio: idServicio
-                    // No enviamos solo_disponibles para que muestre comisiones disponibles para asignar
-                },
-            success: function(response) {
-                var options = '<option value="">Seleccione una comisión disponible</option>';
-
-                if (response.success && response.comisiones.length > 0) {
-                    response.comisiones.forEach(function(comision) {
-                        var nombreComision = comision.nombre + ' - Vendedor: ' + comision.vendedor + '% / Sistema: ' + comision.sistema + '%';
-                        options += '<option value="' + comision.id + '">' + nombreComision + '</option>';
-                    });
-                    $("#selComisionDisponible").html(options).prop('disabled', false);
-                    // Habilitar el botón cuando hay comisiones disponibles
-                    $("#btnAsignarComision").prop('disabled', false).attr('title', 'Haga clic para asignar la comisión seleccionada');
-                } else {
-                    var mensaje = response.message || 'No hay comisiones disponibles para este prestador';
-                    $("#selComisionDisponible").html('<option value="">' + mensaje + '</option>');
-                    // Deshabilitar el botón cuando no hay comisiones disponibles
-                    $("#btnAsignarComision").prop('disabled', true).attr('title', 'No hay comisiones disponibles para el prestador seleccionado');
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('Error AJAX:', error);
-                $("#selComisionDisponible").html('<option value="">Error al cargar comisiones</option>');
-                // Deshabilitar el botón en caso de error
-                $("#btnAsignarComision").prop('disabled', true).attr('title', 'Error al cargar las comisiones. Intente nuevamente.');
-            }
-        });
-    } else {
-        $("#selComisionDisponible").html('<option value="">Primero seleccione un prestador</option>').prop('disabled', true);
-        // También deshabilitar el botón inicialmente
-        $("#btnAsignarComision").prop('disabled', true).attr('title', 'Seleccione un prestador y una comisión para habilitar esta opción');
-    }
 }
 
 function borrarComisionServicio(idServicioComisionPrestador){
@@ -312,7 +306,7 @@ function borrarComisionServicio(idServicioComisionPrestador){
 // Event listeners
 $(document).ready(function() {
     // Cuando cambia el prestador, cargar sus comisiones disponibles
-    $("#selPrestadorComision").change(function(){
+    $("#selPrestadorComision").on('change', function(){
         var idPrestador = $(this).val();
         var idServicio = <?php echo $idServicio; ?>;
         cargarComisionesPrestador(idPrestador, idServicio);

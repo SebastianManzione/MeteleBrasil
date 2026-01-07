@@ -4,6 +4,8 @@
  * Almacena: OAuth, API keys, modo mantenimiento, etc.
  */
 
+if (!class_exists('Configuracion')) {
+
 require_once(__DIR__ . '/conexion.php');
 
 class Configuracion {
@@ -186,5 +188,9 @@ class Configuracion {
     }
 }
 
+} // fin if !class_exists('Configuracion')
+
 // Instancia global
-$config = new Configuracion();
+if (!isset($config)) {
+    $config = new Configuracion();
+}

@@ -158,6 +158,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['parametros_body'])) {
         $config->guardar('parametros_body', $_POST['parametros_body'], 'text', 'Código Body');
     }
+    if (isset($_POST['parametros_footer'])) {
+        $config->guardar('parametros_footer', $_POST['parametros_footer'], 'text', 'Código Footer');
+    }
+    
+    // Configuración Index
+    if (isset($_POST['index_categorias_iniciales'])) {
+        $config->guardar('index_categorias_iniciales', (int)$_POST['index_categorias_iniciales'], 'number', 'Categorías iniciales en index');
+    }
+    if (isset($_POST['index_categorias_ver_mas'])) {
+        $config->guardar('index_categorias_ver_mas', (int)$_POST['index_categorias_ver_mas'], 'number', 'Categorías al hacer Ver Más');
+    }
+    if (isset($_POST['index_orden_servicios'])) {
+        $config->guardar('index_orden_servicios', $_POST['index_orden_servicios'], 'string', 'Orden de servicios destacados');
+    }
+    
+    // Configuración Servicios Destacados
+    if (isset($_POST['index_servicios_iniciales'])) {
+        $config->guardar('index_servicios_iniciales', (int)$_POST['index_servicios_iniciales'], 'number', 'Servicios iniciales en index');
+    }
+    if (isset($_POST['index_servicios_ver_mas'])) {
+        $config->guardar('index_servicios_ver_mas', (int)$_POST['index_servicios_ver_mas'], 'number', 'Servicios al hacer Ver Más');
+    }
+    if (isset($_POST['index_orden_destacados'])) {
+        $config->guardar('index_orden_destacados', $_POST['index_orden_destacados'], 'string', 'Orden de servicios destacados');
+    }
     
     // Mantenimiento
     // El checkbox solo envía valor si está marcado, así que si no existe en POST = 0
@@ -218,7 +243,18 @@ $config_data = [
     
     // Parámetros
     'parametros_head' => $config->obtener('parametros_head', ''),
-    'parametros_body' => $config->obtener('parametros_body', '')
+    'parametros_body' => $config->obtener('parametros_body', ''),
+    'parametros_footer' => $config->obtener('parametros_footer', ''),
+    
+    // Configuración Index
+    'index_categorias_iniciales' => $config->obtener('index_categorias_iniciales', 6),
+    'index_categorias_ver_mas' => $config->obtener('index_categorias_ver_mas', 99),
+    'index_orden_servicios' => $config->obtener('index_orden_servicios', 'aleatorio'),
+    
+    // Configuración Servicios Destacados
+    'index_servicios_iniciales' => $config->obtener('index_servicios_iniciales', 6),
+    'index_servicios_ver_mas' => $config->obtener('index_servicios_ver_mas', 18),
+    'index_orden_destacados' => $config->obtener('index_orden_destacados', 'proximidad')
 ];
 
 ?>
@@ -281,6 +317,16 @@ $config_data = [
                     <li class="nav-item">
                         <a class="nav-link" id="parametros-tab" data-toggle="tab" href="#parametros" role="tab">
                             <i class="fas fa-code"></i> Parámetros
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="index-tab" data-toggle="tab" href="#index" role="tab">
+                            <i class="fas fa-home"></i> Index
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="servicios-tab" data-toggle="tab" href="#servicios" role="tab">
+                            <i class="fas fa-star"></i> Servicios Destacados
                         </a>
                     </li>
                     <li class="nav-item">
@@ -761,7 +807,7 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en &lt;head&gt;</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_head" name="parametros_head" rows="8"><?=config('head');?></textarea>
+                                        <textarea class="form-control" id="parametros_head" name="parametros_head" rows="8"><?=htmlspecialchars($config_data['parametros_head']);?></textarea>
                                         <small class="form-text text-muted">
                                             Scripts, meta tags, CSS, Google Analytics, Facebook Pixel, etc.
                                         </small>
@@ -771,9 +817,123 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en &lt;body&gt;</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_body" name="parametros_body" rows="8"></textarea>
+                                        <textarea class="form-control" id="parametros_body" name="parametros_body" rows="8"><?=htmlspecialchars($config_data['parametros_body']);?></textarea>
                                         <small class="form-text text-muted">
                                             Scripts de seguimiento, widgets, chat en vivo, etc.
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Código en footer</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" id="parametros_footer" name="parametros_footer" rows="6"><?=htmlspecialchars($config_data['parametros_footer']);?></textarea>
+                                        <small class="form-text text-muted">
+                                            Snippets que deban ir antes de cerrar el &lt;/body&gt; (p. ej. pixels con defer/carga tardía).
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Index Tab -->
+                    <div class="tab-pane fade" id="index" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title"><i class="fas fa-home"></i> Configuración de la Página de Inicio</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> <strong>Nota:</strong> 
+                                    Controla cuántas categorías se muestran inicialmente y al expandir "Ver más".
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Categorías Iniciales</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="index_categorias_iniciales" value="<?=$config_data['index_categorias_iniciales']?>" min="1" max="50">
+                                        <small class="form-text text-muted">
+                                            Número de categorías que se muestran al cargar la página (por defecto: 6)
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Categorías al "Ver Más"</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="index_categorias_ver_mas" value="<?=$config_data['index_categorias_ver_mas']?>" min="1" max="200">
+                                        <small class="form-text text-muted">
+                                            Número de categorías adicionales que se muestran al hacer clic en "Ver más" (por defecto: 99)
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Orden de Servicios Destacados</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="index_orden_servicios">
+                                            <option value="aleatorio" <?=$config_data['index_orden_servicios'] === 'aleatorio' ? 'selected' : ''?>>Aleatorio (RAND())</option>
+                                            <option value="recientes" <?=$config_data['index_orden_servicios'] === 'recientes' ? 'selected' : ''?>>Más recientes primero</option>
+                                            <option value="populares" <?=$config_data['index_orden_servicios'] === 'populares' ? 'selected' : ''?>>Más populares (más reservas)</option>
+                                            <option value="mejor_valorados" <?=$config_data['index_orden_servicios'] === 'mejor_valorados' ? 'selected' : ''?>>Mejor valorados</option>
+                                            <option value="precio_asc" <?=$config_data['index_orden_servicios'] === 'precio_asc' ? 'selected' : ''?>>Precio: menor a mayor</option>
+                                            <option value="precio_desc" <?=$config_data['index_orden_servicios'] === 'precio_desc' ? 'selected' : ''?>>Precio: mayor a menor</option>
+                                        </select>
+                                        <small class="form-text text-muted">
+                                            Cómo se ordenan los servicios destacados en la página de inicio
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Servicios Destacados Tab -->
+                    <div class="tab-pane fade" id="servicios" role="tabpanel">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h5 class="card-title"><i class="fas fa-star"></i> Configuración de Servicios Destacados</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> <strong>Nota:</strong> 
+                                    Controla cuántos servicios destacados se muestran y cómo se ordenan en la página de inicio.
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Servicios Iniciales</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="index_servicios_iniciales" value="<?=$config_data['index_servicios_iniciales']?>" min="1" max="50">
+                                        <small class="form-text text-muted">
+                                            Número de servicios destacados que se muestran al cargar la página (por defecto: 6)
+                                        </small>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Servicios al "Ver Más"</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" name="index_servicios_ver_mas" value="<?=$config_data['index_servicios_ver_mas']?>" min="1" max="100">
+                                        <small class="form-text text-muted">
+                                            Número de servicios adicionales al hacer clic en "Ver más" (por defecto: 18)
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Orden de Servicios Destacados</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control" name="index_orden_destacados">
+                                            <option value="proximidad" <?=$config_data['index_orden_destacados'] === 'proximidad' ? 'selected' : ''?>>Más cercanos primero</option>
+                                            <option value="aleatorio" <?=$config_data['index_orden_destacados'] === 'aleatorio' ? 'selected' : ''?>>Aleatorio (RAND())</option>
+                                            <option value="recientes" <?=$config_data['index_orden_destacados'] === 'recientes' ? 'selected' : ''?>>Más recientes primero</option>
+                                            <option value="mejor_valorados" <?=$config_data['index_orden_destacados'] === 'mejor_valorados' ? 'selected' : ''?>>Mejor valorados</option>
+                                            <option value="precio_asc" <?=$config_data['index_orden_destacados'] === 'precio_asc' ? 'selected' : ''?>>Precio: menor a mayor</option>
+                                            <option value="precio_desc" <?=$config_data['index_orden_destacados'] === 'precio_desc' ? 'selected' : ''?>>Precio: mayor a menor</option>
+                                        </select>
+                                        <small class="form-text text-muted">
+                                            Cómo se ordenan los servicios destacados en la página de inicio
                                         </small>
                                     </div>
                                 </div>
@@ -903,6 +1063,10 @@ $config_data = [
         // Summernote para parámetros BODY
         var parametros_body_content = <?=json_encode($config_data['parametros_body'])?>;
         $('#parametros_body').val(parametros_body_content);
+
+        // Summernote para parámetros FOOTER
+        var parametros_footer_content = <?=json_encode($config_data['parametros_footer'])?>;
+        $('#parametros_footer').val(parametros_footer_content);
     });
 </script>
 
