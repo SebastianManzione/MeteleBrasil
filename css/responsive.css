@@ -160,6 +160,11 @@ padding-bottom: 0px !important;
   text-decoration: none !important; /* evita tachado en beneficios */
 }
 
+.servicio-detalle .texto-bottom,
+.servicio-detalle .texto-bottom * {
+  text-decoration: none !important;
+}
+
 .div-bottom .texto-bottom,
 .div-bottom .texto-bottom * {
   text-decoration: none !important;
