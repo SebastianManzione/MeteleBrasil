@@ -31,9 +31,9 @@ $DEV_NAME = 'metelebrasil';
 
 // Credenciales PROD (override con env vars)
 $PROD_HOST = getenv('DB_HOST') ?: 'localhost';
-$PROD_USER = getenv('DB_USER') ?: 'u925692129_metelebrasil';
-$PROD_PASS = getenv('DB_PASS') ?: 'Cambiar2026';
-$PROD_NAME = getenv('DB_NAME') ?: 'u925692129_metelebrasil';
+$PROD_USER = getenv('DB_USER') ?: 'u985794923_metelebrasil';
+$PROD_PASS = getenv('DB_PASS') ?: 'Nueva3122';
+$PROD_NAME = getenv('DB_NAME') ?: 'u985794923_metelebrasil';
 
 // ========== MYSQLI ==========
 mysqli_report(MYSQLI_REPORT_OFF);
