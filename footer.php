@@ -49,7 +49,7 @@
       <div class="col">
                <div class="row mt-4 d-md-block d-none">
         <div class="col-lg-12 text-center">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm" onclick="$('#modalLoginForm').modal('show');">
             <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
           </button>
         </div>
