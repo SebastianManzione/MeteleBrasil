@@ -2004,7 +2004,7 @@ $lang = array(
 
 "servicio"=>"Servicio",
 
-"descripcion_del_servicio"=>"Descripción del dervicio",
+"descripcion_del_servicio"=>"Descripción del Servicio",
 
 "categoria_del_servicio"=>"Categoría del Servicio",
 

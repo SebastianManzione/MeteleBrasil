@@ -503,7 +503,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
           </div>
           <div class="col-md-3 col-3" style="padding: 0; display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 13px; font-weight: 700; color: #007bff;"><?=($_SESSION['moneda_sel_sym'] ?? 'U$D').' '.$precioReserva;?></span>
-            <i class="fas fa-trash excluircarrinhoactividades" data-id="<?=$i?>" style="cursor: pointer; font-size: 12px; color: #dc3545; padding: 0;"></i>
+     
           </div>
          </div>
        </div>
@@ -555,7 +555,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
                          </div>
                          <div class="row py-4">
                           <div class="col-lg-12">
-                            <h3 class="text-center"><a href="index.php" class="btn btn-outline-primary btn-white" style="border-radius:25px;"><?=$lang["ver_todos_los_destinos"];?></a></h3>
+                            <h3 class="text-center"><a href="index" class="btn btn-outline-primary btn-white" style="border-radius:25px;"><?=$lang["ver_todos_los_destinos"];?></a></h3>
                           </div>
                         </div>
                         </div>
