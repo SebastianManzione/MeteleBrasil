@@ -47,31 +47,48 @@ if ($idioma === 'EN') {
     $campoDescripcion = 'descripcion_corta_it';
 }
 
-// Query optimizada: subqueries para coordenadas en lugar de JOINs que causan producto cartesiano
+// Query rápida: primero obtener servicios, luego coordenadas en una sola query adicional
 $sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, 
-        s.destacado, s.idTextoMiniaturas,
-        (SELECT u.latitud 
-         FROM servicio_salidas ss 
-         JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-         JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
-         WHERE ss.idServicio = s.idServicio AND u.latitud IS NOT NULL
-         LIMIT 1) as latitud,
-        (SELECT u.longitud 
-         FROM servicio_salidas ss 
-         JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-         JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
-         WHERE ss.idServicio = s.idServicio AND u.longitud IS NOT NULL
-         LIMIT 1) as longitud
+        s.destacado, s.idTextoMiniaturas
         FROM servicio s 
         WHERE s.destacado = 1 AND s.habilitado = 1 
         LIMIT 24";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
+$servicioIds = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $row['distancia'] = 999999; // Placeholder, se calcula después
-        $servicios_geo[] = $row;
+        $servicios_geo[$row['idServicio']] = $row;
+        $servicioIds[] = $row['idServicio'];
     }
+}
+
+// Obtener coordenadas para todos los servicios en una sola query
+if (!empty($servicioIds)) {
+    $ids = implode(',', array_map('intval', $servicioIds));
+    $sqlGeo = "SELECT ss.idServicio, 
+               AVG(CAST(u.latitud AS DECIMAL(10,7))) as latitud,
+               AVG(CAST(u.longitud AS DECIMAL(10,7))) as longitud
+               FROM servicio_salidas ss
+               JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas
+               JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
+               WHERE ss.idServicio IN ($ids)
+               GROUP BY ss.idServicio";
+    $resGeo = $mysqli->query($sqlGeo);
+    if ($resGeo && $resGeo->num_rows > 0) {
+        while ($geo = $resGeo->fetch_assoc()) {
+            $servicios_geo[$geo['idServicio']]['latitud'] = $geo['latitud'] ?? 0;
+            $servicios_geo[$geo['idServicio']]['longitud'] = $geo['longitud'] ?? 0;
+        }
+    }
+}
+
+// Convertir a array indexado y agregar distancia placeholder
+$servicios_geo = array_values($servicios_geo);
+foreach ($servicios_geo as &$servicio) {
+    if (!isset($servicio['latitud'])) $servicio['latitud'] = 0;
+    if (!isset($servicio['longitud'])) $servicio['longitud'] = 0;
+    $servicio['distancia'] = 999999;
 }
 
 // Calcular distancia y ordenar servicios por proximidad (más cercanos primero)
