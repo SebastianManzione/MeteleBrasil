@@ -169,6 +169,7 @@ function getGeolocalizacionData()
             'currency' => 'ARS'
         ];
     }
+    */
 
     $currencyISO = $geo['currency'] ?? 'USD';
     $countryCode = $geo['countryCode'] ?? 'US';
