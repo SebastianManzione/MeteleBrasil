@@ -229,25 +229,27 @@ try {
   }
   .nav-password-wrapper {
     position: relative;
+    width: 100%;
   }
   .nav-password-wrapper .form-control {
-    padding-right: 3rem;
+    padding-right: 2.8rem !important;
   }
   .nav-eye-inline {
     position: absolute;
     top: 50%;
-    right: 8px;
+    right: 10px;
     transform: translateY(-50%);
     border: 0;
     background: transparent;
     padding: 0;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #4a5568;
     cursor: pointer;
+    z-index: 10;
   }
   .nav-eye-inline:focus { outline: none; box-shadow: none; }
   .nav-eye-inline i {
