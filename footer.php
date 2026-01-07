@@ -46,7 +46,7 @@
 <!---- Fin de modal servicios ---------->
 <!-- Botón Mi Cuenta Desktop - Solo si NO está logueado -->
 <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
-<div class="container-fluid bg-light py-2 d-md-block d-none">
+<div class="container-fluid py-2 d-md-block d-none">
   <div class="container">
     <div class="text-center">
       <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
@@ -57,18 +57,6 @@
 </div>
 <?php } ?>
 <footer class="footer ">
-  <!-- Botón Mi Cuenta Mobile - Solo si NO está logueado -->
-  <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
-  <div class="container-fluid bg-light py-2 d-md-none">
-    <div class="container">
-      <div class="text-center">
-        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalLoginForm">
-          <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-        </button>
-      </div>
-    </div>
-  </div>
-  <?php } ?>
   
     <div class="container d-md-none mb-4">
       <div class="row">
