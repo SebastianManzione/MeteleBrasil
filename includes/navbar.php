@@ -41,8 +41,11 @@ if (!isset($_SESSION['geoFinal'])) {
   $_SESSION['geoFinal'] = $geoData;
 }
 
-// ========== DETERMINAR IDIOMA por PaÃ­s (desde BD: tabla idioma_pais) ==========
-if (!isset($_SESSION['idioma'])) {
+// ========== DETERMINAR IDIOMA por País (desde geoFinal.lang o BD) ==========
+// Siempre actualizar idioma desde geoFinal si está disponible
+if (isset($_SESSION['geoFinal']['lang']) && !empty($_SESSION['geoFinal']['lang'])) {
+  $_SESSION['idioma'] = $_SESSION['geoFinal']['lang'];
+} elseif (!isset($_SESSION['idioma'])) {
   require_once("admin/classes/idioma_pais.php");
   $geoFinal = $_SESSION['geoFinal'];
   $countryCode = strtoupper($geoFinal['countryCode'] ?? '');
@@ -73,16 +76,15 @@ if (!isset($_SESSION['idioma_bandera']) || empty($_SESSION['idioma_bandera'])) {
   }
 }
 
-// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÃ“N ==========
-if (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
-  if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
-    $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
-    $_SESSION['moneda_sel_sym'] = $_SESSION['geoFinal']['sym'];
-  } else {
-    // Fallback: moneda por defecto (USD)
-    $_SESSION['moneda_sel'] = 188;
-    $_SESSION['moneda_sel_sym'] = 'U$D';
-  }
+// ========== ESTABLECER MONEDA POR GEOLOCALIZACIÓN ==========
+// Siempre usar moneda de geoFinal si está disponible (permite cambios dinámicos)
+if (isset($_SESSION['geoFinal']['idMoneda']) && isset($_SESSION['geoFinal']['sym'])) {
+  $_SESSION['moneda_sel'] = $_SESSION['geoFinal']['idMoneda'];
+  $_SESSION['moneda_sel_sym'] = $_SESSION['geoFinal']['sym'];
+} elseif (!isset($_SESSION['moneda_sel']) || !isset($_SESSION['moneda_sel_sym'])) {
+  // Fallback: moneda por defecto (USD)
+  $_SESSION['moneda_sel'] = 188;
+  $_SESSION['moneda_sel_sym'] = 'U$D';
 }
 
 // ========== METADATOS Y VARIABLES DE CARRITO ==========
