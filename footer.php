@@ -75,6 +75,15 @@
       </div>
     </div>
     
+  <!-- Botón Mi Cuenta Mobile - Solo si NO está logueado -->
+  <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
+  <div class="container d-md-none text-center py-2">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalLoginMobile">
+      <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+    </button>
+  </div>
+  <?php } ?>
+    
   <!--ACORDEON FOOTER-->
 <div class="container d-md-none">
    <div class="row mb-2 ">
@@ -227,16 +236,6 @@
            </div>
     <!--acordeon #5-->
       </div>
-      <!-- Botón Mi Cuenta Mobile - Solo si NO está logueado -->
-      <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
-      <div class="row mt-3 mb-3">
-        <div class="col-12">
-          <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginMobile">
-            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-          </button>
-        </div>
-      </div>
-      <?php } ?>
  </div>
 </div>
       
