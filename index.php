@@ -47,26 +47,38 @@ if ($idioma === 'EN') {
     $campoDescripcion = 'descripcion_corta_it';
 }
 
-$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, s.destacado, s.idTextoMiniaturas, 
-        IFNULL(AVG(CAST(u.latitud AS DECIMAL(10,7))), 0) as latitud, 
-        IFNULL(AVG(CAST(u.longitud AS DECIMAL(10,7))), 0) as longitud
+// Query simplificada sin JOINs innecesarios - solo servicios destacados
+$sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripcion as descripcion_corta, 
+        s.destacado, s.idTextoMiniaturas, s.latitud, s.longitud
         FROM servicio s 
-        LEFT JOIN servicio_salidas ss ON s.idServicio = ss.idServicio 
-        LEFT JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
-        LEFT JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
         WHERE s.destacado = 1 AND s.habilitado = 1 
-        GROUP BY s.idServicio
-        LIMIT 99";
+        LIMIT 6";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $row['distancia'] = 999999; // Placeholder, se calcula despu├®s
+        // Si no tiene coordenadas en servicio, intentar obtenerlas de la primera salida
+        if (empty($row['latitud']) || empty($row['longitud'])) {
+            $sqlGeo = "SELECT u.latitud, u.longitud 
+                       FROM servicio_salidas ss 
+                       JOIN servicio_salidas_tarifas st ON ss.idServicioSalidas = st.idServicioSalidas 
+                       JOIN servicio_tarifas_ubicacion u ON st.idServicioSalidasTarifas = u.idServicioSalidasTarifas
+                       WHERE ss.idServicio = " . intval($row['idServicio']) . " 
+                       AND u.latitud IS NOT NULL AND u.longitud IS NOT NULL
+                       LIMIT 1";
+            $resGeo = $mysqli->query($sqlGeo);
+            if ($resGeo && $resGeo->num_rows > 0) {
+                $geoData = $resGeo->fetch_assoc();
+                $row['latitud'] = $geoData['latitud'];
+                $row['longitud'] = $geoData['longitud'];
+            }
+        }
+        $row['distancia'] = 999999; // Placeholder, se calcula después
         $servicios_geo[] = $row;
     }
 }
 
-// Calcular distancia y ordenar servicios por proximidad (m├ís cercanos primero)
+// Calcular distancia y ordenar servicios por proximidad (más cercanos primero)
 if ($latUsuario != 0 && $lonUsuario != 0) {
     foreach ($servicios_geo as &$servicio) {
         $servicio['distancia'] = calcularDistancia($latUsuario, $lonUsuario, floatval($servicio['latitud'] ?? 0), floatval($servicio['longitud'] ?? 0));
@@ -79,8 +91,7 @@ if ($latUsuario != 0 && $lonUsuario != 0) {
     });
 }
 
-$servicios = array_slice($servicios_geo, 0, 6);
-$servicios_restantes = array_slice($servicios_geo, 6);
+$servicios = $servicios_geo; // Ya limitamos a 6 en la query
 
 // Funci├│n para calcular distancia entre dos puntos (Haversine)
 function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
@@ -335,6 +346,7 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       </div>
       <?php } ?>
     </div>
+    <?php /* SECCIÓN DESHABILITADA - Ahora solo mostramos 6 servicios destacados sin botón "Ver más"
     <?php if (count($servicios_restantes) > 0) { ?>
     <div class="row mt-4"  >
       <div class="col-lg-12 text-center">
@@ -413,8 +425,9 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
         </a>
       </div>
       <?php } ?>
-      <!-- Bot├│n Ver menos removido -->
+      <!-- Botón Ver menos removido -->
     </div>
+    */ ?>
   </div>
 </section>
 
