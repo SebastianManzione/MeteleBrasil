@@ -165,6 +165,13 @@ padding-bottom: 0px !important;
   text-decoration: none !important;
 }
 
+/* Precio lateral en servicio: evitar tachado heredado en avisos/small */
+.div-precios small,
+#sidebar small,
+#sidebar .div-precios small {
+  text-decoration: none !important;
+}
+
 .div-bottom .texto-bottom,
 .div-bottom .texto-bottom * {
   text-decoration: none !important;
