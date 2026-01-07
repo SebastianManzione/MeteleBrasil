@@ -101,22 +101,78 @@ function geoLocalizacionIp($url, $option, $cCode)
 
 function getGeolocalizacionData()
 {
-    // PRODUCCIÓN: Deshabilitada por rendimiento (ip-api.com no responde rápido)
-    // Usar valores por defecto para Argentina para evitar timeouts
+    // PRODUCCIÓN: Deshabilitada geolocalización externa por rendimiento
+    // Usar valores por defecto para Argentina para evitar timeouts en ip-api.com
     
     $geo = [
         'status' => 'success',
         'country' => 'Argentina',
         'countryCode' => 'AR',
-        'nombre_pais' => 'Argentina',
-        'ciudad' => 'Buenos Aires',
-        'latitud' => -34.6037,
-        'longitud' => -58.3816,
+        'city' => 'Buenos Aires',
+        'lat' => -34.6037,
+        'lon' => -58.3816,
         'timezone' => 'America/Argentina/Buenos_Aires',
         'currency' => 'ARS'
     ];
     
-    return $geo;
+    // IMPORTANTE: Procesar $geo para agregar idMoneda, sym, lang, etc.
+    $currencyISO = $geo['currency'] ?? 'USD';
+    $countryCode = $geo['countryCode'] ?? 'US';
+
+    require_once("moneda.php");
+    $monedas = getMonedas();
+
+    $idMoneda = 188;
+    $symbolMoneda = 'U$D';
+    $currencyISOFinal = 'USD';
+
+    foreach ($monedas as $moneda) {
+        if ($moneda['CurrencyISO'] === $currencyISO) {
+            $idMoneda = $moneda['idMoneda'];
+            $symbolMoneda = $moneda['Symbol'];
+            $currencyISOFinal = $moneda['CurrencyISO'];
+            break;
+        }
+    }
+
+    $paisesIdioma = [
+        'AR' => 'ES', 'ES' => 'ES', 'MX' => 'ES', 'CO' => 'ES', 'CL' => 'ES',
+        'PE' => 'ES', 'VE' => 'ES', 'EC' => 'ES', 'GT' => 'ES', 'CU' => 'ES',
+        'BO' => 'ES', 'DO' => 'ES', 'HN' => 'ES', 'PY' => 'ES', 'SV' => 'ES',
+        'NI' => 'ES', 'CR' => 'ES', 'PA' => 'ES', 'UY' => 'ES',
+        'BR' => 'PT', 'PT' => 'PT',
+        'IT' => 'IT',
+    ];
+
+    $langCodigo = $paisesIdioma[$countryCode] ?? 'EN';
+
+    $langNombres = [
+        'ES' => 'ESPAÑOL',
+        'PT' => 'PORTUGUES',
+        'IT' => 'ITALIANO',
+        'EN' => 'INGLES'
+    ];
+
+    // Armar array final con todos los datos necesarios
+    $geoFinal = [
+        'longitud' => $geo['lon'] ?? null,
+        'latitud' => $geo['lat'] ?? null,
+        'ciudad' => $geo['city'] ?? null,
+        '0' => null,
+        'nombre_pais' => $geo['country'] ?? 'Desconocido',
+        'idPais' => 270, // AR por defecto
+        'idMoneda' => $idMoneda,
+        'sym' => $symbolMoneda,
+        'currencyISO' => $currencyISOFinal,
+        'countryCode' => $countryCode,
+        'lang' => $langCodigo,
+        'langFunny' => $langNombres[$langCodigo]
+    ];
+
+    // Guardar en sesión
+    $_SESSION['geoFinal'] = $geoFinal;
+
+    return $geoFinal;
     
     /* CÓDIGO ORIGINAL - DESHABILITADO POR TIMEOUTS EN PRODUCCIÓN
     
