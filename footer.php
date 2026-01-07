@@ -213,6 +213,14 @@
            </div>
     <!--acordeon #5-->
       </div>
+      <!-- Botón Mi Cuenta Mobile -->
+      <div class="row mt-3 mb-3">
+        <div class="col-12">
+          <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginForm">
+            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+          </button>
+        </div>
+      </div>
  </div>
 </div>
   <!-- FIN ACORDEON FOOTER-->
@@ -324,6 +332,14 @@
         </div>
         <div class="col-lg-2 col-4">
           <img src="img/visa-2.png" class="img-fluid img-foter">
+        </div>
+      </div>
+      <!-- Botón Mi Cuenta Desktop -->
+      <div class="row mt-4 d-md-block d-none">
+        <div class="col-lg-12">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
+            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+          </button>
         </div>
       </div>
     </div>
