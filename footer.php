@@ -216,7 +216,7 @@
       <!-- Botón Mi Cuenta Mobile -->
       <div class="row mt-3 mb-3">
         <div class="col-12">
-          <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginForm">
+          <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginMobile">
             <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
           </button>
         </div>
@@ -224,6 +224,36 @@
  </div>
 </div>
   <!-- FIN ACORDEON FOOTER-->
+  <!-- Modal login mobile separado para evitar desbordes -->
+  <div class="modal fade" id="modalLoginMobile" tabindex="-1" role="dialog" aria-labelledby="modalLoginMobileLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalLoginMobileLabel"><?=$lang["mi_cuenta"]?></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="ctrlLogin" method="post">
+            <input type="hidden" name="login" value="1">
+            <div class="form-group">
+              <label><?=$lang["email"] ?? "Email"?></label>
+              <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <label><?=$lang["contrasena"] ?? "Contraseña"?></label>
+              <input type="password" name="clave" class="form-control" placeholder="<?=$lang["contrasena"] ?? "Contraseña"?>">
+            </div>
+            <div class="d-flex justify-content-end mb-3">
+              <a href="recuperar_contrasena" class="text-primary"><?=$lang["he_olvidado_mi_contrasena"]?></a>
+            </div>
+            <button class="btn btn-primary btn-block" type="submit"><?=$lang["iniciar_sesion"]?></button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
       <div class="row mb-2 ">
 
