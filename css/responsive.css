@@ -160,6 +160,11 @@ padding-bottom: 0px !important;
   text-decoration: none !important; /* evita tachado en beneficios */
 }
 
+.div-bottom .texto-bottom,
+.div-bottom .texto-bottom * {
+  text-decoration: none !important;
+}
+
 
 
 .form-buscar2 .btn{
