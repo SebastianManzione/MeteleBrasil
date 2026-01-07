@@ -52,7 +52,7 @@ $sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripc
         s.destacado, s.idTextoMiniaturas, s.latitud, s.longitud
         FROM servicio s 
         WHERE s.destacado = 1 AND s.habilitado = 1 
-        LIMIT 6";
+        LIMIT 24";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
 if ($result && $result->num_rows > 0) {
@@ -91,7 +91,8 @@ if ($latUsuario != 0 && $lonUsuario != 0) {
     });
 }
 
-$servicios = $servicios_geo; // Ya limitamos a 6 en la query
+$servicios = array_slice($servicios_geo, 0, 6);
+$servicios_restantes = array_slice($servicios_geo, 6);
 
 // Funci├│n para calcular distancia entre dos puntos (Haversine)
 function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
@@ -346,7 +347,6 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       </div>
       <?php } ?>
     </div>
-    <?php /* SECCIÓN DESHABILITADA - Ahora solo mostramos 6 servicios destacados sin botón "Ver más"
     <?php if (count($servicios_restantes) > 0) { ?>
     <div class="row mt-4"  >
       <div class="col-lg-12 text-center">
@@ -427,7 +427,6 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
       <?php } ?>
       <!-- Botón Ver menos removido -->
     </div>
-    */ ?>
   </div>
 </section>
 
