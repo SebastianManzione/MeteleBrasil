@@ -231,12 +231,12 @@ try {
     position: relative;
   }
   .nav-password-wrapper .form-control {
-    padding-right: 2.5rem;
+    padding-right: 2.75rem;
   }
   .nav-eye-inline {
     position: absolute;
     top: 50%;
-    right: 8px;
+    right: 6px;
     transform: translateY(-50%);
     border: 0;
     background: transparent;
