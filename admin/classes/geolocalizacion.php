@@ -101,10 +101,8 @@ function geoLocalizacionIp($url, $option, $cCode)
 
 function getGeolocalizacionData()
 {
-    // PRODUCCIÓN: Deshabilitada geolocalización externa por rendimiento
-    // Usar valores por defecto para Argentina para evitar timeouts en ip-api.com
-    
-    $geo = [
+    // Fallback rápido (Argentina) si falla la geolocalización externa
+    $geoFallback = [
         'status' => 'success',
         'country' => 'Argentina',
         'countryCode' => 'AR',
@@ -114,8 +112,37 @@ function getGeolocalizacionData()
         'timezone' => 'America/Argentina/Buenos_Aires',
         'currency' => 'ARS'
     ];
-    
-    // IMPORTANTE: Procesar $geo para agregar idMoneda, sym, lang, etc.
+
+    $geo = $geoFallback;
+
+    // Intentar geolocalización externa con timeout corto para evitar bloqueos
+    $ip = $_SERVER['REMOTE_ADDR'] ?? '';
+    if ($ip === '127.0.0.1' || $ip === '::1') {
+        $ip = '186.22.17.78'; // IP de prueba
+    }
+
+    try {
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 2,
+                'ignore_errors' => true,
+                'user_agent' => 'Mozilla/5.0'
+            ]
+        ]);
+
+        $resp = @file_get_contents("http://ip-api.com/json/{$ip}?fields=status,country,countryCode,city,lat,lon,timezone,currency", false, $context);
+        if ($resp !== false) {
+            $data = json_decode($resp, true);
+            if (is_array($data) && ($data['status'] ?? '') === 'success') {
+                // Combinar datos válidos con fallback para completar campos faltantes
+                $geo = array_merge($geoFallback, $data);
+            }
+        }
+    } catch (Exception $e) {
+        // Ignorar y usar fallback
+    }
+
+    // Procesar $geo para agregar idMoneda, sym, lang, etc.
     $currencyISO = $geo['currency'] ?? 'USD';
     $countryCode = $geo['countryCode'] ?? 'US';
 
