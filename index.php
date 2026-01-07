@@ -5,7 +5,6 @@ require_once("admin/classes/salidas.php");
 require("admin/classes/categoria.php");
 require("admin/classes/servicio_opiniones.php");
 require("admin/classes/texto_miniaturas.php");
-require_once("admin/classes/servicio_destacado_index.php");
 
 if (!function_exists('Visitante')) {
     function Visitante($arr) {
