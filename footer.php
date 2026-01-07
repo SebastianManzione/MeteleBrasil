@@ -44,19 +44,6 @@
 </div>
 
 <!---- Fin de modal servicios ---------->
-<div class="row">
-      <div class="col"></div>
-      <div class="col">
-               <div class="row mt-4 d-md-block d-none">
-        <div class="col-lg-12 text-center">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm" onclick="$('#modalLoginForm').modal('show');">
-            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-          </button>
-        </div>
-      </div>
-      </div>
-      <div class="col"></div>
-    </div>
 <footer class="footer ">
   
     <div class="container d-md-none mb-4">
@@ -401,7 +388,13 @@
         </div>
       </div>
       <!-- Botón Mi Cuenta Desktop -->
-    
+      <div class="row mt-5 d-md-block d-none">
+        <div class="col-lg-12 text-center">
+          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalLoginForm">
+            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+          </button>
+        </div>
+      </div>
     </div>
 </footer>
   <!-- Copyright Section -->
