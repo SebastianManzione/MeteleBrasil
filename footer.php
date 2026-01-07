@@ -44,19 +44,17 @@
 </div>
 
 <!---- Fin de modal servicios ---------->
-<footer class="footer ">
-  <!-- Botón Mi Cuenta Desktop - Arriba del Footer -->
-  <div class="bg-light py-3 d-md-block d-none" style="border-top: 1px solid #ddd;">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <button class="btn btn-primary" onclick="jQuery('#modalLoginForm').modal('show');">
-            <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-          </button>
-        </div>
-      </div>
+<!-- Botón Mi Cuenta Desktop -->
+<div class="container-fluid bg-light py-2 d-md-block d-none">
+  <div class="container">
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
+        <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+      </button>
     </div>
   </div>
+</div>
+<footer class="footer ">
   
     <div class="container d-md-none mb-4">
       <div class="row">
