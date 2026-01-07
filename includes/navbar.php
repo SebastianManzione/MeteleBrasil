@@ -228,28 +228,25 @@ try {
     }
   }
   .nav-password-wrapper {
-    position: relative;
-    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
   .nav-password-wrapper .form-control {
-    padding-right: 2.8rem !important;
+    flex: 1;
   }
   .nav-eye-inline {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
     border: 0;
     background: transparent;
-    padding: 0;
-    width: 16px;
-    height: 16px;
+    padding: 5px;
+    width: 30px;
+    height: 38px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: #4a5568;
     cursor: pointer;
-    z-index: 10;
+    flex-shrink: 0;
   }
   .nav-eye-inline:focus { outline: none; box-shadow: none; }
   .nav-eye-inline i {
