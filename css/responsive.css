@@ -157,6 +157,7 @@ padding-bottom: 0px !important;
 
 .texto-bottom{
   font-size: 20px;
+  text-decoration: none !important; /* evita tachado en beneficios */
 }
 
 
