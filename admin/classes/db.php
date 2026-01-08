@@ -21,13 +21,19 @@ if ($__once) {
 $__once = true;
 
 // ========== CONFIGURACIÓN ==========
+// ========== MODO EXPERIMENTAL ==========
+if (file_exists(__DIR__ . '/../../config/db_experimental.php')) {
+    require_once __DIR__ . '/../../config/db_experimental.php';
+}
+
+// ========== CONFIGURACIÓN ==========
 $DB_CHARSET = 'utf8mb4';
 
 // Credenciales DEV (XAMPP defecto)
 $DEV_HOST = '127.0.0.1';
 $DEV_USER = 'root';
 $DEV_PASS = '';
-$DEV_NAME = 'metelebrasil';
+$DEV_NAME = defined('DB_EXPERIMENTAL_MODE') && DB_EXPERIMENTAL_MODE ? DB_EXPERIMENTAL_NAME : 'metelebrasil';
 
 // Credenciales PROD (override con env vars)
 $PROD_HOST = getenv('DB_HOST') ?: 'localhost';

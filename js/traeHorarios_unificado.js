@@ -251,7 +251,7 @@ function traeHorarios($fecha, $idServicio){
       // Mostrar disponibilidad en horarios si es admin
       if (isAdmin && salidas[i]["disponibilidad"]) {
         var availabilityText = parseInt(salidas[i]["disponibilidad"]) > 0 ? 'Disp: ' + salidas[i]["disponibilidad"] : 'Agotado';
-        htmlHorarios += ' <small class="text-muted">(' + availabilityText + ')</small>';
+        htmlHorarios += ' <small class="fw-bold text-dark" >(' + availabilityText + ')</small>';
       }
       
       htmlHorarios += '</button>';
