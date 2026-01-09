@@ -50,11 +50,16 @@ try {
         } elseif ($precioTotal > 0) {
             $comisionVendedorPorc = round(($comisionVendedorMonto / $precioTotal) * 100, 2);
         }
-        // Porcentaje comisión Reservate (sistema) para modal prestador
+        // Porcentaje comisión Reservate (sistema)
         $comisionReservatePorc = 0;
-        if ($precioTotal > 0) {
+        if (!empty($tarifa['comisionSistemaPorcentaje'])) {
+            // Los porcentajes vienen en fracción (0.05 => 5%)
+            $comisionReservatePorc = round((float)$tarifa['comisionSistemaPorcentaje'] * 100, 2);
+        } elseif ($precioTotal > 0) {
+            // Fallback a cálculo por monto si no vino el porcentaje
             $comisionReservatePorc = round(($comisionSistemaMonto / $precioTotal) * 100, 2);
         }
+        $comisionTotalPorc = $comisionVendedorPorc + $comisionReservatePorc;
         
         // Si hay pasajeros específicos, mostrar uno por uno
         if (!empty($pasajerosTarifa)) {
@@ -85,7 +90,8 @@ try {
                     'valorSinImpuestos' => $valorSinImpFormateado,
                     'aPagar' => $aPagarFormateado,
                     'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null,
-                    'comisionReservatePorc' => ($tipo === 'prestador') ? $comisionReservatePorc : null
+                    'comisionReservatePorc' => $comisionReservatePorc,
+                    'comisionTotalPorc' => $comisionTotalPorc
                 ];
             }
         } else {
@@ -107,7 +113,8 @@ try {
                     'valorSinImpuestos' => $_SESSION["moneda_sel_sym"] . number_format($valorSinImpuestosTotal / $cantidad, 2),
                     'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($aPagarTotal / $cantidad, 2),
                     'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null,
-                    'comisionReservatePorc' => ($tipo === 'prestador') ? $comisionReservatePorc : null
+                    'comisionReservatePorc' => $comisionReservatePorc,
+                    'comisionTotalPorc' => $comisionTotalPorc
                 ];
             }
         }
