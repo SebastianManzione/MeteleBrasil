@@ -30,6 +30,16 @@ try {
         
         // Convertir precio total a moneda de sesión
         $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valor"]);
+        // Valor SIN impuestos (si existe), convertido a moneda de sesión
+        $valorSinImpuestosTotal = null;
+        if (isset($tarifa['valorSinIva'])) {
+            $valorSinImpuestosTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valorSinIva"]);
+        } elseif (isset($tarifa['valorDeIva'])) {
+            $valorSinImpuestosTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], max(0, ($tarifa["valor"] - $tarifa["valorDeIva"])));
+        } else {
+            // Fallback: si no hay desglose, aproximar al total
+            $valorSinImpuestosTotal = $precioTotal;
+        }
         // Comisiones en moneda de sesión
         $comisionVendedorMonto = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionVendedor'] ?? 0);
         $comisionSistemaMonto  = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionSistema']  ?? 0);
@@ -53,7 +63,8 @@ try {
                 // Calcular el valor por pasajero
                 $cantidadTotal = count($pasajerosTarifa);
                 $valorPorPasajero = $precioTotal / $cantidadTotal;
-                $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($valorPorPasajero, 2);
+                $valorPorPasajeroSinImp = $valorSinImpuestosTotal / $cantidadTotal;
+                $valorSinImpFormateado = $_SESSION["moneda_sel_sym"] . number_format($valorPorPasajeroSinImp, 2);
                 // Calcular a pagar por pasajero según contexto
                 if ($tipo === 'vendedor') {
                     $aPagarPorPasajero = $comisionVendedorMonto / $cantidadTotal;
@@ -66,7 +77,7 @@ try {
                     'nombre' => $nombrePasajero,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
-                    'valor' => $valorFormateado,
+                    'valorSinImpuestos' => $valorSinImpFormateado,
                     'aPagar' => $aPagarFormateado,
                     'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
                 ];
@@ -74,7 +85,7 @@ try {
         } else {
             // Si no hay pasajeros en la tabla, mostrar la cantidad de la tarifa
             $cantidad = $tarifa['cantidad'] ?? 1;
-            $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($precioTotal, 2);
+            $valorSinImpFormateadoTotal = $_SESSION["moneda_sel_sym"] . number_format($valorSinImpuestosTotal, 2);
             // Calcular a pagar total según contexto
             if ($tipo === 'vendedor') {
                 $aPagarTotal = $comisionVendedorMonto;
@@ -87,7 +98,7 @@ try {
                     'nombre' => 'Pasajero ' . $i,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
-                    'valor' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2),
+                    'valorSinImpuestos' => $_SESSION["moneda_sel_sym"] . number_format($valorSinImpuestosTotal / $cantidad, 2),
                     'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($aPagarTotal / $cantidad, 2),
                     'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
                 ];
