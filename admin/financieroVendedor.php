@@ -278,7 +278,7 @@ function verDetallePasajeros(idReservaHorarios) {
         html += '</tbody></table>';
         
         Swal.fire({
-          title: '<i class="fas fa-users" style="margin-right:8px;"></i> Pasajeros del Voucher Servicio',
+          title: '<i class="fas fa-users" style="margin-right:8px;"></i> Pasajeros del Voucher Vendedor',
           html: html,
           width: '650px',
           showCloseButton: true
