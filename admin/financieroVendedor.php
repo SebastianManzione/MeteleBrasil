@@ -265,7 +265,7 @@ function verDetallePasajeros(idReservaHorarios) {
     url: 'ajax_get_pasajeros_salida.php',
     type: 'POST',
     dataType: 'json',
-    data: { idReservaHorarios: idReservaHorarios },
+    data: { idReservaHorarios: idReservaHorarios, tipo: 'vendedor' },
     success: function(response) {
       console.log('Response:', response); // Debug
       if (response.success && response.pasajeros && response.pasajeros.length > 0) {

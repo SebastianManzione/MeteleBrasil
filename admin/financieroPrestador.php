@@ -132,7 +132,7 @@ if ($isAdmin) {
                     <th>Serviço</th>
                     <th>Data compra</th>
                     <th>Período</th>
-                    <th>Cantidad de Pax Comission</th>
+                   
                     <th>Cantidad de pax total</th>
                     <th>Valor já pego</th>
                     <th>Valor pagar Fornecedor</th>
@@ -227,7 +227,7 @@ if ($idPrestador !== null) {
                     <td><?=$nombreServicio?></td>
                     <td><?=$fechaCompra?></td>
                     <td><?=$periodo?></td>
-                    <td><?=$totalPaxComision?></td>
+                  
                     <td><?=$totalPasajerosReserva?></td>
                     <td><?=$_SESSION["moneda_sel_sym"].number_format($totalPagado, 2)?></td>
                     <td><strong><?=$_SESSION["moneda_sel_sym"].number_format($totalAPagarPrestador, 2)?></strong></td>
@@ -242,7 +242,7 @@ if ($idPrestador !== null) {
                 </tbody>
                 <tfoot>
                   <tr class="table-info">
-                    <th colspan="9" class="text-right">TOTAL A PAGAR AL PRESTADOR:</th>
+                    <th colspan="8" class="text-right">TOTAL A PAGAR AL PRESTADOR:</th>
                     <th id="totalPrestador"></th>
                     <th></th>
                   </tr>
@@ -262,7 +262,7 @@ function verDetallePasajeros(idReservaHorarios) {
     url: 'ajax_get_pasajeros_salida.php',
     type: 'POST',
     dataType: 'json',
-    data: { idReservaHorarios: idReservaHorarios },
+    data: { idReservaHorarios: idReservaHorarios, tipo: 'prestador' },
     success: function(response) {
       console.log('Response:', response); // Debug
       if (response.success && response.pasajeros && response.pasajeros.length > 0) {
@@ -273,7 +273,7 @@ function verDetallePasajeros(idReservaHorarios) {
         html += '</tbody></table>';
         
         Swal.fire({
-          title: '<i class="fas fa-users"></i> Pasajeros del Voucher Servicio',
+          title: '<i class="fas fa-users"></i> Pasajeros del Voucher Prestador',
           html: html,
           width: '650px',
           showCloseButton: true

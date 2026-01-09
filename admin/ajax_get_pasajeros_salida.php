@@ -12,6 +12,7 @@ if (!isset($_POST['idReservaHorarios'])) {
 }
 
 $idReservaHorarios = (int)$_POST['idReservaHorarios'];
+$tipo = isset($_POST['tipo']) ? strtolower(trim($_POST['tipo'])) : 'prestador';
 
 try {
     $tarifas = getReservaTarifas($idReservaHorarios);
@@ -29,9 +30,10 @@ try {
         
         // Convertir precio total a moneda de sesión
         $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valor"]);
-        // Comisión vendedor en moneda de sesión (valor monetario, no porcentaje)
+        // Comisiones en moneda de sesión
         $comisionVendedorMonto = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionVendedor'] ?? 0);
-        // Porcentaje de comisión si estuviera guardado como porcentaje; fallback por monto/valor
+        $comisionSistemaMonto  = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionSistema']  ?? 0);
+        // Porcentaje comisión vendedor para modal vendedor
         $comisionVendedorPorc = 0;
         if (!empty($tarifa['comisionVendedorPorcentaje'])) {
             $comisionVendedorPorc = (float)$tarifa['comisionVendedorPorcentaje'] * 100;
@@ -52,23 +54,33 @@ try {
                 $cantidadTotal = count($pasajerosTarifa);
                 $valorPorPasajero = $precioTotal / $cantidadTotal;
                 $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($valorPorPasajero, 2);
-                $comisionPorPasajero = $comisionVendedorMonto / $cantidadTotal;
-                $comisionFormateada = $_SESSION["moneda_sel_sym"] . number_format($comisionPorPasajero, 2);
+                // Calcular a pagar por pasajero según contexto
+                if ($tipo === 'vendedor') {
+                    $aPagarPorPasajero = $comisionVendedorMonto / $cantidadTotal;
+                } else { // prestador
+                    $aPagarPorPasajero = ($precioTotal - $comisionSistemaMonto - $comisionVendedorMonto) / $cantidadTotal;
+                }
+                $aPagarFormateado = $_SESSION["moneda_sel_sym"] . number_format($aPagarPorPasajero, 2);
                 
                 $pasajeros[] = [
                     'nombre' => $nombrePasajero,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
                     'valor' => $valorFormateado,
-                    'aPagar' => $comisionFormateada,
-                    'comisionPorc' => $comisionVendedorPorc
+                    'aPagar' => $aPagarFormateado,
+                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
                 ];
             }
         } else {
             // Si no hay pasajeros en la tabla, mostrar la cantidad de la tarifa
             $cantidad = $tarifa['cantidad'] ?? 1;
             $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($precioTotal, 2);
-            $comisionFormateada = $_SESSION["moneda_sel_sym"] . number_format($comisionVendedorMonto, 2);
+            // Calcular a pagar total según contexto
+            if ($tipo === 'vendedor') {
+                $aPagarTotal = $comisionVendedorMonto;
+            } else {
+                $aPagarTotal = ($precioTotal - $comisionSistemaMonto - $comisionVendedorMonto);
+            }
             
             for ($i = 1; $i <= $cantidad; $i++) {
                 $pasajeros[] = [
@@ -76,8 +88,8 @@ try {
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
                     'valor' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2),
-                    'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($comisionVendedorMonto / $cantidad, 2),
-                    'comisionPorc' => $comisionVendedorPorc
+                    'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($aPagarTotal / $cantidad, 2),
+                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
                 ];
             }
         }
