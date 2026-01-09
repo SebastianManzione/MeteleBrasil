@@ -44,25 +44,23 @@
 </div>
 
 <!---- Fin de modal servicios ---------->
-<!-- Botón Mi Cuenta Desktop - Solo si NO está logueado -->
-<?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
-<div class="container-fluid py-2 d-md-block d-none">
-  <div class="container">
-    <div class="text-center">
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
-        <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-      </button>
-    </div>
-  </div>
-</div>
-<?php } ?>
 <footer class="footer ">
-  <!-- Botón Mi Cuenta Mobile - Solo si NO está logueado -->
   <?php if (!isset($_SESSION['login']['idUsuario']) || empty($_SESSION['login']['idUsuario'])) { ?>
-  <div class="container d-md-none text-center py-2">
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalLoginMobile">
-      <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
-    </button>
+  <div class="container py-3">
+    <div class="row justify-content-center d-none d-md-flex">
+      <div class="col-auto">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalLoginForm">
+          <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+        </button>
+      </div>
+    </div>
+    <div class="row d-md-none">
+      <div class="col-12">
+        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modalLoginMobile">
+          <i class="fa fa-user mr-2"></i><?=$lang["mi_cuenta"]?>
+        </button>
+      </div>
+    </div>
   </div>
   <?php } ?>
   
@@ -249,10 +247,9 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <div class="mb-4">
-            <h5 class="text-primary mb-3"><?=$lang["mi_cuenta"]?></h5>
-            <p class="mb-3"><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"]?></p>
+        <div class="modal-body pt-2 pb-3">
+          <div class="mb-3">
+            <p class="mb-3 mt-1"><?=$lang["ya_tiene_cuenta_accede_a_tu_panel_de_usuario"]?></p>
             <form action="ctrlLogin" method="post">
               <input type="hidden" name="login" value="1">
               <div class="form-group">
@@ -270,8 +267,8 @@
               <div class="text-center"><small><?=$lang["no_tienes_cuenta"]?> <a href="registro" class="text-primary"><?=$lang["aqui"]?></a></small></div>
             </form>
           </div>
-          <hr>
-          <div class="mt-4">
+          <hr class="my-3">
+          <div class="mt-3">
             <h5 class="text-primary mb-3"><?=$lang["mis_reservas"]?></h5>
             <p class="mb-3"><?=$lang["puedes_gestionar_tu_reserva_sin_estar_registrado"]?></p>
             <form action="consultaReserva">
@@ -399,6 +396,8 @@
           <img src="img/visa-2.png" class="img-fluid img-foter">
         </div>
       </div>
+      <!-- Botón Mi Cuenta Desktop -->
+    
     </div>
 </footer>
   <!-- Copyright Section -->
