@@ -109,25 +109,29 @@ swal.fire("error", "As taxas devem ter um nome", "warning");
 
 
 }
-                                    		    $('#tipo_tarifa').on('change', function() {
-                                    		    	if (this.value==4) {
 
-																      var a = $("#tipo_tarifa :selected" ).text();
-																     $('#vTarifa').val("0");
-																      $('#vTarifa').attr('disabled', 'disabled');
-                                                                       $('#pago_minimo').val("0");
-                                                                      $('#pago_minimo').attr('disabled', 'disabled');
-
-                                    		    	}
-                                    		    	else{
-                                    		    		   $('#pago_minimo').removeAttr('disabled');
-                                                           $('#vTarifa').removeAttr('disabled');
-                                    		    	}
-
-																    });
-
-
-
+// Event listener para cambio de tipo de tarifa (fuera de la función addPax para que funcione siempre)
+$(document).ready(function() {
+	$('#tipo_tarifa').on('change', function() {
+		if (this.value==4) {
+			// Free sin cargo - desactivar comisión
+			$('#vTarifa').val("0");
+			$('#vTarifa').attr('disabled', 'disabled');
+			$('#pago_minimo').val("0");
+			$('#pago_minimo').attr('disabled', 'disabled');
+			$('#comisiona').prop('checked', false);
+			$('#comisiona').prop('disabled', true);
+			$('#comisiona').removeAttr('required');
+		}
+		else{
+			// Con cargo - activar comisión
+			$('#pago_minimo').removeAttr('disabled');
+			$('#vTarifa').removeAttr('disabled');
+			$('#comisiona').removeAttr('disabled');
+			$('#comisiona').prop('checked', true);
+		}
+	});
+});
 
 function eliminarFila(index) {
 

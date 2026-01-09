@@ -493,7 +493,13 @@ $nombre_servicio=$servicio[0]["nombre_servicio"];
 
 for ($k=0; $k < count($adicionales); $k++) { 
 
-
+    // Convertir precio desde la moneda original del adicional a la moneda del usuario
+    $idMonedaAdicional = $adicionales[$k]["idMoneda"];
+    $precioUnitarioConvertido = ConvierteMoneda($idMonedaAdicional, $_SESSION['moneda_sel'], $adicionales[$k]["precioUnitarioSIva"]);
+    $ivaConvertido = ConvierteMoneda($idMonedaAdicional, $_SESSION['moneda_sel'], $adicionales[$k]["valorIva"]);
+    
+    $totalSinIva = $precioUnitarioConvertido * $adicionales[$k]["cantidad"];
+    $totalConIva = $totalSinIva + $ivaConvertido;
 
     $trAdc=$trAdc.'  
 
@@ -509,10 +515,10 @@ for ($k=0; $k < count($adicionales); $k++) {
 
                                             <td>'. $adicionales[$k]["nombre"].'</td>
                                                <td>'. $adicionales[$k]["descripcion"].'</td>
-                                              <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioUnitarioSIva"].'</td>
+                                              <td>'.$_SESSION["moneda_sel_sym"]." ". number_format($precioUnitarioConvertido, 2, ',', '.').'</td>
                                                  <td>'. $adicionales[$k]["cantidad"].'</td>
-                                                        <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioUnitarioSIva"]*$adicionales[$k]["cantidad"].'</td>
-                                                           <td>'.$_SESSION["moneda_sel_sym"]." ". $adicionales[$k]["precioIva"].'</td>
+                                                        <td>'.$_SESSION["moneda_sel_sym"]." ". number_format($totalSinIva, 2, ',', '.').'</td>
+                                                           <td>'.$_SESSION["moneda_sel_sym"]." ". number_format($totalConIva, 2, ',', '.').'</td>
                                           </tr>';
 }
 

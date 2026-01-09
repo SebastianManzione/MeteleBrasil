@@ -699,6 +699,7 @@ $prestadores=getPrestadoresIdServicioComision($idServicio);
                                         <select name="selComisionPrestador" id="selComisionPrestador" class="form-control" required disabled>
                                         <option value="">Seleccione un prestador primero</option>
                                         </select>
+                                        <div id="detalleComisionPrestador" class="small text-muted mt-1"></div>
 
 <?php
 
@@ -1864,7 +1865,7 @@ $prestadores=getPrestadoresIdServicioComision($idServicio);
 
                                                                 <div class="form-group">
 
-                                                                         <input type="checkbox" class="form-control form-control-sm readonly" id="comisiona" required checked readonly="true" onclick="return false;"/>
+                                                                         <input type="checkbox" class="form-control form-control-sm" id="comisiona" checked />
 
                                                                 </div>
 
@@ -2108,6 +2109,7 @@ $prestadores=getPrestadoresIdServicioComision($idServicio);
 	$("#selPrestador").change(function(){
 		var idPrestador = $(this).val();
 		var idServicio = <?php echo $idServicio; ?>;
+        $("#detalleComisionPrestador").text('');
 
 		if(idPrestador != "") {
 			$.ajax({
@@ -2120,27 +2122,56 @@ $prestadores=getPrestadoresIdServicioComision($idServicio);
 					solo_disponibles: true
 				},
 				success: function(response) {
-					var options = '<option value="">Seleccione una comisión asignada</option>';
+                    var options = '<option value="">Seleccione una comisión asignada</option>';
 
                     if (response.success && response.comisiones.length > 0) {
                         response.comisiones.forEach(function(comision) {
-                            options += '<option value="' + comision.id + '">' + comision.nombre + '</option>';
+                            options += '<option value="' + comision.id + '" data-vendedor="' + comision.vendedor + '" data-sistema="' + comision.sistema + '">' + comision.nombre + '</option>';
                         });
                         $("#selComisionPrestador").html(options).prop('disabled', false);
+                        // Si solo hay una comisión, mostrar detalle inmediatamente
+                        if (response.comisiones.length === 1) {
+                            var unica = response.comisiones[0];
+                            mostrarDetalleComision(unica.vendedor, unica.sistema);
+                            $("#selComisionPrestador").val(unica.id);
+                        }
                     } else {
                         var mensaje = response.message || 'Este prestador no tiene comisiones asignadas a este servicio';
                         $("#selComisionPrestador").html('<option value="">' + mensaje + '</option>');
+                        $("#detalleComisionPrestador").text('');
                     }
 				},
 				error: function(xhr, status, error) {
 					console.error('Error AJAX:', error);
 					$("#selComisionPrestador").html('<option value="">Error al cargar comisiones</option>');
+                    $("#detalleComisionPrestador").text('');
 				}
 			});
 		} else {
 			$("#selComisionPrestador").html('<option value="">Seleccione un prestador primero</option>').prop('disabled', true);
+            $("#detalleComisionPrestador").text('');
 		}
 	});
+
+    // Mostrar detalle al elegir una comisión
+    $("#selComisionPrestador").change(function(){
+        var vendedor = $(this).find('option:selected').data('vendedor');
+        var sistema = $(this).find('option:selected').data('sistema');
+        if (typeof vendedor !== 'undefined' && typeof sistema !== 'undefined') {
+            mostrarDetalleComision(vendedor, sistema);
+        } else {
+            $("#detalleComisionPrestador").text('');
+        }
+    });
+
+    function mostrarDetalleComision(vendedor, sistema) {
+        var vendPct = parseFloat(vendedor);
+        var sisPct = parseFloat(sistema);
+        if (!isNaN(vendPct) && vendPct < 1) vendPct = vendPct * 100;
+        if (!isNaN(sisPct) && sisPct < 1) sisPct = sisPct * 100;
+        var texto = 'Comisión prestador: ' + vendPct.toFixed(2) + '% | Comisión sistema: ' + sisPct.toFixed(2) + '%';
+        $("#detalleComisionPrestador").text(texto);
+    }
 
 	$("#formAltaSalidas").submit(function(e){
 

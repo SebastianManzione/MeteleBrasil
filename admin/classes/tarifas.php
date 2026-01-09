@@ -110,6 +110,7 @@ function getComisionTarifa($idServicioSalidasTarifas){
             $retorno[$i]['nombre']=$tarifas[$i]['nombre'];
             $retorno[$i]['idFromEdad']=$tarifas[$i]['idFromEdad'];
             $retorno[$i]['idToEdad']=$tarifas[$i]['idToEdad'];
+            $retorno[$i]['menor']=isset($tarifas[$i]['menor']) ? (int)$tarifas[$i]['menor'] : 0;
             $retorno[$i]['edadFrom']=getEdad($tarifas[$i]['idFromEdad'])[0]["valor"];
             $retorno[$i]['edadTo']=getEdad($tarifas[$i]['idToEdad'])[0]["valor"];
             $retorno[$i]['idTipoTarifa']=$tarifas[$i]['idTipoTarifa'];

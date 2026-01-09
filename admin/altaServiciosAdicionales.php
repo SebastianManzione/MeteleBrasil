@@ -8,6 +8,7 @@ require("classes/usuario.php");
 require("classes/servicio.php");
 require("classes/salidas.php");
 require("classes/servicios_adicionales.php");
+require_once("classes/moneda.php");
 
  if (isset($_POST["idServicioSalidas"]) ) {
 
@@ -47,6 +48,7 @@ $idServicioSalidasPost=$_POST["idServicioSalidas"];
 $svAdicionales=$_POST["svAdicionales"];
 $svAdicionalesPre=$_POST["svAdicionalesPre"];
 $descripcionPost=$_POST["descripcion"];
+$idMonedaPost=$_POST["idMoneda"];
 
 for ($i=0; $i < count($idServicioSalidasPost); $i++) { //salidas
 
@@ -63,12 +65,12 @@ $descripcion=$descripcionPost[$i];
 
 
   $salidas=getSalida($idServicioSalidas);
-  $idMoneda=($salidas[0]["idMoneda"]);
 
 
    foreach ($svAdicionales as $key => $value) { //sv adicionales
 
     $precio=0;
+    $idMoneda=$salidas[0]["idMoneda"]; // Default to salida currency
 
       foreach ($svAdicionalesPre as $key2 => $value2) { //precios
 
@@ -84,7 +86,10 @@ $descripcion=$descripcionPost[$i];
 
      }
 
-
+    // Use currency from form if provided, otherwise use salida currency
+    if (isset($idMonedaPost[$key]) && !empty($idMonedaPost[$key])) {
+      $idMoneda = $idMonedaPost[$key];
+    }
 
   $salidaAdicionalesSalida=   setServiciosAdicionalesSalida($idServicioSalidas, $key, $precio,  $idMoneda,  $descripcion);
 
@@ -354,25 +359,43 @@ if (count($svNoIncluidos)==0) {
 
     
 
-<div id="divCHK<?=$idServicioAdicionales;?>">
+<div id="divCHK<?=$idServicioAdicionales;?>" style="padding: 10px 0;">
 
+  <div style="margin-bottom: 10px;">
+    <input type="checkbox" name="svAdicionales[<?=$idServicioAdicionales;?>]" id="cbox<?=$idServicioAdicionales;?>" onclick="habilitar(<?=$serviciosAdicionalesCategoria[$i]['idServiciosAdicionales'];?>)" > 
+    <strong><?= $serviciosAdicionalesCategoria[$i]["nombre"];?></strong>
+  </div>
 
+  <div style="margin-left: 25px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+    <div style="display: inline-flex; align-items: center; gap: 5px;">
+      <input type="checkbox" id="checkBox<?=$idServicioAdicionales;?>" onclick="free(<?=$idServicioAdicionales;?>)" style="display: none;" checked >
+      <label id="lbl<?=$idServicioAdicionales;?>" style="display: none; margin: 0;">Incluido</label>
+    </div>
 
-<input type="checkbox" name="svAdicionales[<?=$idServicioAdicionales;?>]" id="cbox<?=$idServicioAdicionales;?>" onclick="habilitar(<?=$serviciosAdicionalesCategoria[$i]['idServiciosAdicionales'];?>)" > <?= $serviciosAdicionalesCategoria[$i]["nombre"];?></input>
+    <div style="display: inline-flex; align-items: center; gap: 5px;">
+      <input type="number" name="svAdicionalesPre[<?=$idServicioAdicionales;?>]" id="svAdicionalesPre<?=$idServicioAdicionales;?>" step="0.01" min="1" class="form-control" style="display: none; width: 100px;">
+    </div>
 
+    <div style="display: inline-flex; align-items: center; gap: 5px;">
+      <label id="lblMoneda<?=$idServicioAdicionales;?>" style="display: none; margin: 0;"><?=$lang["moneda"] ?? "Moneda";?></label>
+      <select name="idMoneda[<?=$idServicioAdicionales;?>]" id="idMoneda<?=$idServicioAdicionales;?>" class="form-control" style="display: none; width: 200px;">
+        <?php 
+        $monedas = getMonedas();
+        foreach ($monedas as $moneda) {
+          $selected = ($moneda['idMoneda'] == $salidas[0]['idMoneda']) ? 'selected' : '';
+          echo '<option value="'.$moneda['idMoneda'].'" '.$selected.'>'.$moneda['CurrencyName'].' ('.$moneda['Symbol'].')</option>';
+        }
+        ?>
+      </select>
+    </div>
 
+    <div style="display: inline-flex; align-items: center; gap: 5px;">
+      <label id="lblDescripcion<?=$idServicioAdicionales;?>" style="display: none; margin: 0;"><?=$lang["descripcion"];?></label>
+      <input type="text" name="descripcion[<?=$idServicioAdicionales;?>]" id="descripcion<?=$idServicioAdicionales;?>" class="form-control" style="display: none; min-width: 250px;">
+    </div>
+  </div>
 
-<input type="checkbox" id="checkBox<?=$idServicioAdicionales;?>" onclick="free(<?=$idServicioAdicionales;?>)"  style="display: none;" checked ><label id="lbl<?=$idServicioAdicionales;?>" style="display: none;">Incluido</label></input>
-
-
-
-<input type="number" name="svAdicionalesPre[<?=$idServicioAdicionales;?>]"  id="svAdicionalesPre<?=$idServicioAdicionales;?>" step="0.01" min="1" style="display: none;">
-
-<label id="lblDescripcion<?=$idServicioAdicionales;?>" style="display: none;"><?=$lang["descripcion"];?>z</label>
-
-<input type="text" name="descripcion[<?=$idServicioAdicionales;?>]"  id="descripcion<?=$idServicioAdicionales;?>" step="0.01" min="1" style="display: none;">
-
- </div>
+</div>
 
             </th>
 
@@ -408,8 +431,17 @@ if (count($svNoIncluidos)==0) {
      if($('#cbox'+idServicioAdicionales+"").prop('checked')){
    $("#checkBox"+idServicioAdicionales).show(); 
     $("#lbl"+idServicioAdicionales).show();
-
-
+    
+    // Solo mostrar precio y moneda si 'incluido' está desactivado
+    if(!$("#checkBox"+idServicioAdicionales).prop('checked')){
+      $("#svAdicionalesPre"+idServicioAdicionales).show();
+      $("#lblMoneda"+idServicioAdicionales).show();
+      $("#idMoneda"+idServicioAdicionales).show();
+    } else {
+      $("#svAdicionalesPre"+idServicioAdicionales).hide();
+      $("#lblMoneda"+idServicioAdicionales).hide();
+      $("#idMoneda"+idServicioAdicionales).hide();
+    }
 
          }
 
@@ -421,6 +453,9 @@ if (count($svNoIncluidos)==0) {
        $("#checkBox"+idServicioAdicionales).prop("checked", true);
 
       $("#lbl"+idServicioAdicionales).hide();
+      
+      $("#lblMoneda"+idServicioAdicionales).hide();
+      $("#idMoneda"+idServicioAdicionales).hide();
 
       $("#descripcion"+idServicioAdicionales).hide(); 
 
@@ -440,34 +475,31 @@ if (count($svNoIncluidos)==0) {
 
 
                if($('#checkBox'+idServicioAdicionales+"").prop('checked')){
-
+                          // Si se marca 'incluido', ocultar precio y moneda
                           $("#svAdicionalesPre"+idServicioAdicionales).hide(); 
+                          $("#lblMoneda"+idServicioAdicionales).hide();
+                          $("#idMoneda"+idServicioAdicionales).hide();
 
-                                  $("#descripcion"+idServicioAdicionales).hide(); 
+                          $("#descripcion"+idServicioAdicionales).hide(); 
+                          $("#descripcion"+idServicioAdicionales).val(''); 
+                          $("#lblDescripcion"+idServicioAdicionales).hide(); 
 
-                                   $("#descripcion"+idServicioAdicionales).val(''); 
-
-                                     $("#lblDescripcion"+idServicioAdicionales).hide(); 
-
-
-
-                             $("#svAdicionalesPre"+idServicioAdicionales).val(0); 
-
-                           $("#lbl"+idServicioAdicionales).show();
+                          $("#svAdicionalesPre"+idServicioAdicionales).val(0); 
+                          $("#lbl"+idServicioAdicionales).show();
 
                 }
 
                else{
+                  // Si se desmarca 'incluido', mostrar precio y moneda
+                  $("#svAdicionalesPre"+idServicioAdicionales).show();   
+                  $("#lblMoneda"+idServicioAdicionales).show();
+                  $("#idMoneda"+idServicioAdicionales).show();
 
- $("#svAdicionalesPre"+idServicioAdicionales).show();   
+                  $("#descripcion"+idServicioAdicionales).show();
+                  $("#lblDescripcion"+idServicioAdicionales).show();
 
-  $("#descripcion"+idServicioAdicionales).show();
-
-  $("#lblDescripcion"+idServicioAdicionales).show();
-
-    $("#svAdicionalesPre"+idServicioAdicionales).val(0); 
-
-  $("#lbl"+idServicioAdicionales).hide();
+                  $("#svAdicionalesPre"+idServicioAdicionales).val(0); 
+                  $("#lbl"+idServicioAdicionales).hide();
 
 
 

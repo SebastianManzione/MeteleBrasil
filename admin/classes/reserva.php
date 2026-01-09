@@ -1171,7 +1171,7 @@ return $resultado;
 
 
 
- function altaReservaAdicional($idReservaHorarios, $idServiciosAdicionales,$nombre, $descripcion, $cantidad, $precio, $precioUnitarioSIva, $valorIva, $precioIva){
+ function altaReservaAdicional($idReservaHorarios, $idServiciosAdicionales,$nombre, $descripcion, $cantidad, $precio, $precioUnitarioSIva, $valorIva, $precioIva, $idMoneda=0){
 
 
 
@@ -1187,11 +1187,11 @@ return $resultado;
 
 
 
-        $data=["idReservaHorarios"=> $idReservaHorarios, "idServiciosAdicionales"=> $idServiciosAdicionales, "nombre"=>$nombre, "descripcion"=>$descripcion, "cantidad"=>$cantidad, "precio"=>$precio, "precioUnitarioSIva"=> $precioUnitarioSIva, "valorIva"=> $valorIva, "precioIva"=> $precioIva];
+        $data=["idReservaHorarios"=> $idReservaHorarios, "idServiciosAdicionales"=> $idServiciosAdicionales, "nombre"=>$nombre, "descripcion"=>$descripcion, "cantidad"=>$cantidad, "precio"=>$precio, "precioUnitarioSIva"=> $precioUnitarioSIva, "valorIva"=> $valorIva, "precioIva"=> $precioIva, "idMoneda"=> $idMoneda];
 
 
 
-        $consulta = "INSERT INTO reserva_adicionales (idReservaHorarios, idServiciosAdicionales, nombre, descripcion, cantidad, precio, precioUnitarioSIva, valorIva, precioIva) VALUES (:idReservaHorarios,  :idServiciosAdicionales,:nombre, :descripcion, :cantidad, :precio, :precioUnitarioSIva, :valorIva, :precioIva) ";
+        $consulta = "INSERT INTO reserva_adicionales (idReservaHorarios, idServiciosAdicionales, nombre, descripcion, cantidad, precio, precioUnitarioSIva, valorIva, precioIva, idMoneda) VALUES (:idReservaHorarios,  :idServiciosAdicionales,:nombre, :descripcion, :cantidad, :precio, :precioUnitarioSIva, :valorIva, :precioIva, :idMoneda) ";
 
 
 
@@ -1598,7 +1598,7 @@ return $resultado;
 
     require("conexion.php");
     $data=["idReservaHorarios"=>$idReservaHorarios];
-    $consulta = "SELECT rt.*, sst.nombre as nombreTarifa, sst.idTipoTarifa, sst.idCancelaciones 
+    $consulta = "SELECT rt.*, sst.nombre as nombreTarifa, sst.idTipoTarifa, sst.idCancelaciones, sst.comisiona as comisionaTarifa 
                  FROM reserva_tarifas rt 
                  LEFT JOIN servicio_salidas_tarifas sst ON rt.idServicioSalidasTarifas = sst.idServicioSalidasTarifas
                  WHERE rt.idReservaHorarios=:idReservaHorarios ORDER BY rt.idReservaHorarios";

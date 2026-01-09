@@ -27,6 +27,32 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
+      <?php
+      // Badges de rol para claridad
+      $badges = [];
+      $login = $_SESSION['login'] ?? [];
+      if (isset($login['rol']) && (int)$login['rol'] === 1) {
+        $badges[] = ['label' => 'Admin', 'class' => 'badge-danger'];
+      } elseif (isset($login['rol']) && (int)$login['rol'] === 3) {
+        $badges[] = ['label' => 'Agente', 'class' => 'badge-secondary'];
+      }
+      if (!empty($login['idPrestador'])) {
+        $badges[] = ['label' => 'Prestador', 'class' => 'badge-success'];
+      }
+      if (!empty($login['idVendedor'])) {
+        $badges[] = ['label' => 'Vendedor', 'class' => 'badge-info'];
+      }
+      if (!empty($login['idCobrador'])) {
+        $badges[] = ['label' => 'Cobrador', 'class' => 'badge-warning'];
+      }
+      if (!empty($badges)) {
+        echo '<li class="nav-item d-flex align-items-center pr-2">';
+        foreach ($badges as $b) {
+          echo '<span class="badge ' . $b['class'] . ' mr-1">' . htmlspecialchars($b['label']) . '</span>';
+        }
+        echo '</li>';
+      }
+      ?>
       <!-- Messages Dropdown Menu -->
       <!-- <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">

@@ -230,6 +230,9 @@ $idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
 
 
 
+			$retorno[$i]['menor']=isset($tarifas[$i]['menor']) ? (int)$tarifas[$i]['menor'] : 0;
+
+
 				$retorno[$i]['nombre']=$tarifas[$i]['nombre'];
 
 

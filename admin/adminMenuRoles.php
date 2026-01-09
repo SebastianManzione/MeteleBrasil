@@ -525,11 +525,13 @@ function guardarRol() {
 // ============= TAB 3: PERMISOS =============
 
 function cargarRolesSelect() {
-  $.get('ctrl/ctrl_roles.php?action=getRoles', function(res) {
+  $.get('ctrl/ctrl_menu.php?action=getRoles', function(res) {
     if (res.success) {
       let html = '<option value="">-- Seleccione un rol --</option>';
       res.data.forEach(rol => {
-        html += `<option value="${rol.idRol}">${rol.rol}</option>`;
+        const id = rol.id ?? rol.idRol;
+        const nombre = rol.rol ?? rol.nombre ?? ('Rol ' + id);
+        html += `<option value="${id}">${nombre}</option>`;
       });
       $('#selRol').html(html);
     }

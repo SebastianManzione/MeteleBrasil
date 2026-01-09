@@ -29,6 +29,15 @@ try {
         
         // Convertir precio total a moneda de sesión
         $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valor"]);
+        // Comisión vendedor en moneda de sesión (valor monetario, no porcentaje)
+        $comisionVendedorMonto = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionVendedor'] ?? 0);
+        // Porcentaje de comisión si estuviera guardado como porcentaje; fallback por monto/valor
+        $comisionVendedorPorc = 0;
+        if (!empty($tarifa['comisionVendedorPorcentaje'])) {
+            $comisionVendedorPorc = (float)$tarifa['comisionVendedorPorcentaje'] * 100;
+        } elseif ($precioTotal > 0) {
+            $comisionVendedorPorc = round(($comisionVendedorMonto / $precioTotal) * 100, 2);
+        }
         
         // Si hay pasajeros específicos, mostrar uno por uno
         if (!empty($pasajerosTarifa)) {
@@ -43,19 +52,23 @@ try {
                 $cantidadTotal = count($pasajerosTarifa);
                 $valorPorPasajero = $precioTotal / $cantidadTotal;
                 $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($valorPorPasajero, 2);
+                $comisionPorPasajero = $comisionVendedorMonto / $cantidadTotal;
+                $comisionFormateada = $_SESSION["moneda_sel_sym"] . number_format($comisionPorPasajero, 2);
                 
                 $pasajeros[] = [
                     'nombre' => $nombrePasajero,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
                     'valor' => $valorFormateado,
-                    'aPagar' => $valorFormateado
+                    'aPagar' => $comisionFormateada,
+                    'comisionPorc' => $comisionVendedorPorc
                 ];
             }
         } else {
             // Si no hay pasajeros en la tabla, mostrar la cantidad de la tarifa
             $cantidad = $tarifa['cantidad'] ?? 1;
             $valorFormateado = $_SESSION["moneda_sel_sym"] . number_format($precioTotal, 2);
+            $comisionFormateada = $_SESSION["moneda_sel_sym"] . number_format($comisionVendedorMonto, 2);
             
             for ($i = 1; $i <= $cantidad; $i++) {
                 $pasajeros[] = [
@@ -63,7 +76,8 @@ try {
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
                     'valor' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2),
-                    'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2)
+                    'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($comisionVendedorMonto / $cantidad, 2),
+                    'comisionPorc' => $comisionVendedorPorc
                 ];
             }
         }

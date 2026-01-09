@@ -22,8 +22,8 @@ try {
 
     switch ($action) {
         case 'getAll':
-            // Get all menu items as tree
-            $tree = $menu->getMenuTreeForRole(1);
+            // Get all menu items as tree (sin filtrar por roles) para administración
+            $tree = $menu->getMenuTreeAll();
             echo json_encode(['success' => true, 'data' => $tree]);
             break;
 
@@ -35,9 +35,9 @@ try {
             break;
 
         case 'getRoles':
-            // Get available roles (for select)
-            $stmt = $GLOBALS['pdo']->query("SELECT DISTINCT role_id FROM admin_menu_roles ORDER BY role_id");
-            $roles = $stmt->fetchAll(PDO::FETCH_COLUMN);
+            // Get available roles (from roles table to include all roles)
+            $stmt = $GLOBALS['pdo']->query("SELECT idRol AS id, rol, descripcion FROM roles ORDER BY idRol");
+            $roles = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode(['success' => true, 'data' => $roles]);
             break;
 

@@ -28,6 +28,7 @@ var precioTotal = 0;
 var disponibilidad = 0;
 var salidas = [];
 var cancelaciones = [];
+var tarifasMetadata = {};
 
 // Localización de calendario y meses
 var idiomaSistema = (typeof idiomaSistema !== 'undefined' && idiomaSistema) ? idiomaSistema : 'ES';
@@ -165,6 +166,7 @@ function limpiarTarifaYAdicionales(){
   cantidadPersonas = 0;
   precioTotal = 0;
   cancelaciones = [];
+  tarifasMetadata = {};
 }
 
 function enviar(){
@@ -322,10 +324,12 @@ function traeTarifas($idSalida){
     }
     
     disponibilidad = parseInt(tarifas[0]["disponibilidad"]) || 0;
+    tarifasMetadata = {};
     
     var htmlTarifas = '';
     for (var i = 0; i < tarifas.length; i++) {
       var tarifa = tarifas[i];
+      tarifasMetadata[String(tarifa.idServicioSalidasTarifas)] = tarifa; // cache metadata (ej: menor/adulto)
       var tipoTarifa = tarifa.tipoTarifaNombre ? ' - ' + tarifa.tipoTarifaNombre : '';
       var badgeAgotado = (disponibilidad === 0) ? '<span class="badge badge-danger">Agotado</span>' : '';
       
@@ -566,6 +570,45 @@ function CalculaPersonas(idServicioSalidasTarifas, operacion){
   }
   
   var cantidad = parseInt($('.cantPers.tarifa-' + idServicioSalidasTarifas).val()) || 0;
+  var metaTarifa = tarifasMetadata[String(idServicioSalidasTarifas)] || {};
+
+  // Validación: si hay menores seleccionados, debe existir al menos un adulto
+  var cantidadesPropuestas = {};
+  $('.cantPers').each(function() {
+    var tid = String($(this).data('id'));
+    var val = parseInt($(this).val()) || 0;
+    cantidadesPropuestas[tid] = val;
+  });
+  var cantidadPropuesta = cantidad;
+  if (operacion == 0) {
+    cantidadPropuesta = Math.max(cantidad - 1, 0);
+  } else if (operacion == 1) {
+    cantidadPropuesta = cantidad + 1;
+  }
+  cantidadesPropuestas[String(idServicioSalidasTarifas)] = cantidadPropuesta;
+
+  var totalAdultos = 0;
+  var totalMenores = 0;
+  Object.keys(cantidadesPropuestas).forEach(function(key){
+    var meta = tarifasMetadata[key] || {};
+    var esMenor = parseInt(meta.menor) === 1;
+    var cant = parseInt(cantidadesPropuestas[key]) || 0;
+    if (esMenor) {
+      totalMenores += cant;
+    } else {
+      totalAdultos += cant;
+    }
+  });
+  if (totalAdultos === 0 && totalMenores > 0) {
+    Swal.fire({
+      title: 'Atención',
+      text: 'Debe agregar al menos un adulto cuando incluya menores.',
+      icon: 'warning',
+      confirmButtonText: 'Entendido'
+    });
+    return;
+  }
+
   cantidadPersonas = cantidadPersonas - cantidad;
   
   $.post("admin/ctrl/ctrlHorarios", {
@@ -694,20 +737,22 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
       console.error('Data recibida:', data);
       return;
     }
-    var valor = getPrecioValor(response[0]);
-    var total = valor * cantidad;
+    // El backend ya devuelve el valor total (cantidad aplicada), no volver a multiplicar
+    var valorTotal = getPrecioValor(response[0]);
+    valorTotal = Math.round(valorTotal * 100) / 100; // normalizar decimales
+    var valorUnitario = cantidad > 0 ? Math.round((valorTotal / cantidad) * 100) / 100 : valorTotal;
     
     // Actualizar el total usando ambos selectores (ID y clase) para compatibilidad
-    $('#lblTotalAdicionales' + idServicioSalidasAdicionales).text(formatPrice(total));
-    $('.lblTotalAdicional.adicional-' + idServicioSalidasAdicionales).text(formatPrice(total));
+    $('#lblTotalAdicionales' + idServicioSalidasAdicionales).text(formatPrice(valorTotal));
+    $('.lblTotalAdicional.adicional-' + idServicioSalidasAdicionales).text(formatPrice(valorTotal));
     
     var exito = 0;
     if (reservaAdicionales.length > 0) {
       for (var i = 0; i < reservaAdicionales.length; i++) {
         if (reservaAdicionales[i]["idServicioSalidasAdicionales"] == idServicioSalidasAdicionales) {
           reservaAdicionales[i]["cantidad"] = cantidad;
-          reservaAdicionales[i]["valorUnitario"] = valor;
-          reservaAdicionales[i]["valorTotal"] = total;
+          reservaAdicionales[i]["valorUnitario"] = valorUnitario;
+          reservaAdicionales[i]["valorTotal"] = valorTotal;
           if (cantidad < 1) {
             reservaAdicionales.splice(i, 1);
           }
@@ -720,8 +765,8 @@ function CalculaAdicionales(idServicioSalidasAdicionales, operacion) {
       reservaAdicionales.push({
         idServicioSalidasAdicionales: idServicioSalidasAdicionales,
         cantidad: cantidad,
-        valorUnitario: valor,
-        valorTotal: total
+        valorUnitario: valorUnitario,
+        valorTotal: valorTotal
       });
     }
     

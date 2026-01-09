@@ -210,7 +210,8 @@ for ($i=0; $i < count($servicios); $i++) {
                                                $servicioAdicional[0]["nombre"], $servicioAdicional[0]["descripcion"],
                                                $cantidad, $servicioAdicional[0]["precio"], 
                                                $servicioAdicional[0]["precioUnitarioSIva"], 
-                                               $servicioAdicional[0]["valorIva"], $servicioAdicional[0]["valor"]);
+                                               $servicioAdicional[0]["valorIva"], $servicioAdicional[0]["valor"],
+                                               $servicioAdicional[0]["idMoneda"]);
                 
                 if (empty($adicional)) {
                     error_log("WARNING guardaReservas: altaReservaAdicional falló para idServicioSalidasAdicionales: $idServicioSalidasAdicionales");
@@ -226,7 +227,7 @@ for ($i=0; $i < count($servicios); $i++) {
         for ($j=0; $j < count($adicionalesIncluidos); $j++) {
             $adicional=altaReservaAdicional($altaReservaHorarios, $adicionalesIncluidos[$j]["idServiciosAdicionales"],
                                            $adicionalesIncluidos[$j]["nombre"], $adicionalesIncluidos[$j]["descripcion"],
-                                           0, 0, 0, 0, 0);
+                                           0, 0, 0, 0, 0, $adicionalesIncluidos[$j]["idMoneda"]);
             
             if (empty($adicional)) {
                 error_log("WARNING guardaReservas: altaReservaAdicional (incluido) falló");

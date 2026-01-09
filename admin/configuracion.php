@@ -873,7 +873,7 @@ $config_data = [
                             <div class="card-body">
                                 <div class="alert alert-info">
                                     <i class="fas fa-info-circle"></i> <strong>Nota:</strong> 
-                                    Controla cuántos servicios destacados se muestran y cómo se ordenan en la página de inicio.
+                                    Controla cuántos servicios destacados se muestran en la página de inicio.
                                 </div>
                                 
                                 <div class="form-group row">

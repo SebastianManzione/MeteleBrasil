@@ -230,6 +230,8 @@ if ($_SESSION["login"]["rol"] == 1) {
 
                                     <tr>
 
+                                       
+                                        <th>ID</th>
                                         <th><?= $lang["foto"]; ?></th>
 
                                         <th><?= $lang["nombre"]; ?></th>
@@ -267,6 +269,8 @@ if ($_SESSION["login"]["rol"] == 1) {
                                     ?>
 
                                         <tr>
+
+                                            <td><strong><?= $idServicio ?></strong></td>
 
                                             <td>
 
@@ -400,7 +404,13 @@ include("includes/footer.php");
 
             },
 
-            "order": [[ 3, "desc" ]] // Ordenar por fecha de alta descendente por defecto
+            "order": [[ 4, "desc" ]], // Ordenar por fecha de alta descendente por defecto
+
+            "columnDefs": [
+
+                { "orderable": true, "targets": 0 } // Columna ID ordenable
+
+            ]
 
         });
 
