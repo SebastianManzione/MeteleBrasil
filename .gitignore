@@ -20,3 +20,6 @@ error_log
 # Environment/config
 .env
 php.ini
+
+# Backups
+backup_*.sql
