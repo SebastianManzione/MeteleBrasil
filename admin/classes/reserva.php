@@ -191,9 +191,9 @@ $totalComprobantesDolar=getComprobantesIdReservaDolar($idReserva);
 
 $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 
-// VALIDACIÓN CRÍTICA: Solo mostrar si está pagado 100% (diferencia <= 0)
-if ($diferenciaComprobantesPrecio > 0.01) {
-    // Hay dinero pendiente, no es realmente confirmada
+// VALIDACIÓN CRÍTICA: Solo mostrar si está pagado 100% (tolerancia de 1.00 para arredondamientos)
+if ($diferenciaComprobantesPrecio > 1.00) {
+    // Hay dinero pendiente significativo, no es realmente confirmada
     continue;
 }
 

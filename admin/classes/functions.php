@@ -37,8 +37,6 @@ function alertar($mensaje, $tipo) {
         Swal.fire({
             title: "<?= $mensaje ?>",
             icon: "<?= $tipo ?>"
-        }).then(() => {
-            window.location.replace("<?= $_SERVER['PHP_SELF'] ?>");
         });
     </script>
     <?php

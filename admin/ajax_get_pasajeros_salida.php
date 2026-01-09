@@ -33,7 +33,8 @@ try {
         // Si hay pasajeros específicos, mostrar uno por uno
         if (!empty($pasajerosTarifa)) {
             foreach ($pasajerosTarifa as $p) {
-                $nombrePasajero = trim(($p['nombre'] ?? '') . ' ' . ($p['apellido'] ?? ''));
+                // El campo correcto es 'nombrePasajero', no 'nombre' + 'apellido'
+                $nombrePasajero = trim($p['nombrePasajero'] ?? '');
                 if (empty($nombrePasajero)) {
                     $nombrePasajero = 'Pasajero sin nombre';
                 }
@@ -47,7 +48,8 @@ try {
                     'nombre' => $nombrePasajero,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
-                    'valor' => $valorFormateado
+                    'valor' => $valorFormateado,
+                    'aPagar' => $valorFormateado
                 ];
             }
         } else {
@@ -60,7 +62,8 @@ try {
                     'nombre' => 'Pasajero ' . $i,
                     'tarifa' => $nombreTarifa,
                     'cantidad' => 1,
-                    'valor' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2)
+                    'valor' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2),
+                    'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($precioTotal / $cantidad, 2)
                 ];
             }
         }

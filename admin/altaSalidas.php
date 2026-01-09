@@ -284,87 +284,26 @@ $sinHorarioTexto=$_POST["sinHorarioTexto"];
 
 
 
- 
-
-
-
-
-
-
-
      for ($j=0; $j <  count($_POST['txtDireccion']); $j++) { 
 
 
-
-         
-
-
-
          $nombre=$_POST['nombre_tarifa'][$j];
-
          $idFromEdad=$_POST['from_edades'][$j];
-
          $idToEdad=$_POST['to_edades'][$j];
-
          $idTipoTarifa=$_POST['tipo_tarifa'][$j];
-
          $valor=$_POST['valor_tarifa'][$j];
-
          $minimo=$_POST['pago_minimo'][$j];
-
          $idCancelaciones=$_POST['selCancelaciones'][$j];
-
           $comisiona=$_POST['comisiona'][$j];
-
           $altaTarifa=altaTarifa($idServicioSalidas,$nombre, $idFromEdad,$idToEdad,$idTipoTarifa,$valor,$minimo, $idCancelaciones, $comisiona);
-
      
-
-
-
          $altaTarifaUbicacion= altaTarifaUbicacion($altaTarifa, $_POST['txtDireccion'][$j], $_POST['txtLatitud'][$j],  $_POST['txtLongitud'][$j]);
 
 
-
-      
-
-       
-
-
-
                 $comisionVenta=$comisiones[0]['comisionVendedor'];
-
-
-
               $comisionSalida=setComisionServicioSalidasTarifas($altaTarifa, $comisionVenta, 1);
-
-
-
            $comisionSistema=$comisiones[0]['comisionSistema'];
-
-
-
              $comisionSalida=setComisionServicioSalidasTarifas($altaTarifa,$comisionSistema, 2);
-
-
-
-                     //  $comisionCompensatoria=$_POST['commision_compensatoria'];
-
-
-
-               //$comisionSalida=setComisionServicioSalidasTarifas($altaTarifa, $comisionCompensatoria, 3);
-
-
-
-
-
-
-
-
-
-
-
-        
 
 
 

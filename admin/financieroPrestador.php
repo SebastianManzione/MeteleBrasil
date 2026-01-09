@@ -176,7 +176,7 @@ if ($idPrestador !== null) {
                 continue; // Saltar si la fecha del evento es posterior a la fecha hasta
             }
             
-            if (($verTodasReservas || $salida[0]["idPrestador"] == $idPrestador) && $fechaEvento < $hoy) {
+            if (($verTodasReservas || $salida[0]["idPrestador"] == $idPrestador)) {
                 $servicio = getServicio($salida[0]["idServicio"]);
                 $nombreServicio = !empty($servicio) && isset($servicio[0]["nombre_servicio"]) ? $servicio[0]["nombre_servicio"] : 'N/A';
                 

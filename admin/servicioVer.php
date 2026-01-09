@@ -47,27 +47,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["eliminarServicio"])) {
   }
 }
 
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vaciarServicio"])) {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["vaciarServicio"]) && $_POST['vaciarServicio']>0) {
 
-  alertar($lang["por_favor_espere_no_cierre"], "success");
+
+  
 
   $idServicio = $_POST["vaciarServicio"];
   $reservas = getHorariosReservados_idServicioSeleccionado($idServicio);
-
+$reservasOcupando="";
   if (count($reservas) > 0) { //count($reservas)>0
     foreach ($reservas as $key => $value) {
       $idReserva = $value['idReserva'];
       $reserva = getReservaId($idReserva);
-      echo "Reserva con tiempo en este servicio
-: " . $reserva[0]["codigoAmigable"] . "<br>";
+      $reservasOcupando=$reservasOcupando."<br> ".$reserva[0]["codigoAmigable"];
+  
+
     }
 
 
-    alertar($lang["no_se_puede_eliminar_servicios"], "error");
+   alertar($lang["no_se_puede_eliminar_servicios"]. $reservasOcupando, "error");
+    exit();  
+
+
   } else {
 
     $resEliminar = vaciarServicio($idServicio);
-    alertar("Servicio desocupado con éxito", "success");
+   alertar("Servicio desocupado con éxito", "success");
     redireccionarLento("servicioVer?idServicio=" . $idServicio);
     exit();
   }
