@@ -50,6 +50,11 @@ try {
         } elseif ($precioTotal > 0) {
             $comisionVendedorPorc = round(($comisionVendedorMonto / $precioTotal) * 100, 2);
         }
+        // Porcentaje comisión Reservate (sistema) para modal prestador
+        $comisionReservatePorc = 0;
+        if ($precioTotal > 0) {
+            $comisionReservatePorc = round(($comisionSistemaMonto / $precioTotal) * 100, 2);
+        }
         
         // Si hay pasajeros específicos, mostrar uno por uno
         if (!empty($pasajerosTarifa)) {
@@ -79,7 +84,8 @@ try {
                     'cantidad' => 1,
                     'valorSinImpuestos' => $valorSinImpFormateado,
                     'aPagar' => $aPagarFormateado,
-                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
+                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null,
+                    'comisionReservatePorc' => ($tipo === 'prestador') ? $comisionReservatePorc : null
                 ];
             }
         } else {
@@ -100,7 +106,8 @@ try {
                     'cantidad' => 1,
                     'valorSinImpuestos' => $_SESSION["moneda_sel_sym"] . number_format($valorSinImpuestosTotal / $cantidad, 2),
                     'aPagar' => $_SESSION["moneda_sel_sym"] . number_format($aPagarTotal / $cantidad, 2),
-                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null
+                    'comisionPorc' => ($tipo === 'vendedor') ? $comisionVendedorPorc : null,
+                    'comisionReservatePorc' => ($tipo === 'prestador') ? $comisionReservatePorc : null
                 ];
             }
         }

@@ -266,14 +266,15 @@ function verDetallePasajeros(idReservaHorarios) {
     success: function(response) {
       console.log('Response:', response); // Debug
       if (response.success && response.pasajeros && response.pasajeros.length > 0) {
-        var html = '<table class="table table-sm table-bordered"><thead><tr><th>Pasajero</th><th>Tarifa</th><th>A Pagar Prestador</th></tr></thead><tbody>';
+        var html = '<table class="table table-sm table-bordered"><thead><tr><th>Pasajero</th><th>Tarifa</th><th>A Pagar Prestador</th><th>Comision Reservate %</th></tr></thead><tbody>';
         response.pasajeros.forEach(function(p) {
-          html += '<tr><td>' + p.nombre + '</td><td>' + p.tarifa + '</td><td class="text-success font-weight-bold">' + (p.aPagar || 'N/A') + '</td></tr>';
+          var porcRes = (p.comisionReservatePorc !== undefined && p.comisionReservatePorc !== null) ? Number(p.comisionReservatePorc).toFixed(2) + '%' : 'N/A';
+          html += '<tr><td>' + p.nombre + '</td><td>' + p.tarifa + '</td><td class="text-success font-weight-bold">' + (p.aPagar || 'N/A') + '</td><td>' + porcRes + '</td></tr>';
         });
         html += '</tbody></table>';
         
         Swal.fire({
-          title: '<i class="fas fa-users"></i> Pasajeros del Voucher Prestador',
+          title: '<i class="fas fa-users" style="margin-right:8px;"></i> Pasajeros del Voucher Prestador',
           html: html,
           width: '650px',
           showCloseButton: true
