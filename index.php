@@ -379,6 +379,31 @@ if (empty($sliderImages)) {
               <?php if (count($OpinionesServicio) > 0) { ?>
               <p class="mb-0"><small><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
               <?php } ?>
+              
+              <!-- DISPONIBILIDAD (solo admin/vendedor/prestador) -->
+              <?php 
+              $mostrarDisp = false;
+              $salidasProxDisp = [];
+              if (isset($_SESSION['login']) && (
+                  $_SESSION['login']['idUsuario'] == 1 ||
+                  $_SESSION['login']['idVendedor'] > 0 ||
+                  $_SESSION['login']['idPrestador'] > 0
+              )) {
+                  $mostrarDisp = true;
+                  $salidasProxDisp = getProximasSalidasDisponibilidad($idServicio, 2);
+              }
+              ?>
+              <?php if ($mostrarDisp && !empty($salidasProxDisp)): ?>
+              <div style="font-size: 0.75rem; color: #0c5460; margin-top: 6px; padding: 4px 0;">
+                <strong>📅 Disponibilidad:</strong> 
+                <?php $textoD = []; 
+                foreach ($salidasProxDisp as $s) {
+                  $textoD[] = date('d/m', strtotime($s['fecha'])) . ' (' . ($s['disponibilidad'] > 0 ? $s['disponibilidad'] : 'AGOT.') . ')';
+                }
+                echo implode(' | ', $textoD);
+                ?>
+              </div>
+              <?php endif; ?>
             </div>
           </div>
         </a>
@@ -458,6 +483,31 @@ if (empty($sliderImages)) {
               <?php if (count($OpinionesServicio) > 0) { ?>
               <p class="mb-0"><small><?= $estrellasServicio ?>/10 - <?= count($OpinionesServicio) ?> <?= $lang["opiniones"] ?? "opiniones" ?></small></p>
               <?php } ?>
+              
+              <!-- DISPONIBILIDAD (solo admin/vendedor/prestador) -->
+              <?php 
+              $mostrarDispRest = false;
+              $salidasProxDispRest = [];
+              if (isset($_SESSION['login']) && (
+                  $_SESSION['login']['idUsuario'] == 1 ||
+                  $_SESSION['login']['idVendedor'] > 0 ||
+                  $_SESSION['login']['idPrestador'] > 0
+              )) {
+                  $mostrarDispRest = true;
+                  $salidasProxDispRest = getProximasSalidasDisponibilidad($idServicio, 2);
+              }
+              ?>
+              <?php if ($mostrarDispRest && !empty($salidasProxDispRest)): ?>
+              <div style="font-size: 0.75rem; color: #0c5460; margin-top: 6px; padding: 4px 0;">
+                <strong>📅 Disponibilidad:</strong> 
+                <?php $textoDR = []; 
+                foreach ($salidasProxDispRest as $sr) {
+                  $textoDR[] = date('d/m', strtotime($sr['fecha'])) . ' (' . ($sr['disponibilidad'] > 0 ? $sr['disponibilidad'] : 'AGOT.') . ')';
+                }
+                echo implode(' | ', $textoDR);
+                ?>
+              </div>
+              <?php endif; ?>
             </div>
           </div>
         </a>

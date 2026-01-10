@@ -766,4 +766,42 @@ function getSalidasVendedorFecha($fechaEspecifica) {
     return $resultado;
 }
 
+/**
+ * Obtiene las próximas salidas de un servicio con su disponibilidad
+ * Usado para mostrar en tarjetas de servicios en categorias.php e index.php
+ * 
+ * @param $idServicio ID del servicio
+ * @param $cantidadSalidas Cantidad de salidas a retornar (ej: 2 o 3)
+ * @return array Array de salidas con disponibilidad
+ */
+function getProximasSalidasDisponibilidad($idServicio, $cantidadSalidas = 3) {
+    require("conexion.php");
+    
+    $fechaHoy = date("Y-m-d");
+    $data = ["idServicio" => $idServicio, "fechaHoy" => $fechaHoy];
+    
+    $consulta = "SELECT 
+                    idServicioSalidas,
+                    fecha, 
+                    horaSalida,
+                    disponibilidad,
+                    disponibilidadOriginal,
+                    lugaresOcupados,
+                    anticipacionReserva
+                 FROM servicio_salidas 
+                 WHERE idServicio = :idServicio 
+                 AND fecha >= :fechaHoy
+                 AND disponibilidadOriginal > 0
+                 ORDER BY fecha ASC 
+                 LIMIT :limite";
+    
+    $comando = $pdo->prepare($consulta);
+    $comando->bindParam(':idServicio', $idServicio, PDO::PARAM_INT);
+    $comando->bindParam(':fechaHoy', $fechaHoy, PDO::PARAM_STR);
+    $comando->bindParam(':limite', $cantidadSalidas, PDO::PARAM_INT);
+    $comando->execute();
+    
+    return $comando->fetchAll(PDO::FETCH_ASSOC);
+}
+
 ?>

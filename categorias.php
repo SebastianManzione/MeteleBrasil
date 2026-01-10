@@ -1198,6 +1198,18 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               $fotos_servicio = getFotoMiniaturaServicio($idServicio);
               $ruta_foto = !empty($fotos_servicio) ? $fotos_servicio[0]["ruta"] : 'placeholder.jpg';
               $textoMiniatura = getTextoMiniatura($servicios[$i]["idTextoMiniaturas"])[0]["texto"] ?? '';
+              
+              // Obtener disponibilidad de próximas salidas (solo si es admin/vendedor/prestador)
+              $mostrarDisponibilidad = false;
+              $salidasProximas = [];
+              if (isset($_SESSION['login']) && (
+                  $_SESSION['login']['idUsuario'] == 1 ||  // Admin
+                  $_SESSION['login']['idVendedor'] > 0 ||  // Vendedor
+                  $_SESSION['login']['idPrestador'] > 0    // Prestador
+              )) {
+                  $mostrarDisponibilidad = true;
+                  $salidasProximas = getProximasSalidasDisponibilidad($idServicio, 3);
+              }
 
             ?>
               <!-- TARJETA SERVICIO HORIZONTAL -->
@@ -1223,6 +1235,23 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                               <h5 class="texto-opinion-desta"><strong><?= $estrellas_servicio; ?>/10</strong> <small class="text-gris"><?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?></small></h5>
                             <?php } ?>
                             <p class="text-gris d-md-block"><?= $descripcion_corta; ?></p>
+                            
+                            <!-- DISPONIBILIDAD (solo admin/vendedor/prestador) -->
+                            <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
+                              <div class="alert alert-info p-2 my-2 small" style="border-radius: 4px; margin-top: 8px;">
+                                <strong style="color: #0c5460;">📅 Próximas salidas:</strong>
+                                <ul class="mb-0 mt-1" style="font-size: 0.85rem; padding-left: 20px;">
+                                  <?php foreach (array_slice($salidasProximas, 0, 3) as $salida): ?>
+                                    <li style="color: #0c5460; margin-bottom: 4px;">
+                                      <?= date('d M', strtotime($salida['fecha'])) ?> - 
+                                      <span class="<?= $salida['disponibilidad'] > 0 ? 'text-success' : 'text-danger'; ?>" style="font-weight: bold;">
+                                        <?= $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] . ' ' . ($salida['disponibilidad'] == 1 ? 'lugar' : 'lugares') : 'AGOTADO'; ?>
+                                      </span>
+                                    </li>
+                                  <?php endforeach; ?>
+                                </ul>
+                              </div>
+                            <?php endif; ?>
                           </div>
                           <?php if(!empty($duracion_servicio)): ?>
                             <ul class="lista-caracteristicas d-md-none">
@@ -1248,6 +1277,19 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                           <div class="col-lg-4 col-12">
                             <?php if (!empty($cancelacion)) : ?>
                               <h4 class="text-success text-cancelacion semibold"><?= $cancelacion; ?></h4>
+                            <?php endif; ?>
+                            
+                            <!-- DISPONIBILIDAD DESKTOP (solo admin/vendedor/prestador) -->
+                            <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
+                              <div style="font-size: 0.85rem; color: #0c5460; margin-top: 4px;">
+                                <strong>📅 Próximas:</strong>
+                                <?php $textoDisp = []; 
+                                foreach (array_slice($salidasProximas, 0, 3) as $salida) {
+                                  $textoDisp[] = date('d/m', strtotime($salida['fecha'])) . ' (' . ($salida['disponibilidad'] > 0 ? $salida['disponibilidad'] : 'AGOT.') . ')';
+                                }
+                                echo implode(', ', $textoDisp);
+                                ?>
+                              </div>
                             <?php endif; ?>
                           </div>
                           <div class="col-lg-4 col-12">
