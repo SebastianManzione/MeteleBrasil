@@ -350,8 +350,13 @@ $isVendedor = ($idVendedor > 0);
 
               $tarifasVend = getTarifasReservadas($idServicioSalidasVend);
               
+              echo '<div style="background:orange; color:black; padding:5px; margin:5px;">';
+              echo "Salida $idServicioSalidasVend: " . $nombre_servicio_vend . " | Tarifas: " . count($tarifasVend) . " | mostrarTodosVendedor: " . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE');
+              echo '</div>';
+              
               // Si no hay tarifas y el filtro está activo, saltar
               if (empty($tarifasVend) && !$mostrarTodosVendedor) {
+                  echo '<div style="background:yellow;">SALTANDO (sin tarifas y filtro activo)</div>';
                   continue;
               }
 
