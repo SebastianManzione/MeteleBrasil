@@ -11,8 +11,8 @@ try {
     
     if (!$parent) {
         // Crear el padre si no existe
-        $pdo->exec("INSERT INTO admin_menu (label, route, icon, parent_id, orden, color_class) 
-                    VALUES ('Administración', '#', 'fas fa-cogs', NULL, 90, NULL)");
+        $pdo->exec("INSERT INTO admin_menu (label, route, icon, parent_id, color_class) 
+                    VALUES ('Administración', '#', 'fas fa-cogs', NULL, NULL)");
         $parent_id = $pdo->lastInsertId();
         echo "<p>✓ Menú padre 'Administración' creado (ID: $parent_id)</p>";
     } else {
@@ -29,9 +29,9 @@ try {
         echo "<p>ℹ 'Gestión Slider' ya existe en el menú (ID: {$existing['id']})</p>";
         $slider_menu_id = $existing['id'];
     } else {
-        // Insertar "Gestión Slider"
-        $stmt = $pdo->prepare("INSERT INTO admin_menu (label, route, icon, parent_id, orden, color_class) 
-                               VALUES ('Gestión Slider', 'sliderLista.php', 'fas fa-images', ?, 10, NULL)");
+        // Insertar "Gestión Slider" sin columna orden
+        $stmt = $pdo->prepare("INSERT INTO admin_menu (label, route, icon, parent_id, color_class) 
+                               VALUES ('Gestión Slider', 'sliderLista.php', 'fas fa-images', ?, NULL)");
         $stmt->execute([$parent_id]);
         $slider_menu_id = $pdo->lastInsertId();
         echo "<p>✓ 'Gestión Slider' agregado al menú (ID: $slider_menu_id)</p>";
