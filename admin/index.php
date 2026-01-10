@@ -321,6 +321,13 @@ $isVendedor = ($idVendedor > 0);
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
           $mostrarTodosVendedor = isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor';
+          
+          // DEBUG
+          error_log("========== VENDEDOR DEBUG ==========");
+          error_log("GET params: " . json_encode($_GET));
+          error_log("filtroVendedor: " . ($_GET['filtroVendedor'] ?? 'NOT SET'));
+          error_log("mostrarTodosVendedor boolean: " . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE'));
+          error_log("====================================");
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
