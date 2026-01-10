@@ -173,6 +173,8 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
     $horariosReserva = getReservaHorarios($idReserva);
     include_once(__DIR__ . "/salidas.php");
     include_once(__DIR__ . "/prestador.php");
+    include_once(__DIR__ . "/usuario.php");
+    include_once(__DIR__ . "/configuracion.php");
     include_once(__DIR__ . "/email_prestador_reserva_confirmada.php");
     include_once(__DIR__ . "/email_reserva_confirmada.php");
     include_once(__DIR__ . "/email_renderer.php");
@@ -180,6 +182,8 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
       $renderer = new EmailRenderer();
       $idioma = $_SESSION['idioma'] ?? 'ES';
       $codigo = $reserva[0]["codigoAmigable"];
+      
+      // Email al cliente
       $varsCliente = [
         'codigo_reserva' => $codigo,
         'enlace_reserva' => "http://metelebrasil.com/consultaReserva?reserva=" . $codigo
@@ -189,6 +193,32 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
 
       $resumail = enviaMail($reserva[0]["emailResponsable"], $renderCliente['asunto'], $renderCliente['html'], "metelebrasil.com");
       confirmaReserva($idReserva);
+      
+      // Email al vendedor (si tiene idVendedor)
+      if (isset($reserva[0]['idVendedor']) && $reserva[0]['idVendedor'] > 0) {
+          $vendedor = getUsuario($reserva[0]['idVendedor']);
+          if (!empty($vendedor) && !empty($vendedor[0]['email'])) {
+              $config = new Configuracion();
+              $asuntoVendedor = $config->obtener('email_vendedor_asunto', 'Nueva reserva confirmada - {{codigo_reserva}}');
+              $cuerpoVendedor = $config->obtener('email_vendedor_cuerpo', '<h2>¡Nueva Reserva Confirmada!</h2><p>Se ha confirmado una nueva reserva:</p><ul><li><strong>Código:</strong> {{codigo_reserva}}</li><li><strong>Cliente:</strong> {{nombre_cliente}}</li><li><strong>Email:</strong> {{email_cliente}}</li><li><strong>Total:</strong> {{total}}</li></ul>');
+              
+              // Reemplazar variables
+              $variables = [
+                  '{{codigo_reserva}}' => $codigo,
+                  '{{nombre_cliente}}' => $reserva[0]['nombreResponsable'] . ' ' . $reserva[0]['apellidoResponsable'],
+                  '{{email_cliente}}' => $reserva[0]['emailResponsable'],
+                  '{{total}}' => '$' . number_format($total_dolares, 2),
+                  '{{enlace_reserva}}' => "http://metelebrasil.com/admin/reservaDetalles?idReserva=" . $idReserva
+              ];
+              
+              $asuntoVendedor = str_replace(array_keys($variables), array_values($variables), $asuntoVendedor);
+              $cuerpoVendedor = str_replace(array_keys($variables), array_values($variables), $cuerpoVendedor);
+              
+              enviaMail($vendedor[0]['email'], $asuntoVendedor, $cuerpoVendedor, "metelebrasil.com");
+          }
+      }
+      
+      // Email a prestadores
       foreach ($horariosReserva as $key => $value) {
         $salida = getSalida($value['idServicioSalidas']);
         $prestador = getPrestador($salida[0]['idPrestador']);

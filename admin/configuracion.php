@@ -80,6 +80,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $config->guardar('recaptcha_secret_key', $_POST['recaptcha_secret_key'], 'string', 'reCAPTCHA Secret Key');
     }
     
+    // Email Vendedor
+    if (isset($_POST['email_vendedor_asunto'])) {
+        $config->guardar('email_vendedor_asunto', $_POST['email_vendedor_asunto'], 'string', 'Email Vendedor - Asunto');
+    }
+    if (isset($_POST['email_vendedor_cuerpo'])) {
+        $config->guardar('email_vendedor_cuerpo', $_POST['email_vendedor_cuerpo'], 'text', 'Email Vendedor - Cuerpo');
+    }
+    
     // Email SMTP
     if (isset($_POST['smtp_host'])) {
         $config->guardar('smtp_host', $_POST['smtp_host'], 'string', 'SMTP Host');
@@ -198,6 +206,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $config_data = [
     'sitio_nombre' => $config->obtener('sitio_nombre', 'MeteleBrasil'),
     'sitio_email' => $config->obtener('sitio_email', ''),
+    'email_vendedor_asunto' => $config->obtener('email_vendedor_asunto', 'Nueva reserva confirmada - {{codigo_reserva}}'),
+    'email_vendedor_cuerpo' => $config->obtener('email_vendedor_cuerpo', '<h2>¡Nueva Reserva Confirmada!</h2><p>Hola,</p><p>Se ha confirmado una nueva reserva:</p><ul><li><strong>Código:</strong> {{codigo_reserva}}</li><li><strong>Cliente:</strong> {{nombre_cliente}}</li><li><strong>Email:</strong> {{email_cliente}}</li><li><strong>Total:</strong> {{total}}</li></ul><p><a href="{{enlace_reserva}}">Ver detalles de la reserva</a></p>'),
     'sitio_telefono' => $config->obtener('sitio_telefono', ''),
     'google_client_id' => $config->obtener('google_client_id', ''),
     'google_client_secret' => $config->obtener('google_client_secret', ''),
@@ -438,6 +448,34 @@ $config_data = [
                             <a href="email_templates.php" class="btn btn-sm btn-primary ml-2">
                                 <i class="fas fa-envelope-open-text"></i> Editar plantillas de email
                             </a>
+                        </div>
+
+                        <!-- Email Vendedor -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0"><i class="fas fa-user-tie"></i> Email Automático a Vendedor</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> <strong>Variables disponibles:</strong>
+                                    <code>{{codigo_reserva}}</code>, <code>{{nombre_cliente}}</code>, <code>{{email_cliente}}</code>, <code>{{total}}</code>, <code>{{enlace_reserva}}</code>
+                                </div>
+                                
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Asunto del Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" name="email_vendedor_asunto" value="<?=htmlspecialchars($config_data['email_vendedor_asunto'])?" placeholder="Nueva reserva confirmada - {{codigo_reserva}}">
+                                        <small class="form-text text-muted">Usa variables como {{codigo_reserva}} para personalizar</small>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Cuerpo del Email (HTML)</label>
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" id="email_vendedor_cuerpo" name="email_vendedor_cuerpo" rows="10"><?=htmlspecialchars($config_data['email_vendedor_cuerpo'])?></textarea>
+                                        <small class="form-text text-muted">Puedes usar HTML y las variables mencionadas arriba</small>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="card">
