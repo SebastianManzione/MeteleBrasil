@@ -214,13 +214,18 @@ $isVendedor = ($idVendedor > 0);
                   }
               }
 
-              // Cantidad de reservas para esta salida
-              $cantidad_reservas = count($reservas_agrupadas);
+              // Cantidad de pasajeros reales para esta salida
+              $total_pasajeros = 0;
+              foreach ($reservas_agrupadas as $reserva) {
+                  $total_pasajeros += count($reserva['pasajeros']);
+              }
               
               // Saltar si el filtro está activo y no hay pasajeros
-              if (!$mostrarTodosPrestador && $cantidad_reservas == 0) {
+              if (!$mostrarTodosPrestador && $total_pasajeros == 0) {
                   continue;
               }
+              
+              $cantidad_reservas = count($reservas_agrupadas);
           ?>
           <div class="card <?= $cantidad_reservas > 0 ? 'card-primary' : 'card-secondary' ?> card-outline shadow-sm">
             <div class="card-header">
@@ -374,13 +379,18 @@ $isVendedor = ($idVendedor > 0);
                   }
               }
 
-              // Cantidad de reservas para esta salida
-              $cantidad_reservas_vend = count($reservas_agrupadas_vend);
+              // Cantidad de pasajeros reales para esta salida
+              $total_pasajerosVendedor = 0;
+              foreach ($reservas_agrupadas_vend as $reserva) {
+                  $total_pasajerosVendedor += count($reserva['pasajeros']);
+              }
               
               // Saltar si el filtro está activo y no hay pasajeros
-              if (!$mostrarTodosVendedor && $cantidad_reservas_vend == 0) {
+              if (!$mostrarTodosVendedor && $total_pasajerosVendedor == 0) {
                   continue;
               }
+              
+              $cantidad_reservas_vend = count($reservas_agrupadas_vend);
           ?>
           <div class="card <?= $cantidad_reservas_vend > 0 ? 'card-success' : 'card-secondary' ?> card-outline shadow-sm">
             <div class="card-header">
