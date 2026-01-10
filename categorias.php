@@ -1141,27 +1141,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       <!-- ÁREA DE SERVICIOS -->
       <div class="col-lg-9">
 
-        <!-- STATS MÓVIL -->
-        <div class="d-md-none py-3">
-          <div class="row text-center">
-            <div class="col-6 mb-2">
-              <div class="stat-number" style="font-size: 1.8rem;"><?= $cantidad_servicios_categoria; ?></div>
-              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'actividades'; ?></div>
-            </div>
-            <div class="col-6 mb-2">
-              <div class="stat-number" style="font-size: 1.8rem;"><?= $nViajeros; ?></div>
-              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'viajeros'; ?></div>
-            </div>
-            <div class="col-6 mb-2">
-              <div class="stat-number" style="font-size: 1.8rem;"><?= $cantidad_opiniones_categoria; ?></div>
-              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'opiniones'; ?></div>
-            </div>
-            <div class="col-6 mb-2">
-              <div class="stat-number" style="font-size: 1.8rem;">9,2</div>
-              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["puntuacion"]) ? $lang["puntuacion"] : 'puntuación'; ?></div>
-            </div>
-          </div>
-        </div>
 
         <!-- SERVICIOS -->
         <?php if (count($servicios) > 0) : ?>
