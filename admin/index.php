@@ -280,7 +280,7 @@ $isVendedor = ($idVendedor > 0);
         <?php endif; ?>
 
         <!-- Columna de Vendedores (Derecha) -->
-        <?php if ($isVendedor || $isAdmin): ?>
+        <?php if ($isAdmin): ?>
         <section class="<?= ($isPrestador || $isAdmin) ? 'col-lg-6' : 'col-lg-12' ?> connectedSortable">
           <h2 class="mb-3"><i class="fas fa-user-tie text-success"></i> Salidas de Vendedores</h2>
           <!-- Date Picker para seleccionar fecha de salidas vendedores -->
