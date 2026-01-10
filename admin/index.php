@@ -311,7 +311,7 @@ $isVendedor = ($idVendedor > 0);
                   <input type="hidden" name="fechaSalidas" value="<?php echo isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d'); ?>">
                   <input type="hidden" name="mostrarTodos" value="<?php echo isset($_GET['mostrarTodos']) ? $_GET['mostrarTodos'] : ''; ?>">
                   <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
-                  <input type="hidden" name="filtroVendedor" value="<?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor' ? '' : 'vendedor' ?>">
+                  <input type="hidden" name="filtroVendedor" value="<?= (!isset($_GET['filtroVendedor']) || $_GET['filtroVendedor'] != 'vendedor') ? 'vendedor' : '' ?>">
                 </form>
               </div>
             </div>
@@ -321,13 +321,6 @@ $isVendedor = ($idVendedor > 0);
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
           $mostrarTodosVendedor = isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor';
-          
-          // DEBUG
-          error_log("========== VENDEDOR DEBUG ==========");
-          error_log("GET params: " . json_encode($_GET));
-          error_log("filtroVendedor: " . ($_GET['filtroVendedor'] ?? 'NOT SET'));
-          error_log("mostrarTodosVendedor boolean: " . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE'));
-          error_log("====================================");
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
