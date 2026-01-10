@@ -302,7 +302,7 @@ $isVendedor = ($idVendedor > 0);
               </form>
               <div class="mt-3">
                 <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosVendedor" <?= (!isset($_GET['filtroVendedor']) || $_GET['filtroVendedor'] != 'vendedor') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosVendedor').submit();">
+                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosVendedor" <?= (!isset($_GET['mostrarTodosVend']) || $_GET['mostrarTodosVend'] != 'vendedor') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosVendedor').submit();">
                   <label class="custom-control-label" for="filtrarPasajerosVendedor">
                     Mostrar solo con pasajeros
                   </label>
@@ -311,7 +311,7 @@ $isVendedor = ($idVendedor > 0);
                   <input type="hidden" name="fechaSalidas" value="<?php echo isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d'); ?>">
                   <input type="hidden" name="mostrarTodos" value="<?php echo isset($_GET['mostrarTodos']) ? $_GET['mostrarTodos'] : ''; ?>">
                   <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
-                  <input type="hidden" name="filtroVendedor" value="<?= (!isset($_GET['filtroVendedor']) || $_GET['filtroVendedor'] != 'vendedor') ? 'vendedor' : '' ?>">
+                  <input type="hidden" name="mostrarTodosVend" value="<?= isset($_GET['mostrarTodosVend']) && $_GET['mostrarTodosVend'] == 'vendedor' ? '' : 'vendedor' ?>">
                 </form>
               </div>
             </div>
@@ -320,7 +320,7 @@ $isVendedor = ($idVendedor > 0);
           <?php
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
-          $mostrarTodosVendedor = isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor';
+          $mostrarTodosVendedor = isset($_GET['mostrarTodosVend']) && $_GET['mostrarTodosVend'] == 'vendedor';
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
