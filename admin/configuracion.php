@@ -464,7 +464,7 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Asunto del Email</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" name="email_vendedor_asunto" value="<?=htmlspecialchars($config_data['email_vendedor_asunto'])?" placeholder="Nueva reserva confirmada - {{codigo_reserva}}">
+                                        <input type="text" class="form-control" name="email_vendedor_asunto" value="<?=htmlspecialchars($config_data['email_vendedor_asunto'])?>" placeholder="Nueva reserva confirmada - {{codigo_reserva}}">
                                         <small class="form-text text-muted">Usa variables como {{codigo_reserva}} para personalizar</small>
                                     </div>
                                 </div>
