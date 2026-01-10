@@ -412,6 +412,10 @@ $isVendedor = ($idVendedor > 0);
                   $total_pasajerosVendedor += count($reserva['pasajeros']);
               }
               
+              echo '<div style="background:purple; color:white;">';
+              echo "Reservas agrupadas: " . count($reservas_agrupadas_vend) . " | Total pasajeros: " . $total_pasajerosVendedor;
+              echo '</div>';
+              
               // Mostrar badge según disponibilidad
               $cantidad_reservas_vend = count($reservas_agrupadas_vend);
               if ($cantidad_reservas_vend == 0) {
