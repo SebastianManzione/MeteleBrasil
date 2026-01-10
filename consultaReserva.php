@@ -2041,12 +2041,38 @@ array(9) {
         ?>
 
         <!--METODOS DE PAGO-->
-        <div class="col-md-6 py-3">
-            <div class="card card-visitas shadow-lg border-0" id="cardVisitas">
+        <style>
+            @keyframes slideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(-20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes pulseCheck {
+                0%, 100% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.1);
+                }
+            }
+            .card-confirmacion {
+                animation: slideIn 0.6s ease-out;
+            }
+            .check-icon {
+                animation: pulseCheck 0.6s ease-out 0.3s;
+            }
+        </style>
+        <div class="col-lg-12 col-md-12 py-3">
+            <div class="card card-visitas shadow-lg border-0 card-confirmacion" id="cardVisitas">
                 <div class="card-body text-center py-5">
                     <!-- Icono de éxito -->
                     <div class="mb-4">
-                        <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                        <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center check-icon" style="width: 80px; height: 80px;">
                             <i class="fas fa-check text-white" style="font-size: 40px;"></i>
                         </div>
                     </div>
