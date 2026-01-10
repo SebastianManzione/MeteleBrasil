@@ -1146,11 +1146,11 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           <div class="row text-center">
             <div class="col-6 mb-2">
               <div class="stat-number" style="font-size: 1.8rem;"><?= $cantidad_servicios_categoria; ?></div>
-              <div class="stat-label" style="font-size: 0.85rem;"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'actividades'; ?></div>
+              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'actividades'; ?></div>
             </div>
             <div class="col-6 mb-2">
               <div class="stat-number" style="font-size: 1.8rem;"><?= $nViajeros; ?></div>
-              <div class="stat-label" style="font-size: 0.85rem;"><?= isset($lang["viajeros"]) ? $lang["viajeros"] : 'viajeros'; ?></div>
+              <div class="stat-label" style="font-size: 0.75rem; word-wrap: break-word;"><?= isset($lang["viajeros"]) ? $lang["viajeros"] : 'viajeros'; ?></div>
             </div>
           </div>
         </div>
