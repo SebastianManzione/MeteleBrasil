@@ -2067,9 +2067,9 @@ array(9) {
                 animation: pulseCheck 0.6s ease-out 0.3s;
             }
         </style>
-        <div class="col-lg-12 col-md-12 py-3">
-            <div class="card card-visitas shadow-lg border-0 card-confirmacion" id="cardVisitas">
-                <div class="card-body text-center py-5">
+        <div class="col-lg-8 col-md-8 py-3">
+            <div class="card card-visitas shadow-lg border-0 card-confirmacion" id="cardVisitas" style="height: 100%;">
+                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
                     <!-- Icono de éxito -->
                     <div class="mb-4">
                         <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center check-icon" style="width: 80px; height: 80px;">
