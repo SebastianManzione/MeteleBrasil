@@ -997,6 +997,64 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       </form>
     </div>
     
+    <!-- CATEGORÍAS HORIZONTALES -->
+    <div class="mb-4">
+      <h5 class="mb-3" style="font-weight: 600; color: #333;">
+        <i class="fa fa-compass" style="color: #029ce2; margin-right: 8px;"></i>
+        <?= isset($lang["decidiste_que_hacer"]) ? $lang["decidiste_que_hacer"] : "¿Decidiste qué hacer?"; ?>
+      </h5>
+      <div class="d-flex flex-wrap gap-2" style="gap: 0.5rem;">
+        <?php
+        $todas_las_categorias = getCategorias();
+        
+        // Botón "Todas"
+        $urlParamsAll = "";
+        if (!empty($busqueda)) {
+          $urlParamsAll .= "buscar=" . urlencode($busqueda);
+        }
+        if (!empty($orden_precio)) {
+          $urlParamsAll .= (!empty($urlParamsAll) ? "&" : "") . "orden_precio=" . urlencode($orden_precio);
+        }
+        $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
+        ?>
+        <a href="categorias_backup?<?= $urlParamsAll ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+          <i class="fa fa-list-ul mr-1"></i>
+          <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
+        </a>
+        
+        <?php
+        // Iconos por categoría
+        $iconos = array(
+          2 => 'fa-ship',
+          4 => 'fa-suitcase',
+          6 => 'fa-hiking',
+          7 => 'fa-camera',
+          8 => 'fa-utensils'
+        );
+        
+        foreach ($todas_las_categorias as $cat) {
+          $idCategoria_item = $cat["idCategoria_servicio"];
+          $nombre_categoria_item = $cat["nombre_categoria_servicio"];
+          
+          $urlParams = "idCategoria=" . $idCategoria_item;
+          if (!empty($busqueda)) {
+            $urlParams .= "&buscar=" . urlencode($busqueda);
+          }
+          if (!empty($orden_precio)) {
+            $urlParams .= "&orden_precio=" . urlencode($orden_precio);
+          }
+          
+          $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
+          $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
+        ?>
+          <a href="categorias_backup?<?= $urlParams ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+            <i class="fa <?= $icono ?> mr-1"></i>
+            <?= $nombre_categoria_item ?>
+          </a>
+        <?php } ?>
+      </div>
+    </div>
+    
     <!-- BOTÓN FILTRO MÓVIL -->
     <div class="d-lg-none mb-3">
       <button class="btn btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#filterModal">
@@ -1018,16 +1076,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             </h6>
             <div>
               <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
-            </div>
-          </div>
-
-          <!-- FILTRO DE CATEGORÍAS -->
-          <div class="mb-4">
-            <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
-              <i class="fa fa-filter" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
-            </h6>
-            <div>
-              <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
             </div>
           </div>
 
@@ -1342,14 +1390,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           </h6>
           <div class="mb-4">
             <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
-          </div>
-
-          <!-- Categorías -->
-          <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
-            <i class="fa fa-filter" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
-          </h6>
-          <div class="mb-3">
-            <?= generarFiltrosCategorias($idCategoria, $busqueda, $orden_precio, $lang); ?>
           </div>
 
           <!-- Limpiar filtros -->
