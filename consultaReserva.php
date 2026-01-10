@@ -263,20 +263,30 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                 $cantCarrito = count($horTmp);
                             }
                             ?>
+                            <style>
+                                .btn-accordion[aria-expanded="true"] i.fa-chevron-down {
+                                    transform: rotate(180deg);
+                                }
+                                .btn-accordion i.fa-chevron-down {
+                                    transform: rotate(0deg);
+                                    transition: transform 0.3s ease;
+                                }
+                            </style>
 
                             <!--ACORDEON CARACTERISTICAS-->
                             <div class="accordion" id="faq1">
                                 <div class="card card-accordion">
                                     <div class="" id="headingOne">
                                         <h5 class="mb-0">
-                                            <a class="btn btn-accordion text-primary bg-white" href="#"
+                                            <a class="btn btn-accordion text-primary bg-white d-flex justify-content-between align-items-center w-100" href="#"
                                                data-toggle="collapse"
                                                data-target="#collapseOne2" aria-expanded="true"
-                                               aria-controls="collapseOne">
-                                                <p style="font-size: 20px;"> <?= $cantCarrito; ?> <?= $lang["servicios"] ?>
-                                                    <br>
-                                                    <small style="font-size:12px; color: #000;">Clique para
-                                                        fechar/expandir</small></p>
+                                               aria-controls="collapseOne" style="padding: 1rem;">
+                                                <div>
+                                                    <span class="badge badge-primary badge-pill mr-2"><i class="fas fa-shopping-bag mr-1"></i><?= $cantCarrito; ?></span>
+                                                    <span style="font-size: 18px; font-weight: 500;"><?= $lang["servicios"] ?></span>
+                                                </div>
+                                                <i class="fas fa-chevron-down text-primary" style="transition: transform 0.3s;"></i>
                                             </a>
                                         </h5>
                                     </div>
