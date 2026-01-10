@@ -364,19 +364,32 @@ $isVendedor = ($idVendedor > 0);
               foreach ($tarifasVend as $tarifaVend) {
                   $idReservaVend = $tarifaVend['idReserva'];
                   $idReservaTarifasVend = $tarifaVend['idReservaTarifas'];
+                  
+                  echo '<div style="background:pink; padding:3px;">Procesando tarifa: idReserva=' . $idReservaVend . '</div>';
 
                   if (!isset($reservas_agrupadas_vend[$idReservaVend])) {
                       $reserva_data_vend = getReservaId($idReservaVend);
-                      if (empty($reserva_data_vend)) continue;
+                      if (empty($reserva_data_vend)) {
+                          echo '<div style="background:lightcoral;">SKIP: Reserva no encontrada</div>';
+                          continue;
+                      }
 
                       $reservaVend = $reserva_data_vend[0];
                       
                       // Verificar que la reserva fue creada por un vendedor
                       $usuarioReserva = getUsuario($reservaVend['idUsuario']);
-                      if (empty($usuarioReserva) || $usuarioReserva[0]['idVendedor'] == 0) continue;
+                      if (empty($usuarioReserva) || $usuarioReserva[0]['idVendedor'] == 0) {
+                          echo '<div style="background:lightcoral;">SKIP: No es vendedor</div>';
+                          continue;
+                      }
                       
                       // Si es vendedor (no admin), solo mostrar sus propias reservas
-                      if (!$isAdmin && $reservaVend['idUsuario'] != $idUsuario) continue;
+                      if (!$isAdmin && $reservaVend['idUsuario'] != $idUsuario) {
+                          echo '<div style="background:lightcoral;">SKIP: No es su reserva</div>';
+                          continue;
+                      }
+                      
+                      echo '<div style="background:lightgreen;">AGREGADA: Reserva ' . $idReservaVend . '</div>';
 
                       // Agregar la reserva sin verificar si está pagada
                       $reservas_agrupadas_vend[$idReservaVend] = [
