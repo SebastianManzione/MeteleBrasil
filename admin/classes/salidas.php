@@ -771,7 +771,7 @@ function getSalidasVendedorFecha($fechaEspecifica) {
     else if ($idVendedor > 0) {
         $consulta = "SELECT DISTINCT ss.* 
                      FROM servicio_salidas ss
-                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idReservaHorarios
+                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idServicioSalidas
                      INNER JOIN reservas r ON rh.idReserva = r.idReserva
                      WHERE ss.fecha = :fecha 
                      AND r.idUsuario = :idUsuario
