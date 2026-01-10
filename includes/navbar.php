@@ -606,7 +606,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
  				<a  class="cursor  collapse text-white" id="cerrar-menu">X</a>
  			</div>
       <div class="col-4 text-left" >
-          <a style="margin-right: 2px;margin-left: 2px;" class="navbar-brand navbar-movil  " href="index"><h5 class="mb-0 text-white" style="font-size: 12px; font-weight: 700; line-height: 1.2;">METELE<br>BRASIL</h5> </a>
+          <a style="margin-right: 2px;margin-left: 2px;" class="navbar-brand navbar-movil  " href="index"><h5 class="mb-0 text-white" style="font-size: 11px; font-weight: 700; white-space: nowrap;">METELE BRASIL</h5> </a>
       </div>
 
 <div class="col-7 text-right" style="padding-right: 5px;">
