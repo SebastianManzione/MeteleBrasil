@@ -358,6 +358,8 @@ if ($idUsuario==$usuarios[$i]["idUsuario"]) {
               </div>
 
               <!-- /.col -->
+            </div>
+            <!-- /.row -->
 
 <!--arranca el mapa Google Maps!-->
 
@@ -438,69 +440,54 @@ function geocode(place) {
 
 </script>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label>Buscar ubicación en el mapa</label>
-            <input id='searchBox' type='text' class="form-control" placeholder="Buscar dirección..." />
-        </div>
-    </div>
-</div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Buscar ubicación en el mapa</label>
+                  <input id='searchBox' type='text' class="form-control" placeholder="Buscar dirección..." />
+                </div>
+              </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div id="myMap" style="position:relative;width:100%;height:400px;margin-bottom:20px;"></div>
-    </div>
-</div>
+            <div class="row">
+              <div class="col-md-12">
+                <div id="myMap" style="position:relative;width:100%;height:400px;margin-bottom:20px;"></div>
+              </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-12">
-        <div class="form-group">
-            <label>Dirección</label>
-            <input type="hidden" name="direccion" id="direccion" value="<?=$txtDireccion;?>">
-            <input type="text" name="txtDireccion" id="txtDireccion" class="form-control" placeholder="Dirección" value="<?=$txtDireccion?>" readonly>
-        </div>
-    </div>
-</div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label>Dirección</label>
+                  <input type="hidden" name="direccion" id="direccion" value="<?=$txtDireccion;?>">
+                  <input type="text" name="txtDireccion" id="txtDireccion" class="form-control" placeholder="Dirección" value="<?=$txtDireccion?>" readonly>
+                </div>
+              </div>
+            </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>Latitud</label>
-            <input type="hidden" name="latitud" id="latitud" value="<?=$txtLatitud?>">
-            <input type="text" name="txtLatitud" id="txtLatitud" class="form-control" placeholder="Latitud" value="<?=$txtLatitud?>" readonly>
-        </div>
-    </div>
-    
-    <div class="col-md-6">
-        <div class="form-group">
-            <label>Longitud</label>
-            <input type="hidden" name="longitud" id="longitud" value="<?=$txtLongitud?>">
-            <input type="text" name="txtLongitud" id="txtLongitud" class="form-control" placeholder="Longitud" value="<?=$txtLongitud?>" readonly>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Latitud</label>
+                  <input type="hidden" name="latitud" id="latitud" value="<?=$txtLatitud?>">
+                  <input type="text" name="txtLatitud" id="txtLatitud" class="form-control" placeholder="Latitud" value="<?=$txtLatitud?>" readonly>
+                </div>
+              </div>
+              
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Longitud</label>
+                  <input type="hidden" name="longitud" id="longitud" value="<?=$txtLongitud?>">
+                  <input type="text" name="txtLongitud" id="txtLongitud" class="form-control" placeholder="Longitud" value="<?=$txtLongitud?>" readonly>
+                </div>
+              </div>
             </div>
 
 
 
-            <!-- /.row -->
+
+              </div>
+            </div>
 
           </div>
 
