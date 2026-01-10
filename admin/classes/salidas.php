@@ -753,25 +753,11 @@ function getSalidasVendedorFecha($fechaEspecifica) {
     $idUsuario = $_SESSION["login"]["idUsuario"];
     $fecha = date('Y-m-d', strtotime($fechaEspecifica));
     
-    // Admin ve todas las salidas con reservas de vendedores
-    if ($idUsuario == 1) {
-        $consulta = "SELECT DISTINCT ss.* 
-                     FROM servicio_salidas ss
-                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idServicioSalidas
-                     INNER JOIN reservas r ON rh.idReserva = r.idReserva
-                     INNER JOIN usuario u ON r.idUsuario = u.idUsuario
-                     WHERE ss.fecha = :fecha 
-                     AND u.idVendedor > 0
-                     ORDER BY ss.horaSalida ASC";
-        $data = ["fecha" => $fecha];
-    }
-    // Vendedor ve TODAS las salidas en la fecha
-    else {
-        $consulta = "SELECT * FROM servicio_salidas 
-                     WHERE fecha = :fecha
-                     ORDER BY horaSalida ASC";
-        $data = ["fecha" => $fecha];
-    }
+    // Mostrar todas las salidas del día para admin y vendedores
+    $consulta = "SELECT * FROM servicio_salidas 
+                 WHERE fecha = :fecha
+                 ORDER BY horaSalida ASC";
+    $data = ["fecha" => $fecha];
     
     $comando = $pdo->prepare($consulta);
     $comando->execute($data);
