@@ -342,6 +342,7 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                                                                                                 <li>
                                                                                                                                     <i class="fas fa-calculator text-muted mr-1"></i><strong>Subtotal:</strong> <?= $moneda . formatarMonedaPorSimbolo($reservaTarifas[$j]["valorSinIva"] + $reservaTarifas[$j]["valorDeIva"], $moneda); ?>
                                                                                                                                 </li>
+                                                                                                                                <li class="my-2" style="border-bottom: 1px solid #e5e5e5;"></li>
                                                                                                                         <?php } ?>
 
                                                                                                                         <?php for ($j = 0; $j < count($adicionales); $j++) { ?>

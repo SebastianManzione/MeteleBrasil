@@ -84,6 +84,7 @@
 
                                     <li class="mt-2"><span class="badge badge-light border">Subtotal Reserva <?= $_SESSION['moneda_sel_sym'] . "" . $precioReserva; ?></span></li>
 
+                                    <hr class="my-2">
 
                                     <?php
 
