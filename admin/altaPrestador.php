@@ -361,37 +361,29 @@ if ($idUsuario==$usuarios[$i]["idUsuario"]) {
 
 <!--arranca el mapa Google Maps!-->
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=places,marker&loading=async&callback=initMap"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=places&callback=initMap"></script>
 
 <script type='text/javascript'>
 
 var localizacion = [];
 var map, geocoder, marker;
 
-async function initMap() {
-    // Importar las nuevas bibliotecas de Google Maps
-    const { Map } = await google.maps.importLibrary("maps");
-    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
-    const { PlaceAutocompleteElement } = await google.maps.importLibrary("places");
-    
+function initMap() {
     var initialLocation = { lat: -34.6037, lng: -58.3816 };
     
-    map = new Map(document.getElementById('myMap'), {
+    map = new google.maps.Map(document.getElementById('myMap'), {
         zoom: 12,
-        center: initialLocation,
-        mapId: 'METELE_BRASIL_MAP' // Requerido para AdvancedMarkerElement
+        center: initialLocation
     });
     
     geocoder = new google.maps.Geocoder();
     
-    // Usar AdvancedMarkerElement en lugar de Marker deprecado
-    marker = new AdvancedMarkerElement({
+    marker = new google.maps.Marker({
         map: map,
         position: initialLocation,
-        gmpDraggable: true
+        draggable: true
     });
     
-    // Usar PlaceAutocompleteElement en lugar de Autocomplete deprecado
     var searchInput = document.getElementById('searchBox');
     var autocomplete = new google.maps.places.Autocomplete(searchInput);
     
@@ -407,16 +399,15 @@ async function initMap() {
         
         map.setCenter(place.geometry.location);
         map.setZoom(17);
-        marker.position = place.geometry.location;
+        marker.setPosition(place.geometry.location);
         
         geocode(place);
     });
     
-    // Event listener para marcador arrastrable
     marker.addListener('dragend', function() {
-        var position = marker.position;
-        var lat = position.lat;
-        var lng = position.lng;
+        var position = marker.getPosition();
+        var lat = position.lat();
+        var lng = position.lng();
         
         geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
             if (status === 'OK' && results[0]) {
@@ -443,8 +434,6 @@ function geocode(place) {
     localizacion[1] = address;
     localizacion[2] = lat;
     localizacion[3] = lng;
-    
-    document.getElementById('output').innerHTML = 'Resultados:<br/>' + address;
 }
 
 </script>
