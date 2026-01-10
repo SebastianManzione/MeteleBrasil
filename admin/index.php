@@ -321,15 +321,7 @@ $isVendedor = ($idVendedor > 0);
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
           $mostrarTodosVendedor = isset($_GET['mostrarTodosVend']) && $_GET['mostrarTodosVend'] == 'vendedor';
-          
-          // DEBUG VISIBLE
-          echo '<div style="background:red; color:white; padding:10px; margin:10px;">';
-          echo 'mostrarTodosVend param: ' . ($_GET['mostrarTodosVend'] ?? 'NOT SET') . ' | ';
-          echo 'mostrarTodosVendedor value: ' . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE');
-          echo '</div>';
-
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
-          echo '<div style="background:blue; color:white; padding:10px; margin:10px;">Total salidas: ' . count($salidasVendedor) . '</div>';
 
           if (empty($salidasVendedor)) {
           ?>
@@ -350,32 +342,19 @@ $isVendedor = ($idVendedor > 0);
 
               $tarifasVend = getTarifasReservadas($idServicioSalidasVend);
               
-              echo '<div style="background:orange; color:black; padding:5px; margin:5px;">';
-              echo "Salida $idServicioSalidasVend: " . $nombre_servicio_vend . " | Tarifas: " . count($tarifasVend) . " | mostrarTodosVendedor: " . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE');
-              echo '</div>';
-              
               // Si no hay tarifas y el filtro está activo, saltar
               if (empty($tarifasVend) && !$mostrarTodosVendedor) {
-                  echo '<div style="background:yellow;">SALTANDO (sin tarifas y filtro activo)</div>';
                   continue;
-              }
-              
-              // DEBUG: Si mostrarTodosVendedor pero sin tarifas
-              if (empty($tarifasVend) && $mostrarTodosVendedor) {
-                  echo '<div style="background:cyan; color:black;">MOSTRANDO IGUAL (sin tarifas pero mostrarTodosVendedor=TRUE)</div>';
               }
 
               $reservas_agrupadas_vend = [];
               foreach ($tarifasVend as $tarifaVend) {
                   $idReservaVend = $tarifaVend['idReserva'];
                   $idReservaTarifasVend = $tarifaVend['idReservaTarifas'];
-                  
-                  echo '<div style="background:pink; padding:3px;">Procesando tarifa: idReserva=' . $idReservaVend . '</div>';
 
                   if (!isset($reservas_agrupadas_vend[$idReservaVend])) {
                       $reserva_data_vend = getReservaId($idReservaVend);
                       if (empty($reserva_data_vend)) {
-                          echo '<div style="background:lightcoral;">SKIP: Reserva no encontrada</div>';
                           continue;
                       }
 
@@ -384,17 +363,13 @@ $isVendedor = ($idVendedor > 0);
                       // Verificar que la reserva fue creada por un vendedor
                       $usuarioReserva = getUsuario($reservaVend['idUsuario']);
                       if (empty($usuarioReserva) || $usuarioReserva[0]['idVendedor'] == 0) {
-                          echo '<div style="background:lightcoral;">SKIP: No es vendedor</div>';
                           continue;
                       }
                       
                       // Si es vendedor (no admin), solo mostrar sus propias reservas
                       if (!$isAdmin && $reservaVend['idUsuario'] != $idUsuario) {
-                          echo '<div style="background:lightcoral;">SKIP: No es su reserva</div>';
                           continue;
                       }
-                      
-                      echo '<div style="background:lightgreen;">AGREGADA: Reserva ' . $idReservaVend . '</div>';
 
                       // Agregar la reserva sin verificar si está pagada
                       $reservas_agrupadas_vend[$idReservaVend] = [
@@ -416,10 +391,6 @@ $isVendedor = ($idVendedor > 0);
               foreach ($reservas_agrupadas_vend as $reserva) {
                   $total_pasajerosVendedor += count($reserva['pasajeros']);
               }
-              
-              echo '<div style="background:purple; color:white;">';
-              echo "Reservas agrupadas: " . count($reservas_agrupadas_vend) . " | Total pasajeros: " . $total_pasajerosVendedor;
-              echo '</div>';
               
               // Mostrar badge según disponibilidad
               $cantidad_reservas_vend = count($reservas_agrupadas_vend);
