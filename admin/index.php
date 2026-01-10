@@ -342,6 +342,11 @@ $isVendedor = ($idVendedor > 0);
               $idServicioSalidasVend = $salidaVend['idServicioSalidas'];
 
               $tarifasVend = getTarifasReservadas($idServicioSalidasVend);
+              
+              // Si no hay tarifas y el filtro está activo, saltar
+              if (empty($tarifasVend) && !$mostrarTodosVendedor) {
+                  continue;
+              }
 
               $reservas_agrupadas_vend = [];
               foreach ($tarifasVend as $tarifaVend) {
@@ -382,12 +387,11 @@ $isVendedor = ($idVendedor > 0);
                   $total_pasajerosVendedor += count($reserva['pasajeros']);
               }
               
-              // Saltar si el filtro está activo y no hay pasajeros
-              if (!$mostrarTodosVendedor && $total_pasajerosVendedor == 0) {
-                  continue;
-              }
-              
+              // Mostrar badge según disponibilidad
               $cantidad_reservas_vend = count($reservas_agrupadas_vend);
+              if ($cantidad_reservas_vend == 0) {
+                  $cantidad_reservas_vend = 0; // Sin reservas
+              }
           ?>
           <div class="card <?= $cantidad_reservas_vend > 0 ? 'card-success' : 'card-secondary' ?> card-outline shadow-sm">
             <div class="card-header">
