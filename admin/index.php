@@ -361,16 +361,11 @@ $isVendedor = ($idVendedor > 0);
                       // Si es vendedor (no admin), solo mostrar sus propias reservas
                       if (!$isAdmin && $reservaVend['idUsuario'] != $idUsuario) continue;
 
-                      $totalDolaresVend = $reservaVend["total_dolares"];
-                      $totalComprobantesVend = getComprobantesIdReservaDolar($idReservaVend);
-                      $diferenciaComprobantesPrecioVend = $totalDolaresVend - $totalComprobantesVend;
-
-                      if ($diferenciaComprobantesPrecioVend <= 0) {
-                          $reservas_agrupadas_vend[$idReservaVend] = [
-                              'detalles' => $reservaVend,
-                              'pasajeros' => []
-                          ];
-                      }
+                      // Agregar la reserva sin verificar si está pagada
+                      $reservas_agrupadas_vend[$idReservaVend] = [
+                          'detalles' => $reservaVend,
+                          'pasajeros' => []
+                      ];
                   }
 
                   if (isset($reservas_agrupadas_vend[$idReservaVend])) {
@@ -387,12 +382,8 @@ $isVendedor = ($idVendedor > 0);
                   $total_pasajerosVendedor += count($reserva['pasajeros']);
               }
               
-              // DEBUG
-              echo "<!-- DEBUG VENDEDOR: mostrarTodosVendedor=" . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE') . " total_pasajeros=" . $total_pasajerosVendedor . " idServicioSalidas=" . $idServicioSalidasVend . " -->";
-              
               // Saltar si el filtro está activo y no hay pasajeros
               if (!$mostrarTodosVendedor && $total_pasajerosVendedor == 0) {
-                  echo "<!-- SALTANDO salida sin pasajeros -->";
                   continue;
               }
               
