@@ -117,27 +117,35 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
     $c = 2 * atan2(sqrt($a), sqrt(1-$a));
     return $R * $c;
 }
+
+// Obtener imágenes del slider desde BD
+$sliderImages = [];
+try {
+    $stmt = $mysqli->query("SELECT imagen FROM slider WHERE activo = 1 ORDER BY orden ASC");
+    if ($stmt) {
+        while ($row = $stmt->fetch_assoc()) {
+            $sliderImages[] = $row['imagen'];
+        }
+    }
+} catch (Exception $e) {
+    // Fallback a imágenes por defecto
+}
+if (empty($sliderImages)) {
+    $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
+}
 ?>
 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators">
-    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+    <?php foreach ($sliderImages as $index => $img): ?>
+      <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
+    <?php endforeach; ?>
   </ol>
   <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img class="img-fluid img-slider" src="img/slider4.jpg" alt="Slider 1">
-    </div>
-    <div class="carousel-item">
-      <img class="img-fluid img-slider" src="img/slider2.jpg" alt="Slider 2">
-    </div>
-    <div class="carousel-item">
-      <img class="img-fluid img-slider" src="img/slider3.jpg" alt="Slider 3">
-    </div>
-    <div class="carousel-item">
-      <img class="img-fluid img-slider" src="img/slider1.jpg" alt="Slider 4">
-    </div>
+    <?php foreach ($sliderImages as $index => $imagen): ?>
+      <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+        <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
+      </div>
+    <?php endforeach; ?>
   </div>
   <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
     <span class="carousel-control-prev-icon" aria-hidden="true"></span>

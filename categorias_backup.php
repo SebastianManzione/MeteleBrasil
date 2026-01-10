@@ -97,6 +97,27 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
+// Obtener imágenes del slider desde BD
+$sliderImages = [];
+try {
+    require_once(__DIR__ . '/config/config.php');
+    $mysqli_slider = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    if (!$mysqli_slider->connect_error) {
+        $stmt = $mysqli_slider->query("SELECT imagen FROM slider WHERE activo = 1 ORDER BY orden ASC");
+        if ($stmt) {
+            while ($row = $stmt->fetch_assoc()) {
+                $sliderImages[] = $row['imagen'];
+            }
+        }
+        $mysqli_slider->close();
+    }
+} catch (Exception $e) {
+    // Fallback a imágenes por defecto
+}
+if (empty($sliderImages)) {
+    $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
+}
+
 // ========== APLICAR ORDENAMIENTO (ANTES DE PAGINACIÓN) ==========
 // Combinable: proximidad (cercano/lejano) + precio (asc/desc)
 if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
@@ -918,24 +939,16 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   <!-- SLIDER CON BÚSQUEDA INTEGRADA -->
   <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
-      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-      <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+      <?php foreach ($sliderImages as $index => $img): ?>
+        <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
+      <?php endforeach; ?>
     </ol>
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img class="img-fluid img-slider" src="img/slider4.jpg" alt="Slider 1">
-      </div>
-      <div class="carousel-item">
-        <img class="img-fluid img-slider" src="img/slider2.jpg" alt="Slider 2">
-      </div>
-      <div class="carousel-item">
-        <img class="img-fluid img-slider" src="img/slider3.jpg" alt="Slider 3">
-      </div>
-      <div class="carousel-item">
-        <img class="img-fluid img-slider" src="img/slider1.jpg" alt="Slider 4">
-      </div>
+      <?php foreach ($sliderImages as $index => $imagen): ?>
+        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+          <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
+        </div>
+      <?php endforeach; ?>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
