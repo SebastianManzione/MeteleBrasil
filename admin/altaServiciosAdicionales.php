@@ -52,31 +52,19 @@ $idMonedaPost=$_POST["idMoneda"];
 
 for ($i=0; $i < count($idServicioSalidasPost); $i++) { //salidas
 
-
 $idServicioSalidas=$idServicioSalidasPost[$i];
-$descripcion="";
-
-if (isset($descripcionPost[$i])) {
-
-$descripcion=$descripcionPost[$i];
-
-}
-
-
 
   $salidas=getSalida($idServicioSalidas);
-
 
    foreach ($svAdicionales as $key => $value) { //sv adicionales
 
     $precio=0;
     $idMoneda=$salidas[0]["idMoneda"]; // Default to salida currency
+    $descripcion=""; // Initialize description for each service
 
       foreach ($svAdicionalesPre as $key2 => $value2) { //precios
 
       if ($value2>0 && $key2==$key) {
-
- 
 
         $precio=$value2;
 
@@ -89,6 +77,11 @@ $descripcion=$descripcionPost[$i];
     // Use currency from form if provided, otherwise use salida currency
     if (isset($idMonedaPost[$key]) && !empty($idMonedaPost[$key])) {
       $idMoneda = $idMonedaPost[$key];
+    }
+
+    // Get description for this specific service adicional
+    if (isset($descripcionPost[$key]) && !empty($descripcionPost[$key])) {
+      $descripcion = $descripcionPost[$key];
     }
 
   $salidaAdicionalesSalida=   setServiciosAdicionalesSalida($idServicioSalidas, $key, $precio,  $idMoneda,  $descripcion);
