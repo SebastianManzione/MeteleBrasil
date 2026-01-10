@@ -359,6 +359,11 @@ $isVendedor = ($idVendedor > 0);
                   echo '<div style="background:yellow;">SALTANDO (sin tarifas y filtro activo)</div>';
                   continue;
               }
+              
+              // DEBUG: Si mostrarTodosVendedor pero sin tarifas
+              if (empty($tarifasVend) && $mostrarTodosVendedor) {
+                  echo '<div style="background:cyan; color:black;">MOSTRANDO IGUAL (sin tarifas pero mostrarTodosVendedor=TRUE)</div>';
+              }
 
               $reservas_agrupadas_vend = [];
               foreach ($tarifasVend as $tarifaVend) {
