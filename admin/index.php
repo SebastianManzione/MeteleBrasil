@@ -387,8 +387,12 @@ $isVendedor = ($idVendedor > 0);
                   $total_pasajerosVendedor += count($reserva['pasajeros']);
               }
               
+              // DEBUG
+              echo "<!-- DEBUG VENDEDOR: mostrarTodosVendedor=" . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE') . " total_pasajeros=" . $total_pasajerosVendedor . " idServicioSalidas=" . $idServicioSalidasVend . " -->";
+              
               // Saltar si el filtro está activo y no hay pasajeros
               if (!$mostrarTodosVendedor && $total_pasajerosVendedor == 0) {
+                  echo "<!-- SALTANDO salida sin pasajeros -->";
                   continue;
               }
               

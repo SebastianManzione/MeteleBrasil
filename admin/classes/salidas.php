@@ -767,13 +767,16 @@ function getSalidasVendedorFecha($fechaEspecifica) {
                      ORDER BY ss.horaSalida ASC";
         $data = ["fecha" => $fecha];
     }
-    // Vendedor ve todas las salidas (igual que prestador), no solo las con reservas
+    // Vendedor ve solo sus propias salidas con reservas
     else if ($idVendedor > 0) {
-        // Retorna todas las salidas en la fecha
-        $consulta = "SELECT * FROM servicio_salidas 
-                     WHERE fecha = :fecha
-                     ORDER BY horaSalida ASC";
-        $data = ["fecha" => $fecha];
+        $consulta = "SELECT DISTINCT ss.* 
+                     FROM servicio_salidas ss
+                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idServicioSalidas
+                     INNER JOIN reservas r ON rh.idReserva = r.idReserva
+                     WHERE ss.fecha = :fecha 
+                     AND r.idUsuario = :idUsuario
+                     ORDER BY ss.horaSalida ASC";
+        $data = ["fecha" => $fecha, "idUsuario" => $idUsuario];
     }
     else {
         // Si no es admin ni vendedor, retornar vacío
