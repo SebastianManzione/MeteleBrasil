@@ -12,11 +12,20 @@ try {
       `orden` int(11) NOT NULL DEFAULT 0,
       `activo` tinyint(1) NOT NULL DEFAULT 1,
       `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (`idSlider`)
+      PRIMARY KEY (`idSlider`),
+      KEY `idx_orden` (`orden`),
+      KEY `idx_activo` (`activo`)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
     
     $pdo->exec($sql);
     echo "<p>✓ Tabla 'slider' creada correctamente</p>";
+    
+    // Verificar si existe la columna 'orden' (por si la tabla ya existía)
+    $stmt = $pdo->query("SHOW COLUMNS FROM slider LIKE 'orden'");
+    if ($stmt->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE slider ADD COLUMN orden int(11) NOT NULL DEFAULT 0 AFTER imagen");
+        echo "<p>✓ Columna 'orden' agregada</p>";
+    }
     
     // Verificar si ya hay datos
     $stmt = $pdo->query("SELECT COUNT(*) as total FROM slider");
