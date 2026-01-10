@@ -2045,7 +2045,7 @@ array(9) {
             @keyframes slideIn {
                 from {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateY(-30px);
                 }
                 to {
                     opacity: 1;
@@ -2057,21 +2057,21 @@ array(9) {
                     transform: scale(1);
                 }
                 50% {
-                    transform: scale(1.1);
+                    transform: scale(1.15);
                 }
             }
             .card-confirmacion {
-                animation: slideIn 0.6s ease-out;
+                animation: slideIn 1.2s ease-out;
             }
             .check-icon {
-                animation: pulseCheck 0.6s ease-out 0.3s;
+                animation: pulseCheck 1s ease-out 0.5s;
             }
         </style>
         <div class="col-lg-8 col-md-8 py-3">
             <div class="card card-visitas shadow-lg border-0 card-confirmacion" id="cardVisitas" style="height: 100%;">
-                <div class="card-body text-center d-flex flex-column justify-content-center py-5">
+                <div class="card-body text-center d-flex flex-column justify-content-center" style="padding-top: 2rem; padding-bottom: 3rem;">
                     <!-- Icono de éxito -->
-                    <div class="mb-4">
+                    <div class="mb-3">
                         <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center check-icon" style="width: 80px; height: 80px;">
                             <i class="fas fa-check text-white" style="font-size: 40px;"></i>
                         </div>
