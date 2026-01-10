@@ -331,7 +331,7 @@ try {
            </li>
 
             <li class="nav-item mx-0 mx-lg-1 dropdown"  id="drpMonedaSel">
-   <a class="nav-link py-3 px-0 px-lg-3 rounded-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdown" onclick="muestraMenuMonedas()" ><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
+   <a class="nav-link py-3 px-0 px-lg-3 rounded-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdown"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
      <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdown" id="divMonedaSel">
        <?php 
     require_once("admin/classes/moneda.php");
@@ -623,7 +623,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
       </div>
     </li>
     <li>
-      <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile" onclick="muestraMenuMonedas()"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
+      <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
      <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" id="divMonedaSel">
        <?php 
 for ($i=0; $i < count($monedas); $i++) { 
