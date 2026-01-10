@@ -1,4 +1,8 @@
 <?php
+// ========== CONFIGURACIÓN DE DISPONIBILIDAD ==========
+// Personalizar cantidad de salidas a mostrar en tarjetas
+define('DISPONIBILIDAD_SALIDAS_INDEX', 2); // 2, 3, o 4 salidas
+
 include("includes/navbar.php");
 require("admin/classes/opiniones_categoria.php");
 require_once("admin/classes/salidas.php");
@@ -390,7 +394,7 @@ if (empty($sliderImages)) {
                   $_SESSION['login']['idPrestador'] > 0
               )) {
                   $mostrarDisp = true;
-                  $salidasProxDisp = getProximasSalidasDisponibilidad($idServicio, 2);
+                  $salidasProxDisp = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_INDEX);
               }
               ?>
               <?php if ($mostrarDisp && !empty($salidasProxDisp)): ?>
@@ -494,7 +498,7 @@ if (empty($sliderImages)) {
                   $_SESSION['login']['idPrestador'] > 0
               )) {
                   $mostrarDispRest = true;
-                  $salidasProxDispRest = getProximasSalidasDisponibilidad($idServicio, 2);
+                  $salidasProxDispRest = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_INDEX);
               }
               ?>
               <?php if ($mostrarDispRest && !empty($salidasProxDispRest)): ?>

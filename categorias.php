@@ -2,6 +2,10 @@
 
 include('includes/navbar.php');
 
+// ========== CONFIGURACIÓN DE DISPONIBILIDAD ==========
+// Personalizar cantidad de salidas a mostrar en tarjetas
+define('DISPONIBILIDAD_SALIDAS_CATEGORIAS', 3); // 2, 3, o 4 salidas
+
 // Initialize session variables with defaults if not set (AFTER navbar.php)
 if (!isset($_SESSION["idioma"])) {
     $_SESSION["idioma"] = "es";
@@ -1208,7 +1212,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                   $_SESSION['login']['idPrestador'] > 0    // Prestador
               )) {
                   $mostrarDisponibilidad = true;
-                  $salidasProximas = getProximasSalidasDisponibilidad($idServicio, 3);
+                  $salidasProximas = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_CATEGORIAS);
               }
 
             ?>
@@ -1238,14 +1242,17 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                             
                             <!-- DISPONIBILIDAD (solo admin/vendedor/prestador) -->
                             <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
-                              <div class="alert alert-info p-2 my-2 small" style="border-radius: 4px; margin-top: 8px;">
-                                <strong style="color: #0c5460;">📅 Próximas salidas:</strong>
-                                <ul class="mb-0 mt-1" style="font-size: 0.85rem; padding-left: 20px;">
-                                  <?php foreach (array_slice($salidasProximas, 0, 3) as $salida): ?>
-                                    <li style="color: #0c5460; margin-bottom: 4px;">
-                                      <?= date('d M', strtotime($salida['fecha'])) ?> - 
-                                      <span class="<?= $salida['disponibilidad'] > 0 ? 'text-success' : 'text-danger'; ?>" style="font-weight: bold;">
-                                        <?= $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] . ' ' . ($salida['disponibilidad'] == 1 ? 'lugar' : 'lugares') : 'AGOTADO'; ?>
+                              <div class="alert alert-info p-2 my-2 small disponibilidad-alert" style="border-radius: 6px; background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%); border: 1px solid #0c5460; margin-top: 10px;">
+                                <strong style="color: #0c5460; display: block; margin-bottom: 6px;">
+                                  <i class="fa fa-calendar-alt" style="color: #029ce2; margin-right: 4px;"></i>
+                                  Próximas salidas
+                                </strong>
+                                <ul class="mb-0 mt-1" style="font-size: 0.85rem; padding-left: 20px; color: #0c5460;">
+                                  <?php foreach (array_slice($salidasProximas, 0, DISPONIBILIDAD_SALIDAS_CATEGORIAS) as $salida): ?>
+                                    <li style="margin-bottom: 4px; line-height: 1.4;">
+                                      <strong><?= date('d M', strtotime($salida['fecha'])) ?></strong>
+                                      <span class="<?= $salida['disponibilidad'] > 0 ? 'text-success' : 'text-danger'; ?>" style="font-weight: bold; margin-left: 4px;">
+                                        <?= $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] . ' ' . ($salida['disponibilidad'] == 1 ? 'lugar' : 'lugares') : '⚠️ AGOTADO'; ?>
                                       </span>
                                     </li>
                                   <?php endforeach; ?>
@@ -1281,13 +1288,15 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                             
                             <!-- DISPONIBILIDAD DESKTOP (solo admin/vendedor/prestador) -->
                             <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
-                              <div style="font-size: 0.85rem; color: #0c5460; margin-top: 4px;">
-                                <strong>📅 Próximas:</strong>
+                              <div style="font-size: 0.85rem; color: #029ce2; margin-top: 6px; padding: 4px 0; font-weight: 500;">
+                                <i class="fa fa-calendar-alt" style="margin-right: 4px;"></i>
+                                <strong>Disponibilidad:</strong>
                                 <?php $textoDisp = []; 
-                                foreach (array_slice($salidasProximas, 0, 3) as $salida) {
-                                  $textoDisp[] = date('d/m', strtotime($salida['fecha'])) . ' (' . ($salida['disponibilidad'] > 0 ? $salida['disponibilidad'] : 'AGOT.') . ')';
+                                foreach (array_slice($salidasProximas, 0, DISPONIBILIDAD_SALIDAS_CATEGORIAS) as $salida) {
+                                  $disp = $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] : 'AGOT.';
+                                  $textoDisp[] = date('d/m', strtotime($salida['fecha'])) . ' (' . $disp . ')';
                                 }
-                                echo implode(', ', $textoDisp);
+                                echo implode(' | ', $textoDisp);
                                 ?>
                               </div>
                             <?php endif; ?>
