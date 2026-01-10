@@ -25,8 +25,37 @@ require("admin/classes/parametros.php");
 require("admin/classes/servicio.php");
 require("admin/classes/fotos_servicio.php");
 include("admin/classes/geolocalizacion.php");
+require("admin/classes/visitas.php");
 
 $parametros=getParametros();
+
+// ========== REGISTRO DE VISITANTES ==========
+// Solo registrar si no es una solicitud AJAX y el usuario no está logueado en admin
+if (!isset($_SESSION['visitante_registrado_hoy']) && 
+    (!isset($_SERVER['HTTP_X_REQUESTED_WITH']) || $_SERVER['HTTP_X_REQUESTED_WITH'] !== 'XMLHttpRequest') &&
+    (!isset($_SESSION['login']['idUsuario']) || $_SESSION['login']['idUsuario'] != 1)) {
+  
+  // Determinar referencia (de dónde llega el visitante)
+  $referencia = $_SERVER['HTTP_REFERER'] ?? 'Directo';
+  if (strpos($referencia, $_SERVER['HTTP_HOST']) !== false) {
+    $referencia = 'Interno';
+  } elseif (empty($referencia) || $referencia === '') {
+    $referencia = 'Directo';
+  }
+  
+  // Registrar visitante
+  registrarVisitante(
+    'Visitante',
+    '',
+    '',
+    0,
+    $referencia
+  );
+  
+  // Marcar que se registró hoy (para no registrar múltiples veces por sesión)
+  $_SESSION['visitante_registrado_hoy'] = true;
+}
+
 
 // ========== DEBUG MODE (solo admin) ==========
 if (isset($_SESSION["login"]['idUsuario']) && $_SESSION['login']['idUsuario']==1 && false) {
