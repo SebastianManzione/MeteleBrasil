@@ -39,3 +39,8 @@ if (!defined('APP_ENV')) {
         define('DB_PASS', 'Cambiar2026');
     }
 }
+
+// =======================================
+// CONFIGURACIÓN GOOGLE MAPS API
+// =======================================
+define('GOOGLE_MAPS_API_KEY', 'AIzaSyDdetJDksIXOsWVt7UQx9EF3ulkhYNJsmE');

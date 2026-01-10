@@ -5,6 +5,9 @@ require_once(__DIR__ . "/includes/permisos_helper.php");
 $permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
 $permisos->verificarAcceso('altaSalidas');
 
+// Incluir configuración para acceder a GOOGLE_MAPS_API_KEY
+require_once(__DIR__ . "/../config/config.php");
+
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
@@ -1526,115 +1529,127 @@ $prestadores=getPrestadoresIdServicioComision($idServicio);
 
 
 
-<div class="col-md-12" style="padding-top: 30px;" id="searchBoxDIV">
-
-
-
-                                    <h5 >
-
-
-
-                                        <label class="m-0 text-dark"><?=$lang["indique_el_punto_de_salida"];?></label>
-
-
-
-                                    </h5>
-
-
-
-
-
-
-
-
-
-                                          <div id=myMap></div>
-
-
-
-
-
-
-
-
-
-                                        <div id='output' style="margin-left:10px;float:left;"></div>
-
-
-
-                                    </div>
-
-
-
-
-
-     <div id="map" style="  height: 500px;"></div>
-
- <script type="text/javascript" src="js/mapGoogle.js?ver=<?php echo(rand()); ?>"></script>
-
-                              <div class="col-md-12" style="margin-top: 20px;">
-
-
-
-                                <div class="form-inline">
-
-
-
-                                       <div class="form-group">
-
-
-
-                                        <label class="label-default "><?=$lang["direccion"];?></label>
-
-
-
-                                        <input type="text" class="form-control" placeholder="Direccion" id="txtDireccion2" readonly>
-
-
-
-                                        </div>
-
-
-
-                                     <div class="form-group">
-
-
-
-                                        <label class="label-default "><?=$lang["latitud"];?></label>
-
-
-
-                                        <input type="text" name="txtLatitud" id="txtLatitud" class="form-control" placeholder="Latitud" readonly>
-
-
-
-                                    </div>
-
-
-
-                                        <div class="form-group">
-
-
-
-                                        <label class="label-default "><?=$lang["longitud"];?></label>
-
-
-
-                                        <input type="text" name="txtLongitud" id="txtLongitud" class="form-control" placeholder="Longitud" readonly>
-
-
-
-                                    </div>
-
-
-
-                                </div>
-
-
-
-                          </div>
-
-
+<!--arranca el mapa Google Maps!-->
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=places&callback=initMapSalidas"></script>
+
+<script type='text/javascript'>
+
+var localizacionSalida = [];
+var mapSalida, geocoderSalida, markerSalida;
+
+function initMapSalidas() {
+    var initialLocation = { lat: -34.6037, lng: -58.3816 };
+    
+    mapSalida = new google.maps.Map(document.getElementById('myMapSalida'), {
+        zoom: 12,
+        center: initialLocation
+    });
+    
+    geocoderSalida = new google.maps.Geocoder();
+    
+    markerSalida = new google.maps.Marker({
+        map: mapSalida,
+        position: initialLocation,
+        draggable: true
+    });
+    
+    var searchInput = document.getElementById('searchBoxSalida');
+    var autocomplete = new google.maps.places.Autocomplete(searchInput);
+    
+    autocomplete.bindTo('bounds', mapSalida);
+    
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        
+        if (!place.geometry) {
+            window.alert('Seleccione un lugar de la lista');
+            return;
+        }
+        
+        mapSalida.setCenter(place.geometry.location);
+        mapSalida.setZoom(17);
+        markerSalida.setPosition(place.geometry.location);
+        
+        geocodeSalida(place);
+    });
+    
+    markerSalida.addListener('dragend', function() {
+        var position = markerSalida.getPosition();
+        var lat = position.lat();
+        var lng = position.lng();
+        
+        geocoderSalida.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                geocodeSalida(results[0]);
+            }
+        });
+    });
+}
+
+function geocodeSalida(place) {
+    var lat = place.geometry.location.lat();
+    var lng = place.geometry.location.lng();
+    var address = place.formatted_address;
+    
+    $('#txtDireccion2').val(address);
+    $('#txtDireccion').val(address);
+    $('#txtLatitud').val(lat);
+    $('#txtLongitud').val(lng);
+    
+    localizacionSalida[0] = address;
+    localizacionSalida[1] = lat;
+    localizacionSalida[2] = lng;
+}
+
+</script>
+
+<div class="col-md-12" style="padding-top: 30px;">
+    <h5>
+        <label class="m-0 text-dark"><?=$lang["indique_el_punto_de_salida"];?></label>
+    </h5>
+</div>
+
+<div class="col-md-12">
+    <div class="form-group">
+        <label>Buscar ubicación en el mapa</label>
+        <input id='searchBoxSalida' type='text' class="form-control" placeholder="Buscar dirección..." />
+    </div>
+</div>
+
+<div class="col-md-12">
+    <div id="myMapSalida" style="position:relative;width:100%;height:400px;margin-bottom:20px;"></div>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label><?=$lang["direccion"];?></label>
+                <input type="text" class="form-control" placeholder="Dirección" id="txtDireccion2" readonly>
+                <input type="hidden" name="txtDireccion" id="txtDireccion" class="form-control" readonly>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label><?=$lang["latitud"];?></label>
+                <input type="text" name="txtLatitud" id="txtLatitud" class="form-control" placeholder="Latitud" readonly>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="form-group">
+                <label><?=$lang["longitud"];?></label>
+                <input type="text" name="txtLongitud" id="txtLongitud" class="form-control" placeholder="Longitud" readonly>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12">
 
                            <hr color="green" size=0.5 width="100%">
 
