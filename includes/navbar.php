@@ -330,7 +330,7 @@ try {
             </div>
            </li>
 
-            <li class="nav-item mx-0 mx-lg-1 dropdown"  id="drpMonedaSel">
+            <li class="nav-item mx-0 mx-lg-1 dropdown d-none d-lg-block"  id="drpMonedaSel">
    <a class="nav-link py-3 px-0 px-lg-3 rounded-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdown"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
      <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdown" id="divMonedaSel">
        <?php 
