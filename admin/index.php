@@ -116,7 +116,6 @@ $isVendedor = ($idVendedor > 0);
             <div class="card-body">
               <?php
               $estadisticasVisitantes = getEstadisticasVisitantes();
-              $visitantesRecientes = getVisitantesRecientes(5);
               ?>
               <div class="row">
                 <div class="col-lg-3 col-6">
@@ -156,49 +155,10 @@ $isVendedor = ($idVendedor > 0);
                   </div>
                 </div>
               </div>
-
-              <!-- Tabla de Visitantes Recientes -->
-              <div class="row mt-4">
-                <div class="col-lg-12">
-                  <div class="card card-outline card-info">
-                    <div class="card-header">
-                      <h3 class="card-title">Visitantes Recientes</h3>
-                      <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
-                      </div>
-                    </div>
-                    <div class="card-body table-responsive p-0">
-                      <table class="table table-striped table-hover table-bordered">
-                        <thead class="thead-light">
-                          <tr class="text-center">
-                            <th style="width: 35%;">Página</th>
-                            <th style="width: 25%;">Lugar / Referencia</th>
-                            <th style="width: 20%;">IP</th>
-                            <th style="width: 20%;">Fecha/Hora</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <?php if (empty($visitantesRecientes)) { ?>
-                            <tr><td colspan="4" class="text-center p-3 text-muted">Sin visitantes registrados</td></tr>
-                          <?php } else {
-                            foreach ($visitantesRecientes as $visitante) {
-                          ?>
-                            <tr>
-                              <td><?= htmlspecialchars($visitante['pagina'] ?? 'Sin página') ?></td>
-                              <td><?= htmlspecialchars($visitante['lugar'] ?? '-') ?></td>
-                              <td><small class="text-muted"><?= htmlspecialchars($visitante['ip'] ?? '-') ?></small></td>
-                              <td><?= date("d/m/Y H:i", strtotime($visitante['diahora'])) ?></td>
-                            </tr>
-                          <?php 
-                            }
-                          }
-                          ?>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            </div>
+          </div>
+        </section>
+        <!-- /.row -->
             </div>
           </div>
         </section>
