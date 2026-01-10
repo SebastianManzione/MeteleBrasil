@@ -143,12 +143,25 @@ $isVendedor = ($idVendedor > 0);
                   <a href="<?php echo $url; ?>" class="btn btn-secondary mb-2 ml-2">Ver Hoy</a>        
                 <?php endif; ?>
               </form>
+              <div class="mt-3">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosPrestador" <?= (!isset($_GET['mostrarTodos']) || $_GET['mostrarTodos'] != 'prestador') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosPrestador').submit();">
+                  <label class="custom-control-label" for="filtrarPasajerosPrestador">
+                    Mostrar solo con pasajeros
+                  </label>
+                </div>
+                <form id="formFiltrosPrestador" method="get" style="display:none;">
+                  <input type="hidden" name="fechaSalidas" value="<?php echo isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d'); ?>">
+                  <input type="hidden" name="mostrarTodos" value="<?= isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'prestador' ? '' : 'prestador' ?>">
+                </form>
+              </div>
             </div>
           </div>
 
           <?php
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionada = isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d');   
+          $mostrarTodosPrestador = isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'prestador';
 
           $salidas = getSalidasIdPrestadorFecha($fechaSeleccionada);
 
@@ -203,8 +216,13 @@ $isVendedor = ($idVendedor > 0);
 
               // Cantidad de reservas para esta salida
               $cantidad_reservas = count($reservas_agrupadas);
+              
+              // Saltar si el filtro está activo y no hay pasajeros
+              if (!$mostrarTodosPrestador && $cantidad_reservas == 0) {
+                  continue;
+              }
           ?>
-          <div class="card card-primary card-outline shadow-sm">
+          <div class="card <?= $cantidad_reservas > 0 ? 'card-primary' : 'card-secondary' ?> card-outline shadow-sm">
             <div class="card-header">
               <h3 class="card-title d-flex align-items-center justify-content-between">
                 <span>
@@ -212,7 +230,7 @@ $isVendedor = ($idVendedor > 0);
                   <strong><?= htmlspecialchars($nombre_servicio); ?></strong>  
                   - Salida #<?= htmlspecialchars($idServicioSalidas) ?> - <?= htmlspecialchars($salida['horaSalida']); ?>                                                                                                 </span>
 
-                <span class="badge badge-success badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                      🏆 <?= $cantidad_reservas ?> reservas
+                <span class="badge <?= $cantidad_reservas > 0 ? 'badge-success' : 'badge-secondary' ?> badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                                      <?= $cantidad_reservas > 0 ? '🏆 ' . $cantidad_reservas . ' reservas' : '⚪ Sin pasajeros' ?>
                 </span>
               </h3>
             </div>
@@ -277,12 +295,25 @@ $isVendedor = ($idVendedor > 0);
                   <a href="index.php" class="btn btn-secondary mb-2 ml-2">Ver Hoy</a>        
                 <?php endif; ?>
               </form>
+              <div class="mt-3">
+                <div class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosVendedor" <?= (!isset($_GET['mostrarTodos']) || $_GET['mostrarTodos'] != 'vendedor') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosVendedor').submit();">
+                  <label class="custom-control-label" for="filtrarPasajerosVendedor">
+                    Mostrar solo con pasajeros
+                  </label>
+                </div>
+                <form id="formFiltrosVendedor" method="get" style="display:none;">
+                  <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
+                  <input type="hidden" name="mostrarTodos" value="<?= isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'vendedor' ? '' : 'vendedor' ?>">
+                </form>
+              </div>
             </div>
           </div>
 
           <?php
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
+          $mostrarTodosVendedor = isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'vendedor';
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
@@ -346,10 +377,12 @@ $isVendedor = ($idVendedor > 0);
               // Cantidad de reservas para esta salida
               $cantidad_reservas_vend = count($reservas_agrupadas_vend);
               
-              // Solo mostrar si hay reservas de vendedores
-              if ($cantidad_reservas_vend == 0) continue;
+              // Saltar si el filtro está activo y no hay pasajeros
+              if (!$mostrarTodosVendedor && $cantidad_reservas_vend == 0) {
+                  continue;
+              }
           ?>
-          <div class="card card-success card-outline shadow-sm">
+          <div class="card <?= $cantidad_reservas_vend > 0 ? 'card-success' : 'card-secondary' ?> card-outline shadow-sm">
             <div class="card-header">
               <h3 class="card-title d-flex align-items-center justify-content-between">
                 <span>
@@ -357,7 +390,7 @@ $isVendedor = ($idVendedor > 0);
                   <strong><?= htmlspecialchars($nombre_servicio_vend); ?></strong>  
                   - Salida #<?= htmlspecialchars($idServicioSalidasVend) ?> - <?= htmlspecialchars($salidaVend['horaSalida']); ?>                                                                                                 </span>
 
-                <span class="badge badge-success badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                      🎯 <?= $cantidad_reservas_vend ?> reservas
+                <span class="badge <?= $cantidad_reservas_vend > 0 ? 'badge-success' : 'badge-secondary' ?> badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                                      <?= $cantidad_reservas_vend > 0 ? '🎯 ' . $cantidad_reservas_vend . ' reservas' : '⚪ Sin pasajeros' ?>
                 </span>
               </h3>
             </div>
