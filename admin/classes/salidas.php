@@ -751,8 +751,6 @@ function getSalidasVendedorFecha($fechaEspecifica) {
     require("conexion.php");
     
     $idUsuario = $_SESSION["login"]["idUsuario"];
-    $idVendedor = $_SESSION["login"]["idVendedor"] ?? 0;
-    
     $fecha = date('Y-m-d', strtotime($fechaEspecifica));
     
     // Admin ve todas las salidas con reservas de vendedores
@@ -767,20 +765,12 @@ function getSalidasVendedorFecha($fechaEspecifica) {
                      ORDER BY ss.horaSalida ASC";
         $data = ["fecha" => $fecha];
     }
-    // Vendedor ve solo sus propias salidas con reservas
-    else if ($idVendedor > 0) {
-        $consulta = "SELECT DISTINCT ss.* 
-                     FROM servicio_salidas ss
-                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idServicioSalidas
-                     INNER JOIN reservas r ON rh.idReserva = r.idReserva
-                     WHERE ss.fecha = :fecha 
-                     AND r.idUsuario = :idUsuario
-                     ORDER BY ss.horaSalida ASC";
-        $data = ["fecha" => $fecha, "idUsuario" => $idUsuario];
-    }
+    // Vendedor ve TODAS las salidas en la fecha
     else {
-        // Si no es admin ni vendedor, retornar vacío
-        return [];
+        $consulta = "SELECT * FROM servicio_salidas 
+                     WHERE fecha = :fecha
+                     ORDER BY horaSalida ASC";
+        $data = ["fecha" => $fecha];
     }
     
     $comando = $pdo->prepare($consulta);
