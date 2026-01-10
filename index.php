@@ -120,11 +120,16 @@ function calcularDistancia($lat1, $lon1, $lat2, $lon2) {
 
 // Obtener imágenes del slider desde BD
 $sliderImages = [];
+$sliderIntervalo = 5000; // default 5 segundos
 try {
-    $stmt = $mysqli->query("SELECT imagen FROM slider WHERE activo = 1 ORDER BY orden ASC");
+    $stmt = $mysqli->query("SELECT imagen, intervalo FROM slider WHERE activo = 1 ORDER BY orden ASC");
     if ($stmt) {
         while ($row = $stmt->fetch_assoc()) {
             $sliderImages[] = $row['imagen'];
+            // Usar el intervalo de la primera imagen (o podrías usar el promedio)
+            if (count($sliderImages) == 1) {
+                $sliderIntervalo = intval($row['intervalo'] ?? 5000);
+            }
         }
     }
 } catch (Exception $e) {
@@ -134,7 +139,7 @@ if (empty($sliderImages)) {
     $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
 }
 ?>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
   <ol class="carousel-indicators">
     <?php foreach ($sliderImages as $index => $img): ?>
       <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>

@@ -27,6 +27,13 @@ try {
         echo "<p>✓ Columna 'orden' agregada</p>";
     }
     
+    // Verificar si existe la columna 'intervalo' (tiempo en milisegundos)
+    $stmt = $pdo->query("SHOW COLUMNS FROM slider LIKE 'intervalo'");
+    if ($stmt->rowCount() == 0) {
+        $pdo->exec("ALTER TABLE slider ADD COLUMN intervalo int(11) NOT NULL DEFAULT 5000 AFTER activo");
+        echo "<p>✓ Columna 'intervalo' agregada</p>";
+    }
+    
     // Verificar si ya hay datos
     $stmt = $pdo->query("SELECT COUNT(*) as total FROM slider");
     $row = $stmt->fetch(PDO::FETCH_ASSOC);

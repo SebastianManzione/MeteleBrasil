@@ -28,10 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (move_uploaded_file($_FILES['imagen']['tmp_name'], $ruta_destino)) {
                         $orden = isset($_POST['orden']) ? intval($_POST['orden']) : 0;
                         $activo = isset($_POST['activo']) ? 1 : 0;
+                        $intervalo = isset($_POST['intervalo']) ? intval($_POST['intervalo']) : 5000;
                         
-                        $sql = "INSERT INTO slider (imagen, orden, activo) VALUES (?, ?, ?)";
+                        $sql = "INSERT INTO slider (imagen, orden, activo, intervalo) VALUES (?, ?, ?, ?)";
                         $stmt = $pdo->prepare($sql);
-                        $stmt->execute([$nombre_archivo, $orden, $activo]);
+                        $stmt->execute([$nombre_archivo, $orden, $activo, $intervalo]);
                         
                         $mensaje = '<div class="alert alert-success">✓ Imagen agregada correctamente</div>';
                     } else {
@@ -41,6 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $mensaje = '<div class="alert alert-danger">✗ Formato no permitido. Use JPG, PNG o WEBP</div>';
                 }
             }
+        } elseif ($_POST['accion'] === 'actualizar') {
+            $id = intval($_POST['id']);
+            $orden = intval($_POST['orden']);
+            $intervalo = intval($_POST['intervalo']);
+            
+            $sql = "UPDATE slider SET orden = ?, intervalo = ? WHERE idSlider = ?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$orden, $intervalo, $id]);
+            $mensaje = '<div class="alert alert-success">✓ Actualizado correctamente</div>';
         } elseif ($_POST['accion'] === 'eliminar') {
             $id = intval($_POST['id']);
             $sql = "SELECT imagen FROM slider WHERE idSlider = ?";
@@ -105,7 +115,22 @@ $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="card">
                                         <img src="../img/<?= htmlspecialchars($img['imagen']) ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
-                                            <p class="mb-2"><strong>Orden:</strong> <?= $img['orden'] ?></p>
+                                            <form method="post" class="mb-2">
+                                                <input type="hidden" name="accion" value="actualizar">
+                                                <input type="hidden" name="id" value="<?= $img['idSlider'] ?>">
+                                                <div class="form-group mb-2">
+                                                    <label class="small mb-1"><strong>Orden:</strong></label>
+                                                    <input type="number" name="orden" class="form-control form-control-sm" value="<?= $img['orden'] ?>" min="0">
+                                                </div>
+                                                <div class="form-group mb-2">
+                                                    <label class="small mb-1"><strong>Intervalo (ms):</strong></label>
+                                                    <input type="number" name="intervalo" class="form-control form-control-sm" value="<?= $img['intervalo'] ?? 5000 ?>" min="1000" step="500">
+                                                    <small class="form-text text-muted"><?= number_format(($img['intervalo'] ?? 5000) / 1000, 1) ?>s</small>
+                                                </div>
+                                                <button type="submit" class="btn btn-sm btn-success btn-block">
+                                                    <i class="fas fa-save"></i> Guardar
+                                                </button>
+                                            </form>
                                             <p class="mb-2">
                                                 <strong>Estado:</strong> 
                                                 <span class="badge badge-<?= $img['activo'] ? 'success' : 'secondary' ?>">
@@ -157,7 +182,12 @@ $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="form-group">
                         <label>Orden</label>
-                        <input type="number" name="orden" class="form-control" value="<?= count($imagenes) + 1 ?>">
+                        <input type="number" name="orden" class="form-control" value="<?= count($imagenes) + 1 ?>" min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>Intervalo de transición (ms)</label>
+                        <input type="number" name="intervalo" class="form-control" value="5000" min="1000" step="500">
+                        <small class="form-text text-muted">Tiempo en milisegundos (5000 = 5 segundos)</small>
                     </div>
                     <div class="form-check">
                         <input type="checkbox" name="activo" class="form-check-input" id="activo" checked>

@@ -99,14 +99,19 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
 
 // Obtener imágenes del slider desde BD
 $sliderImages = [];
+$sliderIntervalo = 5000; // default 5 segundos
 try {
     require_once(__DIR__ . '/config/config.php');
     $mysqli_slider = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if (!$mysqli_slider->connect_error) {
-        $stmt = $mysqli_slider->query("SELECT imagen FROM slider WHERE activo = 1 ORDER BY orden ASC");
+        $stmt = $mysqli_slider->query("SELECT imagen, intervalo FROM slider WHERE activo = 1 ORDER BY orden ASC");
         if ($stmt) {
             while ($row = $stmt->fetch_assoc()) {
                 $sliderImages[] = $row['imagen'];
+                // Usar el intervalo de la primera imagen
+                if (count($sliderImages) == 1) {
+                    $sliderIntervalo = intval($row['intervalo'] ?? 5000);
+                }
             }
         }
         $mysqli_slider->close();
@@ -937,7 +942,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 <body>
 
   <!-- SLIDER CON BÚSQUEDA INTEGRADA -->
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
     <ol class="carousel-indicators">
       <?php foreach ($sliderImages as $index => $img): ?>
         <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
