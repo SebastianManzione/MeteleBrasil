@@ -99,7 +99,7 @@ $isVendedor = ($idVendedor > 0);
             <div class="icon">
               <i class="fas fa-chart-line"></i>
             </div>
-            <a href="#" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a> 
+            <a href="visitantesLista" class="small-box-footer">Ver más <i class="fas fa-arrow-circle-right"></i></a> 
           </div>
         </div>
       </div>
@@ -308,6 +308,8 @@ $isVendedor = ($idVendedor > 0);
                   </label>
                 </div>
                 <form id="formFiltrosVendedor" method="get" style="display:none;">
+                  <input type="hidden" name="fechaSalidas" value="<?php echo isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d'); ?>">
+                  <input type="hidden" name="mostrarTodos" value="<?php echo isset($_GET['mostrarTodos']) ? $_GET['mostrarTodos'] : ''; ?>">
                   <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
                   <input type="hidden" name="filtroVendedor" value="<?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == '1' ? '' : '1' ?>">
                 </form>
