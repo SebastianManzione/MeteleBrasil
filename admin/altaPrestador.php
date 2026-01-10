@@ -356,253 +356,93 @@ if ($idUsuario==$usuarios[$i]["idUsuario"]) {
 
               <!-- /.col -->
 
-
-
-<!--arranca el mapa!-->
-
-       <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?callback=GetMap&key=Aul14kGJkus4tWL4PAZly9XkZ14uTOQ9PbJ9fHG4lEFmQKmVPjR38_O0kDsRTuOv' async defer></script>
-
-
-
-      <script type='text/javascript'>
-
-
-
-var localizacion= Array();
-
-
-
- var map, searchManager;
-
-    function GetMap() {
-
-        map = new Microsoft.Maps.Map('#myMap', {});
-
-        Microsoft.Maps.loadModule(['Microsoft.Maps.AutoSuggest', 'Microsoft.Maps.Search'], function () {
-
-            var manager = new Microsoft.Maps.AutosuggestManager({ map: map });
-
-            manager.attachAutosuggest('#searchBox', '#searchBoxContainer', suggestionSelected);
-
-            searchManager = new Microsoft.Maps.Search.SearchManager(map);
-
-        });
-
-    }
-
-
-
-
-
- function suggestionSelected(result) {
-
-        //Remove previously results from the map.
-
-        map.entities.clear();
-
-        //Show the suggestion as a pushpin and center map over it.
-
-        var pin = new Microsoft.Maps.Pushpin(result.location);
-
-          
-
-          var latitud=result.location["latitude"];
-
-          var longitud=result.location["longitude"];
-
-      $('#txtDireccion').attr('value', result.address['formattedAddress']);
-
-  $('#txtLatitud').attr('value', result.location["latitude"]);
-
-    $('#txtLongitud').attr('value', result.location["longitude"]);
-
-    $('#direccion').attr('value', result.address['formattedAddress']);
-
-  $('#latitud').attr('value', result.location["latitude"]);
-
-    $('#longitud').attr('value', result.location["longitude"]);
-
-localizacion[0]= $('#idSrv').val();      
-
-localizacion[1]=result.address['formattedAddress'];
-
-localizacion[2]=result.location['latitude'];
-
-localizacion[3]=result.location['longitude'];
-
-
-
- /*  alert("formattedAddress:"+result.address['formattedAddress']+" adminDistrict:"+result.address['adminDistrict']+
-
-    +" countryRegion:"+result.address['countryRegion']+
-
-    " cp:"+result.address['postalCode']+" lat:"+latitud+" lon:"+longitud);
-
-*/
-
-
-
-
-
-        map.entities.push(pin);
-
-        map.setView({ bounds: result.bestView });
-
-      
-
-    }
-
-    function geocode() {
-
-
-
-        //Remove previously results from the map.
-
-        map.entities.clear();
-
-        //Get the users query and geocode it.
-
-        var query = document.getElementById('searchBox').value;
-
-        var searchRequest = {
-
-
-
-            where: query,
-
-            callback: function (r) {
-
-
-
-
-
-                if (r && r.results && r.results.length > 0) {
-
-                    
-
-
-
-                    var pin, pins = [], locs = [], output = 'Resultados:<br/>';
-
-                    //Add a pushpin for each result to the map and create a list to display.
-
-                    for (var i = 0; i < r.results.length; i++) {
-
-                        //Create a pushpin for each result.
-
-                        pin = new Microsoft.Maps.Pushpin(r.results[i].location, {
-
-                            text: i + ''
-
-                        });
-
-                        pins.push(pin);
-
-                        locs.push(r.results[i].location);
-
-                        output += i + ') ' + r.results[i].name + '<br/>';
-
-                    }
-
-                    //Add the pins to the map
-
-                    map.entities.push(pins);
-
-                    //Display list of results
-
-                    document.getElementById('output').innerHTML = output;
-
-                    //Determine a bounding box to best view the results.
-
-                    var bounds;
-
-
-
-                    if (r.results.length == 1) {
-
-
-
-                        bounds = r.results[0].bestView;
-
-
-
-
-
-
-
-
-
-                    } else {
-
-                        //Use the locations from the results to calculate a bounding box.
-
-                        bounds = Microsoft.Maps.LocationRect.fromLocations(locs);
-
-                    }
-
-                    map.setView({ bounds: bounds, padding: 30 });
-
-                }
-
-            },
-
-            errorCallback: function (e) {
-
-                document.getElementById('output').innerHTML = "Sin resultados.";
-
+<!--arranca el mapa Google Maps!-->
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=places&callback=initMap"></script>
+
+<script type='text/javascript'>
+
+var localizacion = [];
+var map, geocoder, marker;
+
+function initMap() {
+    var initialLocation = { lat: -34.6037, lng: -58.3816 };
+    map = new google.maps.Map(document.getElementById('myMap'), {
+        zoom: 12,
+        center: initialLocation
+    });
+    
+    geocoder = new google.maps.Geocoder();
+    marker = new google.maps.Marker({
+        map: map,
+        position: initialLocation,
+        draggable: true
+    });
+    
+    var searchInput = document.getElementById('searchBox');
+    var autocomplete = new google.maps.places.Autocomplete(searchInput);
+    
+    autocomplete.bindTo('bounds', map);
+    
+    autocomplete.addListener('place_changed', function() {
+        var place = autocomplete.getPlace();
+        
+        if (!place.geometry) {
+            window.alert('Seleccione un lugar de la lista');
+            return;
+        }
+        
+        map.setCenter(place.geometry.location);
+        map.setZoom(17);
+        marker.setPosition(place.geometry.location);
+        
+        geocode(place);
+    });
+    
+    marker.addListener('dragend', function() {
+        var position = marker.getPosition();
+        var lat = position.lat();
+        var lng = position.lng();
+        
+        geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
+            if (status === 'OK') {
+                geocode(results[0]);
             }
+        });
+    });
+}
 
-        };
+function geocode(place) {
+    var lat = place.geometry.location.lat();
+    var lng = place.geometry.location.lng();
+    var address = place.formatted_address;
+    
+    $('#txtDireccion').val(address);
+    $('#txtLatitud').val(lat);
+    $('#txtLongitud').val(lng);
+    
+    $('#direccion').val(address);
+    $('#latitud').val(lat);
+    $('#longitud').val(lng);
+    
+    localizacion[0] = $('#idSrv').val();
+    localizacion[1] = address;
+    localizacion[2] = lat;
+    localizacion[3] = lng;
+    
+    document.getElementById('output').innerHTML = 'Resultados:<br/>' + address;
+}
 
-        //Make the geocode request.
+</script>
 
-        searchManager.geocode(searchRequest);
-
-    }
-
-
-
-
-
-
-
-    </script>
-
-  <div id='searchBoxContainer'>
-
-  
-
-       <input id='searchBox' type='text' class="form-control a75" value="" />
-
-       
-
-    <input type='hidden'value='Search' onclick='Search() ' class="btn btn-primary"/>
-
- </div>
-
-    <br/>
-
-    <div id="myMap" style="position:relative;width:800px;height:300px;float:center;"></div>
-
-    <div id='output' style="margin-left:10px;float:left;"></div>
-
-  
-
-   
-
-
-
-
-
+<div id='searchBoxContainer'>
+    <input id='searchBox' type='text' class="form-control a75" placeholder="Buscar dirección..." />
 </div>
 
-
+<div id="myMap" style="position:relative;width:800px;height:300px;float:center;"></div>
+<div id='output' style="margin-left:10px;float:left;"></div>
 
 <div class="form-group a75">
-
-
-
-
 
 <div class="a75">		
 
@@ -630,11 +470,10 @@ localizacion[3]=result.location['longitude'];
 
 <h5>Longitud</h5>
 
-
-
 	<input type="text" name="txtLongitud" id="txtLongitud" class="form-control a75" value="<?=$txtLongitud?>">
 
 </div>
+
 
 
 
