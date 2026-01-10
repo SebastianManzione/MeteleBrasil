@@ -51,6 +51,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare($sql);
             $stmt->execute([$orden, $intervalo, $id]);
             $mensaje = '<div class="alert alert-success">✓ Actualizado correctamente</div>';
+        } elseif ($_POST['accion'] === 'mover') {
+            $id = intval($_POST['id']);
+            $direccion = $_POST['direccion']; // 'arriba' o 'abajo'
+            
+            // Obtener orden actual
+            $stmt = $pdo->prepare("SELECT orden FROM slider WHERE idSlider = ?");
+            $stmt->execute([$id]);
+            $actual = $stmt->fetch(PDO::FETCH_ASSOC);
+            $orden_actual = $actual['orden'];
+            
+            if ($direccion === 'arriba') {
+                // Encontrar imagen anterior (orden menor más cercano)
+                $stmt = $pdo->prepare("SELECT idSlider, orden FROM slider WHERE orden < ? ORDER BY orden DESC LIMIT 1");
+                $stmt->execute([$orden_actual]);
+                $anterior = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($anterior) {
+                    // Intercambiar órdenes
+                    $pdo->prepare("UPDATE slider SET orden = ? WHERE idSlider = ?")->execute([$anterior['orden'], $id]);
+                    $pdo->prepare("UPDATE slider SET orden = ? WHERE idSlider = ?")->execute([$orden_actual, $anterior['idSlider']]);
+                    $mensaje = '<div class="alert alert-success">✓ Imagen movida hacia arriba</div>';
+                }
+            } elseif ($direccion === 'abajo') {
+                // Encontrar imagen posterior (orden mayor más cercano)
+                $stmt = $pdo->prepare("SELECT idSlider, orden FROM slider WHERE orden > ? ORDER BY orden ASC LIMIT 1");
+                $stmt->execute([$orden_actual]);
+                $siguiente = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($siguiente) {
+                    // Intercambiar órdenes
+                    $pdo->prepare("UPDATE slider SET orden = ? WHERE idSlider = ?")->execute([$siguiente['orden'], $id]);
+                    $pdo->prepare("UPDATE slider SET orden = ? WHERE idSlider = ?")->execute([$orden_actual, $siguiente['idSlider']]);
+                    $mensaje = '<div class="alert alert-success">✓ Imagen movida hacia abajo</div>';
+                }
+            }
         } elseif ($_POST['accion'] === 'eliminar') {
             $id = intval($_POST['id']);
             $sql = "SELECT imagen FROM slider WHERE idSlider = ?";
@@ -115,22 +150,40 @@ $imagenes = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                     <div class="card">
                                         <img src="../img/<?= htmlspecialchars($img['imagen']) ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
                                         <div class="card-body">
-                                            <form method="post" class="mb-2">
-                                                <input type="hidden" name="accion" value="actualizar">
-                                                <input type="hidden" name="id" value="<?= $img['idSlider'] ?>">
-                                                <div class="form-group mb-2">
-                                                    <label class="small mb-1"><strong>Orden:</strong></label>
-                                                    <input type="number" name="orden" class="form-control form-control-sm" value="<?= $img['orden'] ?>" min="0">
+                                            <div class="mb-2">
+                                                <p class="mb-1"><strong>Orden: #<?= $img['orden'] ?></strong></p>
+                                                <div class="btn-group btn-group-sm btn-block">
+                                                    <form method="post" class="d-inline">
+                                                        <input type="hidden" name="accion" value="mover">
+                                                        <input type="hidden" name="id" value="<?= $img['idSlider'] ?>">
+                                                        <input type="hidden" name="direccion" value="arriba">
+                                                        <button type="submit" class="btn btn-outline-primary btn-sm" title="Mover arriba">
+                                                            <i class="fas fa-arrow-up"></i>
+                                                        </button>
+                                                    </form>
+                                                    <form method="post" class="d-inline">
+                                                        <input type="hidden" name="accion" value="mover">
+                                                        <input type="hidden" name="id" value="<?= $img['idSlider'] ?>">
+                                                        <input type="hidden" name="direccion" value="abajo">
+                                                        <button type="submit" class="btn btn-outline-primary btn-sm" title="Mover abajo">
+                                                            <i class="fas fa-arrow-down"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
-                                                <div class="form-group mb-2">
-                                                    <label class="small mb-1"><strong>Intervalo (ms):</strong></label>
+                                            </div>
+                                            <div class="form-group mb-2">
+                                                <label class="small mb-1"><strong>Intervalo (ms):</strong></label>
+                                                <form method="post" class="d-flex gap-1">
+                                                    <input type="hidden" name="accion" value="actualizar">
+                                                    <input type="hidden" name="id" value="<?= $img['idSlider'] ?>">
+                                                    <input type="hidden" name="orden" value="<?= $img['orden'] ?>">
                                                     <input type="number" name="intervalo" class="form-control form-control-sm" value="<?= $img['intervalo'] ?? 5000 ?>" min="1000" step="500">
-                                                    <small class="form-text text-muted"><?= number_format(($img['intervalo'] ?? 5000) / 1000, 1) ?>s</small>
-                                                </div>
-                                                <button type="submit" class="btn btn-sm btn-success btn-block">
-                                                    <i class="fas fa-save"></i> Guardar
-                                                </button>
-                                            </form>
+                                                    <button type="submit" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-save"></i>
+                                                    </button>
+                                                </form>
+                                                <small class="form-text text-muted"><?= number_format(($img['intervalo'] ?? 5000) / 1000, 1) ?>s</small>
+                                            </div>
                                             <p class="mb-2">
                                                 <strong>Estado:</strong> 
                                                 <span class="badge badge-<?= $img['activo'] ? 'success' : 'secondary' ?>">

@@ -51,38 +51,18 @@ if (isset($_POST["activado"])) {
 
 $idUsuario= altaUsuario($usuario, $email, $password, $status, $idVendedor, $idCobrador, $idPrestador);
 
-if ($idUsuario>0) {
-
+if ($idUsuario > 0) {
     $fotos=updateFotoUsuario($_FILES, $idUsuario);
-
-
-
+    alertar_redirect("Usuario dado de alta correctamente...","success", "usuariosLista");
+    exit();
 }
-
-
-
-
-
-
-
-if ($idUsuario>0) {
-
-   alertar("Usuario dado de alta correctamente...","success");
-
-   //redireccionarLento("usuariosLista");
-
+else if ($idUsuario == -1) {
+    alertar("El email '" . htmlspecialchars($email) . "' ya está registrado. Por favor, utiliza otro email.","warning");
+    redireccionarLento("usuarioAlta");
 }
-
-
-
-
-
-else{
-
-    alertar("Email Duplicado","warning");
-
-   //redireccionarLento("usuarioAlta");
-
+else {
+    alertar("Error al crear el usuario. Intenta nuevamente.","danger");
+    redireccionarLento("usuarioAlta");
 }
 
 
@@ -98,10 +78,6 @@ else{
 exit();
 
 }
-
-
-
-
 
  ?>
 

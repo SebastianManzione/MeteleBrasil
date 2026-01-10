@@ -455,28 +455,21 @@ return $rowCount;
 
         $consulta = "INSERT INTO usuario (usuario, email,clave, status, idVendedor,  idCobrador,idPrestador) VALUES (:usuario, :email, :clave,:status,:idVendedor,:idCobrador,:idPrestador) ";
 
-        
-
-        $comando = $pdo->prepare($consulta);
-
-        
-
-        $comando->execute($data);
-
-        
-
-        $id = $pdo->lastInsertId(); 
-
-        $cuenta_col = $comando->columnCount();
-
-        $cuenta_row = $comando->rowCount();
-
-        $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
-
-
-
-
-        return $id;
+        try {
+            $comando = $pdo->prepare($consulta);
+            $comando->execute($data);
+            $id = $pdo->lastInsertId(); 
+            $cuenta_col = $comando->columnCount();
+            $cuenta_row = $comando->rowCount();
+            $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+            return $id;
+        } catch (PDOException $e) {
+            // Capturar error de email duplicado (SQLSTATE 23000 = Integrity constraint violation)
+            if ($e->getCode() == '23000') {
+                return -1; // Retornar -1 para indicar email duplicado
+            }
+            throw $e; // Relanzar otras excepciones
+        }
 
         
 
