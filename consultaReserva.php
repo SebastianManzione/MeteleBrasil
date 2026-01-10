@@ -264,30 +264,33 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                             }
                             ?>
                             <style>
-                                .btn-accordion[aria-expanded="true"] i.fa-chevron-down {
+                                .card-accordion > div[aria-expanded="true"] i.fa-chevron-down {
                                     transform: rotate(180deg);
                                 }
-                                .btn-accordion i.fa-chevron-down {
+                                .card-accordion i.fa-chevron-down {
                                     transform: rotate(0deg);
                                     transition: transform 0.3s ease;
+                                }
+                                .card-accordion > div {
+                                    cursor: pointer;
+                                }
+                                .card-accordion > div:hover {
+                                    opacity: 0.9;
                                 }
                             </style>
 
                             <!--ACORDEON CARACTERISTICAS-->
                             <div class="accordion" id="faq1">
-                                <div class="card card-accordion">
+                                <div class="card card-accordion" style="border-top: 3px solid #029ce2 !important; border: none;">
                                     <div class="" id="headingOne">
                                         <h5 class="mb-0">
-                                            <a class="btn btn-accordion text-primary bg-white d-flex justify-content-between align-items-center w-100" href="#"
-                                               data-toggle="collapse"
-                                               data-target="#collapseOne2" aria-expanded="true"
-                                               aria-controls="collapseOne" style="padding: 1rem;">
+                                            <div class="d-flex justify-content-between align-items-center w-100" style="padding: 1rem; background: linear-gradient(90deg, #029ce2 0%, #0284c7 100%); border-radius: 6px; cursor: pointer;" data-toggle="collapse" data-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne">
                                                 <div>
-                                                    <span class="badge badge-primary badge-pill mr-2"><i class="fas fa-shopping-bag mr-1"></i><?= $cantCarrito; ?></span>
-                                                    <span style="font-size: 18px; font-weight: 500;"><?= $lang["servicios"] ?></span>
+                                                    <span class="badge badge-light badge-pill mr-2"><i class="fas fa-shopping-bag mr-1"></i><?= $cantCarrito; ?></span>
+                                                    <span style="font-size: 18px; font-weight: 500; color: white;"><?= $lang["servicios"] ?></span>
                                                 </div>
-                                                <i class="fas fa-chevron-down text-primary" style="transition: transform 0.3s;"></i>
-                                            </a>
+                                                <i class="fas fa-chevron-down text-white" style="transition: transform 0.3s;"></i>
+                                            </div>
                                         </h5>
                                     </div>
 

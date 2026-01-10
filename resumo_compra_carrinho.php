@@ -19,7 +19,7 @@
 
                 <!--ACORDEON CARACTERISTICAS-->
                 <div class="accordion" id="faq1">
-                    <div class="card card-accordion border-0">
+                    <div class="card card-accordion border-0" style="border-top: 3px solid #029ce2 !important;">
                         <div class="" id="headingOne">
                             <h5 class="mb-0">
                                 <a class="btn btn-accordion text-primary bg-white d-flex justify-content-between align-items-center w-100" href="#" data-toggle="collapse"
@@ -160,13 +160,13 @@
                 }
                 $totalFinal = $precioTotalCarrito - $descuentoARS;
                 ?>
-                <div class="div-precio-t bg-light border py-3 px-3 rounded shadow-sm" style="margin-top: 15px;">
+                <div class="div-precio-t py-3 px-3 rounded shadow-sm" style="margin-top: 15px; background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%); border: 1px solid #029ce2;">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <p class="mb-0 h6 text-muted"><strong><i class="fas fa-wallet mr-2"></i><?= $lang["total_carrito"] ?></strong></p>
+                            <p class="mb-0 h6" style="color: #0066cc;"><strong><i class="fas fa-wallet mr-2"></i><?= $lang["total_carrito"] ?></strong></p>
                         </div>
                         <div class="col-6 text-right">
-                            <h5 class="mb-0 bold" style="color: #0066cc; font-size: 26px;">
+                            <h5 class="mb-0 bold" style="color: #029ce2; font-size: 26px;">
                                 <strong><?= $_SESSION['moneda_sel_sym'] . "" . number_format($totalFinal, 0, ',', '.'); ?></strong>
                             </h5>
                         </div>
