@@ -1079,25 +1079,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           </div>
         </div>
 
-        <!-- SECCIÓN DE GUÍAS (MÓVIL ONLY) -->
-        <div class="card card-ultimas-o d-md-none mb-4" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
-          <div class="card-body" style="padding: 1.5rem;">
-            <h4 style="margin-bottom: 1rem; color: #333; font-weight: 700;">
-              <i class="fa fa-map" style="color: #029ce2; margin-right: 0.5rem;"></i>
-              <?= isset($lang["conoce_nuestra_guia"]) ? $lang["conoce_nuestra_guia"] : "Conoce nuestra guía de"; ?> <?= $nombre_categoria; ?>
-            </h4>
-            <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" style="text-decoration: none; color: inherit;">
-              <img src="admin/img/categoria_servicio/<?= isset($fotos) ? $fotos : 'sinCategoria.jpg'; ?>" class="img-fluid img-guia mx-auto d-block" style="border-radius: 8px; margin-bottom: 1rem; max-height: 200px; object-fit: cover;">
-              <h4 class="text-guia2" style="text-align: center; color: #029ce2; font-weight: 700; margin-bottom: 1rem;">
-                <?= $nombre_categoria; ?>
-              </h4>
-            </a>
-            <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" class="btn btn-primary btn-block" style="border-radius: 8px; font-weight: 600;">
-              <?= isset($lang["ver_guias"]) ? $lang["ver_guias"] : "Ver Guías"; ?>
-            </a>
-          </div>
-        </div>
-
         <!-- SERVICIOS -->
         <?php if (count($servicios) > 0) : ?>
           <!-- GRID DESKTOP (3 columnas) / STACK MÓVIL (1 columna) -->
@@ -1287,6 +1268,25 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             <p>Intenta cambiar tus filtros o términos de búsqueda.</p>
           </div>
         <?php endif; ?>
+
+        <!-- SECCIÓN DE GUÍAS (MÓVIL ONLY - DESPUÉS DE SERVICIOS) -->
+        <div class="card card-ultimas-o d-md-none mb-4" style="border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+          <div class="card-body" style="padding: 1.5rem;">
+            <h4 style="margin-bottom: 1rem; color: #333; font-weight: 700;">
+              <i class="fa fa-map" style="color: #029ce2; margin-right: 0.5rem;"></i>
+              <?= isset($lang["conoce_nuestra_guia"]) ? $lang["conoce_nuestra_guia"] : "Conoce nuestra guía de"; ?> <?= $nombre_categoria; ?>
+            </h4>
+            <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" style="text-decoration: none; color: inherit;">
+              <img src="admin/img/categoria_servicio/<?= isset($fotos) ? $fotos : 'sinCategoria.jpg'; ?>" class="img-fluid img-guia mx-auto d-block" style="border-radius: 8px; margin-bottom: 1rem; max-height: 200px; object-fit: cover;">
+              <h4 class="text-guia2" style="text-align: center; color: #029ce2; font-weight: 700; margin-bottom: 1rem;">
+                <?= $nombre_categoria; ?>
+              </h4>
+            </a>
+            <a href="guias.php<?= ($idCategoria > 0) ? '?idCategoria=' . $idCategoria : ''; ?>" class="btn btn-primary btn-block" style="border-radius: 8px; font-weight: 600;">
+              <?= isset($lang["ver_guias"]) ? $lang["ver_guias"] : "Ver Guías"; ?>
+            </a>
+          </div>
+        </div>
 
         <!-- TARJETA GUÍA (DESKTOP ONLY) -->
         <?php if ($idCategoria > 0) : ?>
