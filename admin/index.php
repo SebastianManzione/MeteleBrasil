@@ -321,8 +321,15 @@ $isVendedor = ($idVendedor > 0);
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
           $mostrarTodosVendedor = isset($_GET['mostrarTodosVend']) && $_GET['mostrarTodosVend'] == 'vendedor';
+          
+          // DEBUG VISIBLE
+          echo '<div style="background:red; color:white; padding:10px; margin:10px;">';
+          echo 'mostrarTodosVend param: ' . ($_GET['mostrarTodosVend'] ?? 'NOT SET') . ' | ';
+          echo 'mostrarTodosVendedor value: ' . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE');
+          echo '</div>';
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
+          echo '<div style="background:blue; color:white; padding:10px; margin:10px;">Total salidas: ' . count($salidasVendedor) . '</div>';
 
           if (empty($salidasVendedor)) {
           ?>
