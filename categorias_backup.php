@@ -930,6 +930,12 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       <div class="carousel-item">
         <img class="img-fluid img-slider" src="img/slider2.jpg" alt="Slider 2">
       </div>
+      <div class="carousel-item">
+        <img class="img-fluid img-slider" src="img/slider3.jpg" alt="Slider 3">
+      </div>
+      <div class="carousel-item">
+        <img class="img-fluid img-slider" src="img/slider1.jpg" alt="Slider 4">
+      </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
