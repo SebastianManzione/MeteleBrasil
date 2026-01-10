@@ -302,14 +302,14 @@ $isVendedor = ($idVendedor > 0);
               </form>
               <div class="mt-3">
                 <div class="custom-control custom-checkbox">
-                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosVendedor" <?= (!isset($_GET['mostrarTodos']) || $_GET['mostrarTodos'] != 'vendedor') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosVendedor').submit();">
+                  <input type="checkbox" class="custom-control-input" id="filtrarPasajerosVendedor" <?= (!isset($_GET['filtroVendedor']) || $_GET['filtroVendedor'] != '1') ? 'checked' : '' ?> onchange="document.getElementById('formFiltrosVendedor').submit();">
                   <label class="custom-control-label" for="filtrarPasajerosVendedor">
                     Mostrar solo con pasajeros
                   </label>
                 </div>
                 <form id="formFiltrosVendedor" method="get" style="display:none;">
                   <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
-                  <input type="hidden" name="mostrarTodos" value="<?= isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'vendedor' ? '' : 'vendedor' ?>">
+                  <input type="hidden" name="filtroVendedor" value="<?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == '1' ? '' : '1' ?>">
                 </form>
               </div>
             </div>
@@ -318,7 +318,7 @@ $isVendedor = ($idVendedor > 0);
           <?php
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
-          $mostrarTodosVendedor = isset($_GET['mostrarTodos']) && $_GET['mostrarTodos'] == 'vendedor';
+          $mostrarTodosVendedor = isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == '1';
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
