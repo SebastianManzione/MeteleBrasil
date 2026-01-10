@@ -307,11 +307,13 @@ $isVendedor = ($idVendedor > 0);
                     Mostrar solo con pasajeros
                   </label>
                 </div>
-                <form id="formFiltrosVendedor" method="get" style="display:none;">
+                <form id="formFiltrosVendedor" method="get" style="display:block; border: 2px solid red; padding: 10px;">
                   <input type="hidden" name="fechaSalidas" value="<?php echo isset($_GET['fechaSalidas']) ? $_GET['fechaSalidas'] : date('Y-m-d'); ?>">
                   <input type="hidden" name="mostrarTodos" value="<?php echo isset($_GET['mostrarTodos']) ? $_GET['mostrarTodos'] : ''; ?>">
                   <input type="hidden" name="fechaSalidasVendedor" value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>">
-                  <input type="hidden" name="filtroVendedor" value="<?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor' ? '' : 'vendedor' ?>">                </form>
+                  <input type="hidden" name="filtroVendedor" value="<?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor' ? '' : 'vendedor' ?>">
+                  <p>Form Debug - filtroVendedor será: <strong><?= isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor' ? 'VACIO' : 'vendedor' ?></strong></p>
+                </form>
               </div>
             </div>
           </div>
@@ -320,6 +322,9 @@ $isVendedor = ($idVendedor > 0);
           // Obtener fecha seleccionada o usar hoy por defecto
           $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
           $mostrarTodosVendedor = isset($_GET['filtroVendedor']) && $_GET['filtroVendedor'] == 'vendedor';
+          
+          // DEBUG VISUAL
+          echo "<!-- DEBUG: filtroVendedor=" . ($_GET['filtroVendedor'] ?? 'NO SET') . " mostrarTodosVendedor=" . ($mostrarTodosVendedor ? 'TRUE' : 'FALSE') . " -->";
 
           $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
 
