@@ -624,7 +624,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
     </li>
     <li class="dropdown">
       <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
-     <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" style="position: fixed !important; right: 10px !important; top: 55px !important; left: auto !important; min-width: 200px !important; max-width: 90vw !important;">
+     <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" id="divMonedaSelMobile" style="position: fixed !important; right: 10px !important; top: 55px !important; left: auto !important; min-width: 200px !important; max-width: 90vw !important;">
        <?php 
 for ($i=0; $i < count($monedas); $i++) { 
  ?>
