@@ -612,7 +612,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
 <div class="col-6  text-right" style="padding-right: 0px;">
   <ul class="lista-iconos">
     <li class="dropdown">
-      <a class="text-white color-w cursor-size cursor" type="button" id="txtIdiomaSelMovil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 5px;">
+      <a class="text-white color-w cursor-size cursor dropdown-toggle" type="button" id="txtIdiomaSelMovil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 5px;">
         <img class="nav-item" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px;">
         <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span>
       </a>
