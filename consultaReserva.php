@@ -279,7 +279,7 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                         <h5 class="mb-0">
                                             <div class="d-flex justify-content-between align-items-center w-100" style="padding: 1rem; background: linear-gradient(90deg, #029ce2 0%, #0284c7 100%); border-radius: 6px; cursor: pointer;" data-toggle="collapse" data-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne">
                                                 <div>
-                                                    <span class="badge badge-light badge-pill mr-2"><i class="fas fa-list mr-1"></i><?= $cantCarrito; ?></span>
+                                                    <span class="badge badge-primary badge-pill mr-2"><i class="fas fa-list mr-1"></i><?= $cantCarrito; ?></span>
                                                     <span style="font-size: 18px; font-weight: 500; color: white;"><?= $lang["servicios"] ?></span>
                                                 </div>
                                             </div>
