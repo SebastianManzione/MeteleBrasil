@@ -994,6 +994,21 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="container py-4">
+    <!-- BUSCADOR SUPERIOR -->
+    <div class="mb-4">
+      <form class="form-inline" method="get" action="categorias_backup">
+        <div class="input-group w-100">
+          <input class="form-control form-control-lg" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
+          <?php if (isset($_GET['idCategoria'])): ?>
+            <input type="hidden" name="idCategoria" value="<?= $_GET['idCategoria'] ?>">
+          <?php endif; ?>
+          <div class="input-group-append">
+            <button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i> <?= isset($lang["buscar"]) ? $lang["buscar"] : 'Buscar'; ?></button>
+          </div>
+        </div>
+      </form>
+    </div>
+    
     <!-- BOTÓN FILTRO MÓVIL -->
     <div class="d-lg-none mb-3">
       <button class="btn btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#filterModal">
