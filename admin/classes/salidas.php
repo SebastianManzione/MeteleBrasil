@@ -742,10 +742,52 @@ function borraSalida($idServicioSalidas){
 
 }
 
-
-
+/**
+ * Obtiene las salidas de una fecha específica que tienen reservas creadas por vendedores
+ * Si es admin (idUsuario = 1), muestra todas las salidas con reservas de vendedores
+ * Si es vendedor, muestra solo las salidas con sus propias reservas
+ */
+function getSalidasVendedorFecha($fechaEspecifica) {
+    require("conexion.php");
     
-
-
+    $idUsuario = $_SESSION["login"]["idUsuario"];
+    $idVendedor = $_SESSION["login"]["idVendedor"] ?? 0;
+    
+    $fecha = date('Y-m-d', strtotime($fechaEspecifica));
+    
+    // Admin ve todas las salidas con reservas de vendedores
+    if ($idUsuario == 1) {
+        $consulta = "SELECT DISTINCT ss.* 
+                     FROM servicio_salidas ss
+                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idServicioSalidas
+                     INNER JOIN reservas r ON rh.idReserva = r.idReserva
+                     INNER JOIN usuario u ON r.idUsuario = u.idUsuario
+                     WHERE ss.fecha = :fecha 
+                     AND u.idVendedor > 0
+                     ORDER BY ss.horaSalida ASC";
+        $data = ["fecha" => $fecha];
+    }
+    // Vendedor ve solo sus propias salidas
+    else if ($idVendedor > 0) {
+        $consulta = "SELECT DISTINCT ss.* 
+                     FROM servicio_salidas ss
+                     INNER JOIN reserva_horarios rh ON ss.idServicioSalidas = rh.idReservaHorarios
+                     INNER JOIN reservas r ON rh.idReserva = r.idReserva
+                     WHERE ss.fecha = :fecha 
+                     AND r.idUsuario = :idUsuario
+                     ORDER BY ss.horaSalida ASC";
+        $data = ["fecha" => $fecha, "idUsuario" => $idUsuario];
+    }
+    else {
+        // Si no es admin ni vendedor, retornar vacío
+        return [];
+    }
+    
+    $comando = $pdo->prepare($consulta);
+    $comando->execute($data);
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    
+    return $resultado;
+}
 
 ?>

@@ -20,6 +20,11 @@ require("classes/convierte_monedas.php");
 require("classes/comprobantes.php");
 
 $idPrestador = $_SESSION['login']['idPrestador'];
+$idVendedor = $_SESSION['login']['idVendedor'] ?? 0;
+$idUsuario = $_SESSION['login']['idUsuario'];
+$isAdmin = ($idUsuario == 1);
+$isPrestador = ($idPrestador > 0);
+$isVendedor = ($idVendedor > 0);
 ?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -102,7 +107,10 @@ $idPrestador = $_SESSION['login']['idPrestador'];
 
       <!-- Main row -->
       <div class="row">
-        <section class="col-lg-6 connectedSortable">
+        <!-- Columna de Prestadores (Izquierda) -->
+        <?php if ($isPrestador || $isAdmin): ?>
+        <section class="<?= ($isVendedor || $isAdmin) ? 'col-lg-6' : 'col-lg-12' ?> connectedSortable">
+          <h2 class="mb-3"><i class="fas fa-store text-primary"></i> Salidas de Prestadores</h2>
           <!-- Date Picker para seleccionar fecha de salidas -->
           <div class="card card-primary">
             <div class="card-header">
@@ -201,8 +209,8 @@ $idPrestador = $_SESSION['login']['idPrestador'];
               <h3 class="card-title d-flex align-items-center justify-content-between">
                 <span>
                   <i class="fas fa-users mr-1"></i>
-                  Lista de pasajeros para <strong><?= htmlspecialchars($nombre_servicio); ?></strong>  
-                  - Salida #<?= htmlspecialchars($idServicioSalidas) ?> a las <?= htmlspecialchars($salida['horaSalida']); ?>                                                                                                 </span>
+                  <strong><?= htmlspecialchars($nombre_servicio); ?></strong>  
+                  - Salida #<?= htmlspecialchars($idServicioSalidas) ?> - <?= htmlspecialchars($salida['horaSalida']); ?>                                                                                                 </span>
 
                 <span class="badge badge-success badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                      🏆 <?= $cantidad_reservas ?> reservas
                 </span>
@@ -246,6 +254,152 @@ $idPrestador = $_SESSION['login']['idPrestador'];
           </div>
           <?php } ?>
         </section>
+        <?php endif; ?>
+
+        <!-- Columna de Vendedores (Derecha) -->
+        <?php if ($isVendedor || $isAdmin): ?>
+        <section class="<?= ($isPrestador || $isAdmin) ? 'col-lg-6' : 'col-lg-12' ?> connectedSortable">
+          <h2 class="mb-3"><i class="fas fa-user-tie text-success"></i> Salidas de Vendedores</h2>
+          <!-- Date Picker para seleccionar fecha de salidas vendedores -->
+          <div class="card card-success">
+            <div class="card-header">
+              <h3 class="card-title">Seleccionar Fecha de Salidas</h3>
+            </div>
+            <div class="card-body">
+              <form method="get" class="form-inline">
+                <div class="form-group mb-2">
+                  <label for="fechaSalidasVendedor" class="mr-2">Fecha:</label>
+                  <input type="date" class="form-control" id="fechaSalidasVendedor" name="fechaSalidasVendedor"        
+                         value="<?php echo isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d'); ?>"                                                                                                                   min="<?php echo date('Y-m-d'); ?>">
+                </div>
+                <button type="submit" class="btn btn-success mb-2 ml-2">Ver Salidas</button>
+                <?php if (isset($_GET['fechaSalidasVendedor'])): ?>
+                  <a href="index.php" class="btn btn-secondary mb-2 ml-2">Ver Hoy</a>        
+                <?php endif; ?>
+              </form>
+            </div>
+          </div>
+
+          <?php
+          // Obtener fecha seleccionada o usar hoy por defecto
+          $fechaSeleccionadaVendedor = isset($_GET['fechaSalidasVendedor']) ? $_GET['fechaSalidasVendedor'] : date('Y-m-d');   
+
+          $salidasVendedor = getSalidasVendedorFecha($fechaSeleccionadaVendedor);
+
+          if (empty($salidasVendedor)) {
+          ?>
+              <div class="card card-outline card-success">
+                  <div class="card-body text-center">
+                      <h4 class="card-title"><i class="fas fa-info-circle mr-2"></i>No hay salidas con reservas de vendedores para <?php echo date('d/m/Y', strtotime($fechaSeleccionadaVendedor)); ?>.</h4>                                           </div>
+              </div>
+          <?php
+          }
+
+          foreach ($salidasVendedor as $salidaVend) {
+              $servicioVend = getServicio($salidaVend['idServicio']);
+              if (empty($servicioVend) || !isset($servicioVend[0])) {
+                  continue;
+              }
+              $nombre_servicio_vend = $servicioVend[0]['nombre_servicio'];
+              $idServicioSalidasVend = $salidaVend['idServicioSalidas'];
+
+              $tarifasVend = getTarifasReservadas($idServicioSalidasVend);
+
+              $reservas_agrupadas_vend = [];
+              foreach ($tarifasVend as $tarifaVend) {
+                  $idReservaVend = $tarifaVend['idReserva'];
+                  $idReservaTarifasVend = $tarifaVend['idReservaTarifas'];
+
+                  if (!isset($reservas_agrupadas_vend[$idReservaVend])) {
+                      $reserva_data_vend = getReservaId($idReservaVend);
+                      if (empty($reserva_data_vend)) continue;
+
+                      $reservaVend = $reserva_data_vend[0];
+                      
+                      // Verificar que la reserva fue creada por un vendedor
+                      $usuarioReserva = getUsuario($reservaVend['idUsuario']);
+                      if (empty($usuarioReserva) || $usuarioReserva[0]['idVendedor'] == 0) continue;
+                      
+                      // Si es vendedor (no admin), solo mostrar sus propias reservas
+                      if (!$isAdmin && $reservaVend['idUsuario'] != $idUsuario) continue;
+
+                      $totalDolaresVend = $reservaVend["total_dolares"];
+                      $totalComprobantesVend = getComprobantesIdReservaDolar($idReservaVend);
+                      $diferenciaComprobantesPrecioVend = $totalDolaresVend - $totalComprobantesVend;
+
+                      if ($diferenciaComprobantesPrecioVend <= 0) {
+                          $reservas_agrupadas_vend[$idReservaVend] = [
+                              'detalles' => $reservaVend,
+                              'pasajeros' => []
+                          ];
+                      }
+                  }
+
+                  if (isset($reservas_agrupadas_vend[$idReservaVend])) {
+                      $pasajerosVend = getPasajeros($idReservaTarifasVend);
+                      foreach ($pasajerosVend as $pasajeroVend) {
+                          $reservas_agrupadas_vend[$idReservaVend]['pasajeros'][] = $pasajeroVend;
+                      }
+                  }
+              }
+
+              // Cantidad de reservas para esta salida
+              $cantidad_reservas_vend = count($reservas_agrupadas_vend);
+              
+              // Solo mostrar si hay reservas de vendedores
+              if ($cantidad_reservas_vend == 0) continue;
+          ?>
+          <div class="card card-success card-outline shadow-sm">
+            <div class="card-header">
+              <h3 class="card-title d-flex align-items-center justify-content-between">
+                <span>
+                  <i class="fas fa-users mr-1"></i>
+                  <strong><?= htmlspecialchars($nombre_servicio_vend); ?></strong>  
+                  - Salida #<?= htmlspecialchars($idServicioSalidasVend) ?> - <?= htmlspecialchars($salidaVend['horaSalida']); ?>                                                                                                 </span>
+
+                <span class="badge badge-success badge-reservas ml-3 p-2 animate__animated animate__fadeInRight" style="font-size: 1rem;">                                                                                      🎯 <?= $cantidad_reservas_vend ?> reservas
+                </span>
+              </h3>
+            </div>
+
+            <div class="card-body table-responsive p-0">
+              <table class="table table-striped table-hover table-bordered">
+                  <thead class="thead-light">
+                      <tr class="text-center">
+                          <th style="width: 35%;">Nombre Pasajero</th>
+                          <th style="width: 20%;">Cod. Reserva</th>
+                          <th style="width: 25%;">Fecha Contratación</th>
+                          <th style="width: 20%;">Valor Reserva</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                  if (empty($reservas_agrupadas_vend)) {
+                      echo '<tr><td colspan="4" class="text-center font-italic p-4">SIN PASAJEROS CONFIRMADOS</td></tr>';                                                                                                       } else {
+                      foreach ($reservas_agrupadas_vend as $reservaVend) {
+                          $num_pasajeros_vend = count($reservaVend['pasajeros']);
+                          if ($num_pasajeros_vend === 0) continue;
+
+                          foreach ($reservaVend['pasajeros'] as $k => $pasajeroVend) {
+                  ?>
+                              <tr>
+                                  <td><?= htmlspecialchars($pasajeroVend["nombrePasajero"] . " " . $pasajeroVend["apellidoPasajero"]) ?></td>                                                                                                           <?php if ($k === 0) { ?>
+                                  <td rowspan="<?= $num_pasajeros_vend ?>" class="align-middle text-center">
+                                      <span class="badge badge-success p-2" style="font-size: 0.9rem;">Código: <?= htmlspecialchars($reservaVend['detalles']['codigoAmigable']); ?></span>                                                                     </td>
+                                  <td rowspan="<?= $num_pasajeros_vend ?>" class="align-middle text-center"><?= date("d-m-Y H:i", strtotime($reservaVend['detalles']['fechaAlta'])); ?></td>                                                             <td rowspan="<?= $num_pasajeros_vend ?>" class="align-middle text-center font-weight-bold"><?= htmlspecialchars($_SESSION["moneda_sel_sym"]) . number_format($reservaVend['detalles']['total_dolares'], 2, ',', '.') ?></td>                                                                                                  <?php } ?>
+                              </tr>
+                  <?php
+                          }
+                      }
+                  }
+                  ?>
+                  </tbody>
+              </table>
+            </div>
+          </div>
+          <?php } ?>
+        </section>
+        <?php endif; ?>
 
         <!-- Sección de salidas con comisión ocultada temporalmente -->
 
