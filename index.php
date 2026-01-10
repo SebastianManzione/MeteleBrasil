@@ -388,11 +388,9 @@ if (empty($sliderImages)) {
               <?php 
               $mostrarDisp = false;
               $salidasProxDisp = [];
-              if (isset($_SESSION['login']) && (
-                  $_SESSION['login']['idUsuario'] == 1 ||
-                  $_SESSION['login']['idVendedor'] > 0 ||
-                  $_SESSION['login']['idPrestador'] > 0
-              )) {
+              if ((isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1) ||
+                  (isset($_SESSION['login']['idVendedor']) && $_SESSION['login']['idVendedor'] > 0) ||
+                  (isset($_SESSION['login']['idPrestador']) && $_SESSION['login']['idPrestador'] > 0)) {
                   $mostrarDisp = true;
                   $salidasProxDisp = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_INDEX);
               }
@@ -492,11 +490,9 @@ if (empty($sliderImages)) {
               <?php 
               $mostrarDispRest = false;
               $salidasProxDispRest = [];
-              if (isset($_SESSION['login']) && (
-                  $_SESSION['login']['idUsuario'] == 1 ||
-                  $_SESSION['login']['idVendedor'] > 0 ||
-                  $_SESSION['login']['idPrestador'] > 0
-              )) {
+              if ((isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1) ||
+                  (isset($_SESSION['login']['idVendedor']) && $_SESSION['login']['idVendedor'] > 0) ||
+                  (isset($_SESSION['login']['idPrestador']) && $_SESSION['login']['idPrestador'] > 0)) {
                   $mostrarDispRest = true;
                   $salidasProxDispRest = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_INDEX);
               }
