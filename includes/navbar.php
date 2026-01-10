@@ -611,20 +611,20 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
 
 <div class="col-6  text-right" style="padding-right: 0px;">
   <ul class="lista-iconos">
-    <li>
+    <li class="dropdown">
       <a class="text-white color-w cursor-size cursor" type="button" id="txtIdiomaSelMovil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 5px;">
-        <img class="nav-item dropdown" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px;">
+        <img class="nav-item" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px;">
         <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span>
       </a>
-      <div class="dropdown-menu collapse idiomamobile" aria-labelledby="txtIdiomaSelMovil" id="idioma">
+      <div class="dropdown-menu dropdown-menu-right idiomamobile" aria-labelledby="txtIdiomaSelMovil">
         <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
         <a class="dropdown-item" onclick="cambiaIdioma('EN');"><img src="img/countries/United-States-of-Americ-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["ingles"];?></a>
         <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["portugues"];?></a>
       </div>
     </li>
-    <li>
+    <li class="dropdown">
       <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
-     <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" id="divMonedaSel">
+     <div class="dropdown-menu dropdown-menu-right menu-civa" aria-labelledby="currencyDropdownMobile">
        <?php 
 for ($i=0; $i < count($monedas); $i++) { 
  ?>
@@ -635,7 +635,7 @@ for ($i=0; $i < count($monedas); $i++) {
                     </div>
           </li>
 
-<li style="position: relative; overflow: visible;">
+<li class="dropdown" style="overflow: visible;">
             <a class="text-white color-w cursor-size cursor dropdown-toggle" id="navbarDropdownMenuLinkMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right: 5px;">
             <i class="fas fa-shopping-cart text-white"><span class="badge badge-danger navbar-badge"><?=count($carrito);?></span></i>
             </a>
