@@ -622,9 +622,9 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
         <a class="dropdown-item" onclick="cambiaIdioma('PT');"><img src="img/countries/Brazil-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["portugues"];?></a>
       </div>
     </li>
-    <li>
+    <li class="dropdown" style="position: relative;">
       <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
-     <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" id="divMonedaSel">
+     <div class="dropdown-menu dropdown-menu-right menu-civa" aria-labelledby="currencyDropdownMobile">
        <?php 
 for ($i=0; $i < count($monedas); $i++) { 
  ?>
