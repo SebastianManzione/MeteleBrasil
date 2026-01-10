@@ -5,6 +5,9 @@ require_once(__DIR__ . "/includes/permisos_helper.php");
 $permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
 $permisos->verificarAcceso('altaPrestador');
 
+// Incluir configuración para acceder a GOOGLE_MAPS_API_KEY
+require_once(__DIR__ . "/../config/config.php");
+
 include("includes/header.php");
 include("includes/navbar.php");
 include("includes/sidebar.php");
