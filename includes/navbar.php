@@ -723,7 +723,7 @@ for ($i=0; $i < count($carrito); $i++) {
              <div id="usuario-movil">
             <div >
                <?php if (isset($_SESSION["active"])) { ?>
-      <div class="dropdown-menu menu-civa" aria-labelledby="clickLoginMovil" id="divMonedaSel">
+      <div class="dropdown-menu menu-civa" aria-labelledby="clickLoginMovil">
                       <form action="ctrlLogin" method="post" class="">
                       <input type="hidden" name="login" value="0">
                       <?php if($_SESSION['rol']==1 || $_SESSION['rol']==5) { ?>
