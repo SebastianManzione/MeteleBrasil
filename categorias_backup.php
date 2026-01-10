@@ -996,14 +996,14 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   <main class="container py-4">
     <!-- BUSCADOR SUPERIOR -->
     <div class="mb-4">
-      <form class="form-inline" method="get" action="categorias_backup">
-        <div class="input-group w-100">
-          <input class="form-control form-control-lg" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
+      <form class="form-buscar" method="get" action="categorias_backup">
+        <div class="input-group">
+          <input class="form-control form-control-lg form-control-search" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
           <?php if (isset($_GET['idCategoria'])): ?>
             <input type="hidden" name="idCategoria" value="<?= $_GET['idCategoria'] ?>">
           <?php endif; ?>
           <div class="input-group-append">
-            <button class="btn btn-primary btn-lg" type="submit"><i class="fa fa-search"></i> <?= isset($lang["buscar"]) ? $lang["buscar"] : 'Buscar'; ?></button>
+            <button class="btn btn-primary btn-lg btn-search" type="submit"><i class="fa fa-search"></i></button>
           </div>
         </div>
       </form>
