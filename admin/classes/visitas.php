@@ -5,7 +5,7 @@
  */
 function getVisitas(){
     require("conexion.php");
-    $consulta = "select * from visitantes ORDER BY fechaAlta DESC";
+    $consulta = "select * from visitantes ORDER BY diahora DESC";
     $comando = $pdo->prepare($consulta);
     $comando->execute();
     $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
@@ -31,7 +31,7 @@ function getVisita($idVisita){
 function getVisitasUltimosDias($dias = 7) {
     require("conexion.php");
     $fecha = date("Y-m-d", strtotime("-$dias days"));
-    $consulta = "SELECT * FROM visitantes WHERE fechaAlta >= :fecha ORDER BY fechaAlta DESC";
+    $consulta = "SELECT * FROM visitantes WHERE DATE(diahora) >= :fecha ORDER BY diahora DESC";
     $data = ["fecha" => $fecha];
     $comando = $pdo->prepare($consulta);
     $comando->execute($data);
@@ -44,7 +44,7 @@ function getVisitasUltimosDias($dias = 7) {
  */
 function getVisitasPorRango($fechaInicio, $fechaFin) {
     require("conexion.php");
-    $consulta = "SELECT * FROM visitantes WHERE DATE(fechaAlta) BETWEEN :fechaInicio AND :fechaFin ORDER BY fechaAlta DESC";
+    $consulta = "SELECT * FROM visitantes WHERE DATE(diahora) BETWEEN :fechaInicio AND :fechaFin ORDER BY diahora DESC";
     $data = [
         "fechaInicio" => $fechaInicio,
         "fechaFin" => $fechaFin
@@ -58,21 +58,17 @@ function getVisitasPorRango($fechaInicio, $fechaFin) {
 /**
  * Registra un nuevo visitante
  */
-function registrarVisitante($nombreVisitante = "Visitante", $email = "", $telefono = "", $idServicio = 0, $referencia = "") {
+function registrarVisitante($pagina = "Visitante", $email = "", $telefono = "", $idServicio = 0, $lugar = "") {
     require("conexion.php");
     
     $data = [
-        "nombreVisitante" => $nombreVisitante,
-        "email" => $email,
-        "telefono" => $telefono,
-        "idServicio" => $idServicio,
-        "referencia" => $referencia,
-        "fechaAlta" => date("Y-m-d H:i:s"),
-        "ip" => $_SERVER['REMOTE_ADDR'] ?? "0.0.0.0"
+        "pagina" => substr($pagina, 0, 88),
+        "ip" => substr($_SERVER['REMOTE_ADDR'] ?? "0.0.0.0", 0, 80),
+        "lugar" => substr($lugar, 0, 80)
     ];
     
-    $consulta = "INSERT INTO visitantes (nombreVisitante, email, telefono, idServicio, referencia, fechaAlta, ip) 
-                 VALUES (:nombreVisitante, :email, :telefono, :idServicio, :referencia, :fechaAlta, :ip)";
+    $consulta = "INSERT INTO visitantes (pagina, ip, lugar) 
+                 VALUES (:pagina, :ip, :lugar)";
     
     $comando = $pdo->prepare($consulta);
     $resultado = $comando->execute($data);
@@ -94,10 +90,10 @@ function getEstadisticasVisitantes() {
     $hace7Dias = date("Y-m-d", strtotime("-7 days"));
     $hace30Dias = date("Y-m-d", strtotime("-30 days"));
     
-    $consultaHoy = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(fechaAlta) = :fecha";
-    $consultaAyer = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(fechaAlta) = :fecha";
-    $consulta7 = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(fechaAlta) >= :fecha";
-    $consulta30 = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(fechaAlta) >= :fecha";
+    $consultaHoy = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(diahora) = :fecha";
+    $consultaAyer = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(diahora) = :fecha";
+    $consulta7 = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(diahora) >= :fecha";
+    $consulta30 = "SELECT COUNT(*) as total FROM visitantes WHERE DATE(diahora) >= :fecha";
     $consultaTotal = "SELECT COUNT(*) as total FROM visitantes";
     
     $cmdHoy = $pdo->prepare($consultaHoy);
@@ -136,7 +132,7 @@ function getEstadisticasVisitantes() {
  */
 function getVisitantesRecientes($limite = 10) {
     require("conexion.php");
-    $consulta = "SELECT * FROM visitantes ORDER BY fechaAlta DESC LIMIT :limite";
+    $consulta = "SELECT * FROM visitantes ORDER BY diahora DESC LIMIT :limite";
     $comando = $pdo->prepare($consulta);
     $comando->bindValue(':limite', $limite, PDO::PARAM_INT);
     $comando->execute();
@@ -162,7 +158,7 @@ function eliminarVisitante($idVisitante) {
 function limpiarVisitantesAntiguos($diasRetener = 90) {
     require("conexion.php");
     $fecha = date("Y-m-d", strtotime("-$diasRetener days"));
-    $consulta = "DELETE FROM visitantes WHERE fechaAlta < :fecha";
+    $consulta = "DELETE FROM visitantes WHERE diahora < :fecha";
     $data = ["fecha" => $fecha];
     $comando = $pdo->prepare($consulta);
     $resultado = $comando->execute($data);

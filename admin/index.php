@@ -171,25 +171,23 @@ $isVendedor = ($idVendedor > 0);
                       <table class="table table-striped table-hover table-bordered">
                         <thead class="thead-light">
                           <tr class="text-center">
-                            <th style="width: 20%;">Nombre</th>
-                            <th style="width: 20%;">Email</th>
-                            <th style="width: 15%;">Teléfono</th>
-                            <th style="width: 20%;">Fecha</th>
-                            <th style="width: 15%;">Referencia</th>
+                            <th style="width: 35%;">Página</th>
+                            <th style="width: 25%;">Lugar / Referencia</th>
+                            <th style="width: 20%;">IP</th>
+                            <th style="width: 20%;">Fecha/Hora</th>
                           </tr>
                         </thead>
                         <tbody>
                           <?php if (empty($visitantesRecientes)) { ?>
-                            <tr><td colspan="5" class="text-center p-3 text-muted">Sin visitantes registrados</td></tr>
+                            <tr><td colspan="4" class="text-center p-3 text-muted">Sin visitantes registrados</td></tr>
                           <?php } else {
                             foreach ($visitantesRecientes as $visitante) {
                           ?>
                             <tr>
-                              <td><?= htmlspecialchars($visitante['nombreVisitante'] ?? 'Sin nombre') ?></td>
-                              <td><?= htmlspecialchars($visitante['email'] ?? '-') ?></td>
-                              <td><?= htmlspecialchars($visitante['telefono'] ?? '-') ?></td>
-                              <td><?= date("d/m/Y H:i", strtotime($visitante['fechaAlta'])) ?></td>
-                              <td><small class="text-muted"><?= htmlspecialchars($visitante['referencia'] ?? '-') ?></small></td>
+                              <td><?= htmlspecialchars($visitante['pagina'] ?? 'Sin página') ?></td>
+                              <td><?= htmlspecialchars($visitante['lugar'] ?? '-') ?></td>
+                              <td><small class="text-muted"><?= htmlspecialchars($visitante['ip'] ?? '-') ?></small></td>
+                              <td><?= date("d/m/Y H:i", strtotime($visitante['diahora'])) ?></td>
                             </tr>
                           <?php 
                             }
