@@ -225,15 +225,24 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
         $idReservaHorarios = $value['idReservaHorarios'];
         $nombrePrestador = ($prestador[0]['nombre']);
         $fecha_salida = date("d-m-Y", strtotime($salida[0]['fecha']));
-        $fallbackPrestador = getCuerpoEmailPrestadorReservaConfirmada($idReservaHorarios, "metelebrasil.com", $nombrePrestador);
-        $varsPrestador = [
-          'nombre_prestador' => $nombrePrestador,
-          'fecha_salida' => $fecha_salida,
-          'codigo_reserva' => $codigo,
-          'id_salida' => $value['idServicioSalidas']
+        
+        // Cargar plantilla de email desde configuración
+        $asuntoPrestador = $config->obtener('email_prestador_asunto', 'Nova reserva! {{fecha_salida}}');
+        $cuerpoPrestador = $config->obtener('email_prestador_cuerpo', getCuerpoEmailPrestadorReservaConfirmada($idReservaHorarios, "metelebrasil.com", $nombrePrestador));
+        
+        // Reemplazar variables
+        $variablesPrestador = [
+            '{{nombre_prestador}}' => $nombrePrestador,
+            '{{fecha_salida}}' => $fecha_salida,
+            '{{codigo_reserva}}' => $codigo,
+            '{{id_salida}}' => $value['idServicioSalidas'],
+            '{{enlace_reserva}}' => "http://metelebrasil.com/admin/reservaDetalles?idReserva=".$idReserva
         ];
-        $renderPrestador = $renderer->render('prestador_reserva_confirmada', $idioma, $varsPrestador, "Nova reserva! " . $fecha_salida, $fallbackPrestador);
-        $resumail = enviaMail($prestador[0]['email'], $renderPrestador['asunto'], $renderPrestador['html'], "metelebrasil.com");
+        
+        $asuntoPrestador = str_replace(array_keys($variablesPrestador), array_values($variablesPrestador), $asuntoPrestador);
+        $cuerpoPrestador = str_replace(array_keys($variablesPrestador), array_values($variablesPrestador), $cuerpoPrestador);
+        
+        $resumail = enviaMail($prestador[0]['email'], $asuntoPrestador, $cuerpoPrestador, "metelebrasil.com");
       }
     }
   }
