@@ -1012,7 +1012,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   <main class="container py-4">
     <!-- BUSCADOR SUPERIOR -->
     <div class="mb-4">
-      <form class="form-buscar" method="get" action="categorias_backup">
+      <form class="form-buscar" method="get" action="categorias">
         <div class="input-group">
           <input class="form-control form-control-lg form-control-search" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
           <?php if (isset($_GET['idCategoria'])): ?>
@@ -1045,7 +1045,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
         }
         $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
         ?>
-        <a href="categorias_backup?<?= $urlParamsAll ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+        <a href="categorias?<?= $urlParamsAll ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
           <i class="fa fa-list-ul mr-1"></i>
           <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
         </a>
@@ -1075,7 +1075,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
           $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
         ?>
-          <a href="categorias_backup?<?= $urlParams ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+          <a href="categorias?<?= $urlParams ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
             <i class="fa <?= $icono ?> mr-1"></i>
             <?= $nombre_categoria_item ?>
           </a>
