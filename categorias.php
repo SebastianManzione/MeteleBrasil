@@ -523,12 +523,12 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     .stat-number {
       font-size: 2.5rem;
       font-weight: 700;
-      color: #fff;
+      color: #029ce2;
     }
 
     .stat-label {
       font-size: 0.95rem;
-      color: rgba(255, 255, 255, 0.9);
+      color: #666;
       margin-top: 0.5rem;
     }
 
