@@ -605,16 +605,16 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
  				<a class="cursor" id="abrir-menu"><i class="fas fa-bars fa-2x text-white"></i></a>
  				<a  class="cursor  collapse text-white" id="cerrar-menu">X</a>
  			</div>
-      <div class="col-5 text-left" >
-          <a style="margin-right: 5px;margin-left: 5px;" class="navbar-brand navbar-movil  " href="index"><h4 class="mb-0 text-white">METELE BRASIL</h4> </a>
+      <div class="col-4 text-left" >
+          <a style="margin-right: 2px;margin-left: 2px;" class="navbar-brand navbar-movil  " href="index"><h5 class="mb-0 text-white" style="font-size: 14px; font-weight: 700;">METELE</h5> </a>
       </div>
 
-<div class="col-6  text-right" style="padding-right: 0px;">
-  <ul class="lista-iconos" style="display: flex; align-items: center; gap: 10px;">
+<div class="col-7 text-right" style="padding-right: 5px;">
+  <ul class="lista-iconos" style="display: flex; align-items: center; gap: 5px; justify-content: flex-end;">
     <li class="dropdown" style="position: relative;">
-      <a class="text-white color-w cursor-size cursor dropdown-toggle" type="button" id="txtIdiomaSelMovil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 5px;">
-        <img class="nav-item" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 20px; width: 20px;">
-        <span class="nomelinguagemx"><?=$_SESSION["idioma"];?></span>
+      <a class="text-white color-w cursor dropdown-toggle" type="button" id="txtIdiomaSelMovil" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 3px; font-size: 13px;">
+        <img class="nav-item" id="iconbandeira" src="<?= $_SESSION["idioma_bandera"];?>" style="height: 18px; width: 18px;">
+        <span class="nomelinguagemx" style="font-size: 13px;"><?=$_SESSION["idioma"];?></span>
       </a>
       <div class="dropdown-menu dropdown-menu-right idiomamobile" aria-labelledby="txtIdiomaSelMovil">
         <a class="dropdown-item" onclick="cambiaIdioma('ES');"><img src="img/countries/Spain-icon.png" style="height: 20px; width: 20px;"> &nbsp;<?=$lang["espanol"];?></a>
@@ -623,7 +623,7 @@ $precioTotalCarrito+=($tarifa[0]["valor"] ?? 0);
       </div>
     </li>
     <li class="dropdown" style="position: relative;">
-      <a class="text-white color-w cursor-size cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile" data-display="static"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
+      <a class="text-white color-w cursor dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="currencyDropdownMobile" data-display="static" style="font-size: 13px;"><?= $_SESSION["moneda_sel_sym"] ?? 'U$D'; ?></a> 
      <div class="dropdown-menu menu-civa" aria-labelledby="currencyDropdownMobile" style="position: fixed !important; right: 70px !important; top: 55px !important; left: auto !important; max-width: 250px !important; transform: none !important; margin: 0 !important; z-index: 9999 !important;">
        <?php 
 for ($i=0; $i < count($monedas); $i++) { 
@@ -636,8 +636,8 @@ for ($i=0; $i < count($monedas); $i++) {
           </li>
 
 <li class="dropdown" style="position: relative; overflow: visible;">
-            <a class="text-white color-w cursor-size cursor dropdown-toggle" id="navbarDropdownMenuLinkMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right: 5px;">
-            <i class="fas fa-shopping-cart text-white"><span class="badge badge-danger navbar-badge"><?=count($carrito);?></span></i>
+            <a class="text-white color-w cursor dropdown-toggle" id="navbarDropdownMenuLinkMobile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right: 0; font-size: 16px;">
+            <i class="fas fa-shopping-cart text-white"><span class="badge badge-danger navbar-badge" style="font-size: 11px; padding: 2px 5px;"><?=count($carrito);?></span></i>
             </a>
             <div class="dropdown-menu menu-civa menumobile p-3" aria-labelledby="navbarDropdownMenuLinkMobile" style="max-height:400px; overflow-y:auto; position: fixed !important; right: 5px !important; top: 55px !important; left: auto !important; width: 90vw !important; max-width: 350px !important; transform: none !important; margin: 0 !important;">
          <?php
