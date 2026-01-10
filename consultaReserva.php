@@ -2064,12 +2064,12 @@ array(9) {
                 animation: slideIn 1.2s ease-out;
             }
             .check-icon {
-                animation: pulseCheck 1s ease-out 0.5s;
+                animation: pulseCheck 1.5s ease-in-out 0.5s infinite;
             }
         </style>
         <div class="col-lg-8 col-md-8 py-3">
             <div class="card card-visitas shadow-lg border-0 card-confirmacion" id="cardVisitas" style="height: 100%;">
-                <div class="card-body text-center d-flex flex-column justify-content-center" style="padding-top: 2rem; padding-bottom: 3rem;">
+                <div class="card-body text-center d-flex flex-column justify-content-start pt-3">
                     <!-- Icono de éxito -->
                     <div class="mb-3">
                         <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center check-icon" style="width: 80px; height: 80px;">
