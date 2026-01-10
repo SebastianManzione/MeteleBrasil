@@ -942,23 +942,11 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
   <section class="div-absolute" id="capa2">
     <div class="container">
       <div class="row">
-        <div class="col-lg-6 offset-lg-3 mb-5">
+        <div class="col-lg-12 text-center mb-5">
           <h1 class="text-white text-uppercase titulo">
             <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></span><br>
             <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
           </h1>
-          <form class="form-buscar mb-5" action="categorias_backup" method="get">
-            <label class="sr-only" for="buscar"><?= $lang["que_hacemos"] ?? "¿Qué hacemos?" ?></label>
-            <div class="input-group">
-              <input class="field form-control form-control-search" id="buscar" name="buscar" type="text" placeholder="<?= $lang["que_hacemos"] ?? "¿Qué hacemos?" ?>" value="<?= htmlspecialchars($busqueda) ?>">
-              <?php if (isset($_GET['idCategoria'])): ?>
-                <input type="hidden" name="idCategoria" value="<?= $_GET['idCategoria'] ?>">
-              <?php endif; ?>
-              <span class="input-group-append">
-                <button class="submit btn btn-primary" name="submit" type="submit"><?= $lang["buscar"] ?? "Buscar" ?> <i class="fa fa-arrow-right"></i></button>
-              </span>
-            </div>
-          </form>
         </div>
         
         <!-- Estadísticas en el Banner -->
