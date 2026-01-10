@@ -2,15 +2,6 @@
     <div class=" py-2">
         <div class="card card-visitas shadow-sm border-0">
             <div class="card-body">
-                <style>
-                    .btn-accordion[aria-expanded="true"] i.fa-chevron-down {
-                        transform: rotate(180deg);
-                    }
-                    .btn-accordion i.fa-chevron-down {
-                        transform: rotate(0deg);
-                        transition: transform 0.3s ease;
-                    }
-                </style>
 
                 <h5 class="mb-3">
                     <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
@@ -28,7 +19,6 @@
                                         <span class="badge badge-primary badge-pill mr-2"><i class="fas fa-shopping-bag mr-1"></i><?= $cantCarrito; ?></span>
                                         <span style="font-size: 18px; font-weight: 500;"><?= $lang["servicios"] ?></span>
                                     </div>
-                                    <i class="fas fa-chevron-down text-primary" style="transition: transform 0.3s;"></i>
                                 </a>
                             </h5>
                         </div>

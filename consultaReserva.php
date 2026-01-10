@@ -264,13 +264,6 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                             }
                             ?>
                             <style>
-                                .card-accordion > div[aria-expanded="true"] i.fa-chevron-down {
-                                    transform: rotate(180deg);
-                                }
-                                .card-accordion i.fa-chevron-down {
-                                    transform: rotate(0deg);
-                                    transition: transform 0.3s ease;
-                                }
                                 .card-accordion > div {
                                     cursor: pointer;
                                 }
@@ -289,7 +282,6 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                     <span class="badge badge-light badge-pill mr-2"><i class="fas fa-shopping-bag mr-1"></i><?= $cantCarrito; ?></span>
                                                     <span style="font-size: 18px; font-weight: 500; color: white;"><?= $lang["servicios"] ?></span>
                                                 </div>
-                                                <i class="fas fa-chevron-down text-white" style="transition: transform 0.3s;"></i>
                                             </div>
                                         </h5>
                                     </div>
