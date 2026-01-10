@@ -107,6 +107,104 @@ $isVendedor = ($idVendedor > 0);
 
       <!-- Main row -->
       <div class="row">
+        <!-- Sección de Visitantes -->
+        <section class="col-lg-12 connectedSortable mb-4">
+          <div class="card card-info">
+            <div class="card-header">
+              <h3 class="card-title"><i class="fas fa-chart-line mr-2"></i>Estadísticas de Visitantes</h3>
+            </div>
+            <div class="card-body">
+              <?php
+              $estadisticasVisitantes = getEstadisticasVisitantes();
+              $visitantesRecientes = getVisitantesRecientes(5);
+              ?>
+              <div class="row">
+                <div class="col-lg-3 col-6">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-info"><i class="fas fa-eye"></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Visitantes Hoy</span>
+                      <span class="info-box-number"><?= $estadisticasVisitantes['hoy'] ?></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-success"><i class="fas fa-arrow-up"></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Últimos 7 días</span>
+                      <span class="info-box-number"><?= $estadisticasVisitantes['ultimos7'] ?></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-warning"><i class="fas fa-chart-bar"></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Últimos 30 días</span>
+                      <span class="info-box-number"><?= $estadisticasVisitantes['ultimos30'] ?></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                  <div class="info-box">
+                    <span class="info-box-icon bg-primary"><i class="fas fa-users"></i></span>
+                    <div class="info-box-content">
+                      <span class="info-box-text">Total Visitantes</span>
+                      <span class="info-box-number"><?= $estadisticasVisitantes['total'] ?></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabla de Visitantes Recientes -->
+              <div class="row mt-4">
+                <div class="col-lg-12">
+                  <div class="card card-outline card-info">
+                    <div class="card-header">
+                      <h3 class="card-title">Visitantes Recientes</h3>
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                      </div>
+                    </div>
+                    <div class="card-body table-responsive p-0">
+                      <table class="table table-striped table-hover table-bordered">
+                        <thead class="thead-light">
+                          <tr class="text-center">
+                            <th style="width: 20%;">Nombre</th>
+                            <th style="width: 20%;">Email</th>
+                            <th style="width: 15%;">Teléfono</th>
+                            <th style="width: 20%;">Fecha</th>
+                            <th style="width: 15%;">Referencia</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <?php if (empty($visitantesRecientes)) { ?>
+                            <tr><td colspan="5" class="text-center p-3 text-muted">Sin visitantes registrados</td></tr>
+                          <?php } else {
+                            foreach ($visitantesRecientes as $visitante) {
+                          ?>
+                            <tr>
+                              <td><?= htmlspecialchars($visitante['nombreVisitante'] ?? 'Sin nombre') ?></td>
+                              <td><?= htmlspecialchars($visitante['email'] ?? '-') ?></td>
+                              <td><?= htmlspecialchars($visitante['telefono'] ?? '-') ?></td>
+                              <td><?= date("d/m/Y H:i", strtotime($visitante['fechaAlta'])) ?></td>
+                              <td><small class="text-muted"><?= htmlspecialchars($visitante['referencia'] ?? '-') ?></small></td>
+                            </tr>
+                          <?php 
+                            }
+                          }
+                          ?>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Columna de Prestadores (Izquierda) -->
         <?php if ($isPrestador || $isAdmin): ?>
         <section class="<?= ($isVendedor || $isAdmin) ? 'col-lg-6' : 'col-lg-12' ?> connectedSortable">
