@@ -304,6 +304,12 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                 echo "<li><i class=\"fas fa-phone text-primary mr-1\"></i><strong>Telefone:</strong> {$reserva[0]['telefonoResponsable']}</li>";
                                                 echo "<li><i class=\"fas fa-wallet text-success mr-1\"></i><strong>Total em Dólares:</strong> " . formatarMonedaCondicional($total_dolares) . "</li>";
                                                 echo "<li><i class=\"fas fa-receipt text-info mr-1\"></i><strong>Impostos:</strong> {$reserva[0]['impuestos']}</li>";
+                                                
+                                                // Mostrar descuento por redondeo (ARS, CLP, PYG)
+                                                if (isset($reserva[0]['descuento_redondeo']) && $reserva[0]['descuento_redondeo'] > 0) {
+                                                    $monedaDescuento = getMoneda($reserva[0]['moneda_redondeo'] ?? $reserva[0]['monedaSel'])[0]["Symbol"];
+                                                    echo "<li class=\"text-success\"><i class=\"fas fa-gift text-success mr-1\"></i><strong>Desconto por Arredondamento:</strong> -" . $monedaDescuento . formatarMonedaCondicional($reserva[0]['descuento_redondeo']) . "</li>";
+                                                }
 
                                                                                                 // Exibir horários, tarifas e adicionais, em cartões separados
                                                                                                 for ($i = 0; $i < count($horarios); $i++) {
