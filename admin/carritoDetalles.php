@@ -171,7 +171,14 @@ $horarios=getReservaHorarios($idReserva);
 
 $totalComprobantes=getComprobantesIdReserva($idReserva);
 
-$diferenciaComprobantesPrecio=$precio-$totalComprobantes;
+// Calcular descuento por redondeo en moneda de visualización
+$descuentoRedondeo = 0;
+if (isset($reserva[0]["descuento_redondeo"]) && $reserva[0]["descuento_redondeo"] > 0) {
+    $monedaDescuento = $reserva[0]["moneda_redondeo"] ?? $monedaSel;
+    $descuentoRedondeo = ConvierteMoneda($monedaDescuento, $_SESSION["moneda_sel"], $reserva[0]["descuento_redondeo"]);
+}
+
+$diferenciaComprobantesPrecio = $precio - $totalComprobantes - $descuentoRedondeo;
 
 
 
