@@ -418,11 +418,44 @@ else{
 
 
 
-$('#txtDuracion').text(salidas[0]["duracionMinima"]+" - "+salidas[0]["duracionMaxima"]);
-
-
-
-$('#txtDuracionMovil').text(salidas[0]["duracionMinima"]+" - "+salidas[0]["duracionMaxima"]);
+// Actualizar duración si existe
+if (salidas && salidas[0] && salidas[0]["duracionMinima"]) {
+  var duracionMin = parseFloat(salidas[0]["duracionMinima"]);
+  var duracionMax = parseFloat(salidas[0]["duracionMaxima"]);
+  var categoriaServicio = salidas[0]["idCategoria_servicio"];
+  var duracionTexto = "";
+  
+  // Formatear según categoría y duración (igual que en PHP)
+  if (categoriaServicio == 4) { // Paquete
+    duracionTexto = duracionMin + " Dias  - " + duracionMax + " Noches ";
+  } else {
+    var duracionMinTexto = "";
+    var duracionMaxTexto = "";
+    
+    // Formatear duración mínima
+    if (duracionMin > 24) {
+      duracionMinTexto = Math.ceil(duracionMin / 24) + " Dias ";
+    } else if (duracionMin < 1) {
+      duracionMinTexto = Math.round(duracionMin * 60) + " Minutos ";
+    } else {
+      duracionMinTexto = Math.round(duracionMin) + " HS ";
+    }
+    
+    // Formatear duración máxima
+    if (duracionMax > 24) {
+      duracionMaxTexto = Math.ceil(duracionMax / 24) + " Dias ";
+    } else if (duracionMax < 1) {
+      duracionMaxTexto = Math.round(duracionMax * 60) + " Minutos ";
+    } else {
+      duracionMaxTexto = Math.round(duracionMax) + " HS ";
+    }
+    
+    duracionTexto = duracionMinTexto + " - " + duracionMaxTexto;
+  }
+  
+  $('#txtDuracion').text(duracionTexto);
+  $('#txtDuracionMovil').text(duracionTexto);
+}
 
 
 

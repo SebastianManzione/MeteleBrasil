@@ -592,9 +592,19 @@ function getServiciosidDestino($idDestino) {
 
 if ($resultado[0]["idCategoria_servicio"]==4) { //si es un paquete mostramos dias / noches
 
-    $duracionMinima=($duracionMinima/24)." Dias ";
-
-    $duracionMaxima=($duracionMaxima/24)." Noches ";
+    // Si el valor es mayor a 24, está en horas (240 = 10 días), divide por 24
+    // Si es menor a 24, ya está en días (10 = 10 días), no divide
+    if ($duracionMinima > 24) {
+        $duracionMinima=($duracionMinima/24)." Dias ";
+    } else {
+        $duracionMinima=($duracionMinima)." Dias ";
+    }
+    
+    if ($duracionMaxima > 24) {
+        $duracionMaxima=($duracionMaxima/24)." Noches ";
+    } else {
+        $duracionMaxima=($duracionMaxima)." Noches ";
+    }
 
 
 
