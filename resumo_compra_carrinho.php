@@ -154,9 +154,14 @@
 
                 <!--PRECIO TOTAL-->
                 <?php
+                // Asegurar que $descuentoGanado existe
+                if (!isset($descuentoGanado)) {
+                    $descuentoGanado = 0;
+                }
+                
                 // Mostrar descuento por redondeo si existe (ARS, CLP, PYG)
                 $mostrarDescuentoRedondeo = false;
-                if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($descuentoGanado) && $descuentoGanado > 0) {
+                if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && $descuentoGanado > 0) {
                     $mostrarDescuentoRedondeo = true;
                 }
                 
