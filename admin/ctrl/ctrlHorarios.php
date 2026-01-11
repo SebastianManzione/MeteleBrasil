@@ -317,6 +317,7 @@ $idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
 
 			$retorno[$i]['valor'] = $_SESSION['moneda_sel_sym'] . $precioFormateado;
 			$retorno[$i]['valorFormateado'] = $precioFormateado;
+			$retorno[$i]['valorNumerico'] = $precio; // Valor numérico sin formato para JavaScript
 			$retorno[$i]['redondeoDiferencia'] = $redondeoDiferencia;
 
 

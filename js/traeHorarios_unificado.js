@@ -65,6 +65,11 @@ function toNumeric(amount) {
 function getPrecioValor(item) {
   if (!item) return 0;
   
+  // Priorizar valorNumerico sin formato
+  if (item.hasOwnProperty('valorNumerico') && item['valorNumerico'] !== null) {
+    return parseFloat(item['valorNumerico']);
+  }
+  
   var v = null;
   if (item.hasOwnProperty('valor')) {
     if (typeof item['valor'] === 'string' && item['valor'].match(/[^0-9,.-]/)) {
