@@ -275,11 +275,21 @@ location.href="carrito";
 
 <!--SECCION DATOS PERSONALES-->
 
-
-
-
-
-
+<?php
+// PRE-CALCULAR descuento por redondeo ANTES de mostrar el resumen
+// Este loop solo calcula el descuento, no genera HTML
+for ($i = 0; $i < $cantCarrito; $i++) {
+    $reserva = $carrito[$i][0];
+    for ($j = 0; $j < count($reserva); $j++) {
+        $tarifa = calculaTarifa($reserva[$j]["idServicioSalidasTarifas"], $reserva[$j]["cantidad"]);
+        
+        // Acumular descuento del redondeo para monedas devaluadas (ARS, CLP, PYG)
+        if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia'])) {
+            $descuentoGanado += $tarifa[0]['redondeoDiferencia'];
+        }
+    }
+}
+?>
 
 <section>
 
