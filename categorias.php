@@ -101,31 +101,46 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $fotos = "sinCategoria.jpg";
 }
 
-// Obtener imágenes del slider desde BD
+// Obtener imágenes del slider desde BD o usar la imagen de la categoría como slide único
 $sliderImages = [];
 $sliderIntervalo = 5000; // default 5 segundos
+$sliderBasePath = 'img/';
+
+// Si hay categoría seleccionada con imagen propia, usarla como único slide
+if ($idCategoria > 0 && isset($categorias[0]['img_categoria_servicio']) && !empty($categorias[0]['img_categoria_servicio'])) {
+  $sliderImages[] = $categorias[0]['img_categoria_servicio'];
+  $sliderBasePath = 'admin/img/categoria_servicio/';
+}
+
 try {
-    require_once(__DIR__ . '/config/config.php');
+  require_once(__DIR__ . '/config/config.php');
+  // Solo consultar la tabla si no se cargó imagen de categoría
+  if (empty($sliderImages)) {
     $mysqli_slider = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
     if (!$mysqli_slider->connect_error) {
-        $stmt = $mysqli_slider->query("SELECT imagen, intervalo FROM slider WHERE activo = 1 ORDER BY orden ASC");
-        if ($stmt) {
-            while ($row = $stmt->fetch_assoc()) {
-                $sliderImages[] = $row['imagen'];
-                // Usar el intervalo de la primera imagen
-                if (count($sliderImages) == 1) {
-                    $sliderIntervalo = intval($row['intervalo'] ?? 5000);
-                }
-            }
+      $stmt = $mysqli_slider->query("SELECT imagen, intervalo FROM slider WHERE activo = 1 ORDER BY orden ASC");
+      if ($stmt) {
+        while ($row = $stmt->fetch_assoc()) {
+          $sliderImages[] = $row['imagen'];
+          // Usar el intervalo de la primera imagen
+          if (count($sliderImages) == 1) {
+            $sliderIntervalo = intval($row['intervalo'] ?? 5000);
+          }
         }
-        $mysqli_slider->close();
+      }
+      $mysqli_slider->close();
     }
+  }
 } catch (Exception $e) {
-    // Fallback a imágenes por defecto
+  // Fallback a imágenes por defecto
 }
 if (empty($sliderImages)) {
-    $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
+  $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
+  $sliderBasePath = 'img/';
 }
+
+$sliderCount = count($sliderImages);
+$showSliderControls = $sliderCount > 1;
 
 // ========== APLICAR ORDENAMIENTO (ANTES DE PAGINACIÓN) ==========
 // Combinable: proximidad (cercano/lejano) + precio (asc/desc)
@@ -709,9 +724,10 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       border-radius: 12px;
       padding: 1.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-      top: 120px;
+      top: 0;
       position: sticky;
-      max-height: calc(100vh - 140px);
+      z-index: 5;
+      max-height: calc(100vh);
       overflow-y: auto;
     }
 
@@ -940,19 +956,92 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       color: #6c757d;
     }
 
-    /* Banner de categoría seleccionada */
-    .categoria-hero {
+    /* ========== HERO SLIDER + OVERLAY ========== */
+    .categoria-hero-wrapper {
+      position: relative;
       width: 100%;
-      min-height: 320px;
-      background-size: cover;
-      background-position: center;
+      overflow: hidden;
+    }
+
+    .categoria-hero-wrapper .carousel,
+    .categoria-hero-wrapper .carousel-inner,
+    .categoria-hero-wrapper .carousel-item {
+      height: 520px;
+    }
+
+    .categoria-hero-wrapper .img-slider {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .categoria-hero-wrapper .div-absolute {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      text-align: center;
+      padding: 3rem 1rem 4rem;
+      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
+      color: #fff;
+      z-index: 2;
+      overflow-y: auto;
     }
-    .categoria-hero-content {
-      max-width: 720px;
-      margin: 0 auto;
+
+    .categoria-hero-wrapper .div-absolute .hero-title {
+      margin-top: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .categoria-hero-wrapper .div-absolute .div-bottom {
+      margin-top: 0.5rem;
+    }
+
+    .categoria-hero-wrapper .div-absolute .texto-bottom {
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .categoria-hero-wrapper .carousel,
+      .categoria-hero-wrapper .carousel-inner,
+      .categoria-hero-wrapper .carousel-item {
+        height: 420px;
+      }
+
+      .categoria-hero-wrapper .div-absolute {
+        padding: 3rem 1rem 3.5rem;
+      }
+    }
+
+    /* Sticky buscador + categorías */
+    .sticky-header-filters {
+      position: sticky;
+      top: 0;
+      z-index: 1030; /* por encima de dropdowns (1000) y bajo navbar fijo (1030) */
+      background: transparent;
+    }
+    .sticky-header-filters .sticky-inner {
+      background: #fff;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #e8e8e8;
+      box-shadow: none;
+      /* Extender fondo al mismo ancho que el row de servicios */
+      margin-left: -15px;
+      margin-right: -15px;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+    @media (max-width: 768px) {
+      .sticky-header-filters {
+        top: 0;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
     }
 
   </style>
@@ -960,168 +1049,77 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
 <body>
 
-  <?php 
-    $mostrarSliderHome = ($idCategoria == 0);
-    $categoriaImg = '';
-    if (!$mostrarSliderHome && isset($categorias[0]['img_categoria_servicio']) && !empty($categorias[0]['img_categoria_servicio'])) {
-      $categoriaImg = 'admin/img/categoria_servicio/' . $categorias[0]['img_categoria_servicio'];
-    }
-  ?>
-
-  <?php if ($mostrarSliderHome): ?>
-    <!-- SLIDER CON BÚSQUEDA INTEGRADA (solo cuando no hay categoría filtrada) -->
+  <div class="categoria-hero-wrapper">
+    <!-- SLIDER CON BÚSQUEDA INTEGRADA (si hay categoría se muestra su imagen como único slide) -->
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
-      <ol class="carousel-indicators">
-        <?php foreach ($sliderImages as $index => $img): ?>
-          <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
-        <?php endforeach; ?>
-      </ol>
+      <?php if ($showSliderControls): ?>
+        <ol class="carousel-indicators">
+          <?php foreach ($sliderImages as $index => $img): ?>
+            <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
+          <?php endforeach; ?>
+        </ol>
+      <?php endif; ?>
       <div class="carousel-inner">
         <?php foreach ($sliderImages as $index => $imagen): ?>
           <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-            <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
+            <img class="img-fluid img-slider" src="<?= $sliderBasePath . htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
           </div>
         <?php endforeach; ?>
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      </a>
+      <?php if ($showSliderControls): ?>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </a>
+      <?php endif; ?>
     </div>
-  <?php elseif (!empty($categoriaImg)): ?>
-    <!-- Banner estático por categoría seleccionada -->
-    <div class="categoria-hero" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('<?= htmlspecialchars($categoriaImg) ?>');">
-      <div class="categoria-hero-content text-center text-white py-5">
-        <h1 class="text-uppercase titulo semibold mb-2"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></h1>
-        <p class="lead mb-0"><?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?></p>
-      </div>
-    </div>
-  <?php endif; ?>
-  
-  <section class="div-absolute" id="capa2">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center mb-5">
-          <h1 class="text-white text-uppercase titulo">
-            <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></span><br>
-            <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
-          </h1>
-        </div>
-        
-        <!-- Estadísticas en el Banner -->
-        <div class="col-lg-12 text-center text-white div-bottom">
-          <div class="container">
-            <div class="row">
-              <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
-                <i class="text-white fa fa-hiking fa-2x mb-2"></i>
-                <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_servicios_categoria; ?></p>
-                <p class="texto-bottom"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'Actividades'; ?></p>
-              </div>
-              <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
-                <i class="text-white fa fa-users fa-2x mb-2"></i>
-                <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $nViajeros; ?></p>
-                <p class="texto-bottom"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'Viajeros'; ?></p>
-              </div>
-              <div class="col-lg-3 col-md-3 col-6">
-                <i class="text-white fa fa-comment-dots fa-2x mb-2"></i>
-                <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_opiniones_categoria; ?></p>
-                <p class="texto-bottom"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'Opiniones reales'; ?></p>
-              </div>
-              <div class="col-lg-3 col-md-3 col-6">
-                <i class="text-white fa fa-star fa-2x mb-2"></i>
-                <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;">9,2</p>
-                <p class="texto-bottom"><?= isset($lang["asi_nos_puntuan"]) ? $lang["asi_nos_puntuan"] : 'Así nos puntúan'; ?></p>
+
+    <section class="div-absolute" id="capa2">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12 text-center mb-4 hero-title">
+            <h1 class="text-white text-uppercase titulo">
+              <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></span><br>
+              <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
+            </h1>
+          </div>
+          
+          <!-- Estadísticas en el Banner -->
+          <div class="col-lg-12 text-center text-white div-bottom">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
+                  <i class="text-white fa fa-hiking fa-2x mb-2"></i>
+                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_servicios_categoria; ?></p>
+                  <p class="texto-bottom"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'Actividades'; ?></p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
+                  <i class="text-white fa fa-users fa-2x mb-2"></i>
+                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $nViajeros; ?></p>
+                  <p class="texto-bottom"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'Viajeros'; ?></p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                  <i class="text-white fa fa-comment-dots fa-2x mb-2"></i>
+                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_opiniones_categoria; ?></p>
+                  <p class="texto-bottom"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'Opiniones reales'; ?></p>
+                </div>
+                <div class="col-lg-3 col-md-3 col-6">
+                  <i class="text-white fa fa-star fa-2x mb-2"></i>
+                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;">9,2</p>
+                  <p class="texto-bottom"><?= isset($lang["asi_nos_puntuan"]) ? $lang["asi_nos_puntuan"] : 'Así nos puntúan'; ?></p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- CONTENEDOR PRINCIPAL -->
   <main class="container py-4">
-    <!-- BUSCADOR SUPERIOR -->
-    <div class="mb-4">
-      <form class="form-buscar" method="get" action="categorias">
-        <div class="input-group">
-          <input class="form-control form-control-lg form-control-search" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
-          <?php if (isset($_GET['idCategoria'])): ?>
-            <input type="hidden" name="idCategoria" value="<?= $_GET['idCategoria'] ?>">
-          <?php endif; ?>
-          <div class="input-group-append">
-            <button class="btn btn-primary btn-lg btn-search" type="submit"><i class="fa fa-search"></i></button>
-          </div>
-        </div>
-      </form>
-    </div>
-    
-    <!-- CATEGORÍAS HORIZONTALES -->
-    <div class="mb-4">
-      <h5 class="mb-3" style="font-weight: 600; color: #333;">
-        <i class="fa fa-compass" style="color: #029ce2; margin-right: 8px;"></i>
-        <?= isset($lang["decidiste_que_hacer"]) ? $lang["decidiste_que_hacer"] : "¿Decidiste qué hacer?"; ?>
-      </h5>
-      <div class="d-flex flex-wrap gap-2" style="gap: 0.5rem;">
-        <?php
-        $todas_las_categorias = getCategorias();
-        
-        // Botón "Todas"
-        $urlParamsAll = "";
-        if (!empty($busqueda)) {
-          $urlParamsAll .= "buscar=" . urlencode($busqueda);
-        }
-        if (!empty($orden_precio)) {
-          $urlParamsAll .= (!empty($urlParamsAll) ? "&" : "") . "orden_precio=" . urlencode($orden_precio);
-        }
-        $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
-        ?>
-        <a href="categorias?<?= $urlParamsAll ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
-          <i class="fa fa-list-ul mr-1"></i>
-          <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
-        </a>
-        
-        <?php
-        // Iconos por categoría
-        $iconos = array(
-          2 => 'fa-ship',
-          4 => 'fa-suitcase',
-          6 => 'fa-hiking',
-          7 => 'fa-camera',
-          8 => 'fa-utensils'
-        );
-        
-        foreach ($todas_las_categorias as $cat) {
-          $idCategoria_item = $cat["idCategoria_servicio"];
-          $nombre_categoria_item = $cat["nombre_categoria_servicio"];
-          
-          $urlParams = "idCategoria=" . $idCategoria_item;
-          if (!empty($busqueda)) {
-            $urlParams .= "&buscar=" . urlencode($busqueda);
-          }
-          if (!empty($orden_precio)) {
-            $urlParams .= "&orden_precio=" . urlencode($orden_precio);
-          }
-          
-          $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
-          $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
-        ?>
-          <a href="categorias?<?= $urlParams ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
-            <i class="fa <?= $icono ?> mr-1"></i>
-            <?= $nombre_categoria_item ?>
-          </a>
-        <?php } ?>
-      </div>
-    </div>
-    
-    <!-- BOTÓN FILTRO MÓVIL -->
-    <div class="d-lg-none mb-3">
-      <button class="btn btn-outline-primary btn-lg btn-block" data-toggle="modal" data-target="#filterModal">
-        <i class="fa fa-sliders-h"></i> Filtrar y Ordenar
-      </button>
-    </div>
     
     <div class="row">
 
@@ -1137,6 +1135,44 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             </h6>
             <div>
               <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
+            </div>
+          </div>
+
+          <!-- CATEGORÍAS EN SIDEBAR -->
+          <div class="mb-4">
+            <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+              <i class="fa fa-tags" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
+            </h6>
+            <div class="d-flex flex-wrap" style="gap: .5rem;">
+              <?php
+              $todas_las_categorias = getCategorias();
+              // Botón "Todas"
+              $urlParamsAll = [];
+              if (!empty($busqueda)) { $urlParamsAll['buscar'] = $busqueda; }
+              if (!empty($orden_precio)) { $urlParamsAll['orden_precio'] = $orden_precio; }
+              if (!empty($orden_distancia)) { $urlParamsAll['orden_distancia'] = $orden_distancia; }
+              if (!empty($orden_duracion)) { $urlParamsAll['orden_duracion'] = $orden_duracion; }
+              $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
+              ?>
+              <a href="categorias?<?= http_build_query($urlParamsAll) ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.85rem; padding: 0.35rem .9rem;">
+                <i class="fa fa-list-ul mr-1"></i>
+                <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
+              </a>
+              <?php
+              $iconos = [2=>'fa-ship',4=>'fa-suitcase',6=>'fa-hiking',7=>'fa-camera',8=>'fa-utensils'];
+              foreach ($todas_las_categorias as $cat) {
+                $idCategoria_item = $cat["idCategoria_servicio"];
+                $nombre_categoria_item = $cat["nombre_categoria_servicio"];
+                $paramsCat = $urlParamsAll;
+                $paramsCat['idCategoria'] = $idCategoria_item;
+                $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
+                $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
+              ?>
+                <a href="categorias?<?= http_build_query($paramsCat) ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.85rem; padding: 0.35rem .9rem;">
+                  <i class="fa <?= $icono ?> mr-1"></i>
+                  <?= $nombre_categoria_item ?>
+                </a>
+              <?php } ?>
             </div>
           </div>
 
@@ -1173,6 +1209,84 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
 
       <!-- ÁREA DE SERVICIOS -->
       <div class="col-lg-9">
+
+        <!-- Sticky buscador + categorías dentro de la columna de contenido -->
+        <div class="sticky-header-filters mb-4">
+          <div class="row">
+            <div class="col-12">
+              <div class="sticky-inner">
+                <!-- BUSCADOR SUPERIOR -->
+                <div class="mb-3 mb-md-4">
+                  <form class="form-buscar" method="get" action="categorias">
+                    <div class="input-group">
+                      <input class="form-control form-control-lg form-control-search" name="buscar" type="text" placeholder="<?= isset($lang["que_hacemos"]) ? $lang["que_hacemos"] : '¿Qué hacemos?'; ?>" value="<?= htmlspecialchars($busqueda) ?>">
+                      <?php if (isset($_GET['idCategoria'])): ?>
+                        <input type="hidden" name="idCategoria" value="<?= $_GET['idCategoria'] ?>">
+                      <?php endif; ?>
+                      <div class="input-group-append">
+                        <button class="btn btn-primary btn-lg btn-search" type="submit"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                
+                <!-- BOTÓN FILTRO MÓVIL DENTRO DEL STICKY -->
+                <div class="d-lg-none mb-2">
+                  <button class="btn btn-outline-primary btn-block" data-toggle="modal" data-target="#filterModal" style="border-radius: 20px;">
+                    <i class="fa fa-sliders-h"></i> <?= isset($lang["filtrar_y_ordenar"]) ? $lang["filtrar_y_ordenar"] : "Filtrar y Ordenar"; ?>
+                  </button>
+                </div>
+
+                <!-- CATEGORÍAS HORIZONTALES (solo desktop) -->
+                <div class="mb-2 mb-md-0 d-none d-lg-block">
+                  <div class="d-flex flex-wrap gap-2" style="gap: 0.5rem;">
+              <?php
+              $todas_las_categorias = getCategorias();
+              
+              // Botón "Todas"
+              $urlParamsAll = [];
+              if (!empty($busqueda)) { $urlParamsAll['buscar'] = $busqueda; }
+              if (!empty($orden_precio)) { $urlParamsAll['orden_precio'] = $orden_precio; }
+              if (!empty($orden_distancia)) { $urlParamsAll['orden_distancia'] = $orden_distancia; }
+              if (!empty($orden_duracion)) { $urlParamsAll['orden_duracion'] = $orden_duracion; }
+              $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
+              ?>
+              <a href="categorias?<?= http_build_query($urlParamsAll) ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+                <i class="fa fa-list-ul mr-1"></i>
+                <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
+              </a>
+              
+              <?php
+              // Iconos por categoría
+              $iconos = array(
+                2 => 'fa-ship',
+                4 => 'fa-suitcase',
+                6 => 'fa-hiking',
+                7 => 'fa-camera',
+                8 => 'fa-utensils'
+              );
+              
+              foreach ($todas_las_categorias as $cat) {
+                $idCategoria_item = $cat["idCategoria_servicio"];
+                $nombre_categoria_item = $cat["nombre_categoria_servicio"];
+                
+                $paramsCat = $urlParamsAll;
+                $paramsCat['idCategoria'] = $idCategoria_item;
+                
+                $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
+                $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
+              ?>
+                <a href="categorias?<?= http_build_query($paramsCat) ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+                  <i class="fa <?= $icono ?> mr-1"></i>
+                  <?= $nombre_categoria_item ?>
+                </a>
+              <?php } ?>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
         <!-- SERVICIOS -->
@@ -1240,7 +1354,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <a href="servicio?id=<?= $idServicio ?>">
                 <div class="mb-4">
                   <div class="card card-visitas">
-                    <div class="row no-gutters d-md-none" style="position: absolute;z-index: 999;">
+                    <div class="row no-gutters d-md-none" style="position: absolute; z-index: 10;">
                       <div class="col-6">
                         <?php if (!empty($textoMiniatura)) : ?>
                           <div class="badge badge-primary badge-destacado"><?= $textoMiniatura; ?></div>
@@ -1485,6 +1599,41 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           </h6>
           <div class="mb-4">
             <?= generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $orden_duracion, $lang); ?>
+          </div>
+
+          <!-- Categorías en modal móvil -->
+          <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
+            <i class="fa fa-tags" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
+          </h6>
+          <div class="d-flex flex-wrap" style="gap: .5rem;">
+            <?php
+            $todas_las_categorias = getCategorias();
+            $urlParamsAll = [];
+            if (!empty($busqueda)) { $urlParamsAll['buscar'] = $busqueda; }
+            if (!empty($orden_precio)) { $urlParamsAll['orden_precio'] = $orden_precio; }
+            if (!empty($orden_distancia)) { $urlParamsAll['orden_distancia'] = $orden_distancia; }
+            if (!empty($orden_duracion)) { $urlParamsAll['orden_duracion'] = $orden_duracion; }
+            $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
+            ?>
+            <a href="categorias?<?= http_build_query($urlParamsAll) ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+              <i class="fa fa-list-ul mr-1"></i>
+              <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
+            </a>
+            <?php
+            $iconos = [2=>'fa-ship',4=>'fa-suitcase',6=>'fa-hiking',7=>'fa-camera',8=>'fa-utensils'];
+            foreach ($todas_las_categorias as $cat) {
+              $idCategoria_item = $cat["idCategoria_servicio"];
+              $nombre_categoria_item = $cat["nombre_categoria_servicio"];
+              $paramsCat = $urlParamsAll;
+              $paramsCat['idCategoria'] = $idCategoria_item;
+              $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
+              $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
+            ?>
+              <a href="categorias?<?= http_build_query($paramsCat) ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.9rem; padding: 0.4rem 1rem;">
+                <i class="fa <?= $icono ?> mr-1"></i>
+                <?= $nombre_categoria_item ?>
+              </a>
+            <?php } ?>
           </div>
 
           <!-- Limpiar filtros -->

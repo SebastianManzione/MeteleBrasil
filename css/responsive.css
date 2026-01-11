@@ -5,10 +5,11 @@
   height: 200px !important;
 }
 
-  .div-absolute {
-
-    top: 10%;
-
+/* Ajustes generales mínimos para mobile */
+.div-absolute {
+  position: relative;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 .badge-destacado {
 

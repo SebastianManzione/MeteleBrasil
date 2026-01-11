@@ -142,36 +142,89 @@ try {
 if (empty($sliderImages)) {
     $sliderImages = ['slider4.jpg', 'slider2.jpg', 'slider3.jpg', 'slider1.jpg'];
 }
+$sliderCount = count($sliderImages);
+$showSliderControls = $sliderCount > 1;
 ?>
-<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
-  <ol class="carousel-indicators">
-    <?php foreach ($sliderImages as $index => $img): ?>
-      <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
-    <?php endforeach; ?>
-  </ol>
-  <div class="carousel-inner">
-    <?php foreach ($sliderImages as $index => $imagen): ?>
-      <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-        <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
-      </div>
-    <?php endforeach; ?>
+<style>
+  .home-hero-wrapper {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  .home-hero-wrapper .carousel,
+  .home-hero-wrapper .carousel-inner,
+  .home-hero-wrapper .carousel-item {
+    height: 520px;
+  }
+  .home-hero-wrapper .img-slider {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  .home-hero-wrapper .div-absolute {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 3.5rem 1rem 3.5rem;
+    background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
+    color: #fff;
+    z-index: 2;
+  }
+  .home-hero-wrapper .div-absolute .hero-title { margin-top: 1.5rem; margin-bottom: 1rem; }
+  .home-hero-wrapper .div-absolute .div-bottom { margin-top: 0.5rem; }
+  @media (max-width: 768px) {
+    .home-hero-wrapper .carousel,
+    .home-hero-wrapper .carousel-inner,
+    .home-hero-wrapper .carousel-item {
+      height: 430px;
+    }
+    .home-hero-wrapper .div-absolute {
+      padding: 3.5rem 1rem 3rem;
+    }
+  }
+</style>
+
+<div class="home-hero-wrapper">
+  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
+    <?php if ($showSliderControls): ?>
+      <ol class="carousel-indicators">
+        <?php foreach ($sliderImages as $index => $img): ?>
+          <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
+        <?php endforeach; ?>
+      </ol>
+    <?php endif; ?>
+    <div class="carousel-inner">
+      <?php foreach ($sliderImages as $index => $imagen): ?>
+        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+          <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
+        </div>
+      <?php endforeach; ?>
+    </div>
+    <?php if ($showSliderControls): ?>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </a>
+    <?php endif; ?>
   </div>
-  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-  </a>
-</div>
-<section class="div-absolute" id="capa2" >
+
+  <section class="div-absolute" id="capa2" >
   <div class="container">
     <div class="row">
-      <div class="col-lg-6 offset-lg-3 mb-5">
+      <div class="col-lg-6 offset-lg-3 mb-4 hero-title">
         <h1 class="text-white text-uppercase titulo">
           <span class="semibold"><?= $lang["crea_tu_viaje"] ?? "Crea tu viaje" ?></span><br>
           <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
         </h1>
-        <form class="form-buscar mb-5" action="categorias" method="get">
+        <form class="form-buscar mb-4" action="categorias" method="get">
           <label class="sr-only" for="buscar"><?= $lang["que_hacemos"] ?? "┬┐Qu├® hacemos?" ?></label>
           <div class="input-group">
             <input class="field form-control form-control-search" id="buscar" name="buscar" type="text" placeholder="<?= $lang["que_hacemos"] ?? "┬┐Qu├® hacemos?" ?>" value="">
@@ -207,6 +260,7 @@ if (empty($sliderImages)) {
     </div>
   </div>
 </section>
+</div>
 <section class="py-5"  style="background-color: rgb(245, 244, 245);">
   <div class="container" style="background-color: rgb(245, 244, 245);" >
     <div class="row mb-4">
