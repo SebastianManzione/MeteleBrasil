@@ -1682,147 +1682,50 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 
 
 
-<!-- Modal de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
-<div class="modal fade" id="modalDescuentoARS" tabindex="-1" role="dialog" aria-labelledby="modalDescuentoARSLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="modalDescuentoARSLabel">
-          <i class="fas fa-gift"></i> ¡Felicitaciones!
-        </h5>
-      </div>
-      <div class="modal-body text-center">
-        <h4 class="text-success mb-3">¡TE HAS GANADO UN DESCUENTO POR TU COMPRA!</h4>
-        <div class="alert alert-success">
-          <h5>Descuento ganado: <strong id="descuentoGanadoText"><?= $_SESSION['moneda_sel_sym'] ?>0</strong></h5>
-          <p class="mb-0">Este descuento se aplicará automáticamente a tu compra.</p>
-        </div>
-        <p class="text-muted">
-          Al continuar, confirmarás tu reserva con el precio final ya descontado.
-        </p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-lg" id="btnAceptarDescuento">
-          <i class="fas fa-check"></i> Aceptar Descuento y Continuar
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Script para Modal de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
+<!-- Script para Alerta de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
 <!-- DEBUG: moneda_sel=<?= $_SESSION['moneda_sel'] ?? 'NO SET' ?>, descuentoGanado=<?= $descuentoGanado ?>, descuento_aceptado=<?= isset($_SESSION['descuento_ars_aceptado']) ? 'SI' : 'NO' ?> -->
 <script>
 $(document).ready(function() {
-    // Verificar si es moneda devaluada y mostrar modal (solo si no se ha aceptado antes)
+    // Verificar si es moneda devaluada y mostrar alerta (solo si no se ha aceptado antes)
     <?php if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && $descuentoGanado > 0 && !isset($_SESSION['descuento_ars_aceptado'])): ?>
-        console.log('DEBUG: Mostrando modal descuento');
+        console.log('DEBUG: Mostrando alerta descuento');
         console.log('Moneda: <?= $_SESSION['moneda_sel'] ?>, Descuento: <?= $descuentoGanado ?>');
+        
         var monedaSimbolo = '<?= $_SESSION['moneda_sel_sym'] ?>';
         var descuentoValor = <?= round($descuentoGanado) ?>;
-        $('#descuentoGanadoText').text(monedaSimbolo + descuentoValor.toLocaleString('es-AR'));
-        $('#modalDescuentoARS').modal('show');
+        var descuentoFormateado = monedaSimbolo + descuentoValor.toLocaleString('es-AR');
+        
+        // Mostrar SweetAlert2 inmediatamente
+        Swal.fire({
+            icon: 'success',
+            title: '¡Felicitaciones!',
+            html: '<h4 class="text-success mb-3">¡TE HAS GANADO UN DESCUENTO!</h4>' +
+                  '<div class="alert alert-success">' +
+                  '<h5>Descuento ganado: <strong>' + descuentoFormateado + '</strong></h5>' +
+                  '<p class="mb-0">Este descuento se aplicará automáticamente a tu compra.</p>' +
+                  '</div>' +
+                  '<p class="text-muted">Al continuar, confirmarás tu reserva con el precio final ya descontado.</p>',
+            confirmButtonText: '<i class="fas fa-check"></i> Aceptar y Continuar',
+            confirmButtonColor: '#28a745',
+            allowOutsideClick: false,
+            allowEscapeKey: false
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Guardar en sesión vía AJAX
+                $.post('ajax/guardar_descuento_ars.php', {
+                    descuento_aceptado: '1',
+                    descuento_ganado: '<?= $descuentoGanado ?>'
+                }, function(response) {
+                    console.log('Descuento guardado en sesión', response);
+                }, 'json').fail(function(xhr, status, error) {
+                    console.error('Error guardando descuento:', error);
+                });
+            }
+        });
     <?php else: ?>
-        console.log('DEBUG: Modal NO se muestra');
+        console.log('DEBUG: Alerta NO se muestra');
         console.log('Moneda: <?= $_SESSION['moneda_sel'] ?? 'NO SET' ?>, Descuento: <?= $descuentoGanado ?>, Aceptado: <?= isset($_SESSION['descuento_ars_aceptado']) ? 'SI' : 'NO' ?>');
     <?php endif; ?>
-
-    // Manejar el botón de aceptar descuento
-    $('#btnAceptarDescuento').click(function() {
-        var descuentoMonto = '<?php echo $descuentoGanado; ?>';
-        var simboloMoneda = '<?php echo $_SESSION['moneda_sel_sym']; ?>';
-
-        // Usar AJAX para guardar que se aceptó el descuento en la sesión
-        $.post('ajax/guardar_descuento_ars.php', {
-            descuento_aceptado: '1',
-            descuento_ganado: descuentoMonto
-        }, function(response) {
-            if (response.success) {
-                $('#modalDescuentoARS').modal('hide');
-
-                // Actualizar dinámicamente el resumen del carrito
-                actualizarResumenDescuento(descuentoMonto, simboloMoneda);
-
-                // Mostrar mensaje de éxito con SweetAlert2
-                Swal.fire({
-                    title: '¡Descuento Aplicado!',
-                    text: 'El descuento se ha aplicado a tu reserva.',
-                    icon: 'success',
-                    confirmButtonText: 'Continuar'
-                });
-            } else {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'Error al aplicar el descuento. Intente nuevamente.',
-                    icon: 'error',
-                    confirmButtonText: 'Aceptar'
-                });
-            }
-        }, 'json').fail(function() {
-            $('#modalDescuentoARS').modal('hide');
-            Swal.fire({
-                title: 'Error de conexión',
-                text: 'No se pudo conectar al servidor. El descuento no se aplicó.',
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
-            });
-        });
-    });
-
-    // Función para actualizar dinámicamente el resumen con el descuento
-    function actualizarResumenDescuento(descuentoMonto, simboloMoneda) {
-        // Buscar la lista del resumen del carrito
-        var $listaResumen = $('.lista-caracteristicas-r');
-
-        if ($listaResumen.length > 0) {
-            // Verificar si ya existe una fila de descuento
-            var $descuentoExistente = $listaResumen.find('li:contains("Descuento Promocional")');
-
-            if ($descuentoExistente.length === 0) {
-                // Agregar la fila del descuento después del subtotal general
-                var descuentoHTML = '<li><strong>Descuento Promocional:</strong> -' + simboloMoneda + descuentoMonto + '</li>';
-
-                // Buscar el elemento "Subtotal Geral" y agregar el descuento después
-                var $subtotalGeral = $listaResumen.find('li:contains("Subtotal Geral")');
-                if ($subtotalGeral.length > 0) {
-                    $subtotalGeral.after(descuentoHTML);
-                } else {
-                    // Si no encuentra Subtotal Geral, agregar al final de la lista
-                    $listaResumen.append(descuentoHTML);
-                }
-            }
-
-            // Actualizar el total final
-            actualizarTotalFinal(descuentoMonto, simboloMoneda);
-        }
-    }
-
-    // Función para actualizar el total final restando el descuento
-    function actualizarTotalFinal(descuentoMonto, simboloMoneda) {
-        // Buscar el elemento que contiene el total (puede ser <strong> o <tron>)
-        var $totalElement = $('.div-precio-t h5 strong, .div-precio-t h5 tron');
-
-        if ($totalElement.length > 0) {
-            // Obtener el total actual del elemento
-            var totalTexto = $totalElement.text().trim();
-
-            // Extraer solo el valor numérico (remover símbolo de moneda y formateo)
-            var valorActualTexto = totalTexto.replace(simboloMoneda, '').replace(/[^\d,]/g, '');
-            var valorActual = parseFloat(valorActualTexto.replace(',', '.'));
-
-            if (!isNaN(valorActual)) {
-                // Restar el descuento
-                var nuevoTotal = valorActual - parseFloat(descuentoMonto);
-
-                // Formatear el nuevo total
-                //var nuevoTotalFormateado = simboloMoneda + nuevoTotal.toLocaleString('es-AR');
-                var nuevoTotalFormateado = simboloMoneda + String(Math.round(nuevoTotal));
-
-                // Actualizar el texto del total
-                $totalElement.text(nuevoTotalFormateado);
-            }
-        }
-    }
 });
 </script>
 
