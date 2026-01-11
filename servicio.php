@@ -1151,8 +1151,10 @@ if (!empty($serviciosRelacionados) && is_array($serviciosRelacionados)):
       <div class="col-6">
         <p class="mb-0 text-muted" style="font-size: 14px;"><?=$lang["desde"] ?? "Desde";?></p>
         <h4 class="mb-0 text-primary font-weight-bold" id="precioMovilSticky">
-          <?php if ($precioMinimo > 0): ?>
-            <?=$_SESSION['moneda_sel_sym']?><?=number_format($precioMinimo, 2, ',', '.');?>
+          <?php if ($precioMinimo > 0): 
+            $decimales = (stripos($_SESSION['moneda_sel_sym'], 'AR') !== false || stripos($_SESSION['moneda_sel_sym'], 'CH') !== false || stripos($_SESSION['moneda_sel_sym'], 'G') !== false) ? 0 : 2;
+          ?>
+            <?=$_SESSION['moneda_sel_sym']?><?=number_format($precioMinimo, $decimales, ',', '.');?>
           <?php else: ?>
             <?=$lang["consultar"] ?? "Consultar";?>
           <?php endif; ?>
