@@ -422,11 +422,18 @@ else{
 if (salidas && salidas[0] && salidas[0]["duracionMinima"]) {
   var duracionMin = parseFloat(salidas[0]["duracionMinima"]);
   var duracionMax = parseFloat(salidas[0]["duracionMaxima"]);
-  var categoriaServicio = salidas[0]["idCategoria_servicio"];
+  var categoriaServicio = parseInt(salidas[0]["idCategoria_servicio"]);
   var duracionTexto = "";
   
   // Formatear según categoría y duración (igual que en PHP)
-  if (categoriaServicio == 4) { // Paquete
+  if (categoriaServicio === 4) { // Paquete
+    // Para paquetes: si > 24 horas, convertir a días
+    if (duracionMin > 24) {
+      duracionMin = Math.ceil(duracionMin / 24);
+    }
+    if (duracionMax > 24) {
+      duracionMax = Math.ceil(duracionMax / 24);
+    }
     duracionTexto = duracionMin + " Dias  - " + duracionMax + " Noches ";
   } else {
     var duracionMinTexto = "";
