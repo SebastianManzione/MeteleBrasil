@@ -197,7 +197,16 @@ function getComisionTarifa($idServicioSalidasTarifas){
 
             $retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
 
+			if ($_SESSION['moneda_sel_sym'] == 'AR$' && isset($_SESSION["cupon_descuento"]["descuentoPorcentual"])) {
+				$descuentoTarifaConvertido=$retorno[$i]['valor'] * $descuentoCupon;
+				$descuentoTarifaConvertido=round($descuentoTarifaConvertido,2, PHP_ROUND_HALF_UP);
+				$retorno[$i]['valor']=$retorno[$i]['valor']-$descuentoTarifaConvertido;
+		$retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
+		$totalDescuentos+=$descuentoTarifaConvertido;
+	}
+
             // Redondeo especial para monedas devaluadas (ARS, CLP, PYG): al siguiente múltiplo de 1000 hacia arriba
+            // IMPORTANTE: Calcular DESPUÉS de aplicar cupones para que sea correcto
             $valorOriginal = $retorno[$i]['valor'];
             $redondeoDiferencia = 0;
 
@@ -206,14 +215,6 @@ function getComisionTarifa($idServicioSalidasTarifas){
                 $redondeoDiferencia = ceil($valorOriginal / 1000) * 1000 - $valorOriginal;
                 $retorno[$i]['valor'] = $valorOriginal + $redondeoDiferencia;
             }
-
-			if ($_SESSION['moneda_sel_sym'] == 'AR$' && isset($_SESSION["cupon_descuento"]["descuentoPorcentual"])) {
-				$descuentoTarifaConvertido=$retorno[$i]['valor'] * $descuentoCupon;
-				$descuentoTarifaConvertido=round($descuentoTarifaConvertido,2, PHP_ROUND_HALF_UP);
-				$retorno[$i]['valor']=$retorno[$i]['valor']-$descuentoTarifaConvertido;
-		$retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
-		$totalDescuentos+=$descuentoTarifaConvertido;
-	}
 	
             // AHORA calcular las comisiones basadas en el valor FINAL (después de redondeos y descuentos)
             $retorno[$i]['comisionVendedor']=(float)$retorno[$i]['valor']*(float)$retorno[$i]['comisionVendedorPorcentaje'];
