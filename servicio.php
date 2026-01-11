@@ -82,15 +82,12 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         $tarifasSalida = getTarifas($salida['idServicioSalidas']);
         if (!empty($tarifasSalida)) {
           foreach ($tarifasSalida as $tarifa) {
-            if (isset($tarifa['valor']) && $tarifa['valor'] > 0) {
-              $valorTarifa = floatval($tarifa['valor']);
-              
-              // Aplicar redondeo para ARS, CLP, PYG
-              if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) {
-                $valorTarifa = ceil($valorTarifa / 1000) * 1000;
+            if (isset($tarifa['idServicioSalidasTarifas'])) {
+              // Usar calculaTarifa para obtener precio con conversión, impuestos y redondeo
+              $tarifaCalculada = calculaTarifa($tarifa['idServicioSalidasTarifas'], 1);
+              if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]['valor']) && $tarifaCalculada[0]['valor'] > 0) {
+                $preciosArray[] = floatval($tarifaCalculada[0]['valor']);
               }
-              
-              $preciosArray[] = $valorTarifa;
             }
           }
         }
