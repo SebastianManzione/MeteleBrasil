@@ -74,15 +74,15 @@
 
                                     if (isset($_SESSION["login"]["idUsuario"]) && $_SESSION["login"]["idUsuario"] == 1) {
 
-                                        echo("<li>comision Vendedor: " . $_SESSION['moneda_sel_sym'] . "" . $tarifa[0]["comisionVendedor"] . '</li>');
+                                        echo("<li>comision Vendedor: " . $_SESSION['moneda_sel_sym'] . number_format($tarifa[0]["comisionVendedor"], 0, ',', '.') . '</li>');
 
-                                        echo("<li>comision Sistema: " . $_SESSION['moneda_sel_sym'] . "" . $tarifa[0]["comisionSistema"] . '</li>');
+                                        echo("<li>comision Sistema: " . $_SESSION['moneda_sel_sym'] . number_format($tarifa[0]["comisionSistema"], 0, ',', '.') . '</li>');
 
                                     }
 
                                     ?>
 
-                                    <li class="mt-2"><span class="badge badge-light border">Subtotal Reserva <?= $_SESSION['moneda_sel_sym'] . "" . $precioReserva; ?></span></li>
+                                    <li class="mt-2"><span class="badge badge-light border">Subtotal Reserva <?= $_SESSION['moneda_sel_sym'] . number_format($precioReserva, 0, ',', '.'); ?></span></li>
 
                                     <hr class="my-2">
 
@@ -176,11 +176,11 @@
                 
                 <div class="div-precio-t py-3 px-3 rounded shadow-sm" style="margin-top: 15px; background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%); border: 1px solid #029ce2;">
                     <div class="row align-items-center">
-                        <div class="col-6">
+                        <div class="col-5">
                             <p class="mb-0 h6" style="color: #0066cc;"><strong><i class="fas fa-wallet mr-2"></i><?= $lang["total_carrito"] ?></strong></p>
                         </div>
-                        <div class="col-6 text-right">
-                            <h5 class="mb-0 bold" style="color: #029ce2; font-size: 26px;">
+                        <div class="col-7 text-right">
+                            <h5 class="mb-0 bold" style="color: #029ce2; font-size: 24px; white-space: nowrap;">
                                 <strong><?= $_SESSION['moneda_sel_sym'] . "" . number_format($totalFinal, 0, ',', '.'); ?></strong>
                             </h5>
                         </div>
