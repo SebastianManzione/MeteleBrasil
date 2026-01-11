@@ -718,6 +718,58 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       font-size: 1.2rem;
     }
 
+    /* ========== TARJETA SERVICIO MÓVIL (VERTICAL) ========== */
+    @media (max-width: 767.98px) {
+      .card-mobile-servicio {
+        border: none;
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+        background: #fff;
+        position: relative;
+      }
+      .card-mobile-servicio .thumb-top {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+      }
+      .card-mobile-servicio .mobile-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #029ce2;
+        color: #fff;
+        border-radius: 18px;
+        padding: 6px 10px;
+        font-weight: 700;
+        font-size: 0.78rem;
+      }
+      .card-mobile-servicio .title-mobile {
+        text-transform: uppercase;
+        font-weight: 800;
+        color: #1f2d3d;
+      }
+      .card-mobile-servicio .rating-mobile {
+        color: #029ce2;
+        font-weight: 700;
+        font-size: 0.9rem;
+      }
+      .card-mobile-servicio .desc-mobile {
+        color: #4f5b66;
+        font-size: 0.95rem;
+      }
+      .card-mobile-servicio .price-mobile {
+        color: #029ce2; /* mismo azul que desktop */
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-left: auto;
+      }
+      .card-mobile-servicio .price-mobile.agotado {
+        font-size: 1.2rem; /* como desktop para ESGOTADO */
+      }
+    }
+
     /* ========== SIDEBAR DESKTOP ========== */
     .sidebar-container {
       background: white;
@@ -1350,8 +1402,37 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               }
 
             ?>
-              <!-- TARJETA SERVICIO HORIZONTAL -->
-              <a href="servicio?id=<?= $idServicio ?>">
+              <!-- TARJETA SERVICIO MÓVIL (VERTICAL) -->
+              <a href="servicio?id=<?= $idServicio ?>" class="d-block d-md-none">
+                <div class="card-mobile-servicio mb-4">
+                  <div class="position-relative">
+                    <img src="admin/classes/imgServicio/<?= $ruta_foto; ?>" class="thumb-top" alt="<?= htmlspecialchars($nombre_servicio) ?>">
+                    <?php if (!empty($textoMiniatura)) : ?>
+                      <div class="mobile-badge"><?= $textoMiniatura; ?></div>
+                    <?php endif; ?>
+                  </div>
+                  <div class="card-body">
+                    <h5 class="title-mobile mb-2"><?= $nombre_servicio ?></h5>
+                    <?php if (count($opiniones_servicio) > 0) { ?>
+                      <div class="rating-mobile mb-2"><?= $estrellas_servicio; ?>/10 <span class="text-muted" style="font-weight:400;">(<?= $cantidad_opiniones_servicio; ?> <?= isset($lang["opiniones"]) ? $lang["opiniones"] : "opiniones"; ?>)</span></div>
+                    <?php } ?>
+                    <p class="desc-mobile mb-3"><?= $descripcion_corta; ?></p>
+                    <?php if(!empty($duracion_servicio)): ?>
+                      <div class="text-muted mb-3" style="font-size:0.9rem;">
+                        <i class="fa fa-hourglass-half mr-2"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?>
+                      </div>
+                    <?php endif; ?>
+                    <hr class="my-2">
+                    <div class="d-flex align-items-center">
+                      <div class="price-mobile <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></div>
+                    </div>
+                    <span class="whatsapp-fab"><i class="fa fa-whatsapp"></i></span>
+                  </div>
+                </div>
+              </a>
+
+              <!-- TARJETA SERVICIO HORIZONTAL (DESKTOP) -->
+              <a href="servicio?id=<?= $idServicio ?>" class="d-none d-md-block">
                 <div class="mb-4">
                   <div class="card card-visitas">
                     <div class="row no-gutters d-md-none" style="position: absolute; z-index: 10;">
