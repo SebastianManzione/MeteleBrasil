@@ -154,7 +154,9 @@
   
             <i class="fa fa-hourglass-half"></i>
              <?= $duracion["duracionMinima"];?> - <?= $duracion["duracionMaxima"];?>
-
+<?php // DEBUG
+// var_dump($duracion);
+?>
 
 <?php } ?>
    </ul>

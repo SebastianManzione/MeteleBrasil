@@ -594,16 +594,16 @@ if ($resultado[0]["idCategoria_servicio"]==4) { //si es un paquete mostramos dia
 
     // Si el valor es mayor a 24, está en horas (240 = 10 días), divide por 24
     // Si es menor a 24, ya está en días (10 = 10 días), no divide
-    if ($duracionMinima > 24) {
-        $duracionMinima=($duracionMinima/24)." Dias ";
+    if ((float)$duracionMinima > 24) {
+        $duracionMinima=((float)$duracionMinima/24)." Dias ";
     } else {
-        $duracionMinima=($duracionMinima)." Dias ";
+        $duracionMinima=(int)$duracionMinima." Dias ";
     }
     
-    if ($duracionMaxima > 24) {
-        $duracionMaxima=($duracionMaxima/24)." Noches ";
+    if ((float)$duracionMaxima > 24) {
+        $duracionMaxima=((float)$duracionMaxima/24)." Noches ";
     } else {
-        $duracionMaxima=($duracionMaxima)." Noches ";
+        $duracionMaxima=(int)$duracionMaxima." Noches ";
     }
 
 
