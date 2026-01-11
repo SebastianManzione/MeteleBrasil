@@ -80,7 +80,14 @@ if ($_SERVER["REQUEST_METHOD"]=="POST") {
 
 			$salidas=getSalidasFechaIdServicio($fecha,$idServicio);
 
-
+            // Agregar categoría de servicio a cada salida para que JavaScript pueda formatear duración
+            if (count($salidas) > 0) {
+                $servicio = getServicio($idServicio);
+                $idCategoria = $servicio[0]["idCategoria_servicio"];
+                for ($i = 0; $i < count($salidas); $i++) {
+                    $salidas[$i]["idCategoria_servicio"] = $idCategoria;
+                }
+            }
 
 	echo json_encode($salidas);
 
