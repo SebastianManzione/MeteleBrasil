@@ -58,8 +58,15 @@ if (count($reserva)==1) {
 		$html.='<h5 class="mb-3"><i class="fa fa-check-circle"></i> Reserva Confirmada!!!</h5>';
 		$html.='<p class="mb-3">El pago ha sido procesado correctamente.</p>';
 		$html.='<div class="btn-group btn-group-sm" role="group">';
-		$html.='<a href="../carrito?id='.$idReserva.'" class="btn btn-info" target="_blank"><i class="fa fa-eye"></i> Ver Reserva como Cliente</a>';
-		$html.='<a href="../carritoDetalles?id='.$idReserva.'" class="btn btn-primary"><i class="fa fa-list"></i> Ver Detalles</a>';
+		$html.='<form id="formVerCliente" method="POST" action="../../consultaReserva.php" style="display:inline;">';
+		$html.='<input type="hidden" name="codigo_amigavel" value="'.$codigoAmigable.'">';
+		$html.='<input type="hidden" name="ajax_pagamento" value="1">';
+		$html.='<button type="submit" class="btn btn-info" target="_blank"><i class="fa fa-eye"></i> Ver Reserva como Cliente</button>';
+		$html.='</form>';
+		$html.='<form id="formVerDetalles" method="POST" action="../../admin/carritoDetalles.php" style="display:inline;">';
+		$html.='<input type="hidden" name="detallesCarrito" value="'.$idReserva.'">';
+		$html.='<button type="submit" class="btn btn-primary"><i class="fa fa-list"></i> Ver Detalles</button>';
+		$html.='</form>';
 		$html.='</div>';
 		$html.='</div>';
 	}
