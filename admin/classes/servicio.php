@@ -592,9 +592,9 @@ function getServiciosidDestino($idDestino) {
 
 if ($resultado[0]["idCategoria_servicio"]==4) { //si es un paquete mostramos dias / noches
 
-    $duracionMinima=($duracionMinima)." Dias ";
+    $duracionMinima=($duracionMinima/24)." Dias ";
 
-    $duracionMaxima=($duracionMaxima)." Noches ";
+    $duracionMaxima=($duracionMaxima/24)." Noches ";
 
 
 
