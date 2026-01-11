@@ -159,17 +159,42 @@ $emailResponsable=$reserva[0]["emailResponsable"];
 
 $monedaSel=$reserva[0]["monedaSel"];
 
-$total=$reserva[0]["total"];
+$horarios=getReservaHorarios($idReserva);
 
-$impuestos=$reserva[0]["impuestos"];
+$totalComprobantes=getComprobantesIdReserva($idReserva);
+
+// Calcular total INFLADO a partir de tarifas individuales
+$totalTarifasInflado = 0;
+$totalTarifasOriginal = 0;
+for ($i=0; $i < count($horarios); $i++) {
+    $idReservaHorarios=$horarios[$i]["idReservaHorarios"];
+    $tarifas=getReservaTarifas($idReservaHorarios);
+    for ($j=0; $j < count($tarifas); $j++) { 
+        // valor = precio inflado
+        $totalTarifasInflado += ($tarifas[$j]["valor"] ?? 0);
+        // valorOriginal = precio real
+        $totalTarifasOriginal += ($tarifas[$j]["valorOriginal"] > 0 ? $tarifas[$j]["valorOriginal"] : $tarifas[$j]["valor"]);
+    }
+}
+
+// Agregar adicionales
+$adicionales_array = [];
+for ($i=0; $i < count($horarios); $i++) {
+    $idReservaHorarios=$horarios[$i]["idReservaHorarios"];
+    $adicionales = getReservaAdicionalesNoIncluidos($idReservaHorarios);
+    for ($k=0; $k < count($adicionales); $k++) { 
+        $totalTarifasInflado += ($adicionales[$k]["precio"] ?? 0);
+        $totalTarifasOriginal += ($adicionales[$k]["precio"] ?? 0);
+    }
+}
+
+// Usar valores calculados desde tarifas
+$total = $totalTarifasInflado;
+$impuestos = $reserva[0]["impuestos"];
 
 $precio_sin_impuestos=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], ($total-$impuestos));
 
 $precio=ConvierteMoneda($monedaSel,$_SESSION["moneda_sel"], $total);
-
-$horarios=getReservaHorarios($idReserva);
-
-$totalComprobantes=getComprobantesIdReserva($idReserva);
 
 // Calcular descuento por redondeo en moneda de visualización
 $descuentoRedondeo = 0;
