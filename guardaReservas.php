@@ -74,6 +74,7 @@ $cantidadPasajeros=0;
 $precioTotalReserva=0;
 $totalIvaReserva=0;
 $cantidadPasajerosReserva=0;
+$descuentoGanado=0; // Acumulador para descuento por redondeo (ARS, CLP, PYG)
 
 // Usar $_SESSION["reserva"] que contiene los datos de la sesión (es más confiable)
 $servicios=$_SESSION["reserva"] ?? [];
@@ -143,6 +144,11 @@ for ($i=0; $i < count($servicios); $i++) {
         $idToEdad=$tarifa[0]["idToEdad"];
         $comisionVendedor=$tarifa[0]["comisionVendedor"] ?? 0;
         $comisionSistema=$tarifa[0]["comisionSistema"] ?? 0;
+        
+        // Acumular descuento por redondeo (ARS, CLP, PYG)
+        if (in_array($monedaSel, [270, 271, 225]) && isset($tarifa[0]["redondeoDiferencia"])) {
+            $descuentoGanado += $tarifa[0]["redondeoDiferencia"];
+        }
         
         // Acumular totales
         $cantidadPasajeros+=$cantidad;
@@ -262,7 +268,24 @@ if (isset($_SESSION['descuento_ars_aceptado']) && $_SESSION['descuento_ars_acept
 
 $resultadoUpdateTotal=updateTotalReserva($idReserva, $precioTotalReserva,$total_dolares,$totalIvaReserva);
 
-
+// Guardar descuento por redondeo en BD
+if ($descuentoGanado > 0 && in_array($monedaSel, [270, 271, 225])) {
+    try {
+        require_once("admin/classes/conexion.php");
+        $sqlDescuento = "UPDATE reservas 
+                         SET descuento_redondeo = :descuento, 
+                             moneda_redondeo = :moneda 
+                         WHERE idReserva = :idReserva";
+        $cmdDescuento = $pdo->prepare($sqlDescuento);
+        $cmdDescuento->execute([
+            ':descuento' => round($descuentoGanado, 2),
+            ':moneda' => $monedaSel,
+            ':idReserva' => $idReserva
+        ]);
+    } catch (Exception $e) {
+        error_log("ERROR guardaReservas: No se pudo guardar descuento_redondeo: " . $e->getMessage());
+    }
+}
 
 //echo "Resultado update total reservca: ".print_r($resultadoUpdateTotal);
 

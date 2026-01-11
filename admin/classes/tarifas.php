@@ -197,13 +197,13 @@ function getComisionTarifa($idServicioSalidasTarifas){
 
             $retorno[$i]['valor']=round($retorno[$i]['valor'],2, PHP_ROUND_HALF_UP);
 
-            // Redondeo especial para ARS: al siguiente múltiplo de 500 hacia arriba
+            // Redondeo especial para monedas devaluadas (ARS, CLP, PYG): al siguiente múltiplo de 1000 hacia arriba
             $valorOriginal = $retorno[$i]['valor'];
             $redondeoDiferencia = 0;
 
-            if ($_SESSION['moneda_sel_sym'] == 'AR$') {
-                // Redondear hacia arriba al siguiente múltiplo de 500
-                $redondeoDiferencia = ceil($valorOriginal / 500) * 500 - $valorOriginal;
+            if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) { // ARS, CLP, PYG
+                // Redondear hacia arriba al siguiente múltiplo de 1000
+                $redondeoDiferencia = ceil($valorOriginal / 1000) * 1000 - $valorOriginal;
                 $retorno[$i]['valor'] = $valorOriginal + $redondeoDiferencia;
             }
 

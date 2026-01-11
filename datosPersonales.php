@@ -723,8 +723,8 @@ location.href="carrito";
 
 $reserva[$j ]["cantidad"]);
 
-        // Si es AR$, acumular el descuento del redondeo
-        if ($_SESSION['moneda_sel_sym'] == 'AR$') {
+        // Acumular descuento del redondeo para monedas devaluadas (ARS, CLP, PYG)
+        if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia'])) {
             $descuentoGanado += $tarifa[0]['redondeoDiferencia'];
         }   
 
@@ -1664,7 +1664,7 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 
 
 
-<!-- Modal de Descuento AR$ -->
+<!-- Modal de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
 <div class="modal fade" id="modalDescuentoARS" tabindex="-1" role="dialog" aria-labelledby="modalDescuentoARSLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -1674,9 +1674,9 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
         </h5>
       </div>
       <div class="modal-body text-center">
-        <h4 class="text-success mb-3">¡TE HAZ GANADO UN DESCUENTO POR TU COMPRA!</h4>
+        <h4 class="text-success mb-3">¡TE HAS GANADO UN DESCUENTO POR TU COMPRA!</h4>
         <div class="alert alert-success">
-          <h5>Descuento ganado: <strong id="descuentoGanadoText">AR$0</strong></h5>
+          <h5>Descuento ganado: <strong id="descuentoGanadoText"><?= $_SESSION['moneda_sel_sym'] ?>0</strong></h5>
           <p class="mb-0">Este descuento se aplicará automáticamente a tu compra.</p>
         </div>
         <p class="text-muted">
@@ -1692,12 +1692,14 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
   </div>
 </div>
 
-<!-- Script para Modal de Descuento AR$ -->
+<!-- Script para Modal de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
 <script>
 $(document).ready(function() {
-    // Verificar si es AR$ y mostrar modal (solo si no se ha aceptado antes)
-    <?php if ($_SESSION['moneda_sel_sym'] == 'AR$' && $descuentoGanado > 0 && !isset($_SESSION['descuento_ars_aceptado'])): ?>
-        $('#descuentoGanadoText').text('AR$' + Math.round(<?php echo $descuentoGanado; ?>).toLocaleString('es-AR'));
+    // Verificar si es moneda devaluada y mostrar modal (solo si no se ha aceptado antes)
+    <?php if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && $descuentoGanado > 0 && !isset($_SESSION['descuento_ars_aceptado'])): ?>
+        var monedaSimbolo = '<?= $_SESSION['moneda_sel_sym'] ?>';
+        var descuentoValor = <?= round($descuentoGanado) ?>;
+        $('#descuentoGanadoText').text(monedaSimbolo + descuentoValor.toLocaleString('es-AR'));
         $('#modalDescuentoARS').modal('show');
     <?php endif; ?>
 
