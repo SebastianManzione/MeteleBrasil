@@ -940,32 +940,65 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       color: #6c757d;
     }
 
+    /* Banner de categoría seleccionada */
+    .categoria-hero {
+      width: 100%;
+      min-height: 320px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .categoria-hero-content {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
   </style>
 </head>
 
 <body>
 
-  <!-- SLIDER CON BÚSQUEDA INTEGRADA -->
-  <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
-    <ol class="carousel-indicators">
-      <?php foreach ($sliderImages as $index => $img): ?>
-        <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
-      <?php endforeach; ?>
-    </ol>
-    <div class="carousel-inner">
-      <?php foreach ($sliderImages as $index => $imagen): ?>
-        <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-          <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
-        </div>
-      <?php endforeach; ?>
+  <?php 
+    $mostrarSliderHome = ($idCategoria == 0);
+    $categoriaImg = '';
+    if (!$mostrarSliderHome && isset($categorias[0]['img_categoria_servicio']) && !empty($categorias[0]['img_categoria_servicio'])) {
+      $categoriaImg = 'admin/img/categoria_servicio/' . $categorias[0]['img_categoria_servicio'];
+    }
+  ?>
+
+  <?php if ($mostrarSliderHome): ?>
+    <!-- SLIDER CON BÚSQUEDA INTEGRADA (solo cuando no hay categoría filtrada) -->
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
+      <ol class="carousel-indicators">
+        <?php foreach ($sliderImages as $index => $img): ?>
+          <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
+        <?php endforeach; ?>
+      </ol>
+      <div class="carousel-inner">
+        <?php foreach ($sliderImages as $index => $imagen): ?>
+          <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+            <img class="img-fluid img-slider" src="img/<?= htmlspecialchars($imagen) ?>" alt="Slider <?= $index + 1 ?>">
+          </div>
+        <?php endforeach; ?>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      </a>
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    </a>
-  </div>
+  <?php elseif (!empty($categoriaImg)): ?>
+    <!-- Banner estático por categoría seleccionada -->
+    <div class="categoria-hero" style="background-image: linear-gradient(180deg, rgba(0,0,0,0.4), rgba(0,0,0,0.6)), url('<?= htmlspecialchars($categoriaImg) ?>');">
+      <div class="categoria-hero-content text-center text-white py-5">
+        <h1 class="text-uppercase titulo semibold mb-2"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></h1>
+        <p class="lead mb-0"><?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?></p>
+      </div>
+    </div>
+  <?php endif; ?>
   
   <section class="div-absolute" id="capa2">
     <div class="container">
