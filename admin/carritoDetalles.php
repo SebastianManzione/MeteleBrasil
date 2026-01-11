@@ -1343,8 +1343,8 @@ for ($k=0; $k < count($adicionales); $k++) {
                                            <td><?= $_SESSION["moneda_sel_sym"].$precio_sin_impuestos;?></td>
 
                                            
-                                           <?php if (isset($reserva[0]["descuento_redondeo"]) && $reserva[0]["descuento_redondeo"] > 0): ?>
-                                           <td class="text-success">-<?= $_SESSION["moneda_sel_sym"].number_format($reserva[0]["descuento_redondeo"], 2, ',', '.');?></td>
+                                           <?php if ($descuentoRedondeo > 0): ?>
+                                           <td class="text-success">-<?= $_SESSION["moneda_sel_sym"].number_format($descuentoRedondeo, 2, ',', '.');?></td>
                                            <?php endif; ?>
 
 
