@@ -136,33 +136,112 @@ if (isset($_GET["idServicio"])) {
               </div>
 
               <h5 class="mt-4 text-muted"><?= $lang["galeria"] ?? "Galería"; ?></h5>
-              <div class="row">
-                <?php if (count($fotos) > 0) : ?>
-                  <?php foreach ($fotos as $foto) : ?>
-                    <div class="col-6 col-sm-4 col-md-3 mb-3">
-                      <a href="classes/imgServicio/<?= $foto["ruta"] ?>" data-toggle="lightbox" data-gallery="gallery">
-                        <img src="classes/imgServicio/<?= $foto["ruta"] ?>" class="img-fluid rounded shadow-sm" alt="Foto del servicio" style="width: 100%; height: 120px; object-fit: cover;">
-                      </a>
+              <div class="admin-galeria-container">
+                <!-- Slider Principal -->
+                <div class="admin-slider-principal mb-3">
+                  <div id="carouselAdminServicio" class="carousel slide" data-ride="carousel">
+                    <div class="carousel-inner">
+                      <?php if (count($fotos) > 0) : ?>
+                        <?php foreach ($fotos as $index => $foto) : ?>
+                          <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                            <img src="classes/imgServicio/<?= $foto["ruta"] ?>" class="d-block w-100" alt="Foto del servicio" style="max-height: 400px; object-fit: cover; border-radius: 6px;">
+                          </div>
+                        <?php endforeach; ?>
+                      <?php else : ?>
+                        <div class="carousel-item active">
+                          <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px; border-radius: 6px;">
+                            <p class="text-muted">No hay fotos disponibles</p>
+                          </div>
+                        </div>
+                      <?php endif; ?>
                     </div>
-                  <?php endforeach; ?>
-                <?php else : ?>
-                  <div class="col-12">
-                    <p class="text-muted">No hay fotos disponibles para este servicio.</p>
+                    
+                    <?php if (count($fotos) > 1) : ?>
+                    <a class="carousel-control-prev" href="#carouselAdminServicio" role="button" data-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselAdminServicio" role="button" data-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    </a>
+                    <?php endif; ?>
                   </div>
+                </div>
+
+                <!-- Thumbnails/Previsualizaciones -->
+                <?php if (count($fotos) > 1) : ?>
+                <div class="admin-galeria-thumbnails">
+                  <div class="row g-2">
+                    <?php foreach ($fotos as $index => $foto) : ?>
+                      <div class="col-auto">
+                        <a href="#carouselAdminServicio" data-slide-to="<?= $index ?>" class="thumbnail-item-admin <?= $index === 0 ? 'active' : '' ?>" style="cursor: pointer;">
+                          <img src="classes/imgServicio/<?= $foto["ruta"] ?>" alt="Miniatura <?= $index ?>" class="img-thumbnail" style="width: 90px; height: 90px; object-fit: cover; border: 2px solid #ddd; transition: all 0.3s; border-radius: 4px;">
+                        </a>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
+                </div>
                 <?php endif; ?>
               </div>
+
+              <style>
+                .admin-galeria-thumbnails .thumbnail-item-admin {
+                  display: inline-block;
+                  text-decoration: none;
+                }
+                .admin-galeria-thumbnails .thumbnail-item-admin.active img {
+                  border-color: #007bff !important;
+                  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                }
+                .admin-galeria-thumbnails .thumbnail-item-admin img:hover {
+                  border-color: #007bff !important;
+                  opacity: 0.9;
+                }
+              </style>
+
+              <script>
+              document.addEventListener('DOMContentLoaded', function() {
+                const carousel = document.querySelector('#carouselAdminServicio');
+                const thumbnails = document.querySelectorAll('.thumbnail-item-admin');
+                
+                if (carousel && thumbnails.length > 0) {
+                  carousel.addEventListener('slid.bs.carousel', function(e) {
+                    thumbnails.forEach(t => t.classList.remove('active'));
+                    if (thumbnails[e.to]) {
+                      thumbnails[e.to].classList.add('active');
+                    }
+                  });
+                  
+                  thumbnails.forEach((thumb, index) => {
+                    thumb.addEventListener('click', function(e) {
+                      e.preventDefault();
+                      $(carousel).carousel(index);
+                    });
+                  });
+                }
+              });
+              </script>
             </div>
             <div class="col-12 col-lg-4">
               <div class="bg-light p-3 rounded">
-                <h3 class="text-primary font-weight-bold"><i class="fas fa-list-alt"></i> Detalles</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                  <h3 class="text-primary font-weight-bold mb-0"><i class="fas fa-list-alt"></i> Detalles</h3>
+                  <button class="btn btn-sm btn-outline-primary" type="button" data-toggle="collapse" data-target="#detallesServicio" aria-expanded="false" aria-controls="detallesServicio">
+                    <i class="fas fa-chevron-down"></i> Ver
+                  </button>
+                </div>
                 <hr>
-                <div class="text-muted mt-4">
-                  <p class="text-sm"><strong><?= $lang["categoria_del_servicio"]; ?></strong>
-                    <span class="d-block"><?= $categoria[0]["nombre_categoria_servicio"] ?></span>
-                  </p>
-                  <p class="text-sm"><strong><?= $lang["observaciones"]; ?></strong>
-                    <span class="d-block"><?= $servicio["observaciones"] ?: 'N/A'; ?></span>
-                  </p>
+                <div class="collapse" id="detallesServicio">
+                  <div class="text-muted mt-4">
+                    <p class="text-sm"><strong><?= $lang["categoria_del_servicio"]; ?></strong>
+                      <span class="d-block"><?= $categoria[0]["nombre_categoria_servicio"] ?></span>
+                    </p>
+                        <p class="text-sm"><strong>Descripcion</strong>
+                      <span class="d-block"><?= $servicio["descripcion_servicio"] ?></span>
+                    </p>
+                    <p class="text-sm"><strong><?= $lang["observaciones"]; ?></strong>
+                      <span class="d-block"><?= $servicio["observaciones"] ?: 'N/A'; ?></span>
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -252,11 +331,17 @@ if (isset($_GET["idServicio"])) {
                   <tr>
                     <td><?= $idServicioSalidas; ?></td>
                     <td><?= htmlspecialchars($salida["nombre"]); ?></td>
-                    <td><span class="badge bg-success"><?= $salida["disponibilidad"] - $cantPasajeros; ?></span></td>
+                    <td>
+                      <input type="number" class="form-control disponibles-input" data-id="<?= $idServicioSalidas ?>" value="<?= $salida["disponibilidad"]; ?>" min="0" style="width: 80px; text-align: center;" data-original="<?= $salida["disponibilidad"]; ?>">
+                    </td>
                     <td><span class="badge bg-info"><?= $cantPasajeros; ?></span></td>
                     <td><?= htmlspecialchars($salida["nombre"]); ?></td>
                     <td data-sort="<?= strtotime($salida["fecha"] . " " . $salida["horaSalida"]) ?>">
-                      <?= strftime("%A", strtotime($salida["fecha"])) ?>, <?= date("d/m/Y", strtotime($salida["fecha"])) ?> - <?= $salida["horaSalida"] ?>
+                      <?php 
+                        $diasSemana = array('Sunday' => 'Domingo', 'Monday' => 'Lunes', 'Tuesday' => 'Martes', 'Wednesday' => 'Miércoles', 'Thursday' => 'Jueves', 'Friday' => 'Viernes', 'Saturday' => 'Sábado');
+                        $diaSemana = date('l', strtotime($salida["fecha"]));
+                        echo $diasSemana[$diaSemana];
+                      ?>, <?= date("d/m/Y", strtotime($salida["fecha"])) ?> - <?= $salida["horaSalida"] ?>
                     </td>
                     <td>
                       <form method="post" action="salidaVer.php">
@@ -348,6 +433,101 @@ if (isset($_GET["idServicio"])) {
     // Re-draw the table when the date range filter changes
     $('.date-range-filter').change(function() {
       table.draw();
+    });
+
+    // Manejo de edición de "Disponibles"
+    let actualizandoDisponibilidad = false;
+    
+    $('.disponibles-input').on('change', function() {
+      // Evitar múltiples llamadas simultáneas
+      if (actualizandoDisponibilidad) {
+        return;
+      }
+
+      const idSalida = $(this).data('id');
+      const nuevoValor = parseInt($(this).val());
+      const originalValue = parseInt($(this).data('original'));
+      const $input = $(this);
+
+      // Validación
+      if (isNaN(nuevoValor) || nuevoValor < 0) {
+        Swal.fire('Error', 'El valor no puede ser negativo', 'error');
+        $input.val(originalValue);
+        return;
+      }
+
+      // No hacer nada si no hay cambio
+      if (nuevoValor === originalValue) {
+        return;
+      }
+
+      actualizandoDisponibilidad = true;
+
+      // AJAX para guardar
+      $.ajax({
+        type: 'POST',
+        url: 'ajax/actualizar_disponibilidad.php',
+        data: {
+          idServicioSalidas: idSalida,
+          disponibilidad: nuevoValor
+        },
+        dataType: 'json',
+        success: function(response) {
+          if (response.success) {
+            $input.data('original', nuevoValor);
+            
+            // Mensaje personalizado usando la diferencia real del servidor
+            let mensaje = '';
+            const diferencia = response.diferencia || 0;
+            
+            if (diferencia > 0) {
+              mensaje = `Se agregaron ${Math.abs(diferencia)} lugar${Math.abs(diferencia) > 1 ? 'es' : ''}`;
+            } else if (diferencia < 0) {
+              mensaje = `Se quitaron ${Math.abs(diferencia)} lugar${Math.abs(diferencia) > 1 ? 'es' : ''}`;
+            } else {
+              mensaje = 'Disponibilidad actualizada';
+            }
+            
+            Swal.fire('Éxito', mensaje, 'success');
+          } else {
+            Swal.fire('Error', response.message || 'No se pudo actualizar', 'error');
+            $input.val(originalValue);
+          }
+        },
+        error: function(xhr, status, error) {
+          let mensajeError = 'No se pudo actualizar la disponibilidad';
+          
+          if (xhr.responseJSON && xhr.responseJSON.message) {
+            mensajeError = xhr.responseJSON.message;
+          } else if (xhr.status === 401) {
+            mensajeError = 'Sesión expirada. Por favor, recargue la página';
+          } else if (xhr.status === 403) {
+            mensajeError = 'No tiene permisos para hacer este cambio';
+          } else if (xhr.status === 500) {
+            mensajeError = 'Error del servidor. Intente nuevamente';
+          }
+          
+          console.error('Error AJAX:', status, error, xhr.responseText);
+          Swal.fire('Error', mensajeError, 'error');
+          $input.val(originalValue);
+        },
+        complete: function() {
+          actualizandoDisponibilidad = false;
+        }
+      });
+    });
+
+    // Toggle detalles button icon
+    $('#detallesServicio').on('show.bs.collapse', function() {
+      const btn = $('button[data-target="#detallesServicio"]');
+      btn.find('i').removeClass('fa-chevron-down').addClass('fa-chevron-up');
+      btn.find('span').text(' Ocultar') || btn.html('<i class="fas fa-chevron-up"></i> Ocultar');
+    });
+
+    $('#detallesServicio').on('hide.bs.collapse', function() {
+      const btn = $('button[data-target="#detallesServicio"]');
+      btn.find('i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+      btn.find('span').text(' Ver') || btn.html('<i class="fas fa-chevron-down"></i> Ver');
     });
 
     // Trigger initial draw

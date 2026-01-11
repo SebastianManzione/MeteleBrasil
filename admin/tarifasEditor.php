@@ -229,7 +229,7 @@ exit();
                      ?>
                          </select>
                     <label>comision</label>
-                    <input type="checkbox" name="comisiona" class="form-control" required checked readonly="true" onclick="return false;">
+                    <input type="checkbox" name="comisiona" class="form-control" <?=$comisiona?>>
 </div>
 <button class="btn-sm btn-success" name="updateTarifa">Guardar</button>
 

@@ -431,12 +431,12 @@ setTimeout(location.reload(), 5000);
                 <form action="ctrlLogin" method="post" class="form-group">
                   <div class="form-group  ">
                     <input style="display:none">
-                    <input type="email" name="email" autocomplete="off" class="form-control " placeholder="Email">
+                    <input type="email" name="email" class="form-control " placeholder="Email">
                   </div>
                    <div class="form-group">
                    <input type="hidden" name="login" value="1">
                     <div class="nav-password-wrapper">
-                      <input type="password" name="clave" id="nav-clave" autocomplete="off" class="form-control" placeholder="Contrase&ntilde;a">
+                      <input type="password" name="clave" id="nav-clave" class="form-control" placeholder="Contrase&ntilde;a">
                       <button class="nav-eye-inline" type="button" onclick="toggleNavClave('nav-clave', this)"><i class="fas fa-eye" aria-hidden="true"></i></button>
                     </div>
                     <small class="float-right text-primary py-2"><a href="recuperar_contrasena"><?=$lang["he_olvidado_mi_contrasena"];?></a></small>

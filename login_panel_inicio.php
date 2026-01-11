@@ -130,13 +130,13 @@
 
     <div class="col">
 
-      <a href="admin/index.php" class="card action-card card-purple">
+      <a href="admin/serviciosLista" class="card action-card card-purple">
 
         <div class="card-body">
 
           <i class="fas fa-chart-line"></i>
 
-          <h5>Extranet</h5>
+          <h5>Modificar Disponibilidad</h5>
 
           <p>Revisa disponibilidad, ventas y comisiones.</p>
 

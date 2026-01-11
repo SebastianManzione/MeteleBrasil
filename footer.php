@@ -254,7 +254,7 @@
               <input type="hidden" name="login" value="1">
               <div class="form-group">
                 <label><?=$lang["email"] ?? "Email"?></label>
-                <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Email">
+                <input type="email" name="email" class="form-control" placeholder="Email">
               </div>
               <div class="form-group">
                 <label><?=$lang["contrasena"] ?? "Contraseña"?></label>
