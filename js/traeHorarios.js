@@ -9,8 +9,7 @@ var reservaAdicionales = new Array();
 var idServicioSeleccionado = 0;
 var cantidadPersonas = 1;
 var precioTotal = 0;
-var disponibilidad = 0;
-var disponibilidadPorTarifa = {}; // Objeto para almacenar disponibilidad de cada tarifa
+var disponibilidad = 0; // Disponibilidad de la salida actual (compartida por todas sus tarifas)
 var intentoActual = 0;
 var salidas;
 var salidastotales;
@@ -206,13 +205,10 @@ function traeTarifas($idSalida){
     for (var i = 0; i < tarifas.length; i++) {
       cancelaciones.push(tarifas[i]['cancelaciones']);
       tipoTarifa=tarifas[i]['tipoTarifaNombre'];
-      var tarifaDisponibilidad = parseInt(tarifas[i]['disponibilidad']) || 0;
       
-      // Almacenar disponibilidad por tarifa para validación posterior
-      disponibilidadPorTarifa[tarifas[i]['idServicioSalidasTarifas']] = tarifaDisponibilidad;
-      
-      var badgeAgotado = tarifaDisponibilidad <= 0 ? '<span class="badge badge-danger ml-2">AGOTADO</span>' : '';
-      var textoDisponibilidad = tarifaDisponibilidad > 0 ? '<small class="text-muted d-block">Disponibles: ' + tarifaDisponibilidad + '</small>' : '';
+      // Usar disponibilidad de la salida (es la misma para todas las tarifas)
+      var badgeAgotado = disponibilidad <= 0 ? '<span class="badge badge-danger ml-2">AGOTADO</span>' : '';
+      var textoDisponibilidad = disponibilidad > 0 ? '<small class="text-muted d-block">Disponibles: ' + disponibilidad + '</small>' : '';
       
       var lineaPrecios='   <div class="col-lg-2 col-5" style="margin-left: 20px">'+
         '<p class="text-center ">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'</p>'+
@@ -233,14 +229,15 @@ function traeTarifas($idSalida){
 
 
 // HTML unificado responsivo para PC y móvil
-var disabledClass = tarifaDisponibilidad <= 0 ? ' opacity-50' : '';
-var disabledAttr = tarifaDisponibilidad <= 0 ? ' disabled' : '';
-var cursorStyle = tarifaDisponibilidad <= 0 ? 'not-allowed' : 'pointer';
+// Si la salida está agotada, deshabilitar todos los controles
+var disabledClass = disponibilidad <= 0 ? ' opacity-50' : '';
+var disabledAttr = disponibilidad <= 0 ? ' disabled' : '';
+var cursorStyle = disponibilidad <= 0 ? 'not-allowed' : 'pointer';
 
 var linea='	<div class="container py-3">'+
                             '  <div class="row">'+
                                   '<div class="col-12">'+
-                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'<br><small class="text-muted">Disponibles: '+tarifaDisponibilidad+'</small></p>'+
+                                     ' <p class="counter-label mb-2 text-left">'+tarifas[i]['nombre']+' ('+tarifas[i]['edadFrom']+' a '+tarifas[i]['edadTo']+' años) '+tipoTarifa+badgeAgotado+'<br><small class="text-muted">Disponibles: '+disponibilidad+'</small></p>'+
                                   '</div>'+
                                   '<div class="col-md-3 col-3">'+
   '<span class="counter-label_span"><label class="txtPrecio tarifa-'+tarifas[i]['idServicioSalidasTarifas']+'">'+formatPrice(getPrecioValor(tarifas[i]))+'</label></span>'+
@@ -725,25 +722,23 @@ var descripcion="";
 function CalculaPersonas(idServicioSalidasTarifas, operacion){
   console.log('CalculaPersonas llamada:', idServicioSalidasTarifas, operacion);
   
-  // Obtener disponibilidad específica de esta tarifa
-  var tarifaDisponibilidad = disponibilidadPorTarifa[idServicioSalidasTarifas] || 0;
-  
-  // No permitir superar disponibilidad. Si ya está al máximo, sólo permitir restar.
-  if (cantidadPersonas >= tarifaDisponibilidad && operacion == 1) {
+  // La disponibilidad es de la salida, no de la tarifa individual
+  // Validar contra la disponibilidad de la salida actual
+  if (cantidadPersonas >= disponibilidad && operacion == 1) {
     Swal.fire({
       title: 'Sin disponibilidad',
-      text: 'No hay más cupos disponibles para esta tarifa',
+      text: 'No hay más cupos disponibles para esta salida',
       icon: 'warning',
       confirmButtonText: 'Entendido'
     });
     return;
   }
   
-  // Prevenir agregar si la tarifa está agotada
-  if (tarifaDisponibilidad <= 0) {
+  // Prevenir agregar si la salida está agotada
+  if (disponibilidad <= 0 && operacion == 1) {
     Swal.fire({
-      title: 'Tarifa agotada',
-      text: 'Esta tarifa no tiene disponibilidad',
+      title: 'Salida agotada',
+      text: 'Esta salida no tiene disponibilidad',
       icon: 'warning',
       confirmButtonText: 'Entendido'
     });
