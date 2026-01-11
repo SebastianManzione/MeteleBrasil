@@ -855,7 +855,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
 
-                                <td><?=$_SESSION["moneda_sel_sym"]." ".ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa);?></td>
+                                <td><?=$_SESSION["moneda_sel_sym"]." ".number_format(ConvierteMoneda($tarifas[0]["monedaSel"],$_SESSION["moneda_sel"], $totalTarifa), 2, ',', '.');?></td>
 
 
 
@@ -1336,11 +1336,11 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
 
-                                           <td><?= $_SESSION["moneda_sel_sym"].$precio;?></td>
+                                           <td><?= $_SESSION["moneda_sel_sym"].number_format($precio, 2, ',', '.');?></td>
 
 
 
-                                           <td><?= $_SESSION["moneda_sel_sym"].$precio_sin_impuestos;?></td>
+                                           <td><?= $_SESSION["moneda_sel_sym"].number_format($precio_sin_impuestos, 2, ',', '.');?></td>
 
                                            
                                            <?php if ($descuentoRedondeo > 0): ?>
@@ -1349,7 +1349,7 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
 
-                                           <td><?= $_SESSION["moneda_sel_sym"].$diferenciaComprobantesPrecio;?></td>
+                                           <td><?= $_SESSION["moneda_sel_sym"].number_format($diferenciaComprobantesPrecio, 2, ',', '.');?></td>
 
 
 
@@ -1477,7 +1477,7 @@ $comprobantesReserva=muestraComprobantes($idReserva);
 
 
 
-                                            <td><?=$_SESSION["moneda_sel_sym"].$totalComprobante; ?></td>
+                                            <td><?=$_SESSION["moneda_sel_sym"].number_format($totalComprobante, 2, ',', '.');?></td>
 
 
 
