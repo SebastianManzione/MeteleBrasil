@@ -44,16 +44,7 @@
                                         $fecha = strtotime($salida[0]['fecha']);
                                         $cantidadPasajeros += $reserva[$j]['cantidad'];
                                         $totalDescuentos += $tarifa[0]["totalDescuentos"];
-                                        
-                                        // Calcular precio redondeado si aplica (ARS, CLP, PYG)
-                                        $valorMostrar = $tarifa[0]["valor"];
-                                        $valorSinIvaMostrar = $tarifa[0]["valorSinIva"];
-                                        if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia']) && $tarifa[0]['redondeoDiferencia'] > 0) {
-                                            $valorMostrar = $tarifa[0]["valor"] + $tarifa[0]['redondeoDiferencia'];
-                                            $valorSinIvaMostrar = $tarifa[0]["valorSinIva"] + $tarifa[0]['redondeoDiferencia'];
-                                        }
-                                        
-                                        $precioReserva += $valorMostrar;
+                                        $precioReserva += $tarifa[0]["valor"];
                                         if ($j == 0) {
                                             ?>
 
@@ -67,13 +58,13 @@
 
                                         <li class="small"><i class="fas fa-ticket-alt text-secondary mr-1"></i><?= $cantidad . ' ' . $tarifa[0]["nombre"] . ' (' . $tarifa[0]["edadFrom"] . ' a ' . $tarifa[0]["edadTo"] . ' Anos)' ?></li>
 
-                                        <li class="small text-muted">Subtotal <?= $_SESSION['moneda_sel_sym'] . number_format($valorSinIvaMostrar, 0, ',', '.'); ?></li>
+                                        <li class="small text-muted">Subtotal <?= $tarifa[0]["valorSinIvaSym"]; ?></li>
 
                                         <li class="small text-muted">ISS <?= $tarifa[0]["valorDeIvaSym"]; ?></li>
 
                                         <?php
 
-                                        $precioTotalCarrito += $valorMostrar;
+                                        $precioTotalCarrito += $tarifa[0]["valor"];
                                         if (isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1) {
 
                                         }
