@@ -83,7 +83,14 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
         if (!empty($tarifasSalida)) {
           foreach ($tarifasSalida as $tarifa) {
             if (isset($tarifa['valor']) && $tarifa['valor'] > 0) {
-              $preciosArray[] = floatval($tarifa['valor']);
+              $valorTarifa = floatval($tarifa['valor']);
+              
+              // Aplicar redondeo para ARS, CLP, PYG
+              if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) {
+                $valorTarifa = ceil($valorTarifa / 1000) * 1000;
+              }
+              
+              $preciosArray[] = $valorTarifa;
             }
           }
         }
