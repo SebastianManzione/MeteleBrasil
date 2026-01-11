@@ -1190,43 +1190,8 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
             </div>
           </div>
 
-          <!-- CATEGORÍAS EN SIDEBAR -->
-          <div class="mb-4">
-            <h6 class="mb-3" style="font-size: 14px; font-weight: 600; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">
-              <i class="fa fa-tags" style="color: #029ce2; margin-right: 8px;"></i><?= isset($lang["categorias"]) ? $lang["categorias"] : "Categorías"; ?>
-            </h6>
-            <div class="d-flex flex-wrap" style="gap: .5rem;">
-              <?php
-              $todas_las_categorias = getCategorias();
-              // Botón "Todas"
-              $urlParamsAll = [];
-              if (!empty($busqueda)) { $urlParamsAll['buscar'] = $busqueda; }
-              if (!empty($orden_precio)) { $urlParamsAll['orden_precio'] = $orden_precio; }
-              if (!empty($orden_distancia)) { $urlParamsAll['orden_distancia'] = $orden_distancia; }
-              if (!empty($orden_duracion)) { $urlParamsAll['orden_duracion'] = $orden_duracion; }
-              $isActiveAll = ($idCategoria == 0) ? 'btn-primary' : 'btn-outline-primary';
-              ?>
-              <a href="categorias?<?= http_build_query($urlParamsAll) ?>" class="btn <?= $isActiveAll ?> mb-2" style="border-radius: 20px; font-size: 0.85rem; padding: 0.35rem .9rem;">
-                <i class="fa fa-list-ul mr-1"></i>
-                <?= isset($lang["todas"]) ? $lang["todas"] : "Todas"; ?>
-              </a>
-              <?php
-              $iconos = [2=>'fa-ship',4=>'fa-suitcase',6=>'fa-hiking',7=>'fa-camera',8=>'fa-utensils'];
-              foreach ($todas_las_categorias as $cat) {
-                $idCategoria_item = $cat["idCategoria_servicio"];
-                $nombre_categoria_item = $cat["nombre_categoria_servicio"];
-                $paramsCat = $urlParamsAll;
-                $paramsCat['idCategoria'] = $idCategoria_item;
-                $isActive = ($idCategoria == $idCategoria_item) ? 'btn-primary' : 'btn-outline-primary';
-                $icono = $iconos[$idCategoria_item] ?? 'fa-tag';
-              ?>
-                <a href="categorias?<?= http_build_query($paramsCat) ?>" class="btn <?= $isActive ?> mb-2" style="border-radius: 20px; font-size: 0.85rem; padding: 0.35rem .9rem;">
-                  <i class="fa <?= $icono ?> mr-1"></i>
-                  <?= $nombre_categoria_item ?>
-                </a>
-              <?php } ?>
-            </div>
-          </div>
+          <!-- CATEGORÍAS EN SIDEBAR (ocultas en desktop para evitar duplicado; se mantienen en la franja superior) -->
+          <!-- bloque ocultado a pedido: categorías ya se muestran en la barra superior sticky -->
 
           <!-- ÚLTIMAS OPINIONES (si hay) -->
           <?php if (!empty($opiniones_categoria) && count($opiniones_categoria) > 0) : ?>
