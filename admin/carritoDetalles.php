@@ -1273,6 +1273,11 @@ for ($k=0; $k < count($adicionales); $k++) {
 
                                             <th scope="col">Total sin impuestos</th>
 
+                                            
+                                            <?php if (isset($reserva[0]["descuento_redondeo"]) && $reserva[0]["descuento_redondeo"] > 0): ?>
+                                            <th scope="col" class="text-success"><i class="fas fa-gift"></i> Descuento Redondeo</th>
+                                            <?php endif; ?>
+
 
 
                                             <th scope="col">Resta Pagar</th>
@@ -1304,6 +1309,11 @@ for ($k=0; $k < count($adicionales); $k++) {
 
 
                                            <td><?= $_SESSION["moneda_sel_sym"].$precio_sin_impuestos;?></td>
+
+                                           
+                                           <?php if (isset($reserva[0]["descuento_redondeo"]) && $reserva[0]["descuento_redondeo"] > 0): ?>
+                                           <td class="text-success">-<?= $_SESSION["moneda_sel_sym"].number_format($reserva[0]["descuento_redondeo"], 2, ',', '.');?></td>
+                                           <?php endif; ?>
 
 
 

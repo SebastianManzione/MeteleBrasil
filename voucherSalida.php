@@ -302,6 +302,12 @@ $totalComprobantesAMostrar = convierteMoneda(188, $monedaSel, $comprobantes);
                             <th>Impuestos:</th>
                             <td><?= $_SESSION["moneda_sel_sym"] . $totalIva; ?></td>
                         </tr>
+                        <?php if (isset($reserva["descuento_redondeo"]) && $reserva["descuento_redondeo"] > 0): ?>
+                        <tr class="text-success">
+                            <th><i class="fas fa-gift"></i> Descuento por Redondeo:</th>
+                            <td>-<?= $_SESSION["moneda_sel_sym"] . number_format($reserva["descuento_redondeo"], 2, ',', '.'); ?></td>
+                        </tr>
+                        <?php endif; ?>
                         <tr>
                             <th>Total:</th>
                             <td><?= $_SESSION["moneda_sel_sym"] . ($totalCarrito + $totalIva); ?></td>
