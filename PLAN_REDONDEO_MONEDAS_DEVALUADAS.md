@@ -15,7 +15,20 @@
 
 ## Cambios Requeridos
 
-### 1. **Backend - admin/ctrl/ctrlHorarios.php**
+### 1. **BD - Agregar campos a tabla reservas**
+✅ COMPLETADO
+
+**Campos agregados:**
+```sql
+ALTER TABLE reservas ADD COLUMN descuento_redondeo DECIMAL(10,2) DEFAULT 0;
+ALTER TABLE reservas ADD COLUMN moneda_redondeo INT DEFAULT NULL;
+```
+
+**Uso:**
+- `descuento_redondeo` = Monto del descuento por redondeo
+- `moneda_redondeo` = ID de la moneda (270=ARS, 271=CLP, 225=PYG)
+
+### 2. **Backend - admin/ctrl/ctrlHorarios.php**
 **Ubicación:** Líneas 305-320
 
 **Cambio:**
@@ -38,75 +51,69 @@ if (in_array($idMoneda, [270, 271, 225])) { // ARS, CLP, PYG
 $retorno[$i]['redondeoDiferencia'] = $redondeoDiferencia;
 ```
 
-### 2. **Nueva Tabla BD - descuento_redondeo_reserva**
-Guardar el descuento por redondeo en cada reserva.
-
-```sql
-CREATE TABLE descuento_redondeo_reserva (
-    idDescuento INT AUTO_INCREMENT PRIMARY KEY,
-    idReserva INT NOT NULL,
-    idMoneda INT NOT NULL,
-    monto DECIMAL(10,2) NOT NULL,
-    fechaAlta TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (idReserva) REFERENCES reservas(idReserva),
-    FOREIGN KEY (idMoneda) REFERENCES moneda(idMoneda)
-);
-```
-
 ### 3. **Frontend - datosPersonales.php**
-**Ubicación:** Línea 55-730
+**Ubicación:** Línea 55 (init), 728 (acumular), antes de pago (guardar)
 
 **Cambios:**
 - Inicializar: `$descuentoGanado = 0;`
 - Acumular: `$descuentoGanado += $tarifa[0]['redondeoDiferencia'];`
-- Guardar en BD antes de pagar
+- Guardar en BD antes de redirigir a pago
 
-**Guardar descuento antes de pago:**
+**Guardar descuento en BD:**
 ```php
 if ($descuentoGanado > 0 && in_array($_SESSION['moneda_sel'], [270, 271, 225])) {
-    $sqlDescuento = "INSERT INTO descuento_redondeo_reserva 
-                     (idReserva, idMoneda, monto) 
-                     VALUES (:idReserva, :idMoneda, :monto)";
-    $cmdDescuento = $pdo->prepare($sqlDescuento);
-    $cmdDescuento->execute([
-        ':idReserva' => $idReserva,
-        ':idMoneda' => $_SESSION['moneda_sel'],
-        ':monto' => round($descuentoGanado)
+    $sqlUpdate = "UPDATE reservas 
+                  SET descuento_redondeo = :monto, 
+                      moneda_redondeo = :moneda 
+                  WHERE idReserva = :idReserva";
+    $cmdUpdate = $pdo->prepare($sqlUpdate);
+    $cmdUpdate->execute([
+        ':monto' => round($descuentoGanado),
+        ':moneda' => $_SESSION['moneda_sel'],
+        ':idReserva' => $idReserva
     ]);
 }
 ```
 
-### 4. **Ticket/Comprobante - admin/email/email_reserva_confirmada.php**
-Mostrar descuento de redondeo en el email/ticket:
+### 4. **Vouchers/Carrito - voucherCarrito.php, voucherSalida.php**
+Mostrar descuento en resumen:
 ```
-Descuento por redondeo: AR$1,000.00
+Descuento por redondeo: -AR$1,000.00
+TOTAL A PAGAR: XX.XX
 ```
 
-### 5. **Reportes Financieros - admin/financieroLista.php**
-Mostrar descuentos de redondeo por moneda en reportes.
+### 5. **Email Confirmación - admin/classes/email_reserva_confirmada.php**
+Incluir descuento en email de confirmación.
+
+### 6. **Reportes Financieros - admin/financieroLista.php**
+Mostrar descuentos de redondeo por moneda.
 
 ## Pasos de Implementación
 
-### Paso 1: BD
+### Paso 1: ✅ BD - Campos en tabla reservas
 ```bash
-# Crear tabla nueva
-mysql -u root metelebrasil_experimental < script_crear_tabla.sql
+# YA COMPLETADO
+# - Agregados: descuento_redondeo, moneda_redondeo
+# - Eliminada tabla descuento_redondeo_reserva (no necesaria)
 ```
 
-### Paso 2: Backend
-- Actualizar: `admin/ctrl/ctrlHorarios.php` (línea 309)
+### Paso 2: Backend - ctrlHorarios.php
 - Cambiar múltiplo de 500 → 1000
-- Agregar IDs 271 y 225
+- Agregar IDs 271 (CLP) y 225 (PYG) a la condición
 
-### Paso 3: Frontend
-- Actualizar: `datosPersonales.php` 
-- Guardar descuento en BD antes de redirigir a pago
+### Paso 3: Frontend - datosPersonales.php
+- Acumular descuento
+- Guardar en reservas.descuento_redondeo antes de redirigir a pago
 
-### Paso 4: Email/Ticket
+### Paso 4: Vouchers - voucherCarrito.php y voucherSalida.php
+- Mostrar descuento en el resumen
+- Descontar del total final
+
+### Paso 5: Email - email_reserva_confirmada.php
 - Mostrar descuento en confirmación
 
-### Paso 5: Reportes
-- Agregar columna descuento en financiero
+### Paso 6: Reportes - financieroLista.php
+- Columna con descuentos por moneda
 
 ## Testing
 - [ ] Crear reserva con ARS → verificar redondeo a 1000
