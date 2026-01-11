@@ -151,8 +151,8 @@
                     $mostrarDescuentoRedondeo = true;
                 }
                 
-                // Ya no restamos el descuento porque los precios individuales ya están redondeados
-                $totalFinal = $precioTotalCarrito;
+                // Restar el descuento del total (el cliente paga menos gracias al "descuento")
+                $totalFinal = $precioTotalCarrito - $descuentoGanado;
                 ?>
                 
                 <?php if ($mostrarDescuentoRedondeo): ?>
