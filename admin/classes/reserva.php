@@ -1002,7 +1002,7 @@ return $resultado;
 
 
 
- function altaReservaTarifas($idServicioSalidasTarifas, $idReservaHorarios,$cantidad, $monedaSel, $valor, $valorSinIva, $valorDeIva, $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre){
+ function altaReservaTarifas($idServicioSalidasTarifas, $idReservaHorarios,$cantidad, $monedaSel, $valor, $valorSinIva, $valorDeIva, $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre, $valorOriginal = 0){
 
 
 
@@ -1016,14 +1016,16 @@ return $resultado;
 
         require("conexion.php");
 
+        // Si no se pasó valorOriginal, usar el valor actual
+        if ($valorOriginal == 0) {
+            $valorOriginal = $valor;
+        }
+
+        $data=["idServicioSalidasTarifas"=> $idServicioSalidasTarifas, "idReservaHorarios"=> $idReservaHorarios, "cantidad"=>$cantidad, "monedaSel"=>$monedaSel, "valor"=>$valor, "valorSinIva"=>$valorSinIva, "valorDeIva"=> $valorDeIva, "idFromEdad"=> $idFromEdad, "idToEdad"=> $idToEdad,  "comisionVendedor"=> $comisionVendedor, "comisionSistema"=> $comisionSistema, "nombre"=> $nombre, "valorOriginal"=> $valorOriginal];
 
 
-        $data=["idServicioSalidasTarifas"=> $idServicioSalidasTarifas, "idReservaHorarios"=> $idReservaHorarios, "cantidad"=>$cantidad, "monedaSel"=>$monedaSel, "valor"=>$valor, "valorSinIva"=>$valorSinIva, "valorDeIva"=> $valorDeIva, "idFromEdad"=> $idFromEdad, "idToEdad"=> $idToEdad,  "comisionVendedor"=> $comisionVendedor, "comisionSistema"=> $comisionSistema, "nombre"=> $nombre];
 
-
-
-        $consulta = "INSERT INTO reserva_tarifas (idServicioSalidasTarifas, idReservaHorarios, cantidad, monedaSel, valor, valorSinIva, valorDeIva, idFromEdad, idToEdad, comisionVendedor, comisionSistema, nombre) VALUES (:idServicioSalidasTarifas, :idReservaHorarios, :cantidad, :monedaSel, :valor, :valorSinIva, :valorDeIva, :idFromEdad, :idToEdad, :comisionVendedor, :comisionSistema, :nombre) ";
-
+        $consulta = "INSERT INTO reserva_tarifas (idServicioSalidasTarifas, idReservaHorarios, cantidad, monedaSel, valor, valorSinIva, valorDeIva, idFromEdad, idToEdad, comisionVendedor, comisionSistema, nombre, valorOriginal) VALUES (:idServicioSalidasTarifas, :idReservaHorarios, :cantidad, :monedaSel, :valor, :valorSinIva, :valorDeIva, :idFromEdad, :idToEdad, :comisionVendedor, :comisionSistema, :nombre, :valorOriginal) ";
 
 
 

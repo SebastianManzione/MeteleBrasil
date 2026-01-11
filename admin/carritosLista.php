@@ -178,8 +178,8 @@ $dataChildValue=' <div class="table-responsive">
                                  <td><?=$reservas[$i]["codigoAmigable"]?></td>
                                  <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>
                                  <td data-order="<?=$idReserva?>"> <?=date("d-m-Y H:i", strtotime($reservas[$i]['fechaAlta']));?></td>
-                                 <td><?=$_SESSION["moneda_sel_sym"].round($total_moneda,2) ;?></td>
-                                 <td><?=$_SESSION["moneda_sel_sym"].round($diferenciaComprobantesPrecioMoneda,2);?></td>
+                                 <td><?=$_SESSION["moneda_sel_sym"].' '.number_format($total_moneda, 2, ',', '.');?></td>
+                                 <td><?=$_SESSION["moneda_sel_sym"].' '.number_format($diferenciaComprobantesPrecioMoneda, 2, ',', '.');?></td>
                                  <?php $claseBoton="btn btn-warning";
                                         $textoBoton="Pendiente";
                                         if ($diferenciaComprobantesPrecioDolar<1 && $precio > 0) {

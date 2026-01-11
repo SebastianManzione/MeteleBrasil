@@ -28,16 +28,22 @@ try {
         $pasajerosTarifa = getPasajeros($tarifa['idReservaTarifas']);
         $nombreTarifa = $tarifa['nombreTarifa'] ?? $tarifa['nombre'] ?? 'N/A';
         
+        // CRÍTICO: Usar valorOriginal (precio real) para comisiones, no valor (inflado)
+        $precioParaComisiones = ($tarifa["valorOriginal"] > 0) ? $tarifa["valorOriginal"] : $tarifa["valor"];
+        
         // Convertir precio total a moneda de sesión
-        $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valor"]);
-        // Valor SIN impuestos (si existe), convertido a moneda de sesión
+        $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $precioParaComisiones);
+        
+        // Valor SIN impuestos: basarse SIEMPRE en precioParaComisiones (real), no en valor (inflado)
         $valorSinImpuestosTotal = null;
-        if (isset($tarifa['valorSinIva'])) {
+        if (isset($tarifa['valorSinIva']) && $tarifa['valorSinIva'] != $tarifa['valor']) {
+            // Si valorSinIva es distinto de valor, usarlo (hay desglose de IVA)
             $valorSinImpuestosTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valorSinIva"]);
-        } elseif (isset($tarifa['valorDeIva'])) {
-            $valorSinImpuestosTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], max(0, ($tarifa["valor"] - $tarifa["valorDeIva"])));
+        } elseif (isset($tarifa['valorDeIva']) && $tarifa['valorDeIva'] > 0) {
+            // Si hay monto de IVA, calcular sin IVA desde el precio real
+            $valorSinImpuestosTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], max(0, ($precioParaComisiones - $tarifa["valorDeIva"])));
         } else {
-            // Fallback: si no hay desglose, aproximar al total
+            // Fallback: usar el precio real calculado
             $valorSinImpuestosTotal = $precioTotal;
         }
         // Comisiones en moneda de sesión

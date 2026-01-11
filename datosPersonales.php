@@ -733,17 +733,12 @@ for ($i = 0; $i < $cantCarrito; $i++) {
 
 $reserva[$j ]["cantidad"]);
 
-        // Acumular descuento del redondeo para monedas devaluadas (ARS, CLP, PYG)
+        // NOTA: $descuentoGanado ya se calculó en el pre-loop (líneas 279-293)
+        // NO acumular aquí para evitar duplicación
+        
+        // DEBUG - borrar después  
         if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia'])) {
-            $descuentoGanado += $tarifa[0]['redondeoDiferencia'];
-            // DEBUG - borrar después
-            echo "<!-- DEBUG Tarifa {$j}: redondeoDiferencia={$tarifa[0]['redondeoDiferencia']}, Total acumulado=$descuentoGanado -->";
-        } else {
-            // DEBUG - borrar después
-            $moneda = $_SESSION['moneda_sel'] ?? 'NO SET';
-            $tieneRedondeo = isset($tarifa[0]['redondeoDiferencia']) ? 'SI' : 'NO';
-            $valorRedondeo = $tarifa[0]['redondeoDiferencia'] ?? 'N/A';
-            echo "<!-- DEBUG Tarifa {$j} NO suma: moneda=$moneda, tieneRedondeo=$tieneRedondeo, valor=$valorRedondeo -->";
+            echo "<!-- DEBUG Tarifa {$j}: redondeoDiferencia={$tarifa[0]['redondeoDiferencia']} (ya contado en pre-loop) -->";
         }   
 
 
@@ -754,7 +749,7 @@ $reserva[$j ]["cantidad"]);
 
         $idiomas= getIdiomaSalida($salida[0]['idServicioSalidas']);
 
-
+          error_log("DEBUG datosPersonales - Tarifa: {$tarifa[0]['idServicioSalidasTarifas']} | Valor: {$tarifa[0]['valor']} | Diferencia: {$tarifa[0]['redondeoDiferencia']}");
 
           $precioReserva+=$tarifa[0]["valor"];
 

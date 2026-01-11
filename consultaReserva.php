@@ -304,12 +304,6 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                 echo "<li><i class=\"fas fa-phone text-primary mr-1\"></i><strong>Telefone:</strong> {$reserva[0]['telefonoResponsable']}</li>";
                                                 echo "<li><i class=\"fas fa-wallet text-success mr-1\"></i><strong>Total em Dólares:</strong> " . formatarMonedaCondicional($total_dolares) . "</li>";
                                                 echo "<li><i class=\"fas fa-receipt text-info mr-1\"></i><strong>Impostos:</strong> {$reserva[0]['impuestos']}</li>";
-                                                
-                                                // Mostrar descuento por redondeo (ARS, CLP, PYG)
-                                                if (isset($reserva[0]['descuento_redondeo']) && $reserva[0]['descuento_redondeo'] > 0) {
-                                                    $monedaDescuento = getMoneda($reserva[0]['moneda_redondeo'] ?? $reserva[0]['monedaSel'])[0]["Symbol"];
-                                                    echo "<li class=\"text-success\"><i class=\"fas fa-gift text-success mr-1\"></i><strong>Desconto por Arredondamento:</strong> -" . $monedaDescuento . formatarMonedaCondicional($reserva[0]['descuento_redondeo']) . "</li>";
-                                                }
 
                                                                                                 // Exibir horários, tarifas e adicionais, em cartões separados
                                                                                                 for ($i = 0; $i < count($horarios); $i++) {
@@ -363,10 +357,15 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
 
                                                                                                 <?php } ?>
 
+                                                <?php 
+                                                // Mostrar descuento por redondeo ANTES del total (ARS, CLP, PYG)
+                                                if (isset($reserva[0]['descuento_redondeo']) && $reserva[0]['descuento_redondeo'] > 0) {
+                                                    $monedaDescuento = getMoneda($reserva[0]['moneda_redondeo'] ?? $reserva[0]['monedaSel'])[0]["Symbol"];
+                                                    echo "<li class=\"text-success\"><i class=\"fas fa-gift text-success mr-1\"></i><strong>Desconto por Arredondamento:</strong> -" . $monedaDescuento . formatarMonedaCondicional($reserva[0]['descuento_redondeo']) . "</li>";
+                                                }
+                                                ?>
+
                                                 <?php if ($comprobantes > 0) { ?>
-                                                    <li>
-                                                        <strong>Total:</strong> <?= $moneda . formatarMonedaCondicional($total_en_moneda_seleccionada); ?>
-                                                    </li>
                                                     <?php 
                                                     // Calcular comprobantes en moneda seleccionada
                                                     if ($monedaOriginalReserva == $_SESSION['moneda_sel'] && isset($reserva["total"]) && $total_dolares > 0) {
@@ -386,7 +385,11 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                         $diferenciaAPagar_usd = 0;
                                                         $diferenciaAPagar_moneda_sel = 0;
                                                     } ?>
-                                                        <li><strong>Pagamento
+                                                    
+                                                    <li>
+                                                        <strong>Total:</strong> <?= $moneda . formatarMonedaCondicional($total_en_moneda_seleccionada); ?>
+                                                    </li>
+                                                    <li><strong>Pagamento
                                                             Realizado:</strong> <?= $moneda . formatarMonedaCondicional($comprobantes_en_moneda_sel); ?>
                                                     </li>
 
@@ -962,7 +965,8 @@ array(9) {
                                     codigo_forma_pag_selecionada_start = $(v).data('codigo');
                                     let simbolo = $(this).data('simbolo');
                                     let valorFormatado = $(this).data('valor-formatado') || $(this).data('valorFormatado') || $(this).data('valor');
-                                    $('#total-resta-pagar, #total-mostrar-moeda').text(`${simbolo} ${valorFormatado}`);
+                                    $('#total-resta-pagar').text(`${simbolo} ${valorFormatado}`);
+                                    $('#total-mostrar-moeda').html(`<strong>Total:</strong> ${simbolo} ${valorFormatado}`);
                                     return false;
                                 }
                             })
@@ -1091,7 +1095,7 @@ array(9) {
                                     console.log("Valor da moeda selecionada:", selectedPrice);
 
                                     document.getElementById('total-resta-pagar').innerHTML = selectedPrice;
-                                    document.getElementById('total-mostrar-moeda').innerHTML = `Total ${selectedPrice}`;
+                                    document.getElementById('total-mostrar-moeda').innerHTML = `<strong>Total:</strong> ${selectedPrice}`;
 
                                     let [, codigoMoeda, valorNumerico] = selectedPrice.match(/^(\D+)\s*([\d.]+)$/);
                                     if (codigoMoeda === 'AR$') updateCountryCode('AR');

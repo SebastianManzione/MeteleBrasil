@@ -147,6 +147,7 @@ if ($cantCarrito < 1 && $_SERVER['REQUEST_METHOD'] !== 'POST') {
                                                             $tarifa = calculaTarifa($idServicioSalidasTarifas, $cantidad);
                                                             $salida = getSalida($tarifa[0]['idServicioSalidas']);
                                                             $idiomas = getIdiomaSalida($salida[0]['idServicioSalidas']);
+                                                            error_log("CARRITO DEBUG - Tarifa: $idServicioSalidasTarifas | Cant: $cantidad | Valor retornado: {$tarifa[0]['valor']} | Diferencia: {$tarifa[0]['redondeoDiferencia']}");
                                                             $precioReserva += $tarifa[0]["valor"];
                                                             $fecha = strtotime($salida[0]['fecha']);
                                                             require("admin/classes/locale.php");

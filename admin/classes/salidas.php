@@ -45,8 +45,8 @@ $cuenta_col = $comando->columnCount();
 
          $fechaHoy =date("Y-m-d");
     require("conexion.php");
-    $data=["idServicio"=>$idServicio];
-    $consulta = "select * from servicio_salidas WHERE idServicio=:idServicio ";
+    $data=["idServicio"=>$idServicio, "fechaHoy"=>$fechaHoy];
+    $consulta = "select * from servicio_salidas WHERE idServicio=:idServicio AND fecha>=:fechaHoy ORDER BY fecha ASC";
     $comando = $pdo->prepare($consulta);
    
     $comando->execute($data);

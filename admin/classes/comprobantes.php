@@ -194,11 +194,13 @@ function insertaComprobante($idReserva, $total, $origenComprobante, $monedaCompr
       $resumail = enviaMail($reserva[0]["emailResponsable"], $renderCliente['asunto'], $renderCliente['html'], "metelebrasil.com");
       confirmaReserva($idReserva);
       
+      // Instanciar Configuracion una sola vez para todos los emails
+      $config = new Configuracion();
+      
       // Email al vendedor (si tiene idVendedor)
       if (isset($reserva[0]['idVendedor']) && $reserva[0]['idVendedor'] > 0) {
           $vendedor = getUsuario($reserva[0]['idVendedor']);
           if (!empty($vendedor) && !empty($vendedor[0]['email'])) {
-              $config = new Configuracion();
               $asuntoVendedor = $config->obtener('email_vendedor_asunto', 'Nueva reserva confirmada - {{codigo_reserva}}');
               $cuerpoVendedor = $config->obtener('email_vendedor_cuerpo', '<h2>¡Nueva Reserva Confirmada!</h2><p>Se ha confirmado una nueva reserva:</p><ul><li><strong>Código:</strong> {{codigo_reserva}}</li><li><strong>Cliente:</strong> {{nombre_cliente}}</li><li><strong>Email:</strong> {{email_cliente}}</li><li><strong>Total:</strong> {{total}}</li></ul>');
               

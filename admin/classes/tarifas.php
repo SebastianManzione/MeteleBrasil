@@ -198,9 +198,11 @@ function getComisionTarifa($idServicioSalidasTarifas){
             $impuestos_pais = isset($_SESSION["impuestos_pais"]) ? $_SESSION["impuestos_pais"] : 0;
             $retorno[$i]['valor']=(float)$retorno[$i]['valor']*((float)$impuestos_pais+1);
 
-            // Redondear según moneda: 0 decimales para ARS/CLP/PYG, 2 para otras
-            $decimalesRedondeo = (in_array($_SESSION['moneda_sel'], [270, 271, 225])) ? 0 : 2;
-            $retorno[$i]['valor']=round($retorno[$i]['valor'], $decimalesRedondeo, PHP_ROUND_HALF_UP);
+            // NO redondear para monedas devaluadas - el redondeo comercial se aplica después
+            // Solo redondear monedas con centavos (USD, EUR, BRL, etc)
+            if (!in_array($_SESSION['moneda_sel'], [270, 271, 225])) {
+                $retorno[$i]['valor']=round($retorno[$i]['valor'], 2, PHP_ROUND_HALF_UP);
+            }
 
 			if ($_SESSION['moneda_sel_sym'] == 'AR$' && isset($_SESSION["cupon_descuento"]["descuentoPorcentual"])) {
 				$descuentoTarifaConvertido=$retorno[$i]['valor'] * $descuentoCupon;
@@ -216,21 +218,34 @@ function getComisionTarifa($idServicioSalidasTarifas){
             $redondeoDiferencia = 0;
 
             if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) { // ARS, CLP, PYG
-                // Redondear hacia arriba al siguiente múltiplo de 1000
-                $redondeoDiferencia = ceil($valorOriginal / 1000) * 1000 - $valorOriginal;
-                $valorConRedondeo = $valorOriginal + $redondeoDiferencia;
-                $retorno[$i]['valor'] = $valorConRedondeo;
+                // REDONDEO: Al siguiente múltiplo de 1000 hacia arriba (máximo +1000)
+                // Aplicar por persona, luego multiplicar por cantidad
+                if ($cantidad > 0) {
+                    $precioUnitario = $valorOriginal / $cantidad;
+                    $precioUnitarioInflado = ceil($precioUnitario / 1000) * 1000;
+                    $valorInflado = $precioUnitarioInflado * $cantidad;
+                    $redondeoDiferencia = $valorInflado - $valorOriginal;
+                    error_log("REDONDEO - Tarifa {$tarifas[$i]['idServicioSalidasTarifas']}: Cant=$cantidad | Original=$valorOriginal | Unitario=$precioUnitario | UnitInflado=$precioUnitarioInflado | TotalInflado=$valorInflado | Dif=$redondeoDiferencia");
+                    $retorno[$i]['valor'] = $valorInflado;
+                } else {
+                    // Si cantidad es 0, aplicar redondeo al valor original
+                    $valorInflado = ceil($valorOriginal / 1000) * 1000;
+                    $redondeoDiferencia = $valorInflado - $valorOriginal;
+                    $retorno[$i]['valor'] = $valorInflado;
+                }
             }
 	
-            // AHORA calcular las comisiones basadas en el valor FINAL (después de redondeos y descuentos)
-            $retorno[$i]['comisionVendedor']=(float)$retorno[$i]['valor']*(float)$retorno[$i]['comisionVendedorPorcentaje'];
-            $retorno[$i]['comisionSistema']=(float)$retorno[$i]['valor']*(float)$retorno[$i]['comisionSistemaPorcentaje'];
+            // AHORA calcular las comisiones basadas en el valor ORIGINAL (antes de redondeos)
+            // Las comisiones SIEMPRE se calculan sobre el precio real, no sobre el inflado
+            $retorno[$i]['comisionVendedor']=(float)$valorOriginal*(float)$retorno[$i]['comisionVendedorPorcentaje'];
+            $retorno[$i]['comisionSistema']=(float)$valorOriginal*(float)$retorno[$i]['comisionSistemaPorcentaje'];
             
             // Formatear con separadores de miles y decimales según moneda
             $symMoneda = $_SESSION['moneda_sel_sym'];
             $decimales = (stripos($symMoneda, 'AR') !== false) ? 0 : 2;
             $retorno[$i]['valorFormateado'] = number_format($retorno[$i]['valor'], $decimales, ',', '.');
             $retorno[$i]['redondeoDiferencia'] = $redondeoDiferencia;
+            $retorno[$i]['valorOriginal'] = $valorOriginal;  // Guardar precio original para auditoria
 
             $retorno[$i]['valorSym']=$_SESSION['moneda_sel_sym'].' '.$retorno[$i]['valorFormateado'];
             $retorno[$i]['valorSinIva']=$retorno[$i]['valor'];

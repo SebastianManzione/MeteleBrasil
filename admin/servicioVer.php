@@ -298,7 +298,7 @@ if (isset($_GET["idServicio"])) {
                 <span class="input-group-text">Desde</span>
                 <input type="date" id="min-date" class="form-control date-range-filter" value="<?= date('Y-m-d') ?>">
                 <span class="input-group-text">Hasta</span>
-                <input type="date" id="max-date" class="form-control date-range-filter" value="<?= date('Y-m-d', strtotime('+1 day')) ?>">
+                <input type="date" id="max-date" class="form-control date-range-filter" value="<?= date('Y-m-d', strtotime('+90 days')) ?>">
               </div>
             </div>
           </div>
@@ -324,35 +324,41 @@ if (isset($_GET["idServicio"])) {
                   $salidas = getSalidasServicioIdPrestador($idServicio);
                 }
 
-                foreach ($salidas as $salida) {
-                  $idServicioSalidas = $salida["idServicioSalidas"];
-                  $cantPasajeros = getCantidadPasajerosIdReservaTarifas($idServicioSalidas);
+                if (empty($salidas)) {
+                  echo '<tr><td colspan="8" class="text-center text-muted py-3"><i class="fas fa-info-circle mr-2"></i>No hay salidas programadas para este servicio</td></tr>';
+                } else {
+                  foreach ($salidas as $salida) {
+                    $idServicioSalidas = $salida["idServicioSalidas"];
+                    $cantPasajeros = getCantidadPasajerosIdReservaTarifas($idServicioSalidas);
+                  ?>
+                    <tr>
+                      <td><?= $idServicioSalidas; ?></td>
+                      <td><?= htmlspecialchars($salida["nombre"]); ?></td>
+                      <td>
+                        <input type="number" class="form-control disponibles-input" data-id="<?= $idServicioSalidas ?>" value="<?= $salida["disponibilidad"]; ?>" min="0" style="width: 80px; text-align: center;" data-original="<?= $salida["disponibilidad"]; ?>">
+                      </td>
+                      <td><span class="badge bg-info"><?= $cantPasajeros; ?></span></td>
+                      <td><?= htmlspecialchars($salida["nombre"]); ?></td>
+                      <td data-sort="<?= strtotime($salida["fecha"] . " " . $salida["horaSalida"]) ?>">
+                        <?php 
+                          $diasSemana = array('Sunday' => 'Domingo', 'Monday' => 'Lunes', 'Tuesday' => 'Martes', 'Wednesday' => 'Miércoles', 'Thursday' => 'Jueves', 'Friday' => 'Viernes', 'Saturday' => 'Sábado');
+                          $diaSemana = date('l', strtotime($salida["fecha"]));
+                          echo $diasSemana[$diaSemana];
+                        ?>, <?= date("d/m/Y", strtotime($salida["fecha"])) ?> - <?= $salida["horaSalida"] ?>
+                      </td>
+                      <td>
+                        <form method="post" action="salidaVer.php">
+                          <button class="btn btn-primary btn-sm" name="idServicioSalidas" value="<?= $idServicioSalidas; ?>">
+                            <i class="fas fa-eye mr-1"></i><?= $lang["ver"]; ?>
+                          </button>
+                        </form>
+                      </td>
+                      <td class="d-none"><?= date('Y-m-d', strtotime($salida['fecha'])) ?></td>
+                    </tr>
+                  <?php 
+                  }
+                }
                 ?>
-                  <tr>
-                    <td><?= $idServicioSalidas; ?></td>
-                    <td><?= htmlspecialchars($salida["nombre"]); ?></td>
-                    <td>
-                      <input type="number" class="form-control disponibles-input" data-id="<?= $idServicioSalidas ?>" value="<?= $salida["disponibilidad"]; ?>" min="0" style="width: 80px; text-align: center;" data-original="<?= $salida["disponibilidad"]; ?>">
-                    </td>
-                    <td><span class="badge bg-info"><?= $cantPasajeros; ?></span></td>
-                    <td><?= htmlspecialchars($salida["nombre"]); ?></td>
-                    <td data-sort="<?= strtotime($salida["fecha"] . " " . $salida["horaSalida"]) ?>">
-                      <?php 
-                        $diasSemana = array('Sunday' => 'Domingo', 'Monday' => 'Lunes', 'Tuesday' => 'Martes', 'Wednesday' => 'Miércoles', 'Thursday' => 'Jueves', 'Friday' => 'Viernes', 'Saturday' => 'Sábado');
-                        $diaSemana = date('l', strtotime($salida["fecha"]));
-                        echo $diasSemana[$diaSemana];
-                      ?>, <?= date("d/m/Y", strtotime($salida["fecha"])) ?> - <?= $salida["horaSalida"] ?>
-                    </td>
-                    <td>
-                      <form method="post" action="salidaVer.php">
-                        <button class="btn btn-primary btn-sm" name="idServicioSalidas" value="<?= $idServicioSalidas; ?>">
-                          <i class="fas fa-eye mr-1"></i><?= $lang["ver"]; ?>
-                        </button>
-                      </form>
-                    </td>
-                    <td class="d-none"><?= date('Y-m-d', strtotime($salida['fecha'])) ?></td>
-                  </tr>
-                <?php } ?>
               </tbody>
             </table>
           </div>

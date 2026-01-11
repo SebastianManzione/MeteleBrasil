@@ -198,15 +198,18 @@ if ($idPrestador !== null) {
                     $cantidadPasajerosTarifa = count($pasajeros);
                     $totalPasajerosReserva += $cantidadPasajerosTarifa;
                     
-                    // Convertir el precio total a la moneda seleccionada
-                    $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa["valor"]);
+                    // CRÍTICO: Usar valorOriginal (precio real) para comisiones, no valor (inflado)
+                    $precioParaComisiones = ($tarifa["valorOriginal"] > 0) ? $tarifa["valorOriginal"] : $tarifa["valor"];
+                    
+                    // Convertir el precio a la moneda seleccionada
+                    $precioTotal = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $precioParaComisiones);
                     $totalValorComision += $precioTotal;
                     
                     // Las comisiones ya están guardadas como valores monetarios, NO porcentajes
                     $comisionSistema = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionSistema'] ?? 0);
                     $comisionVendedor = ConvierteMoneda($tarifa["monedaSel"], $_SESSION["moneda_sel"], $tarifa['comisionVendedor'] ?? 0);
                     
-                    // Lo que le pagamos al prestador = precio - comisión sistema - comisión vendedor
+                    // Lo que le pagamos al prestador = precio real - comisión sistema - comisión vendedor
                     $aPagarPrestador = $precioTotal - $comisionSistema - $comisionVendedor;
                     $totalAPagarPrestador += $aPagarPrestador;
                     

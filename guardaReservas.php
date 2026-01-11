@@ -136,7 +136,8 @@ for ($i=0; $i < count($servicios); $i++) {
         }
         
         // Extraer datos de tarifa
-        $valor=$tarifa[0]["valor"];
+        $valor=$tarifa[0]["valor"];  // Precio inflado
+        $valorOriginal=$tarifa[0]["valorOriginal"] ?? $tarifa[0]["valor"];  // Precio real (fallback al inflado si no existe)
         $valorDeIva=$tarifa[0]["valorDeIva"];
         $valorSinIva=$tarifa[0]["valorSinIva"];
         $nombre=$tarifa[0]["nombre"];
@@ -145,17 +146,11 @@ for ($i=0; $i < count($servicios); $i++) {
         $comisionVendedor=$tarifa[0]["comisionVendedor"] ?? 0;
         $comisionSistema=$tarifa[0]["comisionSistema"] ?? 0;
         
-        // Calcular precio INFLADO para guardar en BD (ARS, CLP, PYG)
-        $valorGuardar = $valor;
+        // IMPORTANTE: calculaTarifa() YA retorna el valor inflado/redondeado
+        // NO sumar redondeoDiferencia de nuevo (sería duplicar el redondeo)
+        $valorGuardar = $valor; // Ya incluye redondeo si aplica
         $valorSinIvaGuardar = $valorSinIva;
         $valorDeIvaGuardar = $valorDeIva;
-        
-        if (in_array($monedaSel, [270, 271, 225]) && isset($tarifa[0]["redondeoDiferencia"]) && $tarifa[0]["redondeoDiferencia"] > 0) {
-            // Guardar precio inflado (redondeado) en BD
-            $valorGuardar = $valor + $tarifa[0]["redondeoDiferencia"];
-            $valorSinIvaGuardar = $valorSinIva + $tarifa[0]["redondeoDiferencia"];
-            // IVA queda igual
-        }
         
         // Acumular descuento por redondeo (ARS, CLP, PYG)
         if (in_array($monedaSel, [270, 271, 225]) && isset($tarifa[0]["redondeoDiferencia"])) {
@@ -168,10 +163,10 @@ for ($i=0; $i < count($servicios); $i++) {
         $precioTotalReserva+=$valorGuardar;
         $totalIvaReserva+=$valorDeIvaGuardar;
         
-        // Guardar tarifa en BD con PRECIO INFLADO
+        // Guardar tarifa en BD con PRECIO INFLADO, pero también guardar precio original
         $altaReservaTarifas=altaReservaTarifas($idServicioSalidasTarifas, $altaReservaHorarios, $cantidad, 
                                                $monedaSel, $valorGuardar, $valorSinIvaGuardar, $valorDeIvaGuardar, 
-                                               $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre);
+                                               $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre, $valorOriginal);
         
         if (empty($altaReservaTarifas)) {
             error_log("ERROR guardaReservas: altaReservaTarifas falló para idReservaHorarios: $altaReservaHorarios");
@@ -332,8 +327,23 @@ unset($_SESSION['descuento_ars_monto']);
 ?>
 
 <script type="text/javascript">
-  Swal.fire("Reservate", "Reserva Exitosa con el codigo <?=$codigoAmigable?>", "success");
-  window.location="consultaReserva?reserva=<?=$codigoAmigable?>";
+  Swal.fire({
+    icon: 'success',
+    title: '¡Reserva Exitosa!',
+    html: '<h3 style="color: #029ce2; margin: 20px 0;">🎉 ¡Tu Reserva Fue Confirmada! 🎉</h3><p style="font-size: 16px;">Tu código de reserva es:</p><h2 style="color: #029ce2; font-weight: bold; margin: 15px 0; letter-spacing: 2px;"><?=$codigoAmigable?></h2><p style="color: #666; margin-top: 15px;">Te hemos enviado un email de confirmación con todos los detalles.</p>',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    confirmButtonColor: '#029ce2',
+    confirmButtonText: 'Ver Detalles de Mi Reserva',
+    didOpen: () => {
+      // Añadir animación confetti si quieres
+      Swal.getConfirmButton().focus();
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      window.location="consultaReserva?reserva=<?=$codigoAmigable?>";
+    }
+  });
 </script>
 
 

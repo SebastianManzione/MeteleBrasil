@@ -45,13 +45,9 @@
                                         $cantidadPasajeros += $reserva[$j]['cantidad'];
                                         $totalDescuentos += $tarifa[0]["totalDescuentos"];
                                         
-                                        // MOSTRAR precio redondeado (inflado) en subtotales para ancla psicológica
+                                        // El valor YA viene inflado desde calculaTarifa(), no sumar la diferencia
                                         $valorMostrar = $tarifa[0]["valor"];
                                         $valorSinIvaMostrar = $tarifa[0]["valorSinIva"];
-                                        if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia']) && $tarifa[0]['redondeoDiferencia'] > 0) {
-                                            $valorMostrar = $tarifa[0]["valor"] + $tarifa[0]['redondeoDiferencia'];
-                                            $valorSinIvaMostrar = $tarifa[0]["valorSinIva"] + $tarifa[0]['redondeoDiferencia'];
-                                        }
                                         
                                         $precioReserva += $valorMostrar;
                                         if ($j == 0) {
