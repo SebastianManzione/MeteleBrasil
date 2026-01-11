@@ -145,20 +145,32 @@ for ($i=0; $i < count($servicios); $i++) {
         $comisionVendedor=$tarifa[0]["comisionVendedor"] ?? 0;
         $comisionSistema=$tarifa[0]["comisionSistema"] ?? 0;
         
+        // Calcular precio INFLADO para guardar en BD (ARS, CLP, PYG)
+        $valorGuardar = $valor;
+        $valorSinIvaGuardar = $valorSinIva;
+        $valorDeIvaGuardar = $valorDeIva;
+        
+        if (in_array($monedaSel, [270, 271, 225]) && isset($tarifa[0]["redondeoDiferencia"]) && $tarifa[0]["redondeoDiferencia"] > 0) {
+            // Guardar precio inflado (redondeado) en BD
+            $valorGuardar = $valor + $tarifa[0]["redondeoDiferencia"];
+            $valorSinIvaGuardar = $valorSinIva + $tarifa[0]["redondeoDiferencia"];
+            // IVA queda igual
+        }
+        
         // Acumular descuento por redondeo (ARS, CLP, PYG)
         if (in_array($monedaSel, [270, 271, 225]) && isset($tarifa[0]["redondeoDiferencia"])) {
             $descuentoGanado += $tarifa[0]["redondeoDiferencia"];
         }
         
-        // Acumular totales
+        // Acumular totales CON PRECIO INFLADO
         $cantidadPasajeros+=$cantidad;
         $cantidadPasajerosPorServicio+=$cantidad;
-        $precioTotalReserva+=$valor;
-        $totalIvaReserva+=$valorDeIva;
+        $precioTotalReserva+=$valorGuardar;
+        $totalIvaReserva+=$valorDeIvaGuardar;
         
-        // Guardar tarifa en BD
+        // Guardar tarifa en BD con PRECIO INFLADO
         $altaReservaTarifas=altaReservaTarifas($idServicioSalidasTarifas, $altaReservaHorarios, $cantidad, 
-                                               $monedaSel, $valor, $valorSinIva, $valorDeIva, 
+                                               $monedaSel, $valorGuardar, $valorSinIvaGuardar, $valorDeIvaGuardar, 
                                                $idFromEdad, $idToEdad, $comisionVendedor, $comisionSistema, $nombre);
         
         if (empty($altaReservaTarifas)) {
