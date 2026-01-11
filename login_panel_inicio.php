@@ -10,65 +10,65 @@ $puedeVerAdmin = $esPrivilegiado || $esOperador;
 <html lang="es">
 
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Panel de Inicio - Metele Brasil</title>
 
-
-
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
 
-    body {font-family:'Roboto',sans-serif;background:linear-gradient(to bottom right,#f7f9fc,#e9ecef);color:#333;min-height:100vh;}
+    :root {
+      --primary: #029ce2;
+      --primary-strong: #0278b1;
+      --accent: #ffc107;
+      --dark: #0f1f2d;
+      --muted: #5b6b7a;
+      --card: #ffffff;
+      --bg: #f5f7fb;
+      --shadow: 0 18px 45px rgba(2, 156, 226, 0.12);
+    }
 
-    .header {background:linear-gradient(135deg,#0056b3,#0d6efd);color:white;text-align:center;padding:3rem 1rem 2.5rem;border-bottom:5px solid #ffc107;box-shadow:0 4px 15px rgba(0,0,0,0.2);}
+    body {font-family:'Poppins',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;}
 
-    .header h1 {font-weight:700;letter-spacing:1px;}
+    .login-hero {position:relative;overflow:hidden;color:#fff;padding:3.6rem 1rem 3rem;box-shadow:0 10px 35px rgba(0,0,0,0.25);border-bottom:4px solid var(--accent);text-align:center;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.25)),url('img/slider4.jpg');background-size:cover;background-position:center;}
+    .login-hero::before {content:'';position:absolute;inset:0;background:radial-gradient(circle at 20% 20%,rgba(2,156,226,0.35),transparent 35%),radial-gradient(circle at 80% 30%,rgba(2,120,177,0.3),transparent 38%);}    
+    .login-hero .content {position:relative;z-index:1;}
+    .login-hero .eyebrow {text-transform:uppercase;letter-spacing:0.12em;font-size:0.85rem;color:rgba(255,255,255,0.78);margin-bottom:0.55rem;font-weight:600;}
+    .login-hero h1 {font-weight:700;letter-spacing:0.03em;margin-bottom:0.65rem;}
+    .login-hero .lede {font-size:1.05rem;max-width:780px;margin:0 auto;color:rgba(255,255,255,0.86);} 
+    .login-hero .chips {margin-top:1.2rem;display:flex;gap:0.65rem;flex-wrap:wrap;justify-content:center;}
+    .chip {background:rgba(255,255,255,0.12);color:#fff;border:1px solid rgba(255,255,255,0.25);border-radius:999px;padding:0.45rem 0.95rem;font-size:0.9rem;font-weight:600;backdrop-filter:blur(2px);}   
 
-    .header p {font-size:1.1rem;opacity:0.9;}
+    .brand-lockup {display:inline-flex;align-items:center;gap:0.75rem;padding:0.55rem 0.95rem;border-radius:14px;background:rgba(0,0,0,0.32);backdrop-filter:blur(3px);margin-bottom:0.8rem;border:1px solid rgba(255,255,255,0.2);}    
+    .brand-logo {width:58px;height:58px;border-radius:12px;object-fit:cover;box-shadow:0 8px 18px rgba(0,0,0,0.35);}   
+    .brand-text {font-weight:800;letter-spacing:0.12em;font-size:1.05rem;color:#fff;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,0.4);}  
 
-    .action-card {border:none;border-radius:1rem;text-decoration:none;color:inherit;transition:transform 0.2s ease,box-shadow 0.3s ease;height:100%;display:flex;flex-direction:column;justify-content:center;}
+    main.container {margin-top:-2.4rem;}
 
-    .action-card:hover {transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.15);}
+    .action-card {border:1px solid #e7ecf1;border-radius:1.1rem;text-decoration:none;color:inherit;transition:transform 0.2s ease,box-shadow 0.3s ease,border-color 0.3s ease;background:var(--card);box-shadow:var(--shadow);height:100%;display:flex;flex-direction:column;justify-content:center;}
+    .action-card:hover {transform:translateY(-6px);border-color:rgba(2,156,226,0.4);box-shadow:0 22px 50px rgba(2,156,226,0.16);}
+    .action-card .card-body {text-align:center;padding:2.4rem 1.7rem;}
+    .action-card i {font-size:2.6rem;margin-bottom:1rem;color:var(--primary);}
+    .action-card h5{font-weight:700;margin-bottom:0.55rem;color:var(--dark);}
+    .action-card p{color:var(--muted);margin-bottom:0;}
 
-    .action-card .card-body {text-align:center;padding:2.5rem 1.5rem;}
+    .card-blue i {color:var(--primary);} 
+    .card-green i {color:#1fab89;}
+    .card-orange i {color:#ff9f43;}
+    .card-purple i {color:#8a5ee0;}
 
-    .action-card i {font-size:3rem;margin-bottom:1rem;}
+    .badge-role {display:inline-flex;align-items:center;gap:0.4rem;background:rgba(2,156,226,0.14);color:var(--primary-strong);padding:0.45rem 0.85rem;border-radius:999px;font-weight:600;font-size:0.92rem;border:1px solid rgba(2,156,226,0.28);}
 
-    .card-blue{background:#0d6efd;color:white;}
+    .link-back {color:var(--muted);font-weight:600;text-decoration:none;}
+    .link-back:hover {color:var(--primary);}    
 
-    .card-green{background:#198754;color:white;}
-
-    .card-orange{background:#fd7e14;color:white;}
-
-    .card-purple{background:#6f42c1;color:white;}
-
-    .action-card h5{font-weight:700;margin-bottom:0.5rem;}
-
-    .login-section{background:#212529;border-radius:1rem;text-align:center;padding:2rem 1.5rem;color:white;margin-top:4rem;}
-
-    .login-section .btn{background-color:#ffc107;border:none;color:#000;font-weight:600;}
-
-    .login-section .btn:hover{background-color:#ffcd39;}
-
-    .modal-content{border-radius:1rem;border:none;}
-
-    .modal-header{background-color:#0d6efd;color:white;border-bottom:none;}
-
-    .btn-primary{background-color:#0d6efd;border:none;}
-
-    .btn-primary:hover{background-color:#0b5ed7;}
-
+    .modal-content{border-radius:1rem;border:none;box-shadow:0 16px 42px rgba(0,0,0,0.2);}    
+    .modal-header{background-color:var(--primary);color:white;border-bottom:none;}   
+    .btn-primary{background-color:var(--primary);border:none;}    
+    .btn-primary:hover{background-color:var(--primary-strong);}    
     .btn-secondary{background-color:#6c757d;border:none;}
 
   </style>
@@ -79,181 +79,80 @@ $puedeVerAdmin = $esPrivilegiado || $esOperador;
 
 
 
-<header class="header">
-
-  <h1>Panel de Inicio</h1>
-
-  <p>Gestión rápida de reservas y administración.</p>
-
+<header class="login-hero">
+  <div class="container text-center content">
+    <div class="brand-lockup">
+      <img src="img/favicon.png" alt="Metele Brasil" class="brand-logo">
+      <span class="brand-text">Metele Brasil</span>
+    </div>
+    <p class="eyebrow">Accesos rápidos</p>
+    <h1>Tu panel Metele Brasil</h1>
+    <p class="lede">Gestiona reservas, pagos y operaciones con el mismo estilo del sitio.</p>
+    <div class="chips">
+      <span class="chip">Reservas</span>
+      <span class="chip">Pagos</span>
+      <?php if ($puedeVerAdmin): ?><span class="chip">Operaciones</span><?php endif; ?>
+    </div>
+    <?php if ($puedeVerAdmin): ?>
+    <div class="mt-3">
+      <span class="badge-role"><i class="fas fa-user-shield"></i> Acceso operativo</span>
+    </div>
+    <?php endif; ?>
+  </div>
 </header>
 
 
 
 <main class="container py-5">
-
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-2 g-4 justify-content-center">
-
-
-
-    <div class="col">
-
-      <div class="card action-card card-blue" data-bs-toggle="modal" data-bs-target="#modalServicio">
-
+  <div class="row g-4 justify-content-center">
+    <div class="col-12 col-md-6 col-lg-4">
+      <a href="categorias" class="card action-card card-blue">
         <div class="card-body">
-
-          <i class="fas fa-bolt"></i>
-
-          <h5>Reserva Rápida</h5>
-
-          <p>Inicia una reserva con el ID del servicio.</p>
-
+          <i class="fas fa-compass"></i>
+          <h5>Ver actividades</h5>
+          <p>Explora excursiones, paseos en barco y experiencias disponibles.</p>
         </div>
-
-      </div>
-
-    </div>
-
-
-
-    <div class="col">
-
-      <a href="app.categorias.php" class="card action-card card-green">
-
-        <div class="card-body">
-
-          <i class="fas fa-search"></i>
-
-          <h5>Ver Actividades</h5>
-
-          <p>Consulta disponibilidad y realiza reservas fácilmente.</p>
-
-        </div>
-
       </a>
-
     </div>
 
-
+    <div class="col-12 col-md-6 col-lg-4">
+      <div class="card action-card card-green" data-bs-toggle="modal" data-bs-target="#modalReserva">
+        <div class="card-body">
+          <i class="fas fa-credit-card"></i>
+          <h5>Pagar reserva</h5>
+          <p>Ingresa tu código para finalizar el pago de forma segura.</p>
+        </div>
+      </div>
+    </div>
 
     <?php if ($puedeVerAdmin): ?>
-    <div class="col">
-
-      <a href="admin/serviciosLista" class="card action-card card-purple">
-
+    <div class="col-12 col-md-6 col-lg-4">
+      <a href="admin" class="card action-card card-orange">
         <div class="card-body">
-
           <i class="fas fa-chart-line"></i>
-
-          <h5>Modificar Disponibilidad</h5>
-
-          <p>Revisa disponibilidad, ventas y comisiones.</p>
-
+          <h5>Panel administración</h5>
+          <p>Accede a reservas, comisiones y reportes financieros.</p>
         </div>
-
       </a>
+    </div>
 
+    <div class="col-12 col-md-6 col-lg-4">
+      <a href="admin/serviciosLista" class="card action-card card-purple">
+        <div class="card-body">
+          <i class="fas fa-calendar-check"></i>
+          <h5>Disponibilidad</h5>
+          <p>Edita horarios y cupos de tus salidas activas.</p>
+        </div>
+      </a>
     </div>
     <?php endif; ?>
-
-
-
-    <div class="col">
-
-      <div class="card action-card card-orange" data-bs-toggle="modal" data-bs-target="#modalReserva">
-
-        <div class="card-body">
-
-          <i class="fas fa-credit-card"></i>
-
-          <h5>Pagar Reserva</h5>
-
-          <p>Paga tu reserva con el código recibido por email.</p>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-
   </div>
 
-
-
-  <?php if ($puedeVerAdmin): ?>
-  <div class="login-section mt-5">
-
-    <p class="mb-3">Para ver comisiones y disponibilidad completa, inicia sesión.</p>
-
-    <a href="admin" class="btn btn-lg px-4">
-
-      <i class="fas fa-sign-in-alt me-2"></i> Acceso Admin
-
-    </a>
-
-    <div class="mt-3">
-
-      <a href="index.php" style="color:#fff;text-decoration:underline;">Volver al sitio</a>
-
-    </div>
-
+  <div class="text-center mt-4">
+    <a class="link-back" href="index"><i class="fas fa-arrow-left me-2"></i>Volver al sitio</a>
   </div>
-  <?php endif; ?>
 
 </main>
-
-
-
-<!-- MODAL SERVICIO -->
-
-<div class="modal fade" id="modalServicio" tabindex="-1" aria-labelledby="modalServicioLabel" aria-hidden="true">
-
-  <div class="modal-dialog modal-dialog-centered">
-
-    <div class="modal-content">
-
-      <div class="modal-header">
-
-        <h5 class="modal-title" id="modalServicioLabel">Iniciar Reserva Rápida</h5>
-
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-
-      </div>
-
-      <div class="modal-body">
-
-        <p>Introduce el número de servicio para comenzar.</p>
-
-        <form id="formServicio" onsubmit="return false;">
-
-          <div class="mb-3">
-
-            <label for="inputServicio" class="form-label">Código de Servicio</label>
-
-            <input type="text" class="form-control form-control-lg" id="inputServicio" placeholder="Ej: 12345" required oninput="this.value=this.value.toUpperCase();">
-
-          </div>
-
-        </form>
-
-      </div>
-
-      <div class="modal-footer">
-
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-
-        <button type="button" class="btn btn-primary" id="btnServicio">Iniciar</button>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
-
-
 
 <!-- MODAL RESERVA -->
 
@@ -313,66 +212,21 @@ $puedeVerAdmin = $esPrivilegiado || $esOperador;
 
 document.addEventListener('DOMContentLoaded', function() {
 
-  const btnServicio = document.getElementById('btnServicio');
-
-  const inputServicio = document.getElementById('inputServicio');
-
   const btnReserva = document.getElementById('btnReserva');
-
   const inputReserva = document.getElementById('inputReserva');
 
-
-
-  const goServicio = () => {
-
-    const value = inputServicio.value.trim();
-
-    if (!value || !/^[A-Z0-9]+$/.test(value)) {
-
-      alert('Introduce un código de servicio válido.');
-
-      inputServicio.focus();
-
-      return;
-
-    }
-
-    window.location.href = `servicio.php?id=${value}`;
-
-  };
-
-
-
   const goReserva = () => {
-
     const value = inputReserva.value.trim();
-
     if (!value || !/^[A-Z0-9]+$/.test(value)) {
-
       alert('Introduce un código de reserva válido.');
-
       inputReserva.focus();
-
       return;
-
     }
-
-    window.location.href = `consultaReserva.php?reserva=${value}`;
-
+    window.location.href = `consultaReserva?reserva=${value}`;
   };
-
-
-
-  btnServicio.addEventListener('click', goServicio);
 
   btnReserva.addEventListener('click', goReserva);
-
-
-
-  inputServicio.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); goServicio(); } });
-
   inputReserva.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); goReserva(); } });
-
 });
 
 </script>
