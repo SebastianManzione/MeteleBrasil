@@ -264,61 +264,25 @@ $idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
 
 
 
-			$precio=$tarifas[$i]['valor'];
-
-
-
-			$precio=convierteMoneda( $salida[0]["idMoneda"],$_SESSION['moneda_sel'],$precio);
-
-
-
-			$retorno[$i]["disponibilidad"]=$salida[0]["disponibilidad"];
-
-
-
-			$retorno[$i]['comisionVendedor']=$precio*$comisionVendedor; //retornamos la suma de comisiones
-
-
-
-			$retorno[$i]['comisionSistema']=$precio*$comisionSistema; //retornamos la suma de comisiones
-
-
-
+			// USAR calculaTarifa() DIRECTAMENTE - devuelve valor con conversión, impuestos, cupones y REDONDEO COMERCIAL aplicados
+			$tarifaCalculada = calculaTarifa($idServicioSalidasTarifas, 1);
 			
-
-
-
-			//$precio=$tarifas[$i]['valor']*$comision;
-
-
-
-			
-
-
-
-			// Comentar impuesto $precio=$precio*($_SESSION["impuestos_pais"]+1);
-
-			$precio=round($precio,2, PHP_ROUND_HALF_UP);
-
-			// Redondeo especial para monedas devaluadas (ARS, CLP, PYG): al siguiente múltiplo de 1000 hacia arriba
-			$valorOriginal = $precio;
-			$redondeoDiferencia = 0;
-
-			if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) { // ARS, CLP, PYG
-				// Redondear hacia arriba al siguiente múltiplo de 1000
-				$redondeoDiferencia = ceil($valorOriginal / 1000) * 1000 - $valorOriginal;
-				$precio = $valorOriginal + $redondeoDiferencia;
+			if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]['valor'])) {
+				// El valor ya viene con REDONDEO COMERCIAL aplicado desde calculaTarifa()
+				$precio = floatval($tarifaCalculada[0]['valor']);
+				$redondeoDiferencia = isset($tarifaCalculada[0]['redondeoDiferencia']) ? floatval($tarifaCalculada[0]['redondeoDiferencia']) : 0;
+				$precioFormateado = number_format($precio, 0, '', '.');
+				
+				$retorno[$i]['valor'] = $_SESSION['moneda_sel_sym'] . $precioFormateado;
+				$retorno[$i]['valorFormateado'] = $precioFormateado;
+				$retorno[$i]['valorNumerico'] = $precio; // Valor numérico CON REDONDEO COMERCIAL incluido
+				$retorno[$i]['redondeoDiferencia'] = $redondeoDiferencia;
+				
+				$retorno[$i]['comisionVendedor'] = $precio * floatval($comisionVendedor);
+				$retorno[$i]['comisionSistema'] = $precio * floatval($comisionSistema);
+				$retorno[$i]["disponibilidad"]=$salida[0]["disponibilidad"];
 			}
 
-			// Formatear con separadores de miles (coma como separador de miles)
-			$precioFormateado = number_format($precio, 0,'', '.');
-
-
-
-			$retorno[$i]['valor'] = $_SESSION['moneda_sel_sym'] . $precioFormateado;
-			$retorno[$i]['valorFormateado'] = $precioFormateado;
-			$retorno[$i]['valorNumerico'] = $precio; // Valor numérico sin formato para JavaScript
-			$retorno[$i]['redondeoDiferencia'] = $redondeoDiferencia;
 
 
 

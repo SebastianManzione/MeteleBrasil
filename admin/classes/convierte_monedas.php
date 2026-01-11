@@ -121,17 +121,20 @@ case 271:
 		break;	
 		
 		case 225:
-		return round($guaranis,2, PHP_ROUND_HALF_UP);
+		// NO redondear para monedas devaluadas - dejar que calculaTarifa() maneje el redondeo comercial
+		return $guaranis;
 		
 		break;
 		
 		case 270:
-		return round($pesoArg,2, PHP_ROUND_HALF_UP);
+		// NO redondear para monedas devaluadas - dejar que calculaTarifa() maneje el redondeo comercial
+		return $pesoArg;
 		
 		break;
 		
 		case 271:
-		return round($pesoCh,2, PHP_ROUND_HALF_UP);
+		// NO redondear para monedas devaluadas - dejar que calculaTarifa() maneje el redondeo comercial
+		return $pesoCh;
 			
 		break;
 

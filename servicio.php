@@ -73,10 +73,15 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
   $idPais = (!empty($destino) && isset($destino[0]["idPais"])) ? $destino[0]["idPais"] : null;
   $pais = $idPais ? getPais($idPais) : [];
   
+  // Determinar si es administrador (idUsuario == 1)
+  $isAdmin = isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1;
+  
   // Calcular precio mínimo del servicio
   $precioMinimo = 0;
   if (!empty($salidas)) {
     $preciosArray = [];
+    echo "<!-- DEBUG INICIO - Total salidas: " . count($salidas) . " -->";
+    
     foreach ($salidas as $salida) {
       if (isset($salida['idServicioSalidas'])) {
         $tarifasSalida = getTarifas($salida['idServicioSalidas']);
@@ -86,7 +91,16 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
               // Usar calculaTarifa para obtener precio con conversión, impuestos y redondeo
               $tarifaCalculada = calculaTarifa($tarifa['idServicioSalidasTarifas'], 1);
               if (!empty($tarifaCalculada) && isset($tarifaCalculada[0]['valor']) && $tarifaCalculada[0]['valor'] > 0) {
-                $preciosArray[] = floatval($tarifaCalculada[0]['valor']);
+                $valorFinal = floatval($tarifaCalculada[0]['valor']);
+                $valorOriginalCalculo = isset($tarifaCalculada[0]['valorSinRedondeo']) ? floatval($tarifaCalculada[0]['valorSinRedondeo']) : 0;
+                $redondeo = isset($tarifaCalculada[0]['redondeoDiferencia']) ? floatval($tarifaCalculada[0]['redondeoDiferencia']) : 0;
+                
+                echo "<!-- DEBUG Tarifa ID: " . $tarifa['idServicioSalidasTarifas'] . 
+                     " | Valor RETORNADO por calculaTarifa: " . $valorFinal . 
+                     " | Redondeo: " . $redondeo . 
+                     " | ValorOriginal: " . $valorOriginalCalculo . " -->";
+                
+                $preciosArray[] = $valorFinal;
               }
             }
           }
@@ -95,11 +109,9 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     }
     if (!empty($preciosArray)) {
       $precioMinimo = min($preciosArray);
+      echo "<!-- DEBUG Precio mínimo final: " . $precioMinimo . " -->";
     }
   }
-    
-  // Determinar si es administrador (idUsuario == 1)
-  $isAdmin = isset($_SESSION['login']['idUsuario']) && $_SESSION['login']['idUsuario'] == 1;
 }
 
 include('servicioHead.php');
