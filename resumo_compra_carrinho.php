@@ -145,12 +145,35 @@
 
                 <!--PRECIO TOTAL-->
                 <?php
+                // Mostrar descuento por redondeo si existe (ARS, CLP, PYG)
+                $mostrarDescuentoRedondeo = false;
+                if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($descuentoGanado) && $descuentoGanado > 0) {
+                    $mostrarDescuentoRedondeo = true;
+                }
+                
                 $descuentoARS = 0;
                 if (isset($_SESSION['descuento_ars_aceptado']) && $_SESSION['descuento_ars_aceptado'] == '1' && isset($_SESSION['descuento_ars_monto'])) {
                     $descuentoARS = floatval($_SESSION['descuento_ars_monto']);
                 }
                 $totalFinal = $precioTotalCarrito - $descuentoARS;
                 ?>
+                
+                <?php if ($mostrarDescuentoRedondeo): ?>
+                <!-- Descuento por Redondeo -->
+                <div class="div-precio-t py-2 px-3 rounded shadow-sm mb-2" style="background: linear-gradient(135deg, #d4edda 0%, #e7f4ea 100%); border: 1px solid #28a745;">
+                    <div class="row align-items-center">
+                        <div class="col-7">
+                            <p class="mb-0 small text-success"><i class="fas fa-gift mr-2"></i><strong>Descuento por Redondeo</strong></p>
+                        </div>
+                        <div class="col-5 text-right">
+                            <p class="mb-0 text-success font-weight-bold">
+                                -<?= $_SESSION['moneda_sel_sym'] . number_format($descuentoGanado, 0, ',', '.'); ?>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <?php endif; ?>
+                
                 <div class="div-precio-t py-3 px-3 rounded shadow-sm" style="margin-top: 15px; background: linear-gradient(135deg, #e7f3ff 0%, #f0f8ff 100%); border: 1px solid #029ce2;">
                     <div class="row align-items-center">
                         <div class="col-6">

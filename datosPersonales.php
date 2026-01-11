@@ -726,6 +726,14 @@ $reserva[$j ]["cantidad"]);
         // Acumular descuento del redondeo para monedas devaluadas (ARS, CLP, PYG)
         if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && isset($tarifa[0]['redondeoDiferencia'])) {
             $descuentoGanado += $tarifa[0]['redondeoDiferencia'];
+            // DEBUG - borrar después
+            echo "<!-- DEBUG Tarifa {$j}: redondeoDiferencia={$tarifa[0]['redondeoDiferencia']}, Total acumulado=$descuentoGanado -->";
+        } else {
+            // DEBUG - borrar después
+            $moneda = $_SESSION['moneda_sel'] ?? 'NO SET';
+            $tieneRedondeo = isset($tarifa[0]['redondeoDiferencia']) ? 'SI' : 'NO';
+            $valorRedondeo = $tarifa[0]['redondeoDiferencia'] ?? 'N/A';
+            echo "<!-- DEBUG Tarifa {$j} NO suma: moneda=$moneda, tieneRedondeo=$tieneRedondeo, valor=$valorRedondeo -->";
         }   
 
 
@@ -1693,14 +1701,20 @@ Comentarios (opcional) - 0/300" id="exampleFormControlTextarea1" rows="3"></text
 </div>
 
 <!-- Script para Modal de Descuento Monedas Devaluadas (ARS, CLP, PYG) -->
+<!-- DEBUG: moneda_sel=<?= $_SESSION['moneda_sel'] ?? 'NO SET' ?>, descuentoGanado=<?= $descuentoGanado ?>, descuento_aceptado=<?= isset($_SESSION['descuento_ars_aceptado']) ? 'SI' : 'NO' ?> -->
 <script>
 $(document).ready(function() {
     // Verificar si es moneda devaluada y mostrar modal (solo si no se ha aceptado antes)
     <?php if (in_array($_SESSION['moneda_sel'], [270, 271, 225]) && $descuentoGanado > 0 && !isset($_SESSION['descuento_ars_aceptado'])): ?>
+        console.log('DEBUG: Mostrando modal descuento');
+        console.log('Moneda: <?= $_SESSION['moneda_sel'] ?>, Descuento: <?= $descuentoGanado ?>');
         var monedaSimbolo = '<?= $_SESSION['moneda_sel_sym'] ?>';
         var descuentoValor = <?= round($descuentoGanado) ?>;
         $('#descuentoGanadoText').text(monedaSimbolo + descuentoValor.toLocaleString('es-AR'));
         $('#modalDescuentoARS').modal('show');
+    <?php else: ?>
+        console.log('DEBUG: Modal NO se muestra');
+        console.log('Moneda: <?= $_SESSION['moneda_sel'] ?? 'NO SET' ?>, Descuento: <?= $descuentoGanado ?>, Aceptado: <?= isset($_SESSION['descuento_ars_aceptado']) ? 'SI' : 'NO' ?>');
     <?php endif; ?>
 
     // Manejar el botón de aceptar descuento
