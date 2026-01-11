@@ -300,18 +300,18 @@ $idTipoTarifa=$tarifas[$i]['idTipoTarifa'];
 
 			$precio=round($precio,2, PHP_ROUND_HALF_UP);
 
-			// Redondeo especial para ARS: al siguiente múltiplo de 500 hacia arriba
+			// Redondeo especial para monedas devaluadas (ARS, CLP, PYG): al siguiente múltiplo de 1000 hacia arriba
 			$valorOriginal = $precio;
 			$redondeoDiferencia = 0;
 
-			if ($_SESSION['moneda_sel_sym'] == 'AR$') {
-				// Redondear hacia arriba al siguiente múltiplo de 500
-				$redondeoDiferencia = ceil($valorOriginal / 500) * 500 - $valorOriginal;
+			if (in_array($_SESSION['moneda_sel'], [270, 271, 225])) { // ARS, CLP, PYG
+				// Redondear hacia arriba al siguiente múltiplo de 1000
+				$redondeoDiferencia = ceil($valorOriginal / 1000) * 1000 - $valorOriginal;
 				$precio = $valorOriginal + $redondeoDiferencia;
 			}
 
 			// Formatear con separadores de miles (coma como separador de miles)
-			$precioFormateado = number_format($precio, 0,'', '');
+			$precioFormateado = number_format($precio, 0,'', '.');
 
 
 
