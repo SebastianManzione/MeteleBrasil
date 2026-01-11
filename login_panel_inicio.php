@@ -1,3 +1,10 @@
+<?php
+session_start();
+$login = isset($_SESSION['login']) ? $_SESSION['login'] : [];
+$esPrivilegiado = isset($login['rol']) && ($login['rol'] == 1 || $login['rol'] == 5);
+$esOperador = !empty($login['idPrestador']) || !empty($login['idVendedor']) || !empty($login['idCobrador']);
+$puedeVerAdmin = $esPrivilegiado || $esOperador;
+?>
 <!DOCTYPE html>
 
 <html lang="es">
@@ -128,6 +135,7 @@
 
 
 
+    <?php if ($puedeVerAdmin): ?>
     <div class="col">
 
       <a href="admin/serviciosLista" class="card action-card card-purple">
@@ -145,6 +153,7 @@
       </a>
 
     </div>
+    <?php endif; ?>
 
 
 
@@ -172,6 +181,7 @@
 
 
 
+  <?php if ($puedeVerAdmin): ?>
   <div class="login-section mt-5">
 
     <p class="mb-3">Para ver comisiones y disponibilidad completa, inicia sesión.</p>
@@ -189,6 +199,7 @@
     </div>
 
   </div>
+  <?php endif; ?>
 
 </main>
 
