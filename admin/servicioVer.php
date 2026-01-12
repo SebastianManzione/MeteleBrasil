@@ -312,6 +312,7 @@ if (isset($_GET["idServicio"])) {
                   <th>Periodo</th>
                   <th>ID Salida</th>
                   <th>Acción</th>
+                  <th>Acción</th>
                   <th class="d-none">Fecha Filtro</th>
                 </tr>
               </thead>
@@ -347,9 +348,16 @@ if (isset($_GET["idServicio"])) {
                       <td>
                         <form method="post" action="salidaVer.php">
                           <button class="btn btn-primary btn-sm" name="idServicioSalidas" value="<?= $idServicioSalidas; ?>">
-                            <i class="fas fa-eye mr-1"></i><?= $lang["ver"]; ?>
+                            <i class="fas fa-eye mr-1"></i> <?= $lang["ver"]; ?>
                           </button>
                         </form>
+                      </td>
+                      <td>
+                           <form method="post" action="pasajerosLista">
+
+              <button name="idServicioSalidas" value="<?= $idServicioSalidas; ?>" class="btn btn-xs btn-success"> <i class="fas fa-eye mr-1"></i> <?= $lang["lista_de_pasajeros"]; ?></button>
+
+            </form>
                       </td>
                       <td class="d-none"><?= date('Y-m-d', strtotime($salida['fecha'])) ?></td>
                     </tr>

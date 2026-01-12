@@ -618,39 +618,8 @@ include('servicioHead.php');
   </div>
 </section>
 
-<!-- PRECIO FIJO INFERIOR (Móvil) - OCULTO -->
-<!-- <section class="d-md-none scroll-to-top2 position-fixed" style="bottom:0; left:0; right:0; background:#fff; z-index:1000; box-shadow:0 -2px 10px rgba(0,0,0,0.1);">
-  <div class="container-fluid py-2">
-    <div class="row align-items-center">
-      <div class="col-6">
-        <small class="text-muted">Total</small>
-        <h4 class="mb-0 text-primary" id="precio-nav"></h4>
-      </div>
-      <div class="col-6 text-right">
-        <button onclick="enviar()" class="btn btn-primary">
-          <i class="fa fa-shopping-cart"></i> Reservar
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- BARRA PRECIO FIJA INFERIOR (Móvil) -->
-<section class="d-md-none scroll-to-top2 position-fixed" style="bottom:0; left:0; right:0; background:#fff; z-index:1000; box-shadow:0 -2px 10px rgba(0,0,0,0.1);">
-  <div class="container-fluid py-2">
-    <div class="row align-items-center">
-      <div class="col-6">
-        <small class="text-muted d-block"><?=$lang["total"]?></small>
-        <h4 class="mb-0 text-primary" id="precioTotalMovil"><?=$_SESSION['moneda_sel_sym']?> 0</h4>
-      </div>
-      <div class="col-6 text-right">
-        <button onclick="enviar()" class="btn btn-primary btn-lg">
-          <i class="fa fa-shopping-cart"></i> <?=$lang["reservar"]?>
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- ESTILOS ACORDEONES MÓVILES -->
 <style>

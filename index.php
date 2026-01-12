@@ -154,7 +154,7 @@ $showSliderControls = $sliderCount > 1;
   .home-hero-wrapper .carousel,
   .home-hero-wrapper .carousel-inner,
   .home-hero-wrapper .carousel-item {
-    height: 520px;
+    height: 600px;
   }
   .home-hero-wrapper .img-slider {
     height: 100%;
@@ -170,14 +170,13 @@ $showSliderControls = $sliderCount > 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
+    
     padding: 3.5rem 1rem 3.5rem;
-    background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
-    color: #fff;
+
     z-index: 2;
   }
-  .home-hero-wrapper .div-absolute .hero-title { margin-top: 1.5rem; margin-bottom: 1rem; }
-  .home-hero-wrapper .div-absolute .div-bottom { margin-top: 0.5rem; }
+  .home-hero-wrapper .div-absolute .hero-title { margin-top: 1rem; margin-bottom: 1rem; }
+  .home-hero-wrapper .div-absolute .div-bottom { margin-top: 1rem; }
   @media (max-width: 768px) {
     .home-hero-wrapper .carousel,
     .home-hero-wrapper .carousel-inner,
@@ -216,7 +215,7 @@ $showSliderControls = $sliderCount > 1;
     <?php endif; ?>
   </div>
 
-  <section class="div-absolute" id="capa2" >
+  <section class="div-absolute" id="capa2">
   <div class="container">
     <div class="row">
       <div class="col-lg-6 offset-lg-3 mb-4 hero-title">
@@ -239,21 +238,22 @@ $showSliderControls = $sliderCount > 1;
         <div class="container">
           <div class="row">
             <div class="col-lg-3 col-md-3 col-3">
-              <i class="text-white fa fa-calendar-check fa-2x mb-2"></i>
-              <p class="texto-bottom">Las mejores actividades</p>
+              <i class="text-white fa fa-calendar-check fa-2x"></i>
+              <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;">Las mejores actividades</p>
             </div>
             <div class="col-lg-3 col-md-3 col-3">
-              <i class="text-white fa fa-headset fa-2x mb-2"></i>
-              <p class="texto-bottom">Atención al cliente 24/7</p>
+              <i class="text-white fa fa-headset fa-2x"></i>
+              <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;">Atención al cliente 24/7</p>
             </div>
             <div class="col-lg-3 col-md-3 col-3">
-              <i class="text-white fa fa-comment-dots fa-2x mb-2"></i>
-              <p class="texto-bottom">Miles de opiniones</p>
+              <i class="text-white fa fa-comment-dots fa-2x"></i>
+              <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;">Miles de opiniones</p>
             </div>
-            <div class="col-lg-3 col-md-3 col-3">
-              <i class="text-white fa fa-hand-holding-usd fa-2x mb-2"></i>
-              <p class="texto-bottom">Sin sobreprecios ni costos ocultos</p>
+               <div class="col-lg-3 col-md-3 col-3">
+              <i class="text-white fa fa-hand-holding-usd fa-2x"></i>
+              <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;">Sin sobreprecios ni costos ocultos</p>
             </div>
+         
           </div>
         </div>
       </div>

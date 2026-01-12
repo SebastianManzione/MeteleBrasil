@@ -1018,7 +1018,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     .categoria-hero-wrapper .carousel,
     .categoria-hero-wrapper .carousel-inner,
     .categoria-hero-wrapper .carousel-item {
-      height: 520px;
+      height: 600px;
     }
 
     .categoria-hero-wrapper .img-slider {
@@ -1037,20 +1037,20 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 3rem 1rem 4rem;
-      background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.25));
+      padding: 3.5rem 1rem 3rem;
+  
       color: #fff;
       z-index: 2;
       overflow-y: auto;
     }
 
     .categoria-hero-wrapper .div-absolute .hero-title {
-      margin-top: 1rem;
+      margin-top: 3.5rem;
       margin-bottom: 1.2rem;
     }
 
     .categoria-hero-wrapper .div-absolute .div-bottom {
-      margin-top: 0.5rem;
+      margin-top: 1rem;
     }
 
     .categoria-hero-wrapper .div-absolute .texto-bottom {
@@ -1105,7 +1105,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     <!-- SLIDER CON BÚSQUEDA INTEGRADA (si hay categoría se muestra su imagen como único slide) -->
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel" data-interval="<?= $sliderIntervalo ?>">
       <?php if ($showSliderControls): ?>
-        <ol class="carousel-indicators">
+        <ol class="carousel-indicators" >
           <?php foreach ($sliderImages as $index => $img): ?>
             <li data-target="#carouselExampleIndicators" data-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></li>
           <?php endforeach; ?>
@@ -1142,25 +1142,26 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
           <div class="col-lg-12 text-center text-white div-bottom">
             <div class="container">
               <div class="row">
-                <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
-                  <i class="text-white fa fa-hiking fa-2x mb-2"></i>
-                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_servicios_categoria; ?></p>
-                  <p class="texto-bottom"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'Actividades'; ?></p>
+                 <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
+                  <i class="text-white fa fa-hiking fa-2x"></i>
+                  <p class="texto-bottom mb-0"><?= $cantidad_servicios_categoria; ?></p>
+                  <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'Actividades'; ?></p>
                 </div>
-                <div class="col-lg-3 col-md-3 col-6 mb-3 mb-md-0">
-                  <i class="text-white fa fa-users fa-2x mb-2"></i>
-                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $nViajeros; ?></p>
-                  <p class="texto-bottom"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'Viajeros'; ?></p>
+                 <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
+                  <i class="text-white fa fa-users fa-2x"></i>
+                  <p class="texto-bottom mb-0"><?= $nViajeros; ?></p>
+                  <p class="texto-bottom"style="font-size: 25px; margin-top: 5px;"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'Viajeros'; ?></p>
                 </div>
-                <div class="col-lg-3 col-md-3 col-6">
-                  <i class="text-white fa fa-comment-dots fa-2x mb-2"></i>
-                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;"><?= $cantidad_opiniones_categoria; ?></p>
-                  <p class="texto-bottom"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'Opiniones reales'; ?></p>
+                 <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
+                  <i class="text-white fa fa-comment-dots fa-2x"></i>
+                  <p class="texto-bottom mb-0"><?= $cantidad_opiniones_categoria; ?></p>
+                  <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'Opiniones reales'; ?></p>
                 </div>
-                <div class="col-lg-3 col-md-3 col-6">
-                  <i class="text-white fa fa-star fa-2x mb-2"></i>
-                  <p class="texto-bottom mb-0" style="font-size: 1.5rem; font-weight: 700;">9,2</p>
-                  <p class="texto-bottom"><?= isset($lang["asi_nos_puntuan"]) ? $lang["asi_nos_puntuan"] : 'Así nos puntúan'; ?></p>
+                
+                  <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
+                  <i class="text-white fa fa-star fa-2x"></i>
+                  <p class="texto-bottom mb-0">9,2</p>
+                  <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["asi_nos_puntuan"]) ? $lang["asi_nos_puntuan"] : 'Así nos puntúan'; ?></p>
                 </div>
               </div>
             </div>

@@ -9,9 +9,9 @@ require_once(__DIR__ . '/admin/classes/configuracion.php');
 $config = new Configuracion();
 
 // Determinar destino según estado de mantenimiento
-$destino = '/index.php';
+$destino = './index.php';
 if ($config->mantenimientoActivo()) {
-    $destino = '/mantenimiento.php';
+    $destino = './mantenimiento.php';
 }
 
 header('Location: ' . $destino);

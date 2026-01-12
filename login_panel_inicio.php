@@ -82,22 +82,18 @@ $puedeVerAdmin = $esPrivilegiado || $esOperador;
 <header class="login-hero">
   <div class="container text-center content">
     <div class="brand-lockup">
-      <img src="img/favicon.png" alt="Metele Brasil" class="brand-logo">
-      <span class="brand-text">Metele Brasil</span>
+      <img src="img/logo.png" alt="Metele Brasil" style="width:75px; height:75px;">
+      <span class="brand-text" ><h1>METELE BRASIL</h1></span>
     </div>
     <p class="eyebrow">Accesos rápidos</p>
-    <h1>Tu panel Metele Brasil</h1>
-    <p class="lede">Gestiona reservas, pagos y operaciones con el mismo estilo del sitio.</p>
+    
+    <p class="lede">Gestiona reservas, pagos y operaciones.</p>
     <div class="chips">
       <span class="chip">Reservas</span>
       <span class="chip">Pagos</span>
       <?php if ($puedeVerAdmin): ?><span class="chip">Operaciones</span><?php endif; ?>
     </div>
-    <?php if ($puedeVerAdmin): ?>
-    <div class="mt-3">
-      <span class="badge-role"><i class="fas fa-user-shield"></i> Acceso operativo</span>
-    </div>
-    <?php endif; ?>
+
   </div>
 </header>
 
