@@ -11,7 +11,7 @@
 $lang = array(
 
 	/* Index + navbar */
-
+"descubri_tu_proxima_aventura"=>"Reservá tu próxima experiencia",
 	"crea_tu_viaje" => "CREA TU VIAJE A BRASIL",
 	"excursiones_en_brasil" => "CON LAS MEJORES EXCURSIONES",
 	"que_hacemos"=> "¿Decidiste que hacer?",

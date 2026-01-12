@@ -181,7 +181,7 @@ $showSliderControls = $sliderCount > 1;
     .home-hero-wrapper .carousel,
     .home-hero-wrapper .carousel-inner,
     .home-hero-wrapper .carousel-item {
-      height: 430px;
+      height: 600px;
     }
     .home-hero-wrapper .div-absolute {
       padding: 3.5rem 1rem 3rem;
@@ -500,7 +500,7 @@ $showSliderControls = $sliderCount > 1;
           $fotos = getFotoMiniaturaServicio($idServicio);
       ?>
       <div class="col-lg-4 col-md-6 mb-4">
-        <a href="servicio?id=<?= $idServicio ?>" class="destacados">
+        <a href="servicio?id=<?=$idServicio?>" class="destacados">
           <div class="d-destacado d-md-block d-none">
             <div class="row wow animated bounceInUp animated" data-wow-duration="2s" style="visibility: visible; animation-duration: 2s; animation-name: bounceInUp;">
               <div class="col-lg-12 texto-destacado">

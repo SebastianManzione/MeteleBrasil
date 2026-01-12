@@ -78,7 +78,7 @@ table {
 
 /* Acordeones (desktop y móvil) en gris oscuro unificado */
 .btn.btn-accordion {
-  background: #555 !important;
+  background: #000000 !important;
   border-color: #555 !important;
   color: #fff !important;
   border-radius: 0 !important;
@@ -89,8 +89,8 @@ table {
 .btn.btn-accordion:focus,
 .btn.btn-accordion:active,
 .btn.btn-accordion:active:focus {
-  background: #444 !important;
-  border-color: #444 !important;
+  background: #000000 !important;
+  border-color: #000000 !important;
   color: #fff !important;
   box-shadow: none !important;
 }

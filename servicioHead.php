@@ -295,7 +295,7 @@
 
         </ul>
 
-                 <a class="btn btn-primary btn-nav-visita btn-lg" id="btn-reservar-nav" onclick="enviar()"><?=$lang["reservar"]?></a>  
+                 <a class="btn btn-primary btn-nav-visita btn-lg" id="btn-reservar-nav" href="#acordeonCalendario"><?=$lang["reservar"]?></a>  
                  <div>
 
                  <a  data-toggle="collapse" id="btn-share" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" > <?=$lang["compartir"]?> <i class=" fa fa-share-alt text-gris"> </i> </a></div>

@@ -2,6 +2,7 @@
 <?php
 // Definimos todas las palabras en espanol un array
 $lang = array(
+	"descubri_tu_proxima_aventura"=>"Réservez votre prochaine expérience",
 	"crea_tu_viaje" => "Créez votre voyage",
 	"excursiones_en_brasil" => "EXCURSIONS AU BRASIL",
 	"que_hacemos"=>"Que faisons nous?",

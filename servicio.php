@@ -18,23 +18,20 @@ require_once("admin/classes/tarifas.php");
 require_once("admin/classes/cancelaciones.php");
 require_once("admin/classes/fotos_servicio.php");
 require_once("admin/classes/salidas.php");
-
 if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
   $idServicio = (int)$_GET['id'];
   $serviciosData = getServicio($idServicio);
+
   if (empty($serviciosData) || !isset($serviciosData[0])) {
     header("HTTP/1.1 404 Not Found");
     $titulo404 = $lang["servicio_no_encontrado"] ?? "Servicio no encontrado";
     $ctaTexto = $lang["volver_a_servicios"] ?? "Volver a servicios";
-    echo "<section class='py-5'><div class='container text-center'>"
-       . "<h2 class='mb-3'>" . $titulo404 . "</h2>"
-       . "<p class='text-muted mb-4'>" . ($lang["no_encontramos_este_servicio"] ?? "No encontramos este servicio o ya no está disponible.") . "</p>"
-       . "<a href='servicios.php' class='btn btn-primary'>" . $ctaTexto . "</a>"
-       . "</div></section>";
+  redireccionar('categorias');
     include 'footer.php';
     exit;
   }
   $servicio = $serviciosData[0];
+ 
   $idCategoria_servicio = $servicio['idCategoria_servicio'] ?? null;
   $categoria_servicio = $idCategoria_servicio ? getCategoria($idCategoria_servicio) : [];
   $OpinionesServicio = GetOpinionesServicio($idServicio);
@@ -52,6 +49,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     foreach ($salidas as $s) {
       if (!isset($s['idServicioSalidas'])) continue;
       $tarifasSalida = getTarifas($s['idServicioSalidas']);
+  
       if (!empty($tarifasSalida)) {
         foreach ($tarifasSalida as $t) {
           if (isset($t['idCancelaciones']) && !empty($t['idCancelaciones'])) {
@@ -80,7 +78,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
   $precioMinimo = 0;
   if (!empty($salidas)) {
     $preciosArray = [];
-    echo "<!-- DEBUG INICIO - Total salidas: " . count($salidas) . " -->";
+
     
     foreach ($salidas as $salida) {
       if (isset($salida['idServicioSalidas'])) {
@@ -109,7 +107,7 @@ if (isset($_GET["id"]) && is_numeric($_GET["id"])) {
     }
     if (!empty($preciosArray)) {
       $precioMinimo = min($preciosArray);
-      echo "<!-- DEBUG Precio mínimo final: " . $precioMinimo . " -->";
+     
     }
   }
 }
@@ -126,17 +124,17 @@ include('servicioHead.php');
         <div class="row text-center mb-3">
           <div class="col-4">
             <h5 class="text-primary mb-0"><strong><?=$estrellasServicio?>/10</strong></h5>
-            <small><?=$CantOpinionesServicio?> <?=$lang["opiniones"]?></small>
+            <small class="bold"><?=$CantOpinionesServicio?> <?=$lang["opiniones"]?></small>
           </div>
           <?php if($servicio["idCategoria_servicio"] != 5){ ?>
           <div class="col-4">
             <p class="mb-0"><i class="fa fa-hourglass-half text-primary"></i></p>
-            <small id="txtDuracionMovil"></small>
+            <small class="bold" id="txtDuracionMovil"></small>
           </div>
           <?php } ?>
           <div class="col-4">
             <p class="mb-0"><i class="fa fa-comment text-primary"></i></p>
-            <small id="pIdiomasNavCelular"></small>
+            <small class="bold" id="pIdiomasNavCelular"></small>
           </div>
         </div>
       </div>
@@ -148,11 +146,11 @@ include('servicioHead.php');
       <div class="col-12 px-0">
         
         <!-- ACORDEÓN DESCRIPCIÓN -->
-        <div class="accordion" id="accordionMovil">
+        <div class="accordion" id="accordionMovil" >
           <div class="card card-accordion">
-            <div class="card-header bg-white" id="headingDescripcion">
-              <h5 class="mb-0">
-                <button class="btn btn-accordion btn-block text-left" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true">
+            <div class="card-header bg-white" id="headingDescripcion" >
+              <h5 class="mb-0" >
+                <button class="btn btn-accordion btn-block text-left" data-toggle="collapse" data-target="#collapseDescripcion" aria-expanded="true" >
                   <?=$lang["descripcion"]?> <i class="fa fa-chevron-down float-right"></i>
                 </button>
               </h5>
@@ -516,7 +514,7 @@ include('servicioHead.php');
                 <div id="calendario-fijo">
 
                   <!-- ACORDEÓN DE CALENDARIO UNIFICADO -->
-                  <div class="accordion mb-2" id="acordeonCalendario">
+                  <div class="accordion mb-2" id="acordeonCalendario" name="reservaCalendario">
                     <div class="card card-accordion">
                       <div id="headingCalendario">
                         <h5 class="mb-0">

@@ -1050,7 +1050,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
     }
 
     .categoria-hero-wrapper .div-absolute .div-bottom {
-      margin-top: 1rem;
+      margin-top: 5rem;
     }
 
     .categoria-hero-wrapper .div-absolute .texto-bottom {
@@ -1133,8 +1133,10 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
         <div class="row">
           <div class="col-lg-12 text-center mb-4 hero-title">
             <h1 class="text-white text-uppercase titulo">
-              <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $nombre_categoria; ?></span><br>
-              <?= $lang["excursiones_en_brasil"] ?? "Excursiones en Brasil" ?>
+        
+              <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $lang['descubri_tu_proxima_aventura']; ?></span><br>
+           
+              <?= $idCategoria == 0 ? $lang["excursiones_en_brasil"]:$nombre_categoria?>
             </h1>
           </div>
           
