@@ -1148,12 +1148,23 @@ git push origin main --tags
 ```
 
 **5. Deploy en Servidor**
+
+**Credenciales de Producción:**
+- **SSH:** `ssh -p 65002 u925692129@185.173.111.212`
+- **Dominio:** https://slateblue-snail-645791.hostingersite.com/
+- **BD User:** u925692129_metelebr
+- **BD Name:** u925692129_metelebr
+- **BD Host:** 127.0.0.1
+
 ```bash
-# SSH al servidor
-ssh usuario@servidor.com
+# SSH al servidor (puerto 65002)
+ssh -p 65002 u925692129@185.173.111.212
 
 # Navegar al proyecto
-cd /home/usuario/public_html
+cd public_html
+
+# Backup de BD antes de pull
+mysqldump -u u925692129_metelebr -p u925692129_metelebr > backup_$(date +%Y%m%d).sql
 
 # Pull de main
 git pull origin main
@@ -1161,6 +1172,9 @@ git pull origin main
 # Verificar APP_ENV en .htaccess
 grep APP_ENV .htaccess
 # Debe mostrar: SetEnv APP_ENV prod
+
+# Verificar dominio
+curl -I https://slateblue-snail-645791.hostingersite.com/
 ```
 
 #### Comandos Git Útiles
@@ -1231,13 +1245,17 @@ git pull origin dev                 # Traer y mergear dev
 **Si algo falla en producción:**
 
 ```bash
-# En servidor, volver al commit anterior
+# Conectar al servidor
+ssh -p 65002 u925692129@185.173.111.212
+cd public_html
+
+# Ver últimos commits y volver al anterior
 git log --oneline -5                # Ver últimos commits
 git reset --hard COMMIT_SHA         # Volver a commit específico
 git reset --hard HEAD~1             # Volver 1 commit atrás
 
 # Restaurar BD si es necesario
-mysql -u usuario -p base_datos < backup_20260112.sql
+mysql -u u925692129_metelebr -p u925692129_metelebr < backup_20260112.sql
 ```
 
 **Desde local, force push del último buen estado:**
