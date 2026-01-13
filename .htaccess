@@ -2,8 +2,9 @@ RewriteEngine On
 RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# Set environment variable for local dev
-SetEnv APP_ENV prod
+# Set environment variable
+# Local: dev | Production: prod
+SetEnv APP_ENV dev
 
 
 RewriteEngine On
