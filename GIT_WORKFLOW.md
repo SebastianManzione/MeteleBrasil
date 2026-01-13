@@ -113,16 +113,22 @@ git push origin main --tags
 
 ### 5️⃣ DEPLOY EN SERVIDOR
 
+**Credenciales de Producción:**
+- **SSH:** `ssh -p 65002 u925692129@185.173.111.212`
+- **Dominio:** https://slateblue-snail-645791.hostingersite.com/
+- **BD User:** u925692129_metelebr
+- **BD Name:** u925692129_metelebr
+
 **Opción A: SSH Manual**
 ```bash
 # Conectar al servidor
-ssh usuario@tuservidor.com
+ssh -p 65002 u925692129@185.173.111.212
 
 # Ir al directorio del proyecto
-cd /home/usuario/public_html
+cd public_html
 
 # IMPORTANTE: Backup de BD primero
-mysqldump -u usuario -p base_datos > backup_$(date +%Y%m%d).sql
+mysqldump -u u925692129_metelebr -p u925692129_metelebr > backup_$(date +%Y%m%d).sql
 
 # Pull de main
 git pull origin main
@@ -136,7 +142,7 @@ chmod 755 logs/
 chmod 755 admin/classes/imgServicio/
 chmod 755 img/uploads/
 
-# Probar en navegador
+# Probar en navegador: https://slateblue-snail-645791.hostingersite.com/
 ```
 
 **Opción B: Automatizado (Futuro - CI/CD)**
@@ -151,15 +157,16 @@ chmod 755 img/uploads/
 **Si algo falla en producción:**
 
 ```bash
-# En servidor, volver al commit anterior
+# Conectar al servidor
+ssh -p 65002 u925692129@185.173.111.212
+cd public_html
+
+# Ver últimos commits y volver al anterior
 git log --oneline -5
 git reset --hard COMMIT_SHA_BUENO
 
 # Restaurar BD si es necesario
-mysql -u usuario -p base_datos < backup_20260112.sql
-
-# Restart Apache/PHP
-sudo systemctl restart apache2
+mysql -u u925692129_metelebr -p u925692129_metelebr < backup_20260112.sql
 ```
 
 **Desde local (force push):**
