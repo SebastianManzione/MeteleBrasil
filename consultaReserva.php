@@ -714,76 +714,58 @@ array(9) {
 
 
                     <?php
-                    // Usar el valor en USD para conversiones a otras monedas (pasarelas de pago)
-                    $diferenciaAPagar = $diferenciaAPagar_usd;
-                    
-                    $reales = convierteMoneda(188, 283, $diferenciaAPagar);
-                    $euro = convierteMoneda(188, 213, $diferenciaAPagar);
-                    $dolares = $diferenciaAPagar;
-                    // CORRECTED LINE: Calculate Guaraníes based on the remaining amount to pay in dollars
-                    $guaranies = convierteMoneda(188, 225, $diferenciaAPagar);
-                    $pesos_argentinos = convierteMoneda(188, 270, $diferenciaAPagar);
-                    $pesos_chilenos = convierteMoneda(188, 271, $diferenciaAPagar);
+                        // Usar el valor en USD para conversiones a otras monedas (pasarelas de pago)
+                        $diferenciaAPagar = $diferenciaAPagar_usd;
 
-                    $arr_valores_pagamento = [
-                            [
-                                    'valor' => $reales,
-                                    'moeda' => [
-                                            'codigo' => 'BRL',
-                                            'simbolo' => "R$",
-                                            'nome' => "Real Brasileiro",
-                                    ],
-                                    'obs' => "Aceita parcelado"
-                            ],
-                            [
-                                    'valor' => $euro,
-                                    'moeda' => [
-                                            'codigo' => 'EUR',
-                                            'simbolo' => "€",
-                                            'nome' => "Euros",
-                                    ],
-                                    'obs' => ""
-                            ],
-                            [
-                                    'valor' => $dolares,
-                                    'moeda' => [
-                                            'codigo' => 'USD',
-                                            'simbolo' => "USD$",
-                                            'nome' => "Dólares US",
-                                    ],
-                                    'obs' => ""
-                            ],
-                            [
-                                    'valor' => $guaranies,
-                                    'moeda' => [
-                                            'codigo' => 'PYG',
-                                            'simbolo' => "Gs$",
-                                            'nome' => "Guaraníes",
-                                    ],
-                                    'obs' => ""
-                            ],
-                            [
-                                    'valor' => $pesos_argentinos,
-                                    'moeda' => [
-                                            'codigo' => 'ARS',
-                                            'simbolo' => "AR$",
-                                            'nome' => "Peso Argentino",
-                                    ],
-                                    'obs' => ""
-                            ],
-                            [
-                                    'valor' => $pesos_chilenos,
-                                    'moeda' => [
-                                            'codigo' => 'CLP',
-                                            'simbolo' => "CL$",
-                                            'nome' => "Peso Chileno",
-                                    ],
-                                    'obs' => ""
-                            ],
-                    ];
+                        // Construir opciones de moneda sólo desde monedas activas en BD
+                        $monedasActivas = getMonedas(); // Filtra activadas (activado = 1)
 
+                        // Mapear ISO a nombre amigable (fallback si no hay nombre en BD)
+                        $isoNombre = [
+                        'BRL' => 'Real Brasileiro',
+                        'EUR' => 'Euros',
+                        'USD' => 'Dólares US',
+                        'PYG' => 'Guaraníes',
+                        'ARS' => 'Peso Argentino',
+                        'CLP' => 'Peso Chileno',
+                        ];
 
-                    ?>
+                        $arr_valores_pagamento = [];
+                        foreach ($monedasActivas as $m) {
+                        // Requiere campos: idMoneda, CurrencyISO, Symbol
+                        if (!isset($m['idMoneda']) || !isset($m['CurrencyISO']) || !isset($m['Symbol'])) { continue; }
+
+                        $idDestino = (int)$m['idMoneda'];
+                        $iso = strtoupper(trim($m['CurrencyISO']));
+                        $simbolo = $m['Symbol'];
+                        // Convertir desde USD (188) a moneda activa
+                        $valorConvertido = ($iso === 'USD') ? $diferenciaAPagar : convierteMoneda(188, $idDestino, $diferenciaAPagar);
+
+                        $arr_valores_pagamento[] = [
+                            'valor' => $valorConvertido,
+                            'moeda' => [
+                            'codigo' => $iso,
+                            'simbolo' => $simbolo,
+                            'nome' => $isoNombre[$iso] ?? $iso,
+                            ],
+                            'obs' => ($iso === 'BRL' ? 'Aceita parcelado' : ''),
+                        ];
+                        }
+
+                        // Fallback: si no hay monedas activas, mostrar USD
+                        if (empty($arr_valores_pagamento)) {
+                        $arr_valores_pagamento[] = [
+                            'valor' => $diferenciaAPagar,
+                            'moeda' => [
+                            'codigo' => 'USD',
+                            'simbolo' => 'U$S',
+                            'nome' => $isoNombre['USD'],
+                            ],
+                            'obs' => '',
+                        ];
+                        }
+
+                        ?>
 
                         <style>
                             /* --- Mantiene tu diseño original --- */
@@ -816,7 +798,7 @@ array(9) {
                             
                             <div class="col-12">
                               <div id="container-valores-moedas">
-                                <div class="row mx-auto w-100 g-3">
+                                <div class="row mx-auto w-100 g-3 justify-content-center">
                             
                                   <div class='hr w-100 mb-2 mt-3' style="opacity: 0.3;"></div>
                                   <div class="col-12 mx-auto">
@@ -827,6 +809,8 @@ array(9) {
                                                                     <style>
                                                                         /* Evita que precio y bandera se salgan del recuadro en el selector de moneda */
                                                                         #container-valores-moedas .container-vm { min-width: 0; }
+                                                                        /* Limitar ancho máximo y centrar tarjetas */
+                                                                        #container-valores-moedas .container-vm { max-width: 280px; width: 100%; }
                                                                         #container-valores-moedas .container-valor-moeda div { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
                                                                         #container-valores-moedas .container-valor-moeda strong { white-space: normal; }
                                                                         #container-valores-moedas .flag-icon { flex-shrink: 0; }
@@ -917,7 +901,7 @@ array(9) {
 										$active_set = true;
 									}
 
-									$html_valor_moeda .= "<div class='col-4'>";
+                                      $html_valor_moeda .= "<div class='col-12 col-sm-6 col-md-4 d-flex justify-content-center'>";
 									$html_valor_moeda .= "<div class='container-vm {$active_valor_moeda}' data-codigo='{$moeda_codigo}' data-simbolo='{$moeda_simbolo}' data-valor='{$valor}' data-valor-formatado='{$valor_formatado}'>";
 									$html_valor_moeda .= "<div class='container-icone-valor-moeda'>";
 									$html_valor_moeda .= "<i></i>";
@@ -1012,50 +996,8 @@ array(9) {
                                         }
                                     })
                                 ).done(() => {
-                                    // remove e recria jdk paypal
-                                    let sdk_paypal = '';
-                                    // let sdk_mercado_pago = '';
+                                    // PayPal deshabilitado: no cargar SDK
                                     $('#sdk-paypal').empty();
-                                    // $('#sdk-mercado-pago').empty();
-                                    switch (codigo) {
-                                        case 'BRL':
-                                            // Crie um novo elemento script paypal
-                                            sdk_paypal = document.createElement('script');
-                                            sdk_paypal.src = `https://www.paypal.com/sdk/js?client-id=AcfLam9LvePwGz5ICPiLrSw-s3gdr5BVbq-YpwoYGQwTKOuu8Ai8llIdY5LAl0jnUULO85QkJ4rVGqcZ&currency=${codigo}`;
-                                            sdk_paypal.type = 'text/javascript';
-                                            // Crie um novo elemento script mercado pago
-                                            // sdk_mercado_pago = document.createElement('script');
-                                            // sdk_mercado_pago.src = `https://sdk.mercadopago.com/js/v2`;
-                                            // sdk_mercado_pago.type = 'text/javascript';
-                                            break;
-                                        case 'EUR':
-                                            // Crie um novo elemento script paypal
-                                            sdk_paypal = document.createElement('script');
-                                            sdk_paypal.src = `https://www.paypal.com/sdk/js?client-id=AcfLam9LvePwGz5ICPiLrSw-s3gdr5BVbq-YpwoYGQwTKOuu8Ai8llIdY5LAl0jnUULO85QkJ4rVGqcZ&currency=${codigo}`;
-                                            sdk_paypal.type = 'text/javascript';
-                                            break;
-                                        case 'ARS':
-                                            // Crie um novo elemento script mercado pago
-                                            codigo = 'USD'
-                                            sdk_paypal = document.createElement('script');
-                                            sdk_paypal.src = `https://www.paypal.com/sdk/js?client-id=AcekW2Qsin1cKBHzO3NPRBZ5VlqRayrk6O3w6vEf4pb-cVRncCgY-cJXYLWqn11MMKxXpmRZrvS8jisW&currency=${codigo}`;
-                                            sdk_paypal.type = 'text/javascript';
-
-                                            // Crie um novo elemento script mercado pago
-                                            // sdk_mercado_pago = document.createElement('script');
-                                            // sdk_mercado_pago.src = `https://sdk.mercadopago.com/js/v2`;
-                                            // sdk_mercado_pago.type = 'text/javascript';
-                                            break;
-                                        default:
-                                            // Crie um novo elemento script paypal
-                                            sdk_paypal = document.createElement('script');
-                                            sdk_paypal.src = `https://www.paypal.com/sdk/js?client-id=AcekW2Qsin1cKBHzO3NPRBZ5VlqRayrk6O3w6vEf4pb-cVRncCgY-cJXYLWqn11MMKxXpmRZrvS8jisW&currency=${codigo}`;
-                                            sdk_paypal.type = 'text/javascript';
-                                            break;
-                                    }
-                                    // Adicione o script ao DOM
-                                    $('#sdk-paypal').html(sdk_paypal);
-                                    // $('#sdk-mercado-pago').html(sdk_mercado_pago);
 
 
                                     if (codigo == 'BRL') {
@@ -1091,8 +1033,7 @@ array(9) {
                                     const parentLabel = this.closest('label');
                                     const priceElement = parentLabel.querySelector('.price');
                                     const selectedPrice = priceElement.textContent.trim();
-                                    console.log("Moeda selecionada:", this.value);
-                                    console.log("Valor da moeda selecionada:", selectedPrice);
+                             
 
                                     document.getElementById('total-resta-pagar').innerHTML = selectedPrice;
                                     document.getElementById('total-mostrar-moeda').innerHTML = `<strong>Total:</strong> ${selectedPrice}`;
@@ -1145,25 +1086,7 @@ array(9) {
                         });
                     </script>
 
-                    <!--<div style="width:100%;">-->
-                    <!-- <label class="btn btn-primary paymentMethod texto-moneda" id="reales"> R$ <?= $reales; ?>-->
-                    <!--</label>-->
-
-                    <!--<label class="btn btn-primary paymentMethod texto-moneda" id="pesos"> € <?= $euro; ?>-->
-                    <!--</label>-->
-
-                    <!--<label class="btn btn-primary paymentMethod texto-moneda" id="pesos"> CL$ <?= $pesos_chilenos; ?>-->
-                    <!--</label>-->
-
-                    <!--<label class="btn btn-primary paymentMethod texto-moneda" id="pesos"> AR$ <?= convierteMoneda(188, 270, $diferenciaAPagar); ?>-->
-                    <!--</label>-->
-
-                    <!--<label class="btn btn-primary paymentMethod texto-moneda" id="guaranies"> Gs$ <?= $guaranies; ?>-->
-                    <!--</label>-->
-
-                    <!--<label class="btn btn-primary paymentMethod texto-moneda" id="dolar"> USD$ <?= $dolares; ?> -->
-                    <!--</label>-->
-                    <!--</div>-->
+           
                     <style>
                         /* Style Payment Forms */
 
@@ -1226,8 +1149,7 @@ array(9) {
                                     <div class="custom-radio option" onclick="selectFormaPagamento(this);">
                                         <div class="container-card-pagamento-topo">
                                             <i></i>
-                                            <!-- <input type="radio" name="currency"  /> -->
-                                            <!-- <span class="checkmark"></span> -->
+                                          
                                             <div class="secudary-options">
                                                 <p>Mercado Pago</p>
                                                 <img class="card-img" src="img/mercado-pago-logo.png" alt=""
@@ -1241,41 +1163,7 @@ array(9) {
                                             <button class="btn btn-dark abre_mercado_pago">Pagar</button>
                                         </div>
                                     </div>
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" onclick="displayOpenPixModal()" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>Pix</p>
-                                                <img class="card-img" src="img/pix.png" alt="" style="width: 85px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finalize sua compra de forma segura com Pix. Clique no botão para
-                                                realizar seu pagamento de maneira rápida e prática.</p>
-                                            <button class="btn btn-dark" onclick="displayOpenPixModal()">Pagar</button>
-                                        </div>
-                                    </div>
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" class="btn btn-primary paymentMethod" id="paypal-radio-br"  /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 95px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finalize sua compra em reais de forma segura com PayPal. Clique no botão
-                                                para concluir seu pagamento em apenas alguns passos.</p>
-                                            <button class="btn btn-dark paymentMethod abre_paypal" id="paypal-radio-br">
-                                                Pagar
-                                            </button>
-                                        </div>
-                                    </div>
+                                
 
                                     <?php 
                                     // Definir variables necesarias antes de incluir ebanx
@@ -1288,82 +1176,19 @@ array(9) {
 
                                     $url_ebanx_dolares = url_ebanx($codigoAmigable, 'USD', $countryEbanx, $totalPayPal); ?>
 
-                                    <!-- <div class="btn btn-primary paymentMethod" id="ebanx"> -->
+                                   
 
                                 </div>
                             </div>
 
-                            <!-- EURO OPTIONS PAYMENT -->
-                            <div id="euro-options" class="col-12 payment-Real payment-option EUR">
-                                <div class="form-real">
+                            <!-- EURO OPTIONS PAYMENT (PayPal deshabilitado) -->
+                            
 
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 95px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finaliza tu compra en euros de forma segura con PayPal. Haz clic en el
-                                                botón "Pagar" para completar tu pago en solo unos pasos.</p>
-                                            <button class="btn btn-dark abre_paypal">Pagar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- DOLLAR OPTIONS PAYMENT (PayPal deshabilitado) -->
+                            
 
-                            <!-- DOLLAR OPTIONS PAYMENT -->
-                            <div id="dollar-options" class="col-12 payment-Real payment-option USD">
-                                <div class="form-real">
-
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 95px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finaliza tu compra en dolares de forma segura con PayPal. Haz clic en el
-                                                botón "Pagar" para completar tu pago en solo unos pasos.</p>
-                                            <button class="btn btn-dark abre_paypal">Pagar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- GUARANI OPTIONS PAYMENT -->
-                            <div id="guarani-options" class="col-12 payment-Real payment-option PYG">
-                                <div class="form-real">
-
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 95px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finaliza tu compra de forma segura con PayPal. Haz clic en el botón
-                                                "Pagar" para completar tu pago en solo unos pasos.</p>
-                                            <button class="btn btn-dark abre_paypal">Pagar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- GUARANI OPTIONS PAYMENT (PayPal deshabilitado) -->
+                            
 
                             <!-- PESO ARGENTINO OPTIONS PAYMENT -->
                             <div id="peso-argentino-options" class="col-12 payment-Real payment-option ARS">
@@ -1372,8 +1197,7 @@ array(9) {
                                     <div class="custom-radio option" onclick="selectFormaPagamento(this);">
                                         <div class="container-card-pagamento-topo">
                                             <i></i>
-                                            <!-- <input type="radio" name="currency"  /> -->
-                                            <!-- <span class="checkmark"></span> -->
+                                        
                                             <div class="secudary-options">
                                                 <p>Mercado Pago</p>
                                                 <img class="card-img" src="img/mercado-pago-logo.png" alt=""
@@ -1388,49 +1212,12 @@ array(9) {
                                         </div>
                                     </div>
 
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" id="paypal-radio-argentino" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 85px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finaliza tu compra de forma segura con PayPal. Haz clic en el botón
-                                                "Pagar" para completar tu pago en solo unos pasos.</p>
-                                            <button class="btn btn-dark abre_paypal">Pagar</button>
-                                        </div>
-                                    </div>
+                                    <!-- Opción PayPal deshabilitada -->
                                 </div>
                             </div>
 
-                            <!-- PESO CHILENO OPTIONS PAYMENT -->
-                            <div id="peso-chileno-options" class="col-12 payment-Real payment-option CLP">
-                                <div class="form-real">
-
-                                    <div class="custom-radio option" onclick="selectFormaPagamento(this);">
-                                        <div class="container-card-pagamento-topo">
-                                            <i></i>
-                                            <!-- <input type="radio" name="currency" /> -->
-                                            <!-- <span class="checkmark"></span> -->
-                                            <div class="secudary-options">
-                                                <p>PayPal</p>
-                                                <img class="card-img" src="img/paypal-2.png" alt=""
-                                                     style="width: 85px;">
-                                            </div>
-                                        </div>
-                                        <div class="container-card-pagamento-body">
-                                            <p>Finaliza tu compra de forma segura con PayPal. Haz clic en el botón
-                                                "Pagar" para completar tu pago en solo unos pasos.</p>
-                                            <button class="btn btn-dark abre_paypal">Pagar</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- PESO CHILENO OPTIONS PAYMENT (PayPal deshabilitado) -->
+                            
 
                         </div>
                     </div>
@@ -1858,26 +1645,8 @@ array(9) {
                         }
                     </script>
                     <!--fin openpix-->
-                    <?php if (0) { //$habilita_pesos_arg
-                        ?>
-                        <!-- <label class="btn btn-primary paymentMethod" style="">
-                                <a href="<?= $preference->init_point; ?>">
-                                    <div class="method paypal">
-                                        <div class="method mercadopagoBrasil">
-                                        </div>
-                                    </div>
-                            </label> -->
-                    <?php } ?>
-                    <?php if ($habilita_reales) { ?>
-                        <!-- <label class="btn btn-primary paymentMethod" id="mercadopagoBrasil" style=""> Finalizar
-                                <a href="<?= $preferenceBr->init_point; ?>">
-                                    <div class="method paypal">
-                                        <div class="method mercadopagoBrasil">
-                                        </div>
-                                    </div>
-                                </a> -->
-                        </label>
-                    <?php } ?>
+           
+                  
 
                     <?php
                     if (0) { //$habilita_ebanx $_SESSION['geo']['countryCode']!='BR' && $url_ebanx!=(-5)
@@ -1899,12 +1668,7 @@ array(9) {
                             </a>
                         </label>
                     <?php } ?>
-                    <!-- <label class="btn btn-primary paymentMethod" id="ebanxDolares" style="display:none">
-                            <a href="<?= $url_ebanx_dolares; ?>">
-                                <div class="method paypal"> </div>
-                                <div class="method ebanxs"></div>
-                            </a>
-                        </label> -->
+              
                     <!--FIN AQUI VA LA CARGA DE METODOS DE PAGO-->
                 </div>
             </div>
