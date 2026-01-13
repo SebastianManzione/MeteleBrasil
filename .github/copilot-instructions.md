@@ -986,3 +986,345 @@ fix: corregir hover de actividades y agregar beneficios en banner
 **Archivos modificados:**
 - `index.php` (líneas 150-235, 126-154)
 - `css/styles.css` (removidas líneas 1643-1664)
+---
+
+## Gestión de Entornos y Deployment (Implementado - Ene 2026)
+
+### Arquitectura de Configuración
+
+#### config/config.php (Archivo Central)
+**Ubicación:** `config/config.php` (líneas 1-51)
+
+**Detección automática de entorno:**
+```php
+// Lee variable APP_ENV del servidor
+if (!defined('APP_ENV')) {
+    $envFromVar = getenv('APP_ENV');
+    if ($envFromVar) {
+        define('APP_ENV', $envFromVar);
+    } else {
+        define('APP_ENV', 'prod'); // Default: producción
+    }
+}
+```
+
+**Credenciales por entorno:**
+```php
+if (APP_ENV === 'dev') {
+    // DESARROLLO (XAMPP local)
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'metelebrasil');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+} else {
+    // PRODUCCIÓN
+    define('DB_HOST', '127.0.0.1');
+    define('DB_NAME', 'u925692129_metelebr');
+    define('DB_USER', 'u925692129_metelebr');
+    define('DB_PASS', 'Nueva3322112233');
+}
+```
+
+#### admin/classes/db.php (Bootstrap BD)
+**Carga config.php primero:**
+```php
+// Líneas 23-26
+if (!defined('APP_ENV')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+```
+
+**Lee credenciales de defines:**
+```php
+// Líneas 44-47
+$PROD_HOST = defined('DB_HOST') ? DB_HOST : getenv('DB_HOST');
+$PROD_USER = defined('DB_USER') ? DB_USER : getenv('DB_USER');
+$PROD_PASS = defined('DB_PASS') ? DB_PASS : getenv('DB_PASS');
+$PROD_NAME = defined('DB_NAME') ? DB_NAME : getenv('DB_NAME');
+```
+
+**Fallback inteligente:**
+1. Intenta conectar a DEV (localhost)
+2. Si falla, usa credenciales PROD desde defines
+3. Logs en `logs/db_bootstrap.log`
+
+### Configuración de Servidor
+
+#### .htaccess (Producción)
+**Ubicación:** `.htaccess` (línea 6)
+
+```apache
+# Set environment variable for production
+SetEnv APP_ENV prod
+```
+
+**IMPORTANTE:** En desarrollo local, esta línea debe ser:
+```apache
+SetEnv APP_ENV dev
+```
+
+O comentada/eliminada para usar el default de `config.php`
+
+#### Permisos en Servidor Linux
+```bash
+# Carpetas con permisos de escritura
+chmod 755 logs/
+chmod 755 admin/classes/imgServicio/
+chmod 755 admin/classes/imgServicios/
+chmod 755 img/uploads/
+
+# Archivos sensibles solo lectura
+chmod 644 config/config.php
+chmod 644 .htaccess
+```
+
+### Git Workflow Recomendado
+
+#### Estructura de Branches
+
+```
+main (production)           → Código en servidor de producción
+  ↑
+staging (pre-production)    → Testing antes de deploy
+  ↑
+dev (development)           → Rama principal de desarrollo
+  ↑
+feature/* (features)        → Nuevas funcionalidades
+```
+
+#### Branches Actuales del Proyecto
+- **`main`**: Producción estable
+- **`dev`**: Desarrollo activo
+- **`feature/experimental`**: Features en progreso
+- **`developer`**: Rama individual de desarrollo
+
+#### Flujo de Trabajo Completo
+
+**1. Desarrollo Local (XAMPP)**
+```bash
+# Asegurar que estás en dev
+git checkout dev
+
+# Crear feature branch
+git checkout -b feature/nombre-funcionalidad
+
+# Desarrollar y commitear
+git add .
+git commit -m "feat: descripción del cambio"
+
+# Push a remote
+git push origin feature/nombre-funcionalidad
+```
+
+**2. Testing y Merge a Dev**
+```bash
+# Volver a dev y mergear
+git checkout dev
+git merge feature/nombre-funcionalidad
+
+# Push dev actualizado
+git push origin dev
+```
+
+**3. Preparar para Staging**
+```bash
+# Crear/actualizar staging
+git checkout staging
+git merge dev
+
+# Testing exhaustivo en staging
+git push origin staging
+```
+
+**4. Deploy a Producción**
+```bash
+# Solo después de aprobar staging
+git checkout main
+git merge staging
+
+# Tag de versión
+git tag -a v1.2.0 -m "Release: descripción"
+git push origin main --tags
+```
+
+**5. Deploy en Servidor**
+```bash
+# SSH al servidor
+ssh usuario@servidor.com
+
+# Navegar al proyecto
+cd /home/usuario/public_html
+
+# Pull de main
+git pull origin main
+
+# Verificar APP_ENV en .htaccess
+grep APP_ENV .htaccess
+# Debe mostrar: SetEnv APP_ENV prod
+```
+
+#### Comandos Git Útiles
+
+**Ver branch actual y cambios:**
+```bash
+git status
+git branch
+```
+
+**Comparar branches:**
+```bash
+git diff main..dev                  # Ver diferencias
+git log main..dev --oneline         # Ver commits únicos
+```
+
+**Deshacer cambios locales:**
+```bash
+git checkout -- archivo.php         # Deshacer archivo específico
+git reset --hard HEAD               # Deshacer todos los cambios
+```
+
+**Sincronizar con remoto:**
+```bash
+git fetch origin                    # Traer cambios sin merge
+git pull origin dev                 # Traer y mergear dev
+```
+
+### Checklist de Deployment
+
+#### Pre-Deploy (Local)
+- [ ] Todos los tests pasan
+- [ ] Sin errores en logs (`logs/db_bootstrap.log`)
+- [ ] Credenciales de producción en `config/config.php`
+- [ ] Commits con mensajes descriptivos
+- [ ] Push a `dev` branch
+
+#### Staging (Opcional pero Recomendado)
+- [ ] Merge `dev` → `staging`
+- [ ] Deploy en servidor de staging
+- [ ] Testing de funcionalidades críticas
+- [ ] Verificar integración de pagos (sandbox)
+- [ ] Probar en múltiples navegadores/dispositivos
+
+#### Production Deploy
+- [ ] Merge `staging` → `main` (o `dev` → `main` si no hay staging)
+- [ ] Crear tag de versión (`git tag -a v1.x.x`)
+- [ ] SSH al servidor
+- [ ] Backup de BD antes de pull
+  ```bash
+  mysqldump -u usuario -p base_datos > backup_$(date +%Y%m%d).sql
+  ```
+- [ ] `git pull origin main`
+- [ ] Verificar `.htaccess` tiene `SetEnv APP_ENV prod`
+- [ ] Verificar permisos de carpetas (755 para logs/, img/)
+- [ ] Probar homepage y rutas críticas
+- [ ] Verificar logs: `tail -f logs/db_bootstrap.log`
+- [ ] Testing de compra end-to-end
+
+#### Post-Deploy
+- [ ] Monitorear logs de errores primeras 24h
+- [ ] Verificar emails de confirmación funcionan
+- [ ] Revisar webhooks de pagos (PayPal, MercadoPago)
+- [ ] Validar conversiones de moneda actualizadas
+
+### Rollback de Emergencia
+
+**Si algo falla en producción:**
+
+```bash
+# En servidor, volver al commit anterior
+git log --oneline -5                # Ver últimos commits
+git reset --hard COMMIT_SHA         # Volver a commit específico
+git reset --hard HEAD~1             # Volver 1 commit atrás
+
+# Restaurar BD si es necesario
+mysql -u usuario -p base_datos < backup_20260112.sql
+```
+
+**Desde local, force push del último buen estado:**
+```bash
+git checkout main
+git reset --hard TAG_ANTERIOR       # ej: v1.1.0
+git push origin main --force        # ⚠️ USAR CON CUIDADO
+```
+
+### Variables de Entorno por Archivo
+
+| Archivo | APP_ENV | DB_HOST | DB_NAME | DB_USER | DB_PASS |
+|---------|---------|---------|---------|---------|---------|
+| **Local (.htaccess)** | `dev` o comentado | - | - | - | - |
+| **Local (config.php)** | `dev` | localhost | metelebrasil | root | (vacío) |
+| **Prod (.htaccess)** | `prod` | - | - | - | - |
+| **Prod (config.php)** | `prod` | 127.0.0.1 | u925692129_metelebr | u925692129_metelebr | Nueva3322112233 |
+
+### Logs y Debugging
+
+**Ubicación de logs:**
+- `logs/db_bootstrap.log`: Errores de conexión BD
+- Apache error_log: Errores PHP generales
+- `logs/payment_*.log`: Logs de pagos (si existen)
+
+**Ver logs en tiempo real (servidor):**
+```bash
+tail -f logs/db_bootstrap.log
+tail -f /var/log/apache2/error.log
+```
+
+**Ver logs en Windows (local):**
+```powershell
+Get-Content logs/db_bootstrap.log -Tail 20
+Get-Content C:/xampp/apache/logs/error.log -Tail 20
+```
+
+### Archivo .gitignore Recomendado
+
+**Agregar al proyecto:**
+```gitignore
+# Archivos de entorno
+.env
+config/local.php
+
+# Logs
+logs/*.log
+*.log
+
+# Uploads de usuario
+img/uploads/*
+admin/classes/imgServicio/*
+admin/classes/imgServicios/*
+
+# Backups de BD
+*.sql
+backup_*.sql
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Composer vendor (si se usa)
+vendor/
+
+# Node modules (si se usa)
+node_modules/
+```
+
+### Seguridad en Producción
+
+**CRÍTICO - Nunca commitear:**
+- Credenciales reales en archivos versionados
+- Claves de API en plaintext
+- Archivos `.env` con secrets
+- Backups de base de datos
+
+**Buenas prácticas:**
+1. Usar variables de entorno del servidor cuando sea posible
+2. Rotar passwords de BD periódicamente
+3. Usar HTTPS en producción (línea 2 de `.htaccess` fuerza HTTPS)
+4. Validar permisos de archivos (`chmod 644` para PHP, `755` para carpetas)
+5. Mantener logs fuera de document root si es posible
+
+---

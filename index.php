@@ -56,7 +56,7 @@ $sql = "SELECT s.idServicio, s.$campoNombre as nombre_servicio, s.$campoDescripc
         s.destacado, s.idTextoMiniaturas
         FROM servicio s 
         WHERE s.destacado = 1 AND s.habilitado = 1 
-        LIMIT 24";
+        LIMIT 12";
 $result = $mysqli->query($sql);
 $servicios_geo = [];
 $servicioIds = [];

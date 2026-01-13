@@ -1,8 +1,10 @@
 <?php
+  
 // =======================================
 // CONFIGURACIÓN GLOBAL
 // =======================================
 // Detectar entorno: usa APP_ENV si está definido; si no, fuerza prod por defecto
+
 if (!defined('APP_ENV')) {
     $debug = true;
     $envFromVar = getenv('APP_ENV');
@@ -28,15 +30,17 @@ if (!defined('APP_ENV')) {
 // =======================================
 
     if (APP_ENV === 'dev') {
+          
         define('DB_HOST', 'localhost');
         define('DB_NAME', 'metelebrasil');
         define('DB_USER', 'root');
         define('DB_PASS', '');
     } else {
-        define('DB_HOST', 'localhost');
-        define('DB_NAME', 'u925692129_metelebrasil');
-        define('DB_USER', 'u925692129_metelebrasil');
-        define('DB_PASS', 'Cambiar2026');
+        // PRODUCCIÓN
+        define('DB_HOST', '127.0.0.1');
+        define('DB_NAME', 'u925692129_metelebr');
+        define('DB_USER', 'u925692129_metelebr');
+        define('DB_PASS', 'Nueva3322112233');
     }
 }
 

@@ -21,6 +21,11 @@ if ($__once) {
 $__once = true;
 
 // ========== CONFIGURACIÓN ==========
+// Cargar config.php primero
+if (!defined('APP_ENV')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+
 // ========== MODO EXPERIMENTAL ==========
 if (file_exists(__DIR__ . '/../../config/db_experimental.php')) {
     require_once __DIR__ . '/../../config/db_experimental.php';
@@ -35,11 +40,11 @@ $DEV_USER = 'root';
 $DEV_PASS = '';
 $DEV_NAME = defined('DB_EXPERIMENTAL_MODE') && DB_EXPERIMENTAL_MODE ? DB_EXPERIMENTAL_NAME : 'metelebrasil';
 
-// Credenciales PROD (override con env vars)
-$PROD_HOST = getenv('DB_HOST') ?: 'localhost';
-$PROD_USER = getenv('DB_USER') ?: 'u985794923_metelebrasil';
-$PROD_PASS = getenv('DB_PASS') ?: 'Nueva3122';
-$PROD_NAME = getenv('DB_NAME') ?: 'u985794923_metelebrasil';
+// Credenciales PROD (leer de defines en config.php, luego fallback a env vars)
+$PROD_HOST = defined('DB_HOST') ? DB_HOST : getenv('DB_HOST');
+$PROD_USER = defined('DB_USER') ? DB_USER : getenv('DB_USER');
+$PROD_PASS = defined('DB_PASS') ? DB_PASS : getenv('DB_PASS');
+$PROD_NAME = defined('DB_NAME') ? DB_NAME : getenv('DB_NAME');
 
 // ========== MYSQLI ==========
 mysqli_report(MYSQLI_REPORT_OFF);
@@ -50,6 +55,7 @@ if ($mysqli instanceof mysqli && !$mysqli->connect_errno) {
     @mysqli_set_charset($mysqli, $DB_CHARSET);
 } else {
     // Fallback a PROD
+
     $mysqli = @new mysqli($PROD_HOST, $PROD_USER, $PROD_PASS, $PROD_NAME);
     if ($mysqli instanceof mysqli && !$mysqli->connect_errno) {
         @mysqli_set_charset($mysqli, $DB_CHARSET);
@@ -74,6 +80,7 @@ try {
 } catch (Throwable $e_dev) {
     // Fallback a PROD
     try {
+       
         $dsn = "mysql:host={$PROD_HOST};dbname={$PROD_NAME};charset={$DB_CHARSET}";
         $pdo = new PDO($dsn, $PROD_USER, $PROD_PASS, [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
