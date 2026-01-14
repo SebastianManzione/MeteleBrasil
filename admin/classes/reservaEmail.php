@@ -56,7 +56,8 @@ function enviaMail($receptor, $asunto, $cuerpo, $site) {
     configurarMailer($mail, $smtpConfig);
 
     $mail->addAddress($receptor);
-    $mail->addBCC($smtpConfig['from']);
+    // Garantizar copia en mails@metelebrasil.com
+    $mail->addBCC('mails@metelebrasil.com');
     $mail->isHTML(true);
     $mail->Subject = $asunto;
     $mail->Body = $cuerpo;
@@ -78,7 +79,8 @@ function enviaMailPagos($receptor, $asunto, $cuerpo, $site) {
     configurarMailer($mail, $smtpConfig);
 
     $mail->addAddress($receptor);
-    $mail->addAddress($smtpConfig['from']);
+    // Garantizar copia en mails@metelebrasil.com (BCC para no exponer email al cliente)
+    $mail->addBCC('mails@metelebrasil.com');
     $mail->isHTML(true);
     $mail->Subject = $asunto;
     $mail->Body = $cuerpo . " Mensaje generado automaticamente por Reservate software, si ud no desea recibir estos emails, haga click <a href='" . $site . "unSuscribe.php?email=" . $receptor . "'> Aqui </a>";
