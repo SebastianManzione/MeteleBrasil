@@ -371,11 +371,18 @@ $isVendedor = ($idVendedor > 0);
                           continue;
                       }
 
-                      // Agregar la reserva sin verificar si está pagada
-                      $reservas_agrupadas_vend[$idReservaVend] = [
-                          'detalles' => $reservaVend,
-                          'pasajeros' => []
-                      ];
+                      // Verificar que la reserva está confirmada (pagada)
+                      $totalDolaresVend = $reservaVend["total_dolares"];
+                      $totalComprobantesVend = getComprobantesIdReservaDolar($idReservaVend);
+                      $diferenciaComprobantesVend = $totalDolaresVend - $totalComprobantesVend;
+
+                      // Solo agregar si está totalmente pagada
+                      if ($diferenciaComprobantesVend <= 0) {
+                          $reservas_agrupadas_vend[$idReservaVend] = [
+                              'detalles' => $reservaVend,
+                              'pasajeros' => []
+                          ];
+                      }
                   }
 
                   if (isset($reservas_agrupadas_vend[$idReservaVend])) {

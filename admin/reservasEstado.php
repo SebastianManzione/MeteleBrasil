@@ -150,7 +150,12 @@ for ($i = 0; $i < count($reservas); $i++) {
         }
 
         $verTodasReservas = ($_SESSION['login']['idUsuario'] == 1 && !isset($_GET['idPrestador']));
-        if (($verTodasReservas || $salida[0]["idPrestador"] == $idPrestador) && $fechaEvento >= $hoy) {
+        
+        // Check filters
+        $pasaPrestador = ($verTodasReservas || $salida[0]["idPrestador"] == $idPrestador);
+        $pasaFecha = ($fechaEvento >= $hoy); // Solo mostrar reservas futuras
+        
+        if ($pasaPrestador && $pasaFecha) {
 ?>
                       <tr>
                         <td><?=$reservas[$i]["nombreResponsable"]." ".$reservas[$i]["apellidoResponsable"]?></td>

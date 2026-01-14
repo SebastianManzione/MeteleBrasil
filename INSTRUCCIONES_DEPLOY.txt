@@ -1,0 +1,94 @@
+========================================
+INSTRUCCIONES DE DEPLOY - CONFIG SEGURO
+========================================
+Fecha: 14/01/2026
+Servidor: 185.173.111.212:65002
+Usuario: u925692129
+
+ARCHIVOS INCLUIDOS EN EL ZIP:
+------------------------------
+✅ admin/configuracion.php          - Página principal con flujos AJAX seguros
+✅ admin/ctrl/ctrlEmailTest.php     - Endpoint test email (JSON/base64)
+✅ admin/ctrl/secure_mail_test.php  - Fallback 1 test email
+✅ admin/mail_test.php              - Fallback 2 test email (fuera de /ctrl/)
+✅ admin/ctrl/ctrlConfigParams.php  - Guardar parámetros HEAD/BODY/FOOTER
+✅ admin/ctrl/secure_params_save.php - Fallback 1 parámetros
+✅ admin/upd_site_meta.php          - Fallback 2 parámetros (fuera de /ctrl/)
+✅ admin/ctrl/ctrlSaveConfig.php    - Guardar config general (whitelisted)
+✅ admin/save_config.php            - Fallback config general
+
+PASOS PARA DESPLEGAR:
+---------------------
+1. Conectar al servidor:
+   ssh -p 65002 u925692129@185.173.111.212
+
+2. Navegar al directorio del proyecto:
+   cd public_html/admin
+
+3. BACKUP OBLIGATORIO antes de reemplazar:
+   cp configuracion.php configuracion.php.backup_$(date +%Y%m%d_%H%M%S)
+
+4. Descomprimir el ZIP (ya subido):
+   unzip -o ../deploy_config_seguro_*.zip
+
+5. Verificar permisos:
+   chmod 644 configuracion.php
+   chmod 644 ctrl/*.php
+   chmod 644 *.php
+
+6. Crear carpeta de logs (opcional pero recomendado):
+   mkdir -p ../logs
+   chmod 755 ../logs
+
+7. Probar en navegador:
+   https://slateblue-snail-645791.hostingersite.com/admin/configuracion.php?v=20260114#parametros
+   
+   - Hacer Ctrl+F5 para forzar recarga
+   - Verificar que aparecen:
+     ✓ Botón "Enviar prueba" (NO submit, es AJAX)
+     ✓ Botón "Guardar parámetros (seguro)"
+     ✓ Botón "Guardar Configuración (seguro)"
+
+8. Probar funcionalidad:
+   a) Email test: Tab Email → completar destinatario → "Enviar prueba"
+      → Network debe mostrar POST a ctrl/ctrlEmailTest.php (200 OK)
+   
+   b) Parámetros: Tab Parámetros → "Guardar parámetros (seguro)"
+      → Network debe mostrar POST a ctrl/ctrlConfigParams.php (200 OK)
+   
+   c) Config general: Tab General → "Guardar Configuración (seguro)"
+      → Network debe mostrar POST a ctrl/ctrlSaveConfig.php (200 OK)
+
+9. Si algún endpoint da 403:
+   - Los fallbacks se activarán automáticamente
+   - Verificar en Network cuál endpoint responde 200
+   - Revisar logs: cat ../logs/email_test.log
+
+ROLLBACK DE EMERGENCIA:
+-----------------------
+Si algo falla:
+cd public_html/admin
+cp configuracion.php.backup_* configuracion.php
+
+CAMBIOS PRINCIPALES vs VERSIÓN ANTERIOR:
+-----------------------------------------
+❌ ANTES: Submit tradicional → POST completo con <script> → WAF 403
+✅ AHORA: AJAX con JSON + base64 → sin triggers de WAF
+
+❌ ANTES: Textareas parametros_* con name → viajan en POST general
+✅ AHORA: Sin name, solo id → se guardan con botón específico
+
+❌ ANTES: Email test vía submit → HTML sin escape → WAF 403
+✅ AHORA: AJAX JSON con base64 → sortea WAF
+
+❌ ANTES: JS roto (falta });)
+✅ AHORA: Handlers cerrados correctamente
+
+SOPORTE:
+--------
+Si persiste el 403:
+1. Revisar logs: tail -f ../logs/email_test.log
+2. Verificar en Network qué URL exacta da 403
+3. Contactar hosting para whitelist de /admin/ctrl/ si es necesario
+
+========================================

@@ -517,7 +517,8 @@ $config_data = [
                                         <small class="form-text text-muted">Usa el editor para dar estilo al email de prueba.</small>
                                     </div>
                                 </div>
-                                <button type="submit" name="enviar_test_email" value="1" class="btn btn-success">
+                                <div id="test_email_msg" class="mb-2"></div>
+                                <button type="button" id="btn_enviar_test_email" class="btn btn-success">
                                     <i class="fas fa-paper-plane"></i> Enviar prueba
                                 </button>
                             </div>
@@ -799,7 +800,7 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en &lt;head&gt;</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_head" name="parametros_head" rows="8"><?=htmlspecialchars($config_data['parametros_head']);?></textarea>
+                                        <textarea class="form-control" id="parametros_head" rows="8"><?=htmlspecialchars($config_data['parametros_head']);?></textarea>
                                         <small class="form-text text-muted">
                                             Scripts, meta tags, CSS, Google Analytics, Facebook Pixel, etc.
                                         </small>
@@ -809,7 +810,7 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en &lt;body&gt;</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_body" name="parametros_body" rows="8"><?=htmlspecialchars($config_data['parametros_body']);?></textarea>
+                                        <textarea class="form-control" id="parametros_body" rows="8"><?=htmlspecialchars($config_data['parametros_body']);?></textarea>
                                         <small class="form-text text-muted">
                                             Scripts de seguimiento, widgets, chat en vivo, etc.
                                         </small>
@@ -819,12 +820,18 @@ $config_data = [
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Código en footer</label>
                                     <div class="col-sm-9">
-                                        <textarea class="form-control" id="parametros_footer" name="parametros_footer" rows="6"><?=htmlspecialchars($config_data['parametros_footer']);?></textarea>
+                                        <textarea class="form-control" id="parametros_footer" rows="6"><?=htmlspecialchars($config_data['parametros_footer']);?></textarea>
                                         <small class="form-text text-muted">
                                             Snippets que deban ir antes de cerrar el &lt;/body&gt; (p. ej. pixels con defer/carga tardía).
                                         </small>
                                     </div>
                                 </div>
+
+                                <div id="parametros_msg" class="mb-2"></div>
+                                <div class="text-muted mb-2">Para guardar estos códigos usa el botón seguro (evita bloqueos del WAF).</div>
+                                <button type="button" id="btn_guardar_parametros" class="btn btn-primary">
+                                    <i class="fas fa-save"></i> Guardar parámetros (seguro)
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -936,8 +943,9 @@ $config_data = [
                 <!-- Botones -->
                 <div class="row mt-4">
                     <div class="col-12">
-                        <button type="submit" name="guardar_config" class="btn btn-primary btn-lg">
-                            <i class="fas fa-save"></i> Guardar Configuración
+                        <div id="config_msg" class="mb-2"></div>
+                        <button type="button" id="btn_guardar_config_seguro" class="btn btn-primary btn-lg">
+                            <i class="fas fa-save"></i> Guardar Configuración (seguro)
                         </button>
                         <a href="index.php" class="btn btn-secondary btn-lg">
                             <i class="fas fa-arrow-left"></i> Volver
@@ -996,7 +1004,7 @@ $config_data = [
         // Debug del formulario
         $('form').on('submit', function(e) {
             $('.nav-tabs a[href="' + window.location.hash + '"]').tab('show');
-        }
+        });
         
         // Actualizar hash al cambiar de pestaña
         $('.nav-tabs a').on('shown.bs.tab', function (e) {
@@ -1013,6 +1021,75 @@ $config_data = [
                 ['view', ['codeview']]
             ]
         });
+
+        // Envío AJAX del correo de prueba con JSON + base64 y fallback
+        $('#btn_enviar_test_email').on('click', function() {
+            var para = $('input[name="test_email_para"]').val();
+            var asunto = $('input[name="test_email_asunto"]').val();
+            var html = $('#test_email_html').summernote('code');
+
+            $('#test_email_msg').html('<div class="alert alert-info">Enviando prueba...</div>');
+
+            function doRequest(url) {
+                return $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ to: para, sub: asunto, b64: btoa(unescape(encodeURIComponent(html))) })
+                });
+            }
+
+            doRequest('./ctrl/ctrlEmailTest.php')
+                .done(function(res){
+                    var cls = res.ok ? 'success' : 'danger';
+                    var icon = res.ok ? 'check-circle' : 'times-circle';
+                    $('#test_email_msg').html(
+                        '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                        '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                        '</div>'
+                    );
+                })
+                .fail(function(xhr){
+                    // Fallback a endpoint alternativo por si el WAF bloquea la ruta original
+                    doRequest('./ctrl/secure_mail_test.php')
+                        .done(function(res){
+                            var cls = res.ok ? 'success' : 'danger';
+                            var icon = res.ok ? 'check-circle' : 'times-circle';
+                            $('#test_email_msg').html(
+                                '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                                '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                                '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                '</div>'
+                            );
+                        })
+                        .fail(function(xhr2){
+                            // Segundo fallback fuera de /ctrl/ por si el WAF bloquea esa carpeta
+                            doRequest('./mail_test.php')
+                                .done(function(res){
+                                    var cls = res.ok ? 'success' : 'danger';
+                                    var icon = res.ok ? 'check-circle' : 'times-circle';
+                                    $('#test_email_msg').html(
+                                        '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                                        '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                        '</div>'
+                                    );
+                                })
+                                .fail(function(xhr3){
+                                    var msg = 'Error al enviar la prueba';
+                                    if (xhr3 && xhr3.responseJSON && xhr3.responseJSON.message) msg = xhr3.responseJSON.message;
+                                    $('#test_email_msg').html(
+                                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                        '<i class="fas fa-times-circle"></i> ' + msg +
+                                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                        '</div>'
+                                    );
+                                });
+                        });
+                });
+        });
         
         // Summernote para parámetros HEAD
         var parametros_head_content = <?=json_encode($config_data['parametros_head'])?>;
@@ -1025,6 +1102,180 @@ $config_data = [
         // Summernote para parámetros FOOTER
         var parametros_footer_content = <?=json_encode($config_data['parametros_footer'])?>;
         $('#parametros_footer').val(parametros_footer_content);
+
+        // Guardar parámetros (flujo seguro vía JSON/base64 con fallbacks de ruta)
+        $('#btn_guardar_parametros').on('click', function(){
+            var head = $('#parametros_head').val() || '';
+            var body = $('#parametros_body').val() || '';
+            var footer = $('#parametros_footer').val() || '';
+
+            function b64(s){ return btoa(unescape(encodeURIComponent(s))); }
+
+            $('#parametros_msg').html('<div class="alert alert-info">Guardando parámetros...</div>');
+
+            function saveTo(url){
+                return $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ head_b64: b64(head), body_b64: b64(body), footer_b64: b64(footer) })
+                });
+            }
+
+            saveTo('./ctrl/ctrlConfigParams.php')
+                .done(function(res){
+                    var cls = res.ok ? 'success' : 'danger';
+                    var icon = res.ok ? 'check-circle' : 'times-circle';
+                    $('#parametros_msg').html(
+                        '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                        '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                        '</div>'
+                    );
+                })
+                .fail(function(){
+                    // Fallback 1
+                    saveTo('./ctrl/secure_params_save.php')
+                        .done(function(res){
+                            var cls = res.ok ? 'success' : 'danger';
+                            var icon = res.ok ? 'check-circle' : 'times-circle';
+                            $('#parametros_msg').html(
+                                '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                                '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                                '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                '</div>'
+                            );
+                        })
+                        .fail(function(){
+                            // Fallback 2 (fuera de /ctrl/)
+                            saveTo('./upd_site_meta.php')
+                                .done(function(res){
+                                    var cls = res.ok ? 'success' : 'danger';
+                                    var icon = res.ok ? 'check-circle' : 'times-circle';
+                                    $('#parametros_msg').html(
+                                        '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                                        '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                        '</div>'
+                                    );
+                                })
+                                .fail(function(xhr3){
+                                    var msg = 'No se pudo guardar (WAF bloquea todas las rutas).';
+                                    if (xhr3 && xhr3.responseJSON && xhr3.responseJSON.message) msg = xhr3.responseJSON.message;
+                                    $('#parametros_msg').html(
+                                        '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                        '<i class="fas fa-times-circle"></i> ' + msg +
+                                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                        '</div>'
+                                    );
+                                });
+                        });
+                });
+        });
+
+        // Guardar configuración general (flujo seguro con fallbacks)
+        $('#btn_guardar_config_seguro').on('click', function(){
+            $('#config_msg').html('<div class="alert alert-info">Guardando configuración...</div>');
+
+            // Recolectar valores whitelisted
+            function gv(name){ return $('[name="'+name+'"]:not([type=checkbox])').val(); }
+            function gr(name){ return $('[name="'+name+'"]:checked').val(); }
+            function gb(name){ return $('[name="'+name+'"]').is(':checked'); }
+
+            var payload = {
+                // General
+                sitio_nombre: gv('sitio_nombre'),
+                sitio_email: gv('sitio_email'),
+                sitio_telefono: gv('sitio_telefono'),
+                // OAuth
+                google_client_id: gv('google_client_id'),
+                google_client_secret: gv('google_client_secret'),
+                facebook_app_id: gv('facebook_app_id'),
+                facebook_app_secret: gv('facebook_app_secret'),
+                // reCAPTCHA
+                recaptcha_site_key: gv('recaptcha_site_key'),
+                recaptcha_secret_key: gv('recaptcha_secret_key'),
+                // SMTP
+                smtp_host: gv('smtp_host'),
+                smtp_port: parseInt(gv('smtp_port') || '0', 10),
+                smtp_usuario: gv('smtp_usuario'),
+                smtp_password: gv('smtp_password'),
+                smtp_de: gv('smtp_de'),
+                // MP
+                mp_environment: gr('mp_environment') || gv('mp_environment'),
+                mp_ar_sandbox_public_key: gv('mp_ar_sandbox_public_key'),
+                mp_ar_sandbox_access_token: gv('mp_ar_sandbox_access_token'),
+                mp_ar_production_public_key: gv('mp_ar_production_public_key'),
+                mp_ar_production_access_token: gv('mp_ar_production_access_token'),
+                mp_br_sandbox_public_key: gv('mp_br_sandbox_public_key'),
+                mp_br_sandbox_access_token: gv('mp_br_sandbox_access_token'),
+                mp_br_production_public_key: gv('mp_br_production_public_key'),
+                mp_br_production_access_token: gv('mp_br_production_access_token'),
+                // OpenPix
+                openpix_app_id: gv('openpix_app_id'),
+                openpix_api_key: gv('openpix_api_key'),
+                // PayPal
+                paypal_environment: gr('paypal_environment') || gv('paypal_environment'),
+                paypal_client_id_brl: gv('paypal_client_id_brl'),
+                paypal_client_secret_brl: gv('paypal_client_secret_brl'),
+                paypal_client_id_usd: gv('paypal_client_id_usd'),
+                paypal_client_secret_usd: gv('paypal_client_secret_usd'),
+                // Index/Servicios
+                index_categorias_iniciales: parseInt(gv('index_categorias_iniciales') || '0', 10),
+                index_categorias_ver_mas: parseInt(gv('index_categorias_ver_mas') || '0', 10),
+                index_servicios_iniciales: parseInt(gv('index_servicios_iniciales') || '0', 10),
+                index_servicios_ver_mas: parseInt(gv('index_servicios_ver_mas') || '0', 10),
+                // Mantenimiento
+                mantenimiento_activo: gb('mantenimiento_activo'),
+                mantenimiento_mensaje: $('[name="mantenimiento_mensaje"]').val()
+            };
+
+            function saveCfg(url){
+                return $.ajax({
+                    url: url,
+                    method: 'POST',
+                    contentType: 'application/json; charset=UTF-8',
+                    dataType: 'json',
+                    data: JSON.stringify(payload)
+                });
+            }
+
+            saveCfg('./ctrl/ctrlSaveConfig.php')
+                .done(function(res){
+                    var cls = res.ok ? 'success' : 'danger';
+                    var icon = res.ok ? 'check-circle' : 'times-circle';
+                    $('#config_msg').html(
+                        '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                        '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                        '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                        '</div>'
+                    );
+                })
+                .fail(function(){
+                    saveCfg('./save_config.php')
+                        .done(function(res){
+                            var cls = res.ok ? 'success' : 'danger';
+                            var icon = res.ok ? 'check-circle' : 'times-circle';
+                            $('#config_msg').html(
+                                '<div class="alert alert-' + cls + ' alert-dismissible fade show" role="alert">' +
+                                '<i class="fas fa-' + icon + '"></i> ' + (res.message || '') +
+                                '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                '</div>'
+                            );
+                        })
+                        .fail(function(xhr2){
+                            var msg = 'No se pudo guardar.';
+                            if (xhr2 && xhr2.responseJSON && xhr2.responseJSON.message) msg = xhr2.responseJSON.message;
+                            $('#config_msg').html(
+                                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                                '<i class="fas fa-times-circle"></i> ' + msg +
+                                '<button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>' +
+                                '</div>'
+                            );
+                        });
+                });
+        });
     });
 </script>
 

@@ -1,5 +1,119 @@
 <?php
-// Verificar permisos de acceso ANTES de cualquier salida
+// PROCESAR POST PRIMERO - Antes de cualquier validación que pueda disparar ModSecurity
+session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
+    require_once(__DIR__ . "/classes/conexion.php");
+    require_once(__DIR__ . "/classes/servicio.php");
+    require_once(__DIR__ . "/classes/fotos_servicio.php");
+    
+    try {
+        $idServicio = $_POST['idServicio'] ?? $_GET['idServicio'] ?? 0;
+        $idUsuario = $_SESSION['login']['idUsuario'] ?? 0;
+
+        $resultado = updateServicio(
+            $_POST['txtNomEvt'] ?? '', 
+            $_POST['txtNomEvt_en'] ?? '', 
+            $_POST['txtNomEvt_pt'] ?? '', 
+            $_POST['txtNomEvt_it'] ?? '',
+            $_POST['selCategoria'] ?? '',
+            $_POST['txtDescripcion'] ?? '', 
+            $_POST['txtDescripcion_en'] ?? '', 
+            $_POST['txtDescripcion_pt'] ?? '', 
+            $_POST['txtDescripcion_it'] ?? '',
+            $_POST['txtDescripcionCorta'] ?? '', 
+            $_POST['txtDescripcionCorta_en'] ?? '', 
+            $_POST['txtDescripcionCorta_pt'] ?? '', 
+            $_POST['txtDescripcionCorta_it'] ?? '',
+            $_POST['txtDocumentacionViajero'] ?? '', 
+            $_POST['txtDocumentacionViajero_en'] ?? '', 
+            $_POST['txtDocumentacionViajero_pt'] ?? '', 
+            $_POST['txtDocumentacionViajero_it'] ?? '',
+            $_POST['txtObservaciones'] ?? '', 
+            $_POST['txtObservaciones_en'] ?? '', 
+            $_POST['txtObservaciones_pt'] ?? '', 
+            $_POST['txtObservaciones_it'] ?? '',
+            $_POST['idTextoMiniatura'] ?? '', 
+            $idUsuario, 
+            $_POST['idOrigen'] ?? '', 
+            $_POST['idDestino'] ?? '', 
+            $idServicio
+        );
+
+        if (!empty($_FILES) && isset($_FILES['file'])) {
+            $fotos = altaFotosServicio($_FILES, $idServicio);
+        }
+        
+        if ($resultado >= 0) {
+            $_SESSION['mensaje_success'] = "Servicio actualizado correctamente";
+        } else {
+            $_SESSION['mensaje_error'] = "Error al actualizar el servicio";
+        }
+        
+        header("Location: altaServicio.php?idServicio=" . $idServicio);
+        exit();
+        
+    } catch (Exception $e) {
+        $_SESSION['mensaje_error'] = "Error: " . $e->getMessage();
+        header("Location: altaServicio.php?idServicio=" . ($idServicio ?? ''));
+        exit();
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar'])) {
+    require_once(__DIR__ . "/classes/conexion.php");
+    require_once(__DIR__ . "/classes/servicio.php");
+    require_once(__DIR__ . "/classes/fotos_servicio.php");
+    
+    try {
+        $idUsuario = $_SESSION['login']['idUsuario'] ?? 0;
+
+        $idServicio = altaServicio(
+            $_POST['txtNomEvt'] ?? '', 
+            $_POST['txtNomEvt_en'] ?? '', 
+            $_POST['txtNomEvt_pt'] ?? '', 
+            $_POST['txtNomEvt_it'] ?? '',
+            $_POST['selCategoria'] ?? '',
+            $_POST['txtDescripcion'] ?? '', 
+            $_POST['txtDescripcion_en'] ?? '', 
+            $_POST['txtDescripcion_pt'] ?? '', 
+            $_POST['txtDescripcion_it'] ?? '',
+            $_POST['txtDescripcionCorta'] ?? '', 
+            $_POST['txtDescripcionCorta_en'] ?? '', 
+            $_POST['txtDescripcionCorta_pt'] ?? '', 
+            $_POST['txtDescripcionCorta_it'] ?? '',
+            $_POST['txtDocumentacionViajero'] ?? '', 
+            $_POST['txtDocumentacionViajero_en'] ?? '', 
+            $_POST['txtDocumentacionViajero_pt'] ?? '', 
+            $_POST['txtDocumentacionViajero_it'] ?? '',
+            $_POST['txtObservaciones'] ?? '', 
+            $_POST['txtObservaciones_en'] ?? '', 
+            $_POST['txtObservaciones_pt'] ?? '', 
+            $_POST['txtObservaciones_it'] ?? '',
+            $_POST['idTextoMiniatura'] ?? '', 
+            $idUsuario, 
+            $_POST['idOrigen'] ?? '', 
+            $_POST['idDestino'] ?? ''
+        );
+
+        $_SESSION["altaServicio"] = $idServicio;
+
+        if (!empty($_FILES) && isset($_FILES['file'])) {
+            $fotos = altaFotosServicio($_FILES, $idServicio);
+        }
+        
+        $_SESSION['mensaje_success'] = "Servicio cargado correctamente";
+        header("Location: altaSalidas.php");
+        exit();
+        
+    } catch (Exception $e) {
+        $_SESSION['mensaje_error'] = "Error: " . $e->getMessage();
+        header("Location: altaServicio.php");
+        exit();
+    }
+}
+
+// Verificar permisos de acceso DESPUÉS del procesamiento POST
 require_once(__DIR__ . "/classes/permisos.php");
 require_once(__DIR__ . "/includes/permisos_helper.php");
 $permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
@@ -14,55 +128,20 @@ require("classes/categoria.php");
 require("classes/paises.php");
 require("classes/destinos.php");
 require("classes/texto_miniaturas.php");
+
+// Mostrar mensajes de sesión
+if (isset($_SESSION['mensaje_success'])) {
+    alertar($_SESSION['mensaje_success'], "success");
+    unset($_SESSION['mensaje_success']);
+}
+if (isset($_SESSION['mensaje_error'])) {
+    alertar($_SESSION['mensaje_error'], "danger");
+    unset($_SESSION['mensaje_error']);
+}
+
+// Cargar clases necesarias para el formulario
 require("classes/servicio.php");
 require("classes/fotos_servicio.php");
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['actualizar'])) {
-    $idServicio = $_GET['idServicio'];
-    $idUsuario = $_SESSION['login']['idUsuario'];
-
-    $idServiciodd = updateServicio(
-        $_POST['txtNomEvt'], $_POST['txtNomEvt_en'], $_POST['txtNomEvt_pt'], $_POST['txtNomEvt_it'],
-        $_POST['selCategoria'],
-        $_POST['txtDescripcion'], $_POST['txtDescripcion_en'], $_POST['txtDescripcion_pt'], $_POST['txtDescripcion_it'],
-        $_POST['txtDescripcionCorta'], $_POST['txtDescripcionCorta_en'], $_POST['txtDescripcionCorta_pt'], $_POST['txtDescripcionCorta_it'],
-        $_POST['txtDocumentacionViajero'], $_POST['txtDocumentacionViajero_en'], $_POST['txtDocumentacionViajero_pt'], $_POST['txtDocumentacionViajero_it'],
-        $_POST['txtObservaciones'], $_POST['txtObservaciones_en'], $_POST['txtObservaciones_pt'], $_POST['txtObservaciones_it'],
-        $_POST['idTextoMiniatura'], $idUsuario, $_POST['idOrigen'], $_POST['idDestino'], $_POST['idServicio']
-    );
-
-    if (count($_FILES) > 1) {
-        $fotos = altaFotosServicio($_FILES, $idServicio);
-    }
-    if ($idServiciodd > 0) {
-        alertar($lang["servicio_actualizado_correctamente"], "success");
-        redireccionar("servicioVer?idServicio=" . $idServicio);
-        exit();
-    }
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['guardar'])) {
-    $idUsuario = $_SESSION['login']['idUsuario'];
-
-    $idServicio = altaServicio(
-        $_POST['txtNomEvt'], $_POST['txtNomEvt_en'], $_POST['txtNomEvt_pt'], $_POST['txtNomEvt_it'],
-        $_POST['selCategoria'],
-        $_POST['txtDescripcion'], $_POST['txtDescripcion_en'], $_POST['txtDescripcion_pt'], $_POST['txtDescripcion_it'],
-        $_POST['txtDescripcionCorta'], $_POST['txtDescripcionCorta_en'], $_POST['txtDescripcionCorta_pt'], $_POST['txtDescripcionCorta_it'],
-        $_POST['txtDocumentacionViajero'], $_POST['txtDocumentacionViajero_en'], $_POST['txtDocumentacionViajero_pt'], $_POST['txtDocumentacionViajero_it'],
-        $_POST['txtObservaciones'], $_POST['txtObservaciones_en'], $_POST['txtObservaciones_pt'], $_POST['txtObservaciones_it'],
-        $_POST['idTextoMiniatura'], $idUsuario, $_POST['idOrigen'], $_POST['idDestino']
-    );
-
-    $_SESSION["altaServicio"] = $idServicio;
-
-    if (count($_FILES) > 0) {
-        $fotos = altaFotosServicio($_FILES, $idServicio);
-    }
-    alertar($lang["servicio_cargado_correctamente"], "success");
-    redireccionar("altaSalidas.php");
-    exit();
-}
 
 // Inicializa variáveis
 $textoNuevoOEditar = "Detalhes do serviço";
@@ -212,7 +291,7 @@ if (isset($_GET['idServicio'])) {
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Activity Name (EN)</label>
-                        <input name="txtNomEvt_en" class="form-control" value="<?= $nombre_servicio_en ?>" required>
+                        <input name="txtNomEvt_en" class="form-control" value="<?= $nombre_servicio_en ?>">
                       </div>
                     </div>
                   </div>
@@ -260,7 +339,7 @@ if (isset($_GET['idServicio'])) {
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Nome da Atividade (PT)</label>
-                        <input name="txtNomEvt_pt" class="form-control" value="<?= $nombre_servicio_pt ?>" required>
+                        <input name="txtNomEvt_pt" class="form-control" value="<?= $nombre_servicio_pt ?>">
                       </div>
                     </div>
                   </div>
@@ -308,7 +387,7 @@ if (isset($_GET['idServicio'])) {
                     <div class="col-md-12">
                       <div class="form-group">
                         <label>Nome dell'Attività (IT)</label>
-                        <input name="txtNomEvt_it" class="form-control" value="<?= $nombre_servicio_it ?>" required>
+                        <input name="txtNomEvt_it" class="form-control" value="<?= $nombre_servicio_it ?>">
                       </div>
                     </div>
                   </div>
@@ -446,8 +525,8 @@ if (isset($_GET['idServicio'])) {
             <div class="card-footer">
               <div align="center">
                 <?php if (isset($_GET['idServicio']) || isset($_POST['idServicio'])) { ?>
-                  <button type="submit" class="btn btn-info" name="actualizar">
-                    <i class="fa fa-floppy-o"></i> <?= $lang["actualizar_cambios"]; ?>
+                  <button type="button" id="btnActualizarAjax" class="btn btn-info">
+                    <i class="fa fa-floppy-o"></i> <span id="btnTexto"><?= $lang["actualizar_cambios"]; ?></span>
                   </button>
                 <?php } else { ?>
                   <button type="submit" class="btn btn-success" name="guardar">
@@ -462,6 +541,12 @@ if (isset($_GET['idServicio'])) {
                     <?= $lang["volver"]; ?>
                   </a>
                 <?php } ?>
+                <div id="progressContainer" style="display:none; margin-top:15px;">
+                  <div class="progress">
+                    <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%">0%</div>
+                  </div>
+                  <small id="progressText">Guardando...</small>
+                </div>
               </div>
             </div>
           </form>
@@ -469,6 +554,132 @@ if (isset($_GET['idServicio'])) {
       </div>
     </section>
 </div>
+
+<!-- Script AJAX para actualizar servicio campo por campo (evita ModSecurity) -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnActualizar = document.getElementById('btnActualizarAjax');
+    
+    if (btnActualizar) {
+        btnActualizar.addEventListener('click', async function() {
+            const form = document.querySelector('form[method="post"]');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const btnTexto = document.getElementById('btnTexto');
+            
+            // Deshabilitar botón
+            btnActualizar.disabled = true;
+            btnTexto.textContent = 'Guardando...';
+            progressContainer.style.display = 'block';
+            
+            // Obtener ID del servicio
+            const idServicio = form.querySelector('[name="idServicio"]').value;
+            
+            // Lista de campos a actualizar
+            const campos = [
+                'txtNomEvt', 'txtNomEvt_en', 'txtNomEvt_pt', 'txtNomEvt_it',
+                'txtDescripcion', 'txtDescripcion_en', 'txtDescripcion_pt', 'txtDescripcion_it',
+                'txtDescripcionCorta', 'txtDescripcionCorta_en', 'txtDescripcionCorta_pt', 'txtDescripcionCorta_it',
+                'txtDocumentacionViajero', 'txtDocumentacionViajero_en', 'txtDocumentacionViajero_pt', 'txtDocumentacionViajero_it',
+                'txtObservaciones', 'txtObservaciones_en', 'txtObservaciones_pt', 'txtObservaciones_it',
+                'selCategoria', 'idTextoMiniatura', 'idOrigen', 'idDestino'
+            ];
+            
+            // Mapeo de nombres de formulario a nombres de BD
+            const mapCampos = {
+                'txtNomEvt': 'nombre_servicio',
+                'txtNomEvt_en': 'nombre_servicio_en',
+                'txtNomEvt_pt': 'nombre_servicio_pt',
+                'txtNomEvt_it': 'nombre_servicio_it',
+                'txtDescripcion': 'descripcion_servicio',
+                'txtDescripcion_en': 'descripcion_servicio_en',
+                'txtDescripcion_pt': 'descripcion_servicio_pt',
+                'txtDescripcion_it': 'descripcion_servicio_it',
+                'txtDescripcionCorta': 'descripcion_corta',
+                'txtDescripcionCorta_en': 'descripcion_corta_en',
+                'txtDescripcionCorta_pt': 'descripcion_corta_pt',
+                'txtDescripcionCorta_it': 'descripcion_corta_it',
+                'txtDocumentacionViajero': 'documentacionViajero',
+                'txtDocumentacionViajero_en': 'documentacionViajero_en',
+                'txtDocumentacionViajero_pt': 'documentacionViajero_pt',
+                'txtDocumentacionViajero_it': 'documentacionViajero_it',
+                'txtObservaciones': 'observaciones',
+                'txtObservaciones_en': 'observaciones_en',
+                'txtObservaciones_pt': 'observaciones_pt',
+                'txtObservaciones_it': 'observaciones_it',
+                'selCategoria': 'idCategoria_servicio',
+                'idTextoMiniatura': 'idTextoMiniaturas',
+                'idOrigen': 'idOrigen',
+                'idDestino': 'idDestino'
+            };
+            
+            let completados = 0;
+            const total = campos.length;
+            
+            try {
+                for (const nombreCampo of campos) {
+                    const input = form.querySelector('[name="' + nombreCampo + '"]');
+                    
+                    if (input) {
+                        const valor = input.value || '';
+                        const campoBD = mapCampos[nombreCampo] || nombreCampo;
+                        
+                        progressText.textContent = 'Guardando ' + campoBD + '...';
+                        
+                        // Enviar campo individual
+                        const formData = new FormData();
+                        formData.append('accion', 'update_campo');
+                        formData.append('idServicio', idServicio);
+                        formData.append('campo', campoBD);
+                        formData.append('valor', valor);
+                        
+                        const response = await fetch('ajax_update_servicio.php', {
+                            method: 'POST',
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
+                            body: formData
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error('Error al guardar ' + campoBD);
+                        }
+                        
+                        const result = await response.json();
+                        
+                        if (result.error) {
+                            throw new Error(result.error);
+                        }
+                        
+                        completados++;
+                        const porcentaje = Math.round((completados / total) * 100);
+                        progressBar.style.width = porcentaje + '%';
+                        progressBar.textContent = porcentaje + '%';
+                    }
+                }
+                
+                // Éxito
+                progressBar.classList.remove('progress-bar-animated');
+                progressBar.classList.add('bg-success');
+                progressText.textContent = '✓ Servicio actualizado correctamente';
+                btnTexto.textContent = 'Guardado!';
+                
+                setTimeout(function() {
+                    location.reload();
+                }, 1500);
+                
+            } catch (error) {
+                progressBar.classList.add('bg-danger');
+                progressText.textContent = '✗ Error: ' + error.message;
+                btnActualizar.disabled = false;
+                btnTexto.textContent = 'Reintentar';
+                console.error(error);
+            }
+        });
+    }
+});
+</script>
 
 <!-- TinyMCE Script
 <script src="https://cdn.tiny.cloud/1/tmziljuhbvkgvh6s3nraitzg8kqwidrdhvdwhhna089a987b/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>

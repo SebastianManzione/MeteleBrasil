@@ -61,7 +61,7 @@ if (isset($_GET['pagina'])) {
 
 $queryString = http_build_query($params);
 $orden_precio = isset($_GET['orden_precio']) ? $_GET['orden_precio'] : '';
-$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : '';
+$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : 'cercano'; // Por defecto: más cercano
 $orden_duracion = isset($_GET['orden_duracion']) ? $_GET['orden_duracion'] : '';
 
 if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
@@ -368,6 +368,23 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $or
   
   ob_start();
   ?>
+  <!-- Filtros de Proximidad (PRIMERO) -->
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'cercano' ? '' : 'orden_distancia=cercano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'cercano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-map-marker-alt filtro-icon"></i>
+      <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más cercano"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>"></div>
+  </a>
+  
+  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'lejano' ? '' : 'orden_distancia=lejano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'lejano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
+    <div class="filtro-content">
+      <i class="fa fa-map-marker-alt filtro-icon" style="transform: rotate(180deg);"></i>
+      <span><?= isset($lang["mas_lejano"]) ? $lang["mas_lejano"] : "Más lejano"; ?></span>
+    </div>
+    <div class="filtro-toggle <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>"></div>
+  </a>
+
   <!-- Filtros de Precio -->
   <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_precio === 'price_asc' ? '' : 'orden_precio=price_asc'; ?><?= !empty($orden_distancia) && $orden_precio !== 'price_asc' ? '&orden_distancia=' . $orden_distancia : ''; ?>" class="filtro-card <?= $orden_precio === 'price_asc' ? 'active' : ''; ?>">
     <div class="filtro-content">
@@ -383,23 +400,6 @@ function generarFiltrosPrecio($queryString, $orden_precio, $orden_distancia, $or
       <span><?= isset($lang["mayor_precio"]) ? $lang["mayor_precio"] : "Mayor Precio"; ?></span>
     </div>
     <div class="filtro-toggle <?= $orden_precio === 'price_desc' ? 'active' : ''; ?>"></div>
-  </a>
-  
-  <!-- Filtros de Proximidad -->
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'cercano' ? '' : 'orden_distancia=cercano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'cercano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>">
-    <div class="filtro-content">
-      <i class="fa fa-map-marker-alt filtro-icon"></i>
-      <span><?= isset($lang["mas_cercano"]) ? $lang["mas_cercano"] : "Más cercano"; ?></span>
-    </div>
-    <div class="filtro-toggle <?= $orden_distancia === 'cercano' ? 'active' : ''; ?>"></div>
-  </a>
-  
-  <a href="?<?= !empty($baseQuery) ? $baseQuery . '&' : ''; ?><?= $orden_distancia === 'lejano' ? '' : 'orden_distancia=lejano'; ?><?= !empty($orden_precio) && $orden_distancia !== 'lejano' ? '&orden_precio=' . $orden_precio : ''; ?>" class="filtro-card <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>">
-    <div class="filtro-content">
-      <i class="fa fa-map-marker-alt filtro-icon" style="transform: rotate(180deg);"></i>
-      <span><?= isset($lang["mas_lejano"]) ? $lang["mas_lejano"] : "Más lejano"; ?></span>
-    </div>
-    <div class="filtro-toggle <?= $orden_distancia === 'lejano' ? 'active' : ''; ?>"></div>
   </a>
   
   <!-- Filtros de Duración -->
@@ -1361,9 +1361,9 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               $mostrarDisponibilidad = false;
               $salidasProximas = [];
               if (isset($_SESSION['login']) && (
-                  $_SESSION['login']['idUsuario'] == 1 ||  // Admin
-                  $_SESSION['login']['idVendedor'] > 0 ||  // Vendedor
-                  $_SESSION['login']['idPrestador'] > 0    // Prestador
+                  ($_SESSION['login']['idUsuario'] ?? 0) == 1 ||  // Admin
+                  ($_SESSION['login']['idVendedor'] ?? 0) > 0 ||  // Vendedor
+                  ($_SESSION['login']['idPrestador'] ?? 0) > 0    // Prestador
               )) {
                   $mostrarDisponibilidad = true;
                   $salidasProximas = getProximasSalidasDisponibilidad($idServicio, DISPONIBILIDAD_SALIDAS_CATEGORIAS);
@@ -1390,6 +1390,27 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                         <i class="fa fa-hourglass-half mr-2"></i> <?= $duracion_servicio["duracionMinima"]; ?> - <?= $duracion_servicio["duracionMaxima"]; ?>
                       </div>
                     <?php endif; ?>
+                    
+                    <!-- DISPONIBILIDAD MÓVIL (solo admin/vendedor/prestador) -->
+                    <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
+                      <div class="alert alert-info p-2 mb-3 small disponibilidad-alert" style="border-radius: 6px; background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%); border: 1px solid #0c5460; margin-top: 10px;">
+                        <strong style="color: #0c5460; display: block; margin-bottom: 6px;">
+                          <i class="fa fa-calendar-alt" style="color: #029ce2; margin-right: 4px;"></i>
+                          Próximas salidas
+                        </strong>
+                        <ul class="mb-0 mt-1" style="font-size: 0.85rem; padding-left: 20px; color: #0c5460;">
+                          <?php foreach (array_slice($salidasProximas, 0, DISPONIBILIDAD_SALIDAS_CATEGORIAS) as $salida): ?>
+                            <li style="margin-bottom: 4px; line-height: 1.4;">
+                              <strong><?= date('d M', strtotime($salida['fecha'])) ?></strong>
+                              <span class="<?= $salida['disponibilidad'] > 0 ? 'text-success' : 'text-danger'; ?>" style="font-weight: bold; margin-left: 4px;">
+                                <?= $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] . ' ' . ($salida['disponibilidad'] == 1 ? 'lugar' : 'lugares') : '⚠️ AGOTADO'; ?>
+                              </span>
+                            </li>
+                          <?php endforeach; ?>
+                        </ul>
+                      </div>
+                    <?php endif; ?>
+                    
                     <hr class="my-2">
                     <div class="d-flex align-items-center">
                       <div class="price-mobile <?= ($precioSugerido === 'ESGOTADO') ? 'agotado' : ''; ?>"><?= $precioSugerido; ?></div>
@@ -1467,21 +1488,6 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
                           <div class="col-lg-4 col-12">
                             <?php if (!empty($cancelacion)) : ?>
                               <h4 class="text-success text-cancelacion semibold"><?= $cancelacion; ?></h4>
-                            <?php endif; ?>
-                            
-                            <!-- DISPONIBILIDAD DESKTOP (solo admin/vendedor/prestador) -->
-                            <?php if ($mostrarDisponibilidad && !empty($salidasProximas)): ?>
-                              <div style="font-size: 0.85rem; color: #029ce2; margin-top: 6px; padding: 4px 0; font-weight: 500;">
-                                <i class="fa fa-calendar-alt" style="margin-right: 4px;"></i>
-                                <strong>Disponibilidad:</strong>
-                                <?php $textoDisp = []; 
-                                foreach (array_slice($salidasProximas, 0, DISPONIBILIDAD_SALIDAS_CATEGORIAS) as $salida) {
-                                  $disp = $salida['disponibilidad'] > 0 ? $salida['disponibilidad'] : 'AGOT.';
-                                  $textoDisp[] = date('d/m', strtotime($salida['fecha'])) . ' (' . $disp . ')';
-                                }
-                                echo implode(' | ', $textoDisp);
-                                ?>
-                              </div>
                             <?php endif; ?>
                           </div>
                           <div class="col-lg-4 col-12">

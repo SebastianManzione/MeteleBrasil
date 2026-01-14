@@ -191,10 +191,11 @@ $totalComprobantesDolar=getComprobantesIdReservaDolar($idReserva);
 
 $totalComprobantesDolar=$total_dolares-$totalComprobantesDolar;
 
-// VALIDACIÓN CRÍTICA: Solo mostrar si está pagado 100% (tolerancia de 1.00 para arredondamientos)
-if ($diferenciaComprobantesPrecio > 1.00) {
-    // Hay dinero pendiente significativo, no es realmente confirmada
-    continue;
+// NOTA: Si está en estado Confirmada (3), es porque ya pasó validación de pago en el sistema
+// No filtramos por diferencias de comprobantes - el estado Confirmada es autoritativo
+// Log para auditoría si hay diferencias
+if ($diferenciaComprobantesPrecio > 10.00) {
+    @error_log(date('Y-m-d H:i:s') . " - Reserva {$idReserva} confirmada con diferencia: {$diferenciaComprobantesPrecio}" . PHP_EOL, 3, __DIR__ . '/../../logs/reservas_confirmadas.log');
 }
 
 // Determinar si debe ver todas las reservas (admin sin filtro de prestador)

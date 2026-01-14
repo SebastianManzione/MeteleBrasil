@@ -551,5 +551,15 @@ body { font-family: 'Poppins', sans-serif; background: #f9f9f9; margin:0; }
 </div>
 </section>
 
+<?php
+// Inyectar código del body desde configuración
+if (!isset($parametros)) {
+  require_once(__DIR__ . '/admin/classes/parametros.php');
+  $parametros = getParametros();
+}
+if (isset($parametros[0]["body"]) && $parametros[0]["body"] !== '') {
+  echo $parametros[0]["body"];
+}
+?>
 </body>
 </html>
