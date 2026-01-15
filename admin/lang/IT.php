@@ -1,7 +1,10 @@
 
 <?php
 $lang = array(
-       "descubri_tu_proxima_aventura"=>"Reservá tu próxima experiencia",
+
+
+        "reserva_tu_proxima_experiencia"=>"Prenota la tua prossima esperienza" , 
+"descubri_tu_proxima_aventura"=>"Scopri la tua prossima avventura",
 "crea_tu_viaje" => "CREA IL TUO VIAGGIO IN ARGENTINA",
 "excursiones_en_brasil" => "CON LE MIGLIORI ESCURSIONI",
 "que_hacemos"=> "Hai deciso cosa fare?",

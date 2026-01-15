@@ -9,8 +9,8 @@ $lang = array(
 
 /* Index + navbar */
 
-
-"descubri_tu_proxima_aventura"=>"Reserve sua próxima experiência",
+ "reserva_tu_proxima_experiencia"=>"Reserve sua próxima experiência" , 
+"descubri_tu_proxima_aventura"=>"Descubra sua próxima aventura",
 	"crea_tu_viaje"=>"AS MELHORES EXPERIÊNCIAS DO BRASIL",
 
 	"excursiones_en_brasil" => "Escolha sua diversão favorita",

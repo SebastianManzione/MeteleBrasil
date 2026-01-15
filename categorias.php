@@ -1136,7 +1136,7 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
         
               <span class="semibold"><?= isset($lang[$nombre_categoria]) ? $lang[$nombre_categoria] : $lang['descubri_tu_proxima_aventura']; ?></span><br>
            
-              <?= $idCategoria == 0 ? $lang["excursiones_en_brasil"]:$nombre_categoria?>
+              <?= $idCategoria == 0 ? $lang["reserva_tu_proxima_experiencia"]:$nombre_categoria?>
             </h1>
           </div>
           
