@@ -236,7 +236,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-sm btn-danger" 
-                                                                onclick="eliminarParada(<?=$parada['idParada']?>, '<?=htmlspecialchars($parada['terminal_nombre'], ENT_QUOTES)?>')"
+                                                                onclick="eliminarParada(<?=$parada['idRutaParada']?>, '<?=htmlspecialchars($parada['terminal_nombre'], ENT_QUOTES)?>')"
                                                                 title="Eliminar">
                                                             <i class="fas fa-trash-alt"></i>
                                                         </button>

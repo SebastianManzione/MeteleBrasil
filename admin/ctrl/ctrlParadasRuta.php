@@ -79,11 +79,11 @@ switch ($action) {
 }
 
 // Función auxiliar para eliminar parada
-function deleteParadaRuta($idParada) {
+function deleteParadaRuta($idRutaParada) {
     require("../classes/conexion.php");
     
-    $consulta = "DELETE FROM ruta_paradas WHERE idParada = :idParada";
+    $consulta = "DELETE FROM ruta_paradas WHERE idRutaParada = :idRutaParada";
     $comando = $pdo->prepare($consulta);
-    return $comando->execute(['idParada' => $idParada]);
+    return $comando->execute(['idRutaParada' => $idRutaParada]);
 }
 ?>
