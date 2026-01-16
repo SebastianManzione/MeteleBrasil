@@ -1,4 +1,16 @@
 <?php
+function getAllPrestadores(){
+    require("conexion.php");
+    
+    $consulta = "SELECT * FROM prestadores ORDER BY nombre";
+    
+    $comando = $pdo->prepare($consulta);
+    $comando->execute();
+    
+    $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
+    return $resultado;
+}
+
 function getPrestadores(){
 
     require("conexion.php");

@@ -79,22 +79,22 @@ if (isset($_GET['id'])) {
                             <ul class="nav nav-tabs" id="idiomasTabs" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="tab-es" data-toggle="tab" href="#contenido-es" role="tab">
-                                        <img src="../img/countries/es.png" width="20"> Español
+                                        <img src="img/countries/Spain-icon.png" width="20"> Español
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="tab-en" data-toggle="tab" href="#contenido-en" role="tab">
-                                        <img src="../img/countries/us.png" width="20"> English
+                                        <img src="img/countries/United-States-of-Americ-icon.png" width="20"> English
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="tab-pt" data-toggle="tab" href="#contenido-pt" role="tab">
-                                        <img src="../img/countries/br.png" width="20"> Português
+                                        <img src="img/countries/Brazil-icon.png" width="20"> Português
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="tab-it" data-toggle="tab" href="#contenido-it" role="tab">
-                                        <img src="../img/countries/it.png" width="20"> Italiano
+                                        <img src="img/countries/italy-icon.png" width="20"> Italiano
                                     </a>
                                 </li>
                             </ul>
@@ -216,16 +216,64 @@ if (isset($_GET['id'])) {
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-3">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label><i class="far fa-clock"></i> Duración Estimada</label>
-                                        <input type="text" name="duracion_estimada" class="form-control"
-                                               placeholder="Ej: 5h 30min"
-                                               value="<?=$esEdicion ? htmlspecialchars($ruta['duracion_estimada']) : ''?>">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" id="duracion_dias" class="form-control" 
+                                                           placeholder="0" min="0" max="99"
+                                                           value="<?php 
+                                                           if ($esEdicion && !empty($ruta['duracion_estimada'])) {
+                                                               preg_match('/(\d+)\s*d[ií]as?/i', $ruta['duracion_estimada'], $matches);
+                                                               echo isset($matches[1]) ? $matches[1] : '';
+                                                           }
+                                                           ?>">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">días</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" id="duracion_horas" class="form-control" 
+                                                           placeholder="0" min="0" max="23"
+                                                           value="<?php 
+                                                           if ($esEdicion && !empty($ruta['duracion_estimada'])) {
+                                                               preg_match('/(\d+)h/', $ruta['duracion_estimada'], $matches);
+                                                               echo isset($matches[1]) ? $matches[1] : '';
+                                                           }
+                                                           ?>">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">h</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-4">
+                                                <div class="input-group input-group-sm">
+                                                    <input type="number" id="duracion_minutos" class="form-control" 
+                                                           placeholder="0" min="0" max="59"
+                                                           value="<?php 
+                                                           if ($esEdicion && !empty($ruta['duracion_estimada'])) {
+                                                               preg_match('/(\d+)min/', $ruta['duracion_estimada'], $matches);
+                                                               echo isset($matches[1]) ? $matches[1] : '';
+                                                           }
+                                                           ?>">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">min</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" name="duracion_estimada" id="duracion_estimada_hidden">
+                                        <small class="form-text text-muted">Para cruceros/barcos usar días. Ej: 7 días, 2h 30min</small>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-3">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label><i class="fas fa-road"></i> Distancia (km)</label>
                                         <input type="number" name="distancia_km" class="form-control"
@@ -236,7 +284,7 @@ if (isset($_GET['id'])) {
                             </div>
                             
                             <div class="row">
-                                <div class="col-md-8">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label><i class="fas fa-image"></i> Foto Principal (URL)</label>
                                         <input type="text" name="foto_principal" class="form-control"
@@ -246,7 +294,7 @@ if (isset($_GET['id'])) {
                                     </div>
                                 </div>
                                 
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label><i class="fas fa-toggle-on"></i> Estado</label>
                                         <div class="custom-control custom-switch" style="padding-top: 8px;">
@@ -284,3 +332,29 @@ if (isset($_GET['id'])) {
 <!-- /.content-wrapper -->
 
 <?php include("includes/footer.php"); ?>
+
+<script>
+// Combinar días, horas y minutos en campo oculto antes de enviar
+$('#formRuta').on('submit', function(e) {
+    var dias = parseInt($('#duracion_dias').val()) || 0;
+    var horas = parseInt($('#duracion_horas').val()) || 0;
+    var minutos = parseInt($('#duracion_minutos').val()) || 0;
+    
+    if (dias > 0 || horas > 0 || minutos > 0) {
+        var duracionFormateada = '';
+        
+        if (dias > 0) {
+            duracionFormateada += dias + (dias === 1 ? ' día' : ' días');
+        }
+        if (horas > 0) {
+            duracionFormateada += (dias > 0 ? ' ' : '') + horas + 'h';
+        }
+        if (minutos > 0) {
+            duracionFormateada += (dias > 0 || horas > 0 ? ' ' : '') + minutos + 'min';
+        }
+        
+        $('#duracion_estimada_hidden').val(duracionFormateada);
+    }
+});
+</script>
+
