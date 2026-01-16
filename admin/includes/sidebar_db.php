@@ -16,6 +16,9 @@ function filterTreeByPermisos(array $nodes, $permisos) {
   foreach ($nodes as $node) {
     $children = $node['children'] ?? [];
     
+    // EXCEPCIÓN: NO filtrar el menú TRANSPORTE (se controla con F9/F8)
+    $esMenuTransporte = ($node['label'] === 'TRANSPORTE');
+    
     // RECURSIÓN: filtrar hijos primero
     $filteredChildren = [];
     foreach ($children as $child) {
@@ -37,7 +40,7 @@ function filterTreeByPermisos(array $nodes, $permisos) {
       if ($childRoute && $childRoute !== '#') {
         // Verificar permiso
         $tienePermiso = $permisos && method_exists($permisos, 'tienePermiso') && $permisos->tienePermiso($childRoute);
-        if ($tienePermiso) {
+        if ($tienePermiso || $esMenuTransporte) {
           $filteredChildren[] = $child;
         }
         // Si NO tiene permiso, NO SE AÑADE (se oculta)
@@ -51,13 +54,13 @@ function filterTreeByPermisos(array $nodes, $permisos) {
     $isParentOnly = ($route === '#');
     $node['children'] = $filteredChildren;
 
-    // Regla 1: Padres sin hijos visibles se ocultan
-    if ($isParentOnly && empty($filteredChildren)) {
+    // Regla 1: Padres sin hijos visibles se ocultan (EXCEPTO TRANSPORTE)
+    if ($isParentOnly && empty($filteredChildren) && !$esMenuTransporte) {
       continue;
     }
 
-    // Regla 2: Items con ruta navegable deben tener permiso explícito
-    if (!$isParentOnly) {
+    // Regla 2: Items con ruta navegable deben tener permiso explícito (EXCEPTO TRANSPORTE)
+    if (!$isParentOnly && !$esMenuTransporte) {
       if (!$route) {
         continue;
       }
