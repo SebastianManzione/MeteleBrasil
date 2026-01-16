@@ -1,13 +1,15 @@
 <?php
-session_start();
-require_once("classes/usuario.php");
-require_once("classes/transporte.php");
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('terminalAlta');
 
-// Validar sesión admin
-if (!isset($_SESSION['login'])) {
-    header("Location: ../login.php");
-    exit();
-}
+include("includes/header.php");
+include("includes/navbar.php");
+include("includes/sidebar.php");
+
+require_once("classes/transporte.php");
 
 $tipos = getAllTiposTransporte();
 
@@ -23,21 +25,37 @@ if (isset($_GET['id'])) {
     }
 }
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?=$esEdicion ? 'Editar' : 'Nueva'?> Terminal - Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <?php include("navbar.php"); ?>
-    
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-lg-8">
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        <?=$esEdicion ? 'Editar Terminal' : 'Nueva Terminal'?>
+                    </h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Transporte</a></li>
+                        <li class="breadcrumb-item"><a href="terminalesLista.php">Terminales</a></li>
+                        <li class="breadcrumb-item active"><?=$esEdicion ? 'Editar' : 'Nueva'?></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white">
                         <h4 class="mb-0">
@@ -184,13 +202,17 @@ if (isset($_GET['id'])) {
                         </p>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<?php include("includes/footer.php"); ?>
+
+<script>
     // Validación del formulario
     $('#formTerminal').on('submit', function(e) {
         var latitud = $('input[name="latitud"]').val();
@@ -210,9 +232,7 @@ if (isset($_GET['id'])) {
         }
     });
     
-    function isValidCoordinate(value, min, max) {
-        var num = parseFloat(value);
-        return !isNaN(num) && num >= min && num <= max;
+    function  return !isNaN(num) && num >= min && num <= max;
     }
     </script>
 </body>

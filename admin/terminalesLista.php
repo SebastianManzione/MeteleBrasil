@@ -1,38 +1,53 @@
 <?php
-session_start();
-require_once("classes/usuario.php");
-require_once("classes/transporte.php");
+// Verificar permisos de acceso ANTES de cualquier salida
+require_once(__DIR__ . "/classes/permisos.php");
+require_once(__DIR__ . "/includes/permisos_helper.php");
+$permisos = new PermisosManager($GLOBALS['pdo'], $_SESSION['login'] ?? []);
+$permisos->verificarAcceso('terminalesLista');
 
-// Validar sesión admin
-if (!isset($_SESSION['login'])) {
-    header("Location: ../login.php");
-    exit();
-}
+include("includes/header.php");
+include("includes/navbar.php");
+include("includes/sidebar.php");
+
+require_once("classes/transporte.php");
 
 $terminales = getAllTerminales();
 $tipos = getAllTiposTransporte();
 
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminales de Transporte - Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        .badge-bus { background-color: #007bff; }
-        .badge-plane { background-color: #28a745; }
-        .badge-train { background-color: #ffc107; color: #000; }
-        .badge-ship { background-color: #17a2b8; }
-    </style>
-</head>
-<body>
-    <?php include("navbar.php"); ?>
-    
-    <div class="container-fluid mt-4">
+
+<style>
+    .badge-bus { background-color: #007bff; }
+    .badge-plane { background-color: #28a745; }
+    .badge-train { background-color: #ffc107; color: #000; }
+    .badge-ship { background-color: #17a2b8; }
+</style>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark"><i class="fas fa-map-marker-alt"></i> Terminales de Transporte</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Transporte</a></li>
+                        <li class="breadcrumb-item active">Terminales</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card shadow">
@@ -144,12 +159,16 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                                 <a href="terminalEditar.php?id=<?=$terminal['idTerminal']?>" 
                                                    class="btn btn-sm btn-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
-                                                </a>
-                                                <button onclick="eliminarTerminal(<?=$terminal['idTerminal']?>, '<?=$terminal['nombre']?>')" 
-                                                        class="btn btn-sm btn-danger" title="Eliminar">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            </td>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<?php include("includes/footer.php"); ?>
+
+                                        </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -197,9 +216,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     
     // Eliminar terminal
     function eliminarTerminal(id, nombre) {
-        if (confirm('¿Estás seguro de eliminar la terminal "' + nombre + '"?\n\nEsto puede afectar rutas y viajes asociados.')) {
-            window.location.href = 'ctrl/ctrlTerminales.php?action=delete&id=' + id;
-        }
+        if (c }
     }
     </script>
 </body>
