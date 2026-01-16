@@ -1869,7 +1869,7 @@ array(9) {
                     
                     <!-- Botones de acción -->
                     <form method="post" action="voucherCarrito" class="mb-3">
-                        <button type="submit" name="codigoAmigable" value="<?= $codigoAmigable; ?>"
+                        <button type="submit" name="codigoAmigable" id="voucherCarrito" value="<?= $codigoAmigable; ?>"
                                 class="btn btn-lg btn-block btn-radius shadow-sm"
                                 style="background-color: rgb(2, 156, 226); border-color: rgb(2, 156, 226); color: white;">
                             <i class="fas fa-file-alt mr-2"></i><?= $lang["detalles_reserva"] ?? "Detalles de la Reserva"; ?>
