@@ -22,6 +22,64 @@
       "stateSave":true
     });
 
+    // ==========================================
+    // SISTEMA DE TECLAS: F9 MOSTRAR / F8 OCULTAR MENÚ TRANSPORTE
+    // ==========================================
+    $(document).ready(function() {
+        // Leer estado inicial desde localStorage
+        var menuTransporteVisible = localStorage.getItem('menuTransporteVisible') === 'true';
+        
+        // Aplicar estado inicial
+        if (menuTransporteVisible) {
+            $('#menu-transporte-oculto').show();
+        } else {
+            $('#menu-transporte-oculto').hide();
+        }
+        
+        // Detectar teclas F9 y F8
+        $(document).on('keydown', function(e) {
+            // F9 = Mostrar menú (keyCode 120)
+            if (e.keyCode === 120) {
+                e.preventDefault();
+                $('#menu-transporte-oculto').slideDown(300);
+                localStorage.setItem('menuTransporteVisible', 'true');
+                
+                // Notificación visual
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Menú Transporte',
+                        text: 'Menú activado. Presiona F8 para ocultar.',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        toast: true
+                    });
+                }
+            }
+            
+            // F8 = Ocultar menú (keyCode 119)
+            if (e.keyCode === 119) {
+                e.preventDefault();
+                $('#menu-transporte-oculto').slideUp(300);
+                localStorage.setItem('menuTransporteVisible', 'false');
+                
+                // Notificación visual
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Menú Transporte',
+                        text: 'Menú desactivado. Presiona F9 para mostrar.',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        toast: true
+                    });
+                }
+            }
+        });
+    });
+
   
 </script>  
 <footer class="main-footer">

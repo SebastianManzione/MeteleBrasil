@@ -123,8 +123,12 @@ foreach ($tree as $node) {
     $route = htmlspecialchars($node['route']);
     $href = ($route !== '#') ? $route : '#';
     $activeClass = $activeTop ? 'active' : '';
+    
+    // IMPORTANTE: Ocultar menú TRANSPORTE (ID 41) - se muestra con F9/F8
+    $esMenuTransporte = ($label === 'TRANSPORTE');
+    $ocultarStyle = $esMenuTransporte ? ' id="menu-transporte-oculto" style="display:none;"' : '';
 ?>
-    <li class="nav-item <?= $hasChildren ? 'has-treeview' : '' ?> <?= $menuOpen ?>">
+    <li class="nav-item <?= $hasChildren ? 'has-treeview' : '' ?> <?= $menuOpen ?>"<?= $ocultarStyle ?>>
       <a href="<?= $href ?>" class="nav-link <?= $activeClass ?>">
         <i class="nav-icon <?= $iconClass . $colorClass ?>"></i>
         <p>

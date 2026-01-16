@@ -204,6 +204,52 @@ function insertRuta($datos) {
     return $pdo->lastInsertId();
 }
 
+function updateRuta($idRuta, $datos) {
+    require("conexion.php");
+    $consulta = "UPDATE ruta_transporte SET 
+                 nombre = :nombre,
+                 nombre_en = :nombre_en,
+                 nombre_pt = :nombre_pt,
+                 nombre_it = :nombre_it,
+                 descripcion = :descripcion,
+                 descripcion_en = :descripcion_en,
+                 descripcion_pt = :descripcion_pt,
+                 descripcion_it = :descripcion_it,
+                 idTipoTransporte = :idTipoTransporte,
+                 idEmpresa = :idEmpresa,
+                 idPrestador = :idPrestador,
+                 duracion_estimada = :duracion_estimada,
+                 distancia_km = :distancia_km,
+                 foto_principal = :foto_principal,
+                 habilitado = :habilitado
+                 WHERE idRuta = :idRuta";
+    $comando = $pdo->prepare($consulta);
+    $datos['idRuta'] = $idRuta;
+    return $comando->execute($datos);
+}
+
+function deleteRuta($idRuta) {
+    require("conexion.php");
+    
+    // Verificar si hay viajes asociados
+    $consultaViajes = "SELECT COUNT(*) as total FROM viaje_transporte WHERE idRuta = :idRuta";
+    $cmdViajes = $pdo->prepare($consultaViajes);
+    $cmdViajes->execute(['idRuta' => $idRuta]);
+    $resultado = $cmdViajes->fetch(PDO::FETCH_ASSOC);
+    
+    if ($resultado['total'] > 0) {
+        // Si hay viajes, solo deshabilitar
+        $consulta = "UPDATE ruta_transporte SET habilitado = 0 WHERE idRuta = :idRuta";
+        $comando = $pdo->prepare($consulta);
+        return $comando->execute(['idRuta' => $idRuta]);
+    } else {
+        // Si no hay viajes, eliminar completamente
+        $consulta = "DELETE FROM ruta_transporte WHERE idRuta = :idRuta";
+        $comando = $pdo->prepare($consulta);
+        return $comando->execute(['idRuta' => $idRuta]);
+    }
+}
+
 // ========================================
 // PARADAS DE RUTA (origen/destino múltiples)
 // ========================================
