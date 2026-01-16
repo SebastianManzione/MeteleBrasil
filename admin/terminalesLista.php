@@ -53,8 +53,8 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                 <div class="card shadow">
                     <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                         <h4 class="mb-0"><i class="fas fa-map-marker-alt"></i> Terminales de Transporte</h4>
-                        <a href="terminalAlta.php" class="btn btn-light">
-                            <i class="fas fa-plus"></i> Nueva Terminal
+                        <a href="terminalAlta.php" class="btn btn-light btn-sm">
+                            <i class="fas fa-plus"></i> <span class="d-none d-sm-inline">Nueva Terminal</span>
                         </a>
                     </div>
                     <div class="card-body">
