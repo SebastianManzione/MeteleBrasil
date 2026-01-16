@@ -159,16 +159,12 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                                 <a href="terminalEditar.php?id=<?=$terminal['idTerminal']?>" 
                                                    class="btn btn-sm btn-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
-            </div>
-        </div>
-    </section>
-    <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
-
-<?php include("includes/footer.php"); ?>
-
-                                        </td>
+                                                </a>
+                                                <button onclick="eliminarTerminal(<?=$terminal['idTerminal']?>, '<?=$terminal['nombre']?>')" 
+                                                        class="btn btn-sm btn-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -185,11 +181,15 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                 </div>
             </div>
         </div>
-    </div>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<?php include("includes/footer.php"); ?>
+
+<script>
     // Filtro por tipo
     $('#filtroTipo').change(function() {
         var tipo = $(this).val();
@@ -216,8 +216,8 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     
     // Eliminar terminal
     function eliminarTerminal(id, nombre) {
-        if (c }
+        if (confirm('¿Estás seguro de eliminar la terminal "' + nombre + '"?\n\nEsto puede afectar rutas y viajes asociados.')) {
+            window.location.href = 'ctrl/ctrlTerminales.php?action=delete&id=' + id;
+        }
     }
     </script>
-</body>
-</html>
