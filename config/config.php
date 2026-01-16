@@ -32,7 +32,7 @@ if (!defined('APP_ENV')) {
     if (APP_ENV === 'dev') {
           
         define('DB_HOST', 'localhost');
-        define('DB_NAME', 'metelebrasil');
+        define('DB_NAME', 'metelebrasil_experimental'); // BD para cambios grosos
         define('DB_USER', 'root');
         define('DB_PASS', '');
     } else {
