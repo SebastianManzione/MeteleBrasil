@@ -705,7 +705,7 @@ if ($idUsuario==$usuarios[$i]["idUsuario"]) {
 
 
     
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBim3Kla3BvgU1PerQPd4kLAzhOH_yoP7c&callback=initMap&v=weekly" defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : ''; ?>&callback=initMap&v=weekly" defer></script>
 
 <div class="col-12">
   

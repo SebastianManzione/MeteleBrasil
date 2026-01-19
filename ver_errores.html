@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ver Consola</title>
+</head>
+<body>
+    <h1>Instrucciones para Debug:</h1>
+    <ol>
+        <li>Abre: <a href="http://localhost/metelebrasil_dev/servicio_contransporte.php?id=5" target="_blank">servicio_contransporte.php?id=5</a></li>
+        <li>Presiona F12 para abrir DevTools</li>
+        <li>Ve a la pestaña "Console"</li>
+        <li>Busca errores en rojo</li>
+        <li>Copia el error exacto aquí</li>
+    </ol>
+    
+    <h2>Verificaciones:</h2>
+    <ul>
+        <li>¿El contenedor #mapRecorrido existe en el HTML?</li>
+        <li>¿La variable paradasViaje está definida?</li>
+        <li>¿Google Maps se carga (async defer)?</li>
+        <li>¿Algún error 403/404 en Network?</li>
+    </ul>
+    
+    <h2>Test directo del JSON:</h2>
+    <iframe src="debug_viaje_mapa.php" width="100%" height="400"></iframe>
+</body>
+</html>

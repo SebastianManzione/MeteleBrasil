@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Hoteles - MeteleBrasil</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome/all.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container-custom {
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 40px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+        .header h1 {
+            color: #667eea;
+            font-weight: 700;
+        }
+        .step {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9ff;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .step h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .btn-primary-custom {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background 0.3s;
+            margin: 10px 5px 10px 0;
+        }
+        .btn-primary-custom:hover {
+            background: #764ba2;
+            color: white;
+            text-decoration: none;
+        }
+        .badge-new {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px;
+            margin-bottom: 8px;
+            border-left: 3px solid #667eea;
+            padding-left: 15px;
+        }
+        .feature-list li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .code {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 3px solid #ff6b6b;
+            font-family: monospace;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-custom">
+        <div class="header">
+            <h1><i class="fas fa-hotel"></i> Gestión de Hoteles <span class="badge-new">NUEVO</span></h1>
+            <p>Sistema de administración de hoteles para paquetes turísticos</p>
+        </div>
+
+        <!-- Paso 1 -->
+        <div class="step">
+            <h3>Paso 1: Accede a la Gestión de Hoteles</h3>
+            <p>Hay dos formas de agregar hoteles:</p>
+            <ul class="feature-list">
+                <li>Directamente desde el panel: <strong>Transporte → Hoteles</strong></li>
+                <li>URL directa:</li>
+            </ul>
+            <div class="code">http://localhost/metelebrasil_dev/admin/hotelLista.php</div>
+            <a href="admin/hotelLista.php" class="btn-primary-custom">
+                <i class="fas fa-hotel"></i> Ir a Hoteles
+            </a>
+        </div>
+
+        <!-- Paso 2 -->
+        <div class="step">
+            <h3>Paso 2: Crear un Nuevo Hotel</h3>
+            <p>En la lista de hoteles, haz clic en el botón "<strong>+ Nuevo Hotel</strong>"</p>
+            <p>Se abrirá un formulario donde debes completar:</p>
+            <ul class="feature-list">
+                <li><strong>Nombre del Hotel</strong> - Nombre completo</li>
+                <li><strong>Dirección</strong> - Calle y número</li>
+                <li><strong>Ciudad</strong> - Dónde está ubicado</li>
+                <li><strong>Provincia/Estado</strong> - Provincia o estado</li>
+                <li><strong>País</strong> - País donde está</li>
+                <li><strong>Teléfono</strong> (opcional) - Para contacto</li>
+                <li><strong>Email</strong> (opcional) - Para contacto</li>
+                <li><strong>Descripción</strong> (opcional) - Servicios y comodidades</li>
+            </ul>
+            <a href="admin/hotelAlta.php" class="btn-primary-custom">
+                <i class="fas fa-plus"></i> Crear Hotel Ahora
+            </a>
+        </div>
+
+        <!-- Paso 3 -->
+        <div class="step">
+            <h3>Paso 3: Guardar el Hotel</h3>
+            <p>Una vez completados los datos básicos, haz clic en "<strong>Crear Hotel</strong>"</p>
+            <p>El sistema automáticamente:</p>
+            <ul class="feature-list">
+                <li>Asigna el tipo "hotel" al registro</li>
+                <li>Obtiene las coordenadas GPS (si no las ingresas)</li>
+                <li>Lo marca como "Habilitado" por defecto</li>
+                <li>Lo guarda en la base de datos</li>
+            </ul>
+        </div>
+
+        <!-- Paso 4 -->
+        <div class="step">
+            <h3>Paso 4: Usar Hoteles en Paquetes Turísticos</h3>
+            <p>Una vez creados, los hoteles se pueden usar en:</p>
+            <ul class="feature-list">
+                <li>Rutas de transporte (como parada intermedia)</li>
+                <li>Paquetes turísticos (como alojamiento)</li>
+                <li>Tours con hospedaje</li>
+                <li>Excursiones de varios días</li>
+            </ul>
+            <p><strong>Para usar un hotel en una ruta:</strong></p>
+            <div class="code">
+Transporte → Rutas → Editar Ruta → Paradas → Agregar Parada<br>
+(El hotel aparecerá en la lista agrupado por tipo)
+            </div>
+        </div>
+
+        <!-- Información -->
+        <div class="step">
+            <h3><i class="fas fa-info-circle"></i> Información Importante</h3>
+            <ul class="feature-list">
+                <li>Los hoteles se almacenan como "paradas" de tipo "hotel"</li>
+                <li>Puedes editar un hotel: Hoteles → Editar (lápiz)</li>
+                <li>Puedes eliminar un hotel: Hoteles → Eliminar (basura)</li>
+                <li>Los hoteles pueden estar activos o inactivos</li>
+                <li>Las coordenadas se geocodifican automáticamente si las dejas vacías</li>
+            </ul>
+        </div>
+
+        <!-- Ejemplos -->
+        <div class="step">
+            <h3><i class="fas fa-star"></i> Ejemplos de Hoteles a Crear</h3>
+            <p><strong>Para paquetes turísticos, puedes agregar:</strong></p>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th>Hotel</th>
+                        <th>Ciudad</th>
+                        <th>País</th>
+                        <th>Uso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Hotel Paradise</td>
+                        <td>Mendoza</td>
+                        <td>Argentina</td>
+                        <td>Paquete de viñas</td>
+                    </tr>
+                    <tr>
+                        <td>Hostería La Posada</td>
+                        <td>Puerto Iguazú</td>
+                        <td>Argentina</td>
+                        <td>Tour Cataratas</td>
+                    </tr>
+                    <tr>
+                        <td>Hotel Floripa Beach</td>
+                        <td>Florianópolis</td>
+                        <td>Brasil</td>
+                        <td>Paquete playa</td>
+                    </tr>
+                    <tr>
+                        <td>Resort Rio Spa</td>
+                        <td>Río de Janeiro</td>
+                        <td>Brasil</td>
+                        <td>Paquete de lujo</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Resumen -->
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 8px; text-align: center; margin-top: 30px;">
+            <h3 style="color: white;"><i class="fas fa-check-circle"></i> ¡Listo para Comenzar!</h3>
+            <p style="margin-bottom: 20px;">El sistema de hoteles está completamente integrado con tus paquetes turísticos.</p>
+            <a href="admin/hotelLista.php" class="btn btn-light" style="padding: 10px 30px;">
+                <i class="fas fa-hotel"></i> Ir a Hoteles Ahora
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #666; font-size: 13px;">
+            <p>Sistema de Transporte y Turismo • MeteleBrasil v2.0</p>
+            <p>Los hoteles se integran automáticamente con paquetes turísticos</p>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

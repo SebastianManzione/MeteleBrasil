@@ -642,7 +642,7 @@ body {
 
     <script
 
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBEshzf3yb1ZWmvpGJSskvgCMYGbkiRIPw&callback=initMap&v=weekly"
+      src="https://maps.googleapis.com/maps/api/js?key=<?php echo defined('GOOGLE_MAPS_API_KEY') ? GOOGLE_MAPS_API_KEY : ''; ?>&callback=initMap&v=weekly"
 
       defer
 

@@ -187,12 +187,66 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 $idioma = isset($_SESSION["idioma"]) ? $_SESSION["idioma"] : "ES";
 
-$busqueda="%".$busqueda."%";
-$consulta = "SELECT * FROM servicio WHERE nombre_servicio LIKE :busqueda  AND habilitado=1
-OR descripcion_servicio LIKE :busqueda  AND habilitado=1
-OR descripcion_corta LIKE :busqueda AND habilitado=1";
+// BÚSQUEDA FLEXIBLE: Ignora stopwords y busca por palabras individuales
+$stopwords = ['de', 'del', 'la', 'el', 'los', 'las', 'un', 'una', 'y', 'en', 'a', 'con', 'por', 'para'];
+$palabras = explode(' ', strtolower(trim($busqueda)));
+$palabras = array_filter($palabras, function($palabra) use ($stopwords) {
+    return strlen($palabra) > 2 && !in_array($palabra, $stopwords);
+});
+
+// Si no quedan palabras después de filtrar, usar búsqueda original
+if (empty($palabras)) {
+    $palabras = [trim($busqueda)];
+}
+
+// Construir condiciones WHERE para cada palabra
+$whereClauses = [];
+$params = [];
+$contador = 0;
+
+foreach ($palabras as $palabra) {
+    $param = "palabra" . $contador;
+    $palabraBusqueda = "%" . $palabra . "%";
+    
+    $whereClauses[] = "(nombre_servicio LIKE :$param OR descripcion_corta LIKE :$param OR descripcion_servicio LIKE :$param)";
+    $params[$param] = $palabraBusqueda;
+    $contador++;
+}
+
+$whereCondition = implode(' AND ', $whereClauses);
+
+// ORDENAMIENTO POR RELEVANCIA:
+// 1. Coincidencias en nombre_servicio (más relevante)
+// 2. Coincidencias en descripcion_corta
+// 3. Coincidencias en descripcion_servicio (menos relevante)
+$consulta = "SELECT *, 
+    CASE 
+        WHEN nombre_servicio LIKE :busqueda_completa THEN 1
+        WHEN descripcion_corta LIKE :busqueda_completa THEN 2
+        WHEN descripcion_servicio LIKE :busqueda_completa THEN 3
+        WHEN nombre_servicio LIKE :primera_palabra THEN 4
+        WHEN descripcion_corta LIKE :primera_palabra THEN 5
+        ELSE 6
+    END as relevancia
+FROM servicio 
+WHERE ($whereCondition)
+AND habilitado=1
+ORDER BY relevancia ASC, nombre_servicio ASC";
+
 $comando = $pdo->prepare($consulta);
-$comando->execute(["busqueda"=>$busqueda]);
+
+// Agregar parámetros de búsqueda
+foreach ($params as $key => $value) {
+    $comando->bindValue(":$key", $value);
+}
+
+// Agregar búsqueda completa y primera palabra para relevancia
+$busquedaCompleta = "%" . trim($busqueda) . "%";
+$primeraPalabra = "%" . reset($palabras) . "%";
+$comando->bindValue(":busqueda_completa", $busquedaCompleta);
+$comando->bindValue(":primera_palabra", $primeraPalabra);
+
+$comando->execute();
 $cuenta_col = $comando->columnCount();
 $resultado = $comando->fetchAll(PDO::FETCH_ASSOC);
 

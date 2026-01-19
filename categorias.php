@@ -60,8 +60,13 @@ if (isset($_GET['pagina'])) {
 }
 
 $queryString = http_build_query($params);
+
+// PRIORIDAD: Si hay búsqueda activa, IGNORAR filtros de distancia automáticos
+$hay_busqueda = isset($_GET["buscar"]) && !empty($_GET["buscar"]);
+
+// Obtener filtros de URL (si el usuario los seleccionó)
 $orden_precio = isset($_GET['orden_precio']) ? $_GET['orden_precio'] : '';
-$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : 'cercano'; // Por defecto: más cercano
+$orden_distancia = isset($_GET['orden_distancia']) ? $_GET['orden_distancia'] : '';
 $orden_duracion = isset($_GET['orden_duracion']) ? $_GET['orden_duracion'] : '';
 
 if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
@@ -76,12 +81,13 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $opiniones_categoria = OpinionesCategoria($id);
   $cantidad_opiniones_categoria = count($opiniones_categoria);
   $fotos = $categorias[0]["img_categoria_servicio"];
-} else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
-  // CASO 2: Búsqueda con término específico
+} else if ($hay_busqueda) {
+  // CASO 2: Búsqueda con término específico - PRIORIDAD MÁXIMA
   $busqueda = $_GET["buscar"];
   $idCategoria = 0;
-  $servicios = getServiciosBusquedaPaginada($_GET["buscar"], $desde, $cantidad_por_pagina);
-  $cantidad_servicios_categoria = count(getServiciosBusqueda($_GET["buscar"]));
+  // No paginar aún, se hará después de aplicar filtros de ordenamiento
+  $servicios = getServiciosBusqueda($_GET["buscar"]);
+  $cantidad_servicios_categoria = count($servicios);
   $categorias = getCategorias();
   $nViajeros = rand(690, 1200);
   $nombre_categoria = isset($lang["todas_las_categorias"]) ? $lang["todas_las_categorias"] : "Todas Las Categorías";
@@ -89,7 +95,7 @@ if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
   $cantidad_opiniones_categoria = rand(100, 500);
   $fotos = "sinCategoria.jpg";
 } else {
-  // CASO 3: Todas las categorías (sin búsqueda o con búsqueda vacía)
+  // CASO 3: Todas las categorías (sin búsqueda)
   $idCategoria = 0;
   $servicios = getServiciosPaginado($desde, $cantidad_por_pagina);
   $cantidad_servicios_categoria = count(getServicios());
@@ -143,13 +149,84 @@ $sliderCount = count($sliderImages);
 $showSliderControls = $sliderCount > 1;
 
 // ========== APLICAR ORDENAMIENTO (ANTES DE PAGINACIÓN) ==========
-// Combinable: proximidad (cercano/lejano) + precio (asc/desc)
-if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
-    // Obtener TODOS los servicios (sin paginar)
+// REGLA: En búsquedas, RELEVANCIA es criterio PRINCIPAL, filtros son SECUNDARIOS
+
+// Si hay búsqueda activa
+if ($hay_busqueda) {
+    // Los servicios ya están cargados desde getServiciosBusqueda() con campo 'relevancia'
+    $servicios_completos = $servicios;
+    
+    // Aplicar filtros SOLO si el usuario los seleccionó explícitamente
+    $hay_filtros = ($orden_distancia !== '' || $orden_precio !== '' || $orden_duracion !== '');
+    
+    if ($hay_filtros) {
+        // IMPORTANTE: Los filtros se aplican como DESEMPATE dentro de cada nivel de relevancia
+        
+        // Calcular distancia para cada servicio (si hay filtro de distancia)
+        if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && 
+            isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
+            $latUsuario = (float)$_SESSION['geoFinal']['latitud'];
+            $lonUsuario = (float)$_SESSION['geoFinal']['longitud'];
+            
+            // Calcular distancia sin reordenar aún
+            foreach ($servicios_completos as &$servicio) {
+                $servicio['distancia_km'] = calcularDistanciaServicio($servicio, $latUsuario, $lonUsuario);
+            }
+        }
+        
+        // Calcular precio mínimo (si hay filtro de precio)
+        if ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
+            foreach ($servicios_completos as &$servicio) {
+                $servicio['precio_min'] = obtenerPrecioMinimo($servicio);
+            }
+        }
+        
+        // ORDENAMIENTO MULTI-CRITERIO:
+        // 1° RELEVANCIA (campo del query SQL)
+        // 2° Filtro seleccionado (distancia, precio o duración)
+        usort($servicios_completos, function($a, $b) use ($orden_distancia, $orden_precio, $orden_duracion) {
+            // PRIMERO: Ordenar por relevancia (1=nombre, 2=descripción corta, 3=descripción larga)
+            $relevanciaCompare = ($a['relevancia'] ?? 999) <=> ($b['relevancia'] ?? 999);
+            if ($relevanciaCompare !== 0) {
+                return $relevanciaCompare; // Si tienen diferente relevancia, usar eso
+            }
+            
+            // SEGUNDO: Si tienen la MISMA relevancia, aplicar filtro como desempate
+            
+            // Filtro de distancia
+            if ($orden_distancia === 'cercano') {
+                return ($a['distancia_km'] ?? 999999) <=> ($b['distancia_km'] ?? 999999);
+            } elseif ($orden_distancia === 'lejano') {
+                return ($b['distancia_km'] ?? 0) <=> ($a['distancia_km'] ?? 0);
+            }
+            
+            // Filtro de precio
+            if ($orden_precio === 'price_asc') {
+                return ($a['precio_min'] ?? PHP_INT_MAX) <=> ($b['precio_min'] ?? PHP_INT_MAX);
+            } elseif ($orden_precio === 'price_desc') {
+                return ($b['precio_min'] ?? 0) <=> ($a['precio_min'] ?? 0);
+            }
+            
+            // Filtro de duración
+            if ($orden_duracion === 'duracion_asc') {
+                return ($a['duracion_horas'] ?? 999) <=> ($b['duracion_horas'] ?? 999);
+            } elseif ($orden_duracion === 'duracion_desc') {
+                return ($b['duracion_horas'] ?? 0) <=> ($a['duracion_horas'] ?? 0);
+            }
+            
+            // Si no hay filtro activo, mantener orden alfabético
+            return strcmp($a['nombre_servicio'] ?? '', $b['nombre_servicio'] ?? '');
+        });
+    }
+    
+    // Aplicar paginación sobre resultados ordenados
+    $servicios = array_slice($servicios_completos, $desde, $cantidad_por_pagina);
+    $total_registros = count($servicios_completos);
+    
+} elseif (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($_SESSION['geoFinal']['latitud']) && isset($_SESSION['geoFinal']['longitud'])) {
+    // SIN BÚSQUEDA: Aplicar ordenamiento normal por distancia
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
-    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
-        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
     } else {
         $servicios_completos = getServicios();
     }
@@ -173,11 +250,9 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
     $total_registros = count($servicios_ordenados);
 } elseif ($orden_precio === 'price_asc' || $orden_precio === 'price_desc') {
-    // Solo ordenamiento por precio (sin distancia)
+    // SIN BÚSQUEDA: Solo ordenamiento por precio (sin distancia)
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
-    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
-        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
     } else {
         $servicios_completos = getServicios();
     }
@@ -186,11 +261,9 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
     $servicios = array_slice($servicios_ordenados, $desde, $cantidad_por_pagina);
     $total_registros = count($servicios_ordenados);
 } elseif ($orden_duracion === 'duracion_asc' || $orden_duracion === 'duracion_desc') {
-    // Solo ordenamiento por duración (sin distancia ni precio)
+    // SIN BÚSQUEDA: Solo ordenamiento por duración
     if (isset($_GET["idCategoria"]) && $_GET['idCategoria'] > 0) {
         $servicios_completos = getServiciosidCategoria_servicio($idCategoria);
-    } else if (isset($_GET["buscar"]) && !empty($_GET["buscar"])) {
-        $servicios_completos = getServiciosBusqueda($_GET["buscar"]);
     } else {
         $servicios_completos = getServicios();
     }
@@ -202,6 +275,76 @@ if (($orden_distancia === 'cercano' || $orden_distancia === 'lejano') && isset($
 
 // ========== FUNCIONES AUXILIARES ==========
 // Nota: haversineKm() ya está definida en admin/classes/servicio.php
+
+/**
+ * Calcula la distancia mínima de un servicio al usuario
+ * Versión optimizada para búsquedas
+ */
+function calcularDistanciaServicio($servicio, $latUsuario, $lonUsuario) {
+    require('admin/classes/conexion.php');
+    
+    $idServicio = $servicio['idServicio'];
+    $minKm = 99999.0;
+    
+    // Obtener ubicaciones del servicio
+    $consulta = "
+        SELECT DISTINCT u.latitud, u.longitud
+        FROM servicio_salidas ss
+        JOIN servicio_salidas_tarifas st ON st.idServicioSalidas = ss.idServicioSalidas
+        JOIN servicio_tarifas_ubicacion u ON u.idServicioSalidasTarifas = st.idServicioSalidasTarifas
+        WHERE ss.idServicio = :idServicio
+          AND u.latitud IS NOT NULL
+          AND u.longitud IS NOT NULL
+        LIMIT 5
+    ";
+    
+    $comando = $pdo->prepare($consulta);
+    $comando->execute([':idServicio' => $idServicio]);
+    $ubicaciones = $comando->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Calcular distancia mínima
+    foreach ($ubicaciones as $ubi) {
+        $distancia = haversineKm($latUsuario, $lonUsuario, $ubi['latitud'], $ubi['longitud']);
+        if ($distancia < $minKm) {
+            $minKm = $distancia;
+        }
+    }
+    
+    return round($minKm, 2);
+}
+
+/**
+ * Obtiene el precio mínimo de un servicio
+ * Versión optimizada para búsquedas
+ */
+function obtenerPrecioMinimo($servicio) {
+    require_once('admin/classes/salidas.php');
+    require_once('admin/classes/tarifas.php');
+    require_once('admin/classes/moneda.php');
+    
+    $idServicio = $servicio['idServicio'];
+    $fecha = date("Y-m-d");
+    $salidas = getSalidasFechaLuegoIdServicio($fecha, $idServicio);
+    
+    if (empty($salidas)) {
+        return PHP_INT_MAX; // Sin salidas = precio infinito (va al final)
+    }
+    
+    $precioMin = PHP_INT_MAX;
+    $monedaUsuario = $_SESSION['moneda_sel'] ?? 1;
+    
+    foreach ($salidas as $salida) {
+        $tarifas = getTarifas($salida['idServicioSalidas']);
+        foreach ($tarifas as $tarifa) {
+            $precioConvertido = ConvierteMoneda($tarifa['valor'], $tarifa['idMoneda'], $monedaUsuario);
+            if ($precioConvertido < $precioMin) {
+                $precioMin = $precioConvertido;
+            }
+        }
+    }
+    
+    return $precioMin;
+}
 
 /**
  * Aplica ordenamiento por proximidad a un array de servicios
@@ -992,6 +1135,22 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
       font-size: 0.95rem;
     }
 
+    /* ========== BOTONES HORIZONTALES CATEGORÍAS (hover fix) ========== */
+    /* Fix para que el texto sea visible en hover de botones outline-primary */
+    .btn-outline-primary:hover,
+    .btn-outline-primary:focus,
+    .btn-outline-primary:active {
+      color: #ffffff !important;
+      background-color: #029ce2 !important;
+      border-color: #029ce2 !important;
+    }
+
+    .btn-outline-primary:hover i,
+    .btn-outline-primary:focus i,
+    .btn-outline-primary:active i {
+      color: #ffffff !important;
+    }
+
     /* ========== NO RESULTADOS ========== */
     .no-results {
       text-align: center;
@@ -1146,23 +1305,23 @@ function generarFiltrosCategorias($idCategoria, $busqueda, $orden, $lang) {
               <div class="row">
                  <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
                   <i class="text-white fa fa-hiking fa-2x"></i>
-                  <p class="texto-bottom mb-0"><?= $cantidad_servicios_categoria; ?></p>
+                  <p class="texto-bottom mb-0" style="font-size: 36px; font-weight: bold;"><?= $cantidad_servicios_categoria; ?></p>
                   <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["actividades"]) ? $lang["actividades"] : 'Actividades'; ?></p>
                 </div>
                  <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
                   <i class="text-white fa fa-users fa-2x"></i>
-                  <p class="texto-bottom mb-0"><?= $nViajeros; ?></p>
+                  <p class="texto-bottom mb-0" style="font-size: 36px; font-weight: bold;"><?= $nViajeros; ?></p>
                   <p class="texto-bottom"style="font-size: 25px; margin-top: 5px;"><?= isset($lang["viajeros_lo_han_disfrutado"]) ? $lang["viajeros_lo_han_disfrutado"] : 'Viajeros'; ?></p>
                 </div>
                  <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
                   <i class="text-white fa fa-comment-dots fa-2x"></i>
-                  <p class="texto-bottom mb-0"><?= $cantidad_opiniones_categoria; ?></p>
+                  <p class="texto-bottom mb-0" style="font-size: 36px; font-weight: bold;"><?= $cantidad_opiniones_categoria; ?></p>
                   <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["opiniones_reales"]) ? $lang["opiniones_reales"] : 'Opiniones reales'; ?></p>
                 </div>
                 
                   <div class="col-lg-3 col-md-3 col-3" style="font-size: 20px; margin-top: 5px;">
                   <i class="text-white fa fa-star fa-2x"></i>
-                  <p class="texto-bottom mb-0">9,2</p>
+                  <p class="texto-bottom mb-0" style="font-size: 36px; font-weight: bold;">9,2</p>
                   <p class="texto-bottom" style="font-size: 25px; margin-top: 5px;"><?= isset($lang["asi_nos_puntuan"]) ? $lang["asi_nos_puntuan"] : 'Así nos puntúan'; ?></p>
                 </div>
               </div>

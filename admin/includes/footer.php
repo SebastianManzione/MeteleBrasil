@@ -32,8 +32,10 @@
         // Aplicar estado inicial
         if (menuTransporteVisible) {
             $('#menu-transporte-oculto').show();
+            $('#menu-hoteles-oculto').show();
         } else {
             $('#menu-transporte-oculto').hide();
+            $('#menu-hoteles-oculto').hide();
         }
         
         // Detectar teclas F9 y F8
@@ -42,14 +44,15 @@
             if (e.keyCode === 120) {
                 e.preventDefault();
                 $('#menu-transporte-oculto').slideDown(300);
+                $('#menu-hoteles-oculto').slideDown(300);
                 localStorage.setItem('menuTransporteVisible', 'true');
                 
                 // Notificación visual
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
                         icon: 'info',
-                        title: 'Menú Transporte',
-                        text: 'Menú activado. Presiona F8 para ocultar.',
+                        title: 'Menús ocultos',
+                        text: 'Transporte y Hoteles activados. Presiona F8 para ocultar.',
                         timer: 2000,
                         showConfirmButton: false,
                         position: 'top-end',
@@ -62,14 +65,15 @@
             if (e.keyCode === 119) {
                 e.preventDefault();
                 $('#menu-transporte-oculto').slideUp(300);
+                $('#menu-hoteles-oculto').slideUp(300);
                 localStorage.setItem('menuTransporteVisible', 'false');
                 
                 // Notificación visual
                 if (typeof Swal !== 'undefined') {
                     Swal.fire({
                         icon: 'info',
-                        title: 'Menú Transporte',
-                        text: 'Menú desactivado. Presiona F9 para mostrar.',
+                        title: 'Menús ocultos',
+                        text: 'Transporte y Hoteles desactivados. Presiona F9 para mostrar.',
                         timer: 2000,
                         showConfirmButton: false,
                         position: 'top-end',

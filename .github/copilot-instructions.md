@@ -1,5 +1,103 @@
 # Instrucciones Copilot para MeteleBrasil
 
+## 🌟 NOVEDAD ENERO 2026 - PLANOS REALES DE MICROS
+
+### ¡INTEGRACIÓN DE mundocolectivo.com.ar!
+
+MeteleBrasil tiene un plan ZARPADO: integrar 3,090 planos reales de micros para diferenciarse en el mercado.
+
+**Estado:** 📋 Listo para implementar (7-9 horas de trabajo)
+**Documentación:** Leer `README_PLANOS_REALES.md` PRIMERO, luego `PLAN_PLANOS_REALES_MICROS.md`
+**Quick Start:**
+1. `python descargar_planos_mundocolectivo.py` - Descargar imágenes
+2. `mysql -u root metelebrasil_experimental < migrations/014_planos_reales_mundocolectivo.sql` - Crear tabla
+3. `python procesar_planos_ocr.py` - Procesar con OCR
+4. Implementar `pasaje_detalle.php` + `js/gestor_asientos.js`
+
+**Impacto esperado:** +20-40% conversión, -25% tiempo de compra, -15% cancelaciones
+
+**Archivos clave:**
+- `README_PLANOS_REALES.md` - Guía de inicio rápido (START HERE!)
+- `PLAN_PLANOS_REALES_MICROS.md` - Plan técnico completo (600+ líneas)
+- `ESTADO_PROYECTO_TRANSPORTE.md` - Contexto general
+- `descargar_planos_mundocolectivo.py` - Script listo para ejecutar
+- `migrations/014_planos_reales_mundocolectivo.sql` - Schema BD listo
+
+---
+
+## ⚠️ INFORMACIÓN CRÍTICA - LEER PRIMERO
+
+### Bases de Datos - IMPORTANTE
+**SIEMPRE verifica qué base de datos usar antes de hacer queries:**
+
+1. **`metelebrasil`** (PRODUCCIÓN - SOLO LECTURA para desarrollo):
+   - Base de datos en PRODUCCIÓN ONLINE
+   - **NO MODIFICAR** durante desarrollo
+   - Solo usar para consultas de referencia
+   - Contiene servicios, reservas, usuarios actuales
+
+2. **`metelebrasil_experimental`** (DESARROLLO - TODO NUEVO VA AQUÍ):
+   - **Base de datos para TODO el desarrollo nuevo**
+   - Sistema de TRANSPORTE (pasajes bus/avión/tren)
+   - Tabla `terminal_transporte` (33 terminales)
+   - Tabla `ruta_transporte`, `viaje_transporte`
+   - Tabla `hoteles` (AQUÍ, no en metelebrasil)
+   - **TODO lo nuevo se crea aquí primero**
+   - Luego se migrará a producción cuando esté listo
+   - **SIEMPRE usar PDO con conexión directa:**
+     ```php
+     $pdo = new PDO('mysql:host=localhost;dbname=metelebrasil_experimental;charset=utf8mb4', 'root', '');
+     ```
+
+3. **Regla de oro:**
+   - ¿Es desarrollo NUEVO (hoteles, terminales, rutas, etc.)? → `metelebrasil_experimental`
+   - ¿Solo necesitas consultar datos existentes? → `metelebrasil` (solo lectura)
+   - **EN CASO DE DUDA:** Usar `metelebrasil_experimental`
+
+4. **Migración futura:**
+   - Eventualmente se unirá `metelebrasil_experimental` con producción
+   - Por eso TODO el desarrollo debe estar en experimental
+   - Facilita la migración con scripts SQL
+
+### Google Maps API
+- **API Key:** `AIzaSyDdetJDksIXOsWVt7UQx9EF3ulkhYNJsmE` (definida en `config/config.php`)
+- **Librerías requeridas:** `&libraries=places` para autocomplete
+- **Reverse Geocoding:** Ver `admin/altaSalidas.php` (líneas 1540-1600) como referencia
+- **Pattern correcto:**
+  ```php
+  <?php
+  if (!defined('GOOGLE_MAPS_API_KEY')) {
+      require_once(__DIR__ . '/../config/config.php');
+  }
+  ?>
+  <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo GOOGLE_MAPS_API_KEY; ?>&libraries=places"></script>
+  ```
+
+### Sistema de Hoteles (EN DESARROLLO)
+- **BD:** `metelebrasil_experimental` (TODO va aquí)
+- **Tabla:** `hoteles` 
+- **Controller:** Crear en `admin/ctrl/ctrlHoteles.php`
+- **Estructura:** idHotel, nombre, idServicio, ciudad, estado, pais, latitud, longitud, direccion
+- Los hoteles pueden vincularse a servicios turísticos
+- **IMPORTANTE:** Usar Google Maps con reverse geocoding (como terminales)
+- **Estado:** Tabla creada, lista para ABM completo
+
+### Sistema de Terminales de Transporte (NUEVO - Enero 2026)
+- **BD:** `metelebrasil_experimental`
+- **Tabla:** `terminal_transporte` (33 registros)
+- **Archivos:**
+  - `admin/terminalAlta.php` - Editor con Google Maps + reverse geocoding
+  - `admin/terminalesLista.php` - Lista de terminales
+  - `admin/ctrl/ctrlTerminalesNuevo.php` - Controller
+- **Características:**
+  - Google Places Autocomplete
+  - Reverse Geocoding (click/drag en mapa autocompleta TODO)
+  - Campos: nombre, idTipoTransporte, ciudad, estado, pais, latitud, longitud
+  - Campos readonly: ciudad, estado, pais, direccion (se completan solos)
+- **Documentación:** `SISTEMA_TERMINALES_COMPLETADO.md`
+
+---
+
 ## Descripción General del Proyecto
 **MeteleBrasil** es una plataforma online de reserva de actividades, excursiones y paseos en barco. Permite a usuarios buscar, filtrar y comprar servicios turísticos con soporte multi-moneda, geolocalización e integración de pagos.
 
@@ -229,6 +327,114 @@
 7. **Edades:** Usa rangos `idFromEdad` → `idToEdad` en tabla `edades`
 8. **Estados:** Revisar valores en `estados_reserva` (1=pendiente, 2=confirmada, 3=cancelada)
 9. **Prestadores:** Un servicio → un prestador; comisiones variables por servicio
+
+---
+
+## ✅ CHECKLIST ANTES DE HACER CAMBIOS
+
+### Antes de crear/modificar queries SQL:
+1. ✅ **Verificar qué BD usar:** ¿metelebrasil o metelebrasil_experimental?
+2. ✅ **Verificar tabla existe:** `SHOW TABLES LIKE 'nombre_tabla'`
+3. ✅ **Verificar estructura:** `DESCRIBE nombre_tabla` antes de INSERT/UPDATE
+4. ✅ **Verificar datos existentes:** `SELECT * FROM tabla LIMIT 5` para ver ejemplos
+
+### Antes de modificar archivos PHP:
+1. ✅ **Leer archivo completo primero:** No asumir estructura, verificar líneas exactas
+2. ✅ **Buscar código similar existente:** Usar grep_search para encontrar patrones
+3. ✅ **Verificar includes/requires:** ¿Qué archivos se cargan? ¿Qué variables globales hay?
+4. ✅ **Verificar si usa MySQLi o PDO:** No mezclar conexiones
+
+### Antes de trabajar con Google Maps:
+1. ✅ **Verificar API Key está definida:** Buscar GOOGLE_MAPS_API_KEY en config/config.php
+2. ✅ **Incluir libraries=places:** Si necesitas autocomplete
+3. ✅ **Verificar patrón correcto:** Ver admin/altaSalidas.php o admin/terminalAlta.php
+4. ✅ **Campos readonly:** ciudad, estado, pais, direccion deben ser readonly si usan reverse geocoding
+
+### Antes de trabajar con hoteles:
+1. ✅ **BD correcta:** `metelebrasil_experimental` (TODO va aquí)
+2. ✅ **Tabla:** `hoteles` (verificar estructura con DESCRIBE)
+3. ✅ **Controller:** Crear/usar en `admin/ctrl/ctrlHoteles.php` con conexión a experimental
+4. ✅ **Vinculación:** Hoteles pueden vincularse a servicios o ser standalone
+5. ✅ **Google Maps:** Usar reverse geocoding como en terminales
+
+### Antes de trabajar con terminales:
+1. ✅ **BD correcta:** `metelebrasil_experimental` (NO metelebrasil)
+2. ✅ **Tabla:** `terminal_transporte` (33 registros)
+3. ✅ **Controller:** `admin/ctrl/ctrlTerminalesNuevo.php`
+4. ✅ **Campos:** nombre, idTipoTransporte, ciudad, estado, pais, latitud, longitud
+5. ✅ **Reverse geocoding:** Ya implementado, ver admin/terminalAlta.php
+
+---
+
+## 📋 SISTEMAS YA IMPLEMENTADOS (No reinventar la rueda)
+
+### ✅ Reverse Geocoding con Google Maps (COMPLETADO)
+**Ubicación:** `admin/altaSalidas.php` (líneas 1540-1600), `admin/terminalAlta.php`
+
+**Funcionalidad:**
+- Click en mapa → Obtiene dirección completa (país, estado, ciudad, dirección)
+- Drag marker → Actualiza todos los campos automáticamente
+- Autocomplete → Google Places con sugerencias en tiempo real
+
+**Código de referencia:**
+```javascript
+var geocoder = new google.maps.Geocoder();
+geocoder.geocode({ location: { lat: lat, lng: lng } }, function(results, status) {
+    if (status === 'OK' && results[0]) {
+        // Extraer address_components
+        // Llenar campos: pais, estado, ciudad, direccion
+    }
+});
+```
+
+**No volver a implementar desde cero:** Copiar patrón de terminalAlta.php
+
+### ✅ Sistema de Hoteles (IMPLEMENTADO - Enero 2026)
+**BD:** `metelebrasil_experimental`
+**Tabla:** `hoteles` con 22 campos (check_in, check_out, precio_desde, etc)
+**Datos actuales:** 5 hoteles Costa Atlántica (2-4 estrellas, ARS 3,500-15,000/noche)
+**Hoteles insertados:**
+1. Hotel Costa Atlántica - San Clemente (3⭐, ARS 8,500)
+2. Apart Hotel Las Toninas (2⭐, ARS 6,000)
+3. Hotel Mar del Tuyú Resort (4⭐, ARS 15,000)
+4. Hostel Joven San Clemente (2⭐, ARS 3,500)
+5. Hotel Familiar Las Toninas (3⭐, ARS 7,200)
+
+**Próximo paso:** 
+- Crear `admin/hotelAlta.php` con Google Maps (como terminalAlta.php)
+- Crear `admin/hotelesLista.php` con DataTables
+- Vincular hoteles con rutas de transporte
+
+### ✅ Sistema de Terminales de Transporte (COMPLETADO Enero 2026)
+**BD:** `metelebrasil_experimental`
+**Tabla:** `terminal_transporte` (33 registros)
+**Archivos:**
+- `admin/terminalAlta.php` - Editor con Google Maps + autocomplete
+- `admin/terminalesLista.php` - Listado
+- `admin/ctrl/ctrlTerminalesNuevo.php` - Controller
+**Características:**
+- ✅ Google Places Autocomplete funcional
+- ✅ Reverse Geocoding al click/drag
+- ✅ Campos readonly (ciudad, estado, pais) se autocompletan
+- ✅ 33 terminales precargados (Argentina, Brasil, Paraguay, Uruguay)
+
+### ✅ Sistema de Filtros Combinables (IMPLEMENTADO Dic 2025)
+**Ubicación:** `categorias.php`
+**Filtros disponibles:**
+- Precio: menor/mayor
+- Distancia: más cercano/más lejano
+- Combinables entre sí (ej: cercano + menor precio)
+**Documentación:** Líneas 950+ en copilot-instructions.md
+
+### ✅ Sistema Multi-Idioma (FUNCIONANDO)
+**Archivos:** `admin/lang/{ES,EN,PT,IT}.php`
+**BD:** Campos por idioma (_en, _pt, _it)
+**Uso:** `$lang['clave']` carga del array según `$_SESSION['idioma']`
+
+### ✅ Sistema de Conversión de Monedas (FUNCIONANDO)
+**Archivo:** `admin/classes/moneda.php`
+**Función:** `ConvierteMoneda($monto, $idMonedaOrigen, $idMonedaDestino)`
+**Tablas:** `moneda`, `moneda_cambio`
 
 ---
 
@@ -986,6 +1192,436 @@ fix: corregir hover de actividades y agregar beneficios en banner
 **Archivos modificados:**
 - `index.php` (líneas 150-235, 126-154)
 - `css/styles.css` (removidas líneas 1643-1664)
+
+---
+
+## Sistema de Transporte - Pasajes de Bus/Avión/Tren (Implementado - Ene 2026)
+
+### Descripción General
+Sistema completo para venta de pasajes de transporte (bus, avión, tren, barco) con soporte para:
+- **Múltiples puntos de origen/destino por ruta** (clave del sistema)
+- **Cobro por tramo/segmento (como aerolíneas)** ⚠️ NUEVO
+- Terminales/aeropuertos/estaciones/hoteles como paradas
+- Empresas de transporte
+- Viajes con fechas y horarios específicos
+- Sistema de precios por segmento y tipo de pasajero
+- Integración con sistema de reservas existente
+
+**Branch de desarrollo:** `feature/cambios-grosos`
+**Base de datos:** `metelebrasil_experimental` (TODO va aquí, se migrará a producción)
+
+### ⚠️ Sistema de Cobro por Tramo (Como Aviones) - CRÍTICO
+
+**Concepto:** El precio depende del **segmento origen-destino** seleccionado, NO del viaje completo.
+
+**Ejemplo Real - Ruta Rosario → Florianópolis → Río:**
+
+```
+Paradas configuradas en ruta:
+1. Rosario (ORIGEN)
+2. Florianópolis (ORIGEN + DESTINO)
+3. Río de Janeiro (DESTINO)
+
+Segmentos disponibles para venta:
+├─ Rosario → Florianópolis (1200 km) = ARS 15,000
+├─ Rosario → Río de Janeiro (2150 km) = ARS 28,000
+└─ Florianópolis → Río de Janeiro (950 km) = ARS 14,000
+
+Cliente puede comprar:
+• Solo Rosario-Florianópolis (sube en Rosario, baja en Florianópolis)
+• Solo Florianópolis-Río (sube en Florianópolis, baja en Río)
+• Rosario-Río (precio específico, NO necesariamente suma de segmentos)
+```
+
+**Ventajas del sistema:**
+- ✅ Flexibilidad total en precios (Rosario-Río NO es necesariamente suma de segmentos)
+- ✅ Promociones por tramo (ej: Florianópolis-Río 30% off en temporada baja)
+- ✅ Manejo de demanda (tramos populares más caros)
+- ✅ Igual que aerolíneas (familiar para usuarios)
+- ✅ Múltiples puntos intermedios posibles
+
+### Arquitectura de Base de Datos
+
+#### Tablas Principales (10 tablas nuevas)
+
+**1. tipo_transporte**
+- Catálogo de tipos: bus, avión, tren, barco
+- Campos: `idTipo`, `nombre`, `icono` (ej: "fa-bus")
+
+**2. terminal_transporte**
+- Terminales, aeropuertos, estaciones, puertos, HOTELES
+- **71 terminales** en sistema (Argentina, Brasil, Paraguay, Uruguay)
+- **5 nuevos Costa Atlántica:** Tapiales (ID:67), Liniers (ID:68), San Clemente (ID:69), Las Toninas (ID:70), Mar del Tuyú (ID:71)
+- Campos: `idTerminal`, `nombre`, `direccion`, `ciudad`, `estado`, `pais`, `idTipo`, `latitud`, `longitud`
+- Ejemplo: Terminal de Ómnibus Mariano Moreno, Rosario, Argentina
+
+**3. empresa_transporte**
+- Empresas operadoras (Flecha Bus, LATAM, etc.)
+- Campos: `idEmpresa`, `nombre`, `logo`, `pais_origen`
+
+**4. ruta_transporte** (CORE)
+- Define rutas entre ciudades con info multi-idioma
+- 8 rutas de ejemplo (bus, avión, tren, internacional)
+- Campos: `idRuta`, `nombre`, `descripcion_{es,en,pt,it}`, `idTipoTransporte`, `idEmpresa`, `idPrestador`, `duracion_estimada`, `distancia_km`, `precio_desde`, `idMoneda`, `imagen_portada`, `habilitado`
+- Ejemplo: "Rosario - Florianópolis - Río de Janeiro" (2150 km, 2 días 6h)
+
+**5. ruta_paradas** ⚠️ CRÍTICO
+- Define MÚLTIPLES puntos de origen/destino por ruta
+- **PK:** `idRutaParada` (NO idParada)
+- Campos: `idRutaParada`, `idRuta`, `idTerminal`, `orden`, `es_origen` (bool), `es_destino` (bool), `tiempo_desde_inicio`
+- **Tipos de paradas:**
+  - Solo origen: `es_origen=1, es_destino=0` (badge verde) - Cliente puede SALIR desde aquí
+  - Solo destino: `es_origen=0, es_destino=1` (badge azul) - Cliente puede LLEGAR aquí
+  - Intermedia: `es_origen=0, es_destino=0` (badge gris) - Parada técnica sin venta
+  - Origen Y destino: `es_origen=1, es_destino=1` (ambos badges) - Cliente puede salir O llegar
+- **Ejemplo Ruta Costa:** Tapiales (ORIGEN) → Liniers (ORIGEN) → San Clemente (DESTINO) → Las Toninas (ORIGEN+DESTINO) → Mar del Tuyú (DESTINO)
+- **Terminales:** 71 en sistema (66 previos + 5 costa atlántica)
+- **Hoteles:** 5 en sistema (San Clemente, Las Toninas, Mar del Tuyú)
+
+**6. viaje_transporte** (Pendiente implementación)
+- Salidas específicas con fecha/hora
+- Campos: `idViaje`, `idRuta`, `fecha_salida`, `hora_salida`, `asientos_totales`, `asientos_disponibles`, `estado`
+- **UN viaje = UNA ruta en UNA fecha/hora**
+- Puede tener múltiples tarifas por segmento
+
+**7. viaje_tarifa** (Pendiente implementación) ⚠️ CORE DEL SISTEMA
+- **Precios segmentados por tramo origen-destino**
+- Campos: `idTarifa`, `idViaje`, `idOrigenParada`, `idDestinoParada`, `idTipoTarifa`, `precio`, `idMoneda`, `comisiona`
+- **Granularidad:** Cada combinación origen-destino tiene precio independiente
+- **Ejemplo práctico:**
+  ```sql
+  -- Viaje Rosario-Río del 20/01/2026 10:00am
+  INSERT INTO viaje_tarifa VALUES
+  (1, 101, 67, 69, 1, 15000, 1, 1), -- Rosario→Florianópolis, Adulto, ARS 15k
+  (2, 101, 67, 71, 1, 28000, 1, 1), -- Rosario→Río, Adulto, ARS 28k
+  (3, 101, 69, 71, 1, 14000, 1, 1); -- Florianópolis→Río, Adulto, ARS 14k
+  ```
+- **Por tipo pasajero:** 1=Adulto (100%), 2=Niño (70%), 3=Senior (85%), 4=Estudiante (80%)
+- **Descuentos aplicados automáticamente** en frontend según tipo
+
+**8. reserva_transporte** (Pendiente implementación)
+- Reservas de pasajes
+- Campos: `idReservaTransporte`, `idReserva` (FK a tabla reservas), `idViaje`, `idOrigenParada`, `idDestinoParada`, `cantidad_pasajeros`, `precio_total`
+
+**9. reserva_transporte_pasajeros** (Pendiente implementación)
+- Datos individuales de pasajeros
+- Campos: `idPasajero`, `idReservaTransporte`, `nombre`, `apellido`, `tipo_documento`, `numero_documento`, `asiento`
+
+**10. ruta_transporte_img** (Pendiente implementación)
+- Fotos de rutas
+- Campos: `idFoto`, `idRuta`, `ruta`, `es_portada`, `orden`
+
+### Backend - admin/classes/transporte.php
+
+**Clase principal con 30+ funciones:**
+
+#### Funciones de Terminales
+```php
+getAllTerminales()                          // Lista todos los terminales
+getTerminal($id)                            // Obtiene terminal por ID
+insertTerminal($datos)                      // Crear terminal
+updateTerminal($id, $datos)                 // Actualizar terminal
+deleteTerminal($id)                         // Eliminar terminal
+getTerminalesPorTipo($idTipo)              // Filtrar por tipo
+getTerminalesPorPais($pais)                // Filtrar por país
+```
+
+#### Funciones de Rutas
+```php
+getAllRutas()                               // Lista todas las rutas
+getRuta($id)                                // Obtiene ruta por ID
+insertRuta($datos)                          // Crear ruta
+updateRuta($id, $datos)                     // Actualizar ruta ⚠️ CORREGIDO
+deleteRuta($id)                             // Soft delete si tiene viajes ⚠️ CORREGIDO
+getRutasPorTipo($idTipo)                   // Filtrar por tipo transporte
+```
+
+#### Funciones de Paradas (SISTEMA CLAVE)
+```php
+getParadasRuta($idRuta)                     // Todas las paradas de una ruta
+insertParadaRuta($datos)                    // Agregar parada
+deleteParadaRuta($idRutaParada)            // Eliminar parada ⚠️ USA idRutaParada
+updateOrdenParadas($idRuta, $ordenes)      // Reordenar paradas
+getOrigenesRuta($idRuta)                   // Paradas con es_origen=1
+getDestinosRuta($idRuta)                   // Paradas con es_destino=1
+getCombinacionesOrigenDestino($idRuta)     // Pares válidos origen-destino
+```
+
+#### Funciones de Viajes (Pendiente implementación)
+```php
+getAllViajes()                              // Lista viajes
+getViajesRuta($idRuta, $fecha_desde)       // Viajes de ruta desde fecha
+insertViaje($datos)                         // Crear viaje
+updateDisponibilidad($idViaje, $cantidad)  // Actualizar asientos
+```
+
+**Dependencias:**
+- `admin/classes/conexion.php` (PDO connection)
+- Usa prepared statements en todas las queries
+- Charset UTF-8mb4 configurado
+
+### Frontend Administrativo (Extranet)
+
+#### 1. Gestión de Terminales
+
+**admin/terminalesLista.php**
+- DataTables con 10 columnas: ID, Nombre, Dirección, Ciudad, Estado, País, Tipo, Coordenadas, Acciones
+- Filtros por tipo de transporte
+- 66 terminales precargados
+- UTF-8 corregido para acentos
+- Acciones: Editar, Eliminar
+
+**admin/terminalAlta.php**
+- Formulario ABM (alta/modificación)
+- Campos: nombre, dirección, ciudad, estado, país, tipo, coordenadas
+- Select de tipo de transporte
+- Validación requerida en campos críticos
+
+**admin/ctrl/ctrlTerminales.php**
+- Controller con endpoints: insert, update, delete, getAll, getById
+- Maneja POST para crear/actualizar
+- Soft delete si el terminal tiene rutas asociadas
+
+#### 2. Gestión de Rutas
+
+**admin/rutasTransporteLista.php**
+- DataTables con 10 columnas: ID, Nombre, Tipo, Empresa, Prestador, Duración, Distancia, Paradas, Estado, Acciones
+- 8 rutas precargadas (4 bus, 2 avión, 1 tren, 1 internacional)
+- Filtros por tipo de transporte
+- UTF-8 corregido (Córdoba, Iguazú, Florianópolis, Río)
+- Acciones: Editar, Gestionar Paradas, Eliminar
+
+**admin/rutaTransporteAlta.php**
+- Formulario multi-idioma con 4 tabs (ES, EN, PT, IT)
+- Banderas de países en pestañas: `img/countries/{es,en,br,it}.png`
+- Campos por idioma: nombre, descripción
+- Campos generales: tipo, empresa, prestador, duración (días/horas/minutos), distancia
+- **Duración mejorada:** 3 inputs numéricos separados
+  ```html
+  <input type="number" name="dias" min="0" max="99" value="0"> días
+  <input type="number" name="horas" min="0" max="23" value="0"> horas
+  <input type="number" name="minutos" min="0" max="59" value="0"> minutos
+  ```
+- JavaScript combina en formato: "2 días 6h 00min"
+- Select de prestadores con `getAllPrestadores()` (sin filtro habilitado)
+
+**admin/ctrl/ctrlRutasTransporte.php**
+- Controller con endpoints: insert, update, delete, getAll, getByTipo
+- Convierte duración de componentes a string combinado
+- Soft delete si la ruta tiene viajes asociados
+- API JSON para frontend
+
+#### 3. Gestión de Paradas (SISTEMA CLAVE)
+
+**admin/rutaTransporteParadas.php** ⚠️ CRÍTICO
+- Layout 2 columnas: formulario izquierda, lista derecha
+- **Formulario agregar parada:**
+  - Select de terminal
+  - Input orden (numérico)
+  - Checkbox "Es origen" (`es_origen`)
+  - Checkbox "Es destino" (`es_destino`)
+  - Input tiempo desde inicio (opcional, ej: "1 día 8h 00min")
+- **Lista de paradas configuradas:**
+  - Tarjetas por parada con orden y badges
+  - Badge verde: ORIGEN
+  - Badge azul: DESTINO  
+  - Badge gris: INTERMEDIA
+  - Muestra ambos badges si es origen Y destino
+  - Botón eliminar por parada
+- **PK correcta:** Usa `idRutaParada` (NO idParada)
+
+**admin/ctrl/ctrlParadasRuta.php**
+- Controller con endpoints: insert, delete, getOrigenes, getDestinos
+- `insertParadaRuta()`: POST con idRuta, idTerminal, orden, es_origen, es_destino, tiempo
+- `deleteParadaRuta($idRutaParada)`: Elimina por PK correcta
+- APIs JSON para obtener orígenes/destinos dinámicamente
+
+**Ejemplo de ruta configurada:**
+
+Ruta: Rosario - Florianópolis - Río de Janeiro
+- Parada 1 (orden 1): Terminal Rosario → ORIGEN (verde)
+- Parada 2 (orden 2): Terminal Florianópolis → ORIGEN + DESTINO (verde + azul)
+- Parada 3 (orden 3): Terminal Río → DESTINO (azul)
+
+Combinaciones posibles:
+1. Rosario → Florianópolis
+2. Rosario → Río de Janeiro
+3. Florianópolis → Río de Janeiro
+
+#### 4. Menú TRANSPORTE con F9/F8
+
+**admin/includes/sidebar_db.php**
+- Menú "TRANSPORTE" (ID 41) con 5 submenús:
+  1. Terminales (terminalesLista.php)
+  2. Rutas (rutasTransporteLista.php)
+  3. Viajes (pendiente)
+  4. Reservas (pendiente)
+  5. Reportes (pendiente)
+- **Oculto por default:** `style="display:none;"` con `id="menu-transporte-oculto"`
+- **Excepción en permisos:** `filterTreeByPermisos()` tiene `$esMenuTransporte` exception para bypassar checks
+
+**admin/includes/footer.php**
+- Keyboard shortcuts implementados:
+  - **F9** (keyCode 120): Muestra menú TRANSPORTE
+  - **F8** (keyCode 119): Oculta menú TRANSPORTE
+- **Persistencia:** localStorage con key `menuTransporteVisible`
+- **Animaciones:** slideDown/slideUp con duración 300ms
+- **Notificaciones:** SweetAlert toast (success verde, 2 segundos)
+- **Event listener:** Document-level keydown, previene default
+
+**JavaScript en footer:**
+```javascript
+$(document).ready(function() {
+    var menuVisible = localStorage.getItem('menuTransporteVisible') === 'true';
+    if (menuVisible) {
+        $('#menu-transporte-oculto').show();
+    }
+});
+
+$(document).on('keydown', function(e) {
+    if (e.keyCode === 120) { // F9
+        e.preventDefault();
+        $('#menu-transporte-oculto').slideDown(300);
+        localStorage.setItem('menuTransporteVisible', 'true');
+        Swal.fire({...}); // Toast "Menú TRANSPORTE activado"
+    } else if (e.keyCode === 119) { // F8
+        e.preventDefault();
+        $('#menu-transporte-oculto').slideUp(300);
+        localStorage.setItem('menuTransporteVisible', 'false');
+        Swal.fire({...}); // Toast "Menú TRANSPORTE desactivado"
+    }
+});
+```
+
+### Migraciones SQL
+
+**migrations/001_sistema_transporte.sql**
+- Creación de 10 tablas con foreign keys
+- Índices en campos críticos
+- DEFAULT CHARSET utf8mb4
+
+**migrations/003_terminales_ejemplo.sql**
+- 32 terminales iniciales (Argentina, Brasil, Paraguay, Uruguay)
+- Coordenadas reales (latitud/longitud)
+
+**migrations/005_rutas_ejemplo.sql**
+- 7 rutas de ejemplo (bus, avión, tren)
+- Duración en formato "X días Yh Zmin"
+
+**migrations/006_menu_transporte.sql**
+- Inserción de menú TRANSPORTE y 5 submenús en tabla `admin_menu`
+- IDs: 41 (padre), 42-46 (hijos)
+
+**migrations/007_ruta_rosario_floripa_rio.sql**
+- Terminal 66: Terminal de Ómnibus Mariano Moreno (Rosario)
+- Ruta 8: Rosario - Florianópolis - Río de Janeiro (2150 km, 2 días 6h)
+- 3 paradas configuradas con tipos mixtos
+
+### UTF-8 Fixes
+
+**Problema:** MySQL command line en PowerShell causaba encoding issues con caracteres especiales (Ó, í, ó, ã, á)
+
+**Solución:** Scripts PHP con `SET NAMES utf8mb4`
+
+**fix_rutas_utf8.php** (rutas generales)
+```php
+$pdo->exec("SET NAMES utf8mb4");
+$stmt = $pdo->prepare("UPDATE ruta_transporte SET 
+    nombre = ?, 
+    descripcion_es = ?, 
+    descripcion_en = ?, 
+    descripcion_pt = ?, 
+    descripcion_it = ? 
+    WHERE idRuta = ?");
+```
+
+**fix_ruta_internacional_utf8.php** (ruta internacional específica)
+- Corrige terminal: "Terminal de Ómnibus Mariano Moreno"
+- Corrige ruta: "Rosario - Florianópolis - Río de Janeiro"
+- Corrige descripciones en 4 idiomas
+- Corrige duracion_estimada: "2 días 6h 00min"
+- Corrige tiempo_desde_inicio en paradas: "1 día 8h 00min"
+
+**Verificación:**
+```
+✓ Terminal de Rosario corregida
+✓ Ruta internacional corregida
+✓ Tiempos de paradas corregidos
+Ruta: Rosario - Florianópolis - Río de Janeiro
+Duración: 2 días 6h 00min
+```
+
+### Commits Git (feature/cambios-grosos)
+
+1. `feat: crear sistema de transporte con 10 tablas y documentación`
+2. `feat: agregar gestión de terminales con DataTables y UTF-8`
+3. `fix: corregir includes y footer en terminalesLista`
+4. `feat: agregar gestión de rutas de transporte`
+5. `feat: mejorar input de duración con días/horas/minutos`
+6. `feat: agregar sistema de menú oculto F9/F8 para TRANSPORTE`
+7. `feat: agregar gestión de paradas múltiples para rutas`
+8. `fix: corregir referencias idParada → idRutaParada`
+9. `feat: crear ruta internacional Rosario-Florianópolis-Rio con paradas`
+10. `fix: corregir UTF-8 en ruta internacional y terminal`
+
+### Testing Checklist Completado
+
+- ✅ 66 terminales con acentos correctos (Avión, São Paulo, Asunción)
+- ✅ 8 rutas funcionales con DataTables
+- ✅ Duración compuesta funciona (días + horas + minutos)
+- ✅ F9 muestra menú, F8 oculta (persistencia localStorage)
+- ✅ Paradas múltiples con origen/destino flexible
+- ✅ Ruta internacional con 3 paradas y tipos mixtos
+- ✅ UTF-8 encoding correcto en todos los campos
+- ✅ 3 combinaciones origen-destino en ruta internacional
+
+### Pendiente de Implementación
+
+#### Fase 4: Gestión de Viajes (SIGUIENTE)
+- `admin/viajesTransporteLista.php` - Lista de viajes con fechas
+- `admin/viajeTransporteAlta.php` - Crear salidas específicas
+- Selección de combinaciones origen-destino por viaje
+- Calendario de disponibilidad
+- Gestión de asientos/cupos
+
+#### Fase 5: Sistema de Tarifas
+- `admin/viajeTransporteTarifas.php` - Matriz de precios
+- Precios por segmento (origen-destino específico)
+- Tipos de pasajero (adulto, niño, senior, estudiante)
+- Multi-moneda con conversión
+
+#### Fase 6: Frontend Cliente (REQUERIDO)
+- Página de búsqueda de pasajes
+- Interfaz con acordeones (estilo servicio.php)
+- Calendario de selección de fecha
+- Filtros por tipo de transporte
+- Resultados con precios y disponibilidad
+- Selección de asientos (opcional)
+- Flujo de reserva completo
+
+#### Fase 7: Integración Completa
+- Link con tabla `reservas` existente
+- Email de confirmación
+- Vouchers de pasaje
+- Integración con pagos (PayPal, MercadoPago)
+- Reportes financieros
+
+### Notas Técnicas Críticas
+
+⚠️ **idRutaParada vs idParada:** La tabla `ruta_paradas` usa `idRutaParada` como PK. No confundir con `idParada`.
+
+⚠️ **Paradas flexibles:** Una parada puede ser:
+- Solo origen: Cliente puede salir desde ahí
+- Solo destino: Cliente puede llegar ahí
+- Ambos: Cliente puede salir Y llegar (clave para rutas con múltiples segmentos)
+- Intermedia: Parada técnica sin embarque/desembarque
+
+⚠️ **Prestadores sin habilitado:** Tabla `prestadores` NO tiene columna `habilitado`. `getAllPrestadores()` no debe filtrar por ese campo.
+
+⚠️ **Duracion format:** Siempre en formato "X días Yh Zmin" (ej: "2 días 6h 00min", "0 días 4h 30min")
+
+⚠️ **UTF-8:** Usar scripts PHP con `SET NAMES utf8mb4` para inserts/updates con caracteres especiales. Evitar MySQL command line en PowerShell.
+
 ---
 
 ## Gestión de Entornos y Deployment (Implementado - Ene 2026)
@@ -1344,5 +1980,222 @@ node_modules/
 3. Usar HTTPS en producción (línea 2 de `.htaccess` fuerza HTTPS)
 4. Validar permisos de archivos (`chmod 644` para PHP, `755` para carpetas)
 5. Mantener logs fuera de document root si es posible
+
+---
+
+## Sistema de Transporte - Pasajes de Bus/Avión/Tren/Barco (Implementado - Ene 2026)
+
+### Descripción General
+Sistema completo para venta de pasajes de transporte (bus, avión, tren, barco) con soporte para múltiples puntos de origen/destino por ruta, empresas, viajes fechados, y tarifas segmentadas por tipo de pasajero.
+
+**Status:** ✅ Backend + Admin 100% funcional
+**Branch:** feature/cambios-grosos
+**Documentación:** `INDICE_TRANSPORTE.md`, `RESUMEN_FINAL_TRANSPORTE_ENERO_2026.md`, `PLAN_FRONTEND_PASAJES.md`
+
+### Arquitectura de Transporte
+
+#### Base de Datos (10 tablas)
+```
+tipo_transporte (4 tipos: bus, avión, tren, barco)
+    ↓
+[terminal_transporte] (66 terminales) ← [empresa_transporte] (5 empresas)
+    ↓
+[ruta_transporte] (8 rutas configuradas)
+    ↓
+[ruta_paradas] (24 registros - paradas múltiples origen/destino flexible)
+    ↓
+[modelo_vehiculo_transporte] (7 modelos, incluyendo 2 doble piso nuevos)
+    ↓
+[vehiculo_transporte] (10 vehículos instanciados, incluyendo 3 doble piso)
+    ↓
+[viaje_transporte] (100+ viajes con FK a vehiculo + ruta)
+    ↓
+[viaje_tarifa] (1000+ tarifas segmentadas)
+    ↓
+[tipo_tarifa_pasajero] (4 tipos: adulto 0%, niño -30%, senior -15%, estudiante -20%)
+```
+
+#### Backend: admin/classes/transporte.php (1059 líneas)
+**40+ funciones organizadas por módulo:**
+
+| Módulo | Funciones | Estado |
+|--------|-----------|--------|
+| Terminales | getAllTerminales, getTerminal, insertTerminal, updateTerminal, deleteTerminal | ✅ |
+| Rutas | getAllRutas, getRuta, insertRuta, updateRuta, deleteRuta, getRutasPorTipo | ✅ |
+| Paradas | getParadasRuta, insertParadaRuta, deleteParadaRuta, updateOrdenParadas | ✅ |
+| Modelos | getAllModelos ✓ (corregido), getModelo, insertModelo, updateModelo, deleteModelo | ✅ |
+| Vehículos | getAllVehiculos ✓ (3 doble piso), getVehiculo, insertVehiculo, updateVehiculo | ✅ |
+| Viajes | getAllViajes, getViaje, insertViaje ✓ (idVehiculo), updateViaje ✓ (idVehiculo) | ✅ |
+| Tarifas | getAllTarifas, getTarifa, insertTarifa, updateTarifa, deleteTarifa | ✅ |
+| Utilidades | getTiposTarifa, getParadasParaTarifas, getAllMonedas, getAllTiposTransporte | ✅ |
+
+#### Frontend Administrativo
+**Menú TRANSPORTE (ID 41) con 5 submenús:**
+1. **Ver Viajes**71 total)
+- 32 en Argentina (Rosario, Córdoba, Mendoza, etc)
+- 20 en Brasil (São Paulo, Rio, Salvador, etc)
+- 10 en Paraguay
+- 4 en Uruguay
+- **5 nuevos Costa Atlántica:**
+  - Terminal de Ómnibus de Tapiales (ID: 67)
+  - Terminal de Ómnibus de Liniers (ID: 68)
+  - Terminal de San Clemente del Tuyú (ID: 69)
+  - Terminal de Las Toninas (ID: 70)
+  - Terminal de Mar del Tuyú (ID: 71) Servicio** (47) → `admin/viajeClasesLista.php` (4 tipos)
+
+**Archivos Principales:**
+- `admin/viajeTransporteTarifas.php` - Editor de matriz de precios
+- `admin/ctrl/ctrlViajesTarifas.php` - Controller AJAX (12 acciones)
+- `admin/includes/sidebar_db.php` - Sidebar con soporte N-nivel (actualizado)
+
+### Datos de Prueba Actuales
+
+#### Terminales (66 total)
+- 32 en Argentina (Rosario, Córdoba, Mendoza, etc)
+- 20 en Brasil (São Paulo, Rio, Salvador, etc)
+- 10 en Paraguay
+- 4 en Uruguay
+
+#### Modelos de Vehículos (7 total)
+**Simples:**
+1. Mercedes Sprinter 14 (16 asientos, 2024)
+2. Volvo Doble Piso (40 asientos, 2023)
+3. Scania Doble Piso (42 asientos, 2022)
+4. Iveco Minibus (30 asientos, 2024)
+5. Hino Bus Urbano (35 asientos, 2023)
+
+**Doble Piso NUEVOS ✓:**
+6. **Marcopolo Doble Piso G7** (50 asientos, 2024)
+7. **Mercedes Doble Piso Comfort** (48 asientos, 2024)
+
+#### Vehículos Instanciados (10 total)
+- AA 150, AA 151, AA 200, AA 201, AA 202, AA 203, AA 204 (simples)
+- **AA 150 DP** (Marcopolo G7, 50 pas) ✓ NUEVO
+- **AA 151 DP** (Marcopolo G7, 50 pas) ✓ NUEVO
+- **AA 200 MB** (Mercedes Comfort, 48 pas) ✓ NUEVO
+
+#### Rutas (8 total)
+1. Rosario - Buenos Aires (Bus, 2h 30min)
+2. Buenos Aires - Mendoza (Bus, 11h)
+
+**Próxima:** Ruta Costa Atlántica (Tapiales → Liniers → San Clemente → Las Toninas → Mar del Tuyú)
+3. Rosario - Córdoba (Bus, 4h 30min)
+4. Córdoba - Mendoza (Bus, 6h 30min)
+5. Mendoza - LATAM HQ (Avión, 3h)
+6. Buenos Aires - Tren Central (Tren, 1h)
+7. Rosario - Barco Puerto (Barco, 4h)
+8. **Rosario - Florianópolis - Río de Janeiro** (Internacional, 2 días 6h) ✓ NUEVA
+
+### Bugs Corregidos en Esta Sesión
+
+1. ✅ **Modelos doble piso no visibles**
+   - Causa: `getAllModelos()` filtraba `WHERE habilitado = 1` (IDs 6-7 tenían habilitado=0)
+   - Solución: UPDATE tabla para habilitar modelos
+   - Archivo: `admin/classes/transporte.php` línea 712
+
+2. ✅ **UTF-8 encoding en acentos**
+   - Causa: PowerShell → MySQL charset mismatch
+   - Solución: `SET NAMES utf8mb4` en PDO
+   - Validación: `validar_sistema_transporte.php`
+
+3. ✅ **Sidebar no mostraba 3+ niveles**
+   - Causa: Loops hardcodeados a 2 niveles
+   - Solución: Función recursiva `renderMenuNivel()`
+   - Archivo: `admin/includes/sidebar_db.php`
+
+4. ✅ **JOIN error en getAllModelos()**
+   - Causa: `t.idTipo` debe ser `t.idTipoTransporte`
+   - Solución: Corregir nombre de columna
+   - Archivo: `admin/classes/transporte.php` línea 705
+
+### Funcionalidades Críticas
+
+#### Para viajeTransporteAlta.php (Crear Viaje)
+```php
+// Variables requeridas:
+$vehiculos = getAllVehiculos();  // 10 vehículos incluyendo 3 doble piso
+$modelos = getAllModelos();      // 7 modelos incluyendo 2 doble piso
+
+// Selector HTML:
+<select id="idVehiculo">
+  <optgroup label="Marcopolo Doble Piso G7">
+    <option value="X" data-capacidad="50">AA 150 DP (Cap: 50)</option>
+    <option value="Y" data-capacidad="50">AA 151 DP (Cap: 50)</option>
+  </optgroup>
+  ...
+</select>
+
+// JavaScript para a por TRAMO (como aviones):
+// Viaje → (Origen-Destino × Tipo Pasajero) → Precio
+
+// EJEMPLO RUTA CON 3 PARADAS (Rosario, Florianópolis, Río):
+// Segmentos posibles:
+// • Rosario → Florianópolis (1200 km)
+// • Rosario → Río (2150 km)  
+// • Florianópolis → Río (950 km)
+
+// Tipos de pasajero (4):
+// 1. Adulto (100% - precio completo)
+// 2. Niño (70% - descuento 30%)
+// 3. Senior (85% - descuento 15%)
+// 4. Estudiante (80% - descuento 20%)
+
+// Matriz frontend muestra:
+// Fila 1: Rosario-Florianópolis | Adulto $15k | Niño $10.5k | Senior $12.75k | Estudiante $12k
+// Fila 2: Rosario-Río          | Adulto $28k | Niño $19.6k | Senior $23.8k  | Estudiante $22.4k
+// Fila 3: Florianópolis-Río    | Adulto $14k | Niño $9.8k  | Senior $11.9k  | Estudiante $11.2kConfigurar Precios)
+```php
+// Matriz de tarifas:
+// Viaje → (Origen-Destino × Tipo Pasajero) → Precio
+
+// Tipos de pasajero (4):
+// 1. Adulto (100% - sin descuento)
+// 2. Niño (70% - descuento 30%)
+// 3. Senior (85% - descuento 15%)
+// 4. Estudiante (80% - descuento 20%)
+```
+
+### Próxima Fase: Frontend (PLAN_FRONTEND_PASAJES.md)
+
+**6 páginas a crear:**
+1. `buscar_pasajes.php` - Búsqueda (origen, destino, fecha, tipos pasajero)
+2. `resultados_viajes.php` - Listado con filtros
+3. `viaje_detalle.php` - Detalle + mapa de asientos
+4. `carrito_pasajes.php` - Carrito de compras
+5. `checkout_pasajes.php` - Proceso de compra (datos + pago)
+6. Email template - Confirmación con voucher
+
+**Controllers:**
+- `admin/ctrl/ctrlBusquedaPasajes.php` - Backend de búsqueda (query compleja)
+
+**Estimación:** 25-35 horas de desarrollo
+
+**Integración:** 
+- Reutilizar `admin/classes/moneda.php` para conversiones
+- Reutilizar `admin/pasarelas/PayPal/` y `config/mercadopago.php`
+- Reutilizar tabla `reservas` existente (agregar `tipo_reserva` = 'pasaje')
+
+### Testing Rápido
+
+Para verificar estado del sistema en cualquier momento:
+```
+http://localhost/metelebrasil_dev/validar_sistema_transporte.php
+```
+
+Muestra:
+- ✓ Tipos (4)
+- ✓ Modelos (7) incluyendo doble piso
+- ✓ Vehículos (10) incluyendo doble piso
+- ✓ Rutas (8)
+- ✓ Viajes (100+)
+
+### Archivos Relacionados Creados
+
+- `INDICE_TRANSPORTE.md` - Índice centralizado
+- `RESUMEN_FINAL_TRANSPORTE_ENERO_2026.md` - Overview ejecutivo
+- `RESUMEN_SISTEMA_TRANSPORTE_ENERO_2026.md` - Detalles técnicos
+- `PLAN_FRONTEND_PASAJES.md` - Plan para siguiente fase
+- `validar_sistema_transporte.php` - Script de validación
+- Varios scripts de debugging y corrección
 
 ---

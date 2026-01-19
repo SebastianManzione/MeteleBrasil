@@ -1,9 +1,9 @@
 <?php
 // Evita redeclaraciones si el archivo se incluye más de una vez
-if (function_exists('getMonedas')) { return; }
+if (!function_exists('getMonedas')) {
 function getMonedas(){
 
-    require("conexion.php");
+    require_once("conexion.php");
     
     // Usar $GLOBALS['pdo'] como fallback
     $pdo = $pdo ?? $GLOBALS['pdo'] ?? null;
@@ -25,10 +25,12 @@ function getMonedas(){
     }
     
 }
+} // Cierre del if (!function_exists('getMonedas'))
 
+if (!function_exists('getMoneda')) {
 function getMoneda($idMoneda){
 
-    require("conexion.php");
+    require_once("conexion.php");
     
     // Usar $GLOBALS['pdo'] como fallback
     $pdo = $pdo ?? $GLOBALS['pdo'] ?? null;
@@ -50,6 +52,7 @@ function getMoneda($idMoneda){
         return [];
     }
 }
+} // Cierre del if (!function_exists('getMoneda'))
 
 /*
 // Función comentada (setPrestador)

@@ -7,7 +7,8 @@
 require_once("../classes/conexion.php");
 require_once("../classes/transporte.php");
 
-$action = isset($_GET['action']) ? $_GET['action'] : '';
+// Leer action desde POST (si viene en formulario) o GET (si viene por URL)
+$action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : '');
 $idRuta = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 switch ($action) {

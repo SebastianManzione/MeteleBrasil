@@ -317,8 +317,8 @@ $comprobantes283 = convierteMoneda(188, 283, $comprobantes); ?>
                                                                                                         <li class="mb-3">
                                                                                                             <div class="card shadow-sm border-0">
                                                                                                                 <div class="card-body p-3">
-                                                                                                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                                                                                                        <div>
+                                                                                                                    <div class="mb-2">
+                                                                                                                        <div class="mb-2">
                                                                                                                             <i class="fas fa-map-marker-alt text-primary mr-2"></i>
                                                                                                                             <strong><?= $servicio[0]["nombre_servicio"]; ?></strong>
                                                                                                                         </div>
@@ -1117,6 +1117,24 @@ array(9) {
                             width: 100%;
                             align-items: center;
                             gap: 10px;
+                        }
+                        
+                        /* Normalizar tamaño de logos MercadoPago */
+                        .secudary-options img {
+                            height: 30px;
+                            width: auto !important;
+                            object-fit: contain;
+                        }
+                        
+                        /* Asegurar tamaño consistente en todos los métodos de pago */
+                        .custom-radio.option {
+                            min-height: 180px;
+                        }
+                        
+                        .container-card-pagamento-topo {
+                            min-height: 50px;
+                            display: flex;
+                            align-items: center;
                         }
 
                         .payment-option {
@@ -1936,13 +1954,83 @@ array(9) {
 <!-- FIN BOTON SUBIR-->
 <!-- SCRIPTS NECESARIOS-->
 <script type="text/javascript">
-    //por default arrancamos en reales
-    $("#reales").css('background', ' #029ce2'); //pinta
-    $("#reales").css('color', ' #fff '); //pinta
-    $("#paypal").css('display', 'none');
-    $("#mercadopago").css('display', 'none');
-    $("#mercadopagoBrasil").css('display', 'block');
-    $("#ebanx").css('display', 'block');
+    // Obtener moneda seleccionada o detectada del usuario
+    var monedaUsuario = '<?php echo isset($_SESSION['moneda_sel_sym']) ? $_SESSION['moneda_sel_sym'] : 'BRL'; ?>';
+    
+    console.log('Moneda del usuario:', monedaUsuario);
+    
+    // Función para mostrar métodos de pago según moneda
+    function mostrarMetodosPorMoneda(moneda) {
+        // Ocultar todos los métodos primero
+        $('.payment-option').hide();
+        
+        console.log('Mostrando métodos para moneda:', moneda);
+        
+        // Mapear símbolos a códigos ISO (sin caracteres especiales)
+        var codigoMoneda = 'BRL'; // Default
+        
+        if (moneda === 'R$' || moneda === 'BRL' || moneda === 'R' || moneda === 'reales') {
+            codigoMoneda = 'BRL';
+        } else if (moneda === '$' || moneda === 'ARS' || moneda === 'AR$' || moneda === 'pesos') {
+            codigoMoneda = 'ARS';
+        } else if (moneda === 'US$' || moneda === 'USD' || moneda === 'dolar') {
+            codigoMoneda = 'USD';
+        } else if (moneda === 'Gs' || moneda === 'PYG' || moneda === 'guaranies') {
+            codigoMoneda = 'PYG';
+        } else if (moneda === 'CLP$' || moneda === 'CLP' || moneda === 'CL$') {
+            codigoMoneda = 'CLP';
+        }
+        
+        console.log('Código de moneda mapeado:', codigoMoneda);
+        
+        // Construir selector de forma segura
+        var selector = '.payment-option.' + codigoMoneda;
+        console.log('Selector:', selector);
+        
+        var elementos = $(selector);
+        console.log('Elementos encontrados:', elementos.length);
+        
+        if (elementos.length > 0) {
+            elementos.show();
+        } else {
+            console.warn('No se encontró método de pago para ' + codigoMoneda + ', mostrando BRL por defecto');
+            $('.payment-option.BRL').show();
+        }
+    }
+    
+    // Al cargar la página, mostrar método correcto
+    $(document).ready(function() {
+        // Primero mostrar métodos según moneda del usuario
+        mostrarMetodosPorMoneda(monedaUsuario);
+        
+        // Activar visualmente el botón de moneda correcto
+        // Resetear todos los botones primero
+        $("#reales, #pesos, #dolar").css({'background': '#fff', 'color': '#929292'});
+        
+        // Determinar qué moneda activar
+        var codigoMoneda = 'BRL'; // Default
+        if (monedaUsuario === 'R$' || monedaUsuario === 'BRL') {
+            codigoMoneda = 'BRL';
+            $("#reales").css({'background': '#029ce2', 'color': '#fff'});
+            $("#mercadopagoBrasil").css('display', 'block');
+            $("#ebanx").css('display', 'block');
+        } else if (monedaUsuario === '$' || monedaUsuario === 'ARS' || monedaUsuario === 'AR$') {
+            codigoMoneda = 'ARS';
+            $("#pesos").css({'background': '#029ce2', 'color': '#fff'});
+            $("#mercadopago").css('display', 'block');
+            $("#ebanx").css('display', 'block');
+        } else if (monedaUsuario === 'US$' || monedaUsuario === 'USD') {
+            codigoMoneda = 'USD';
+            $("#dolar").css({'background': '#029ce2', 'color': '#fff'});
+            $("#paypal").css('display', 'block');
+            $("#ebanxDolares").css('display', 'block');
+        } else {
+            // Fallback a reales
+            $("#reales").css({'background': '#029ce2', 'color': '#fff'});
+            $("#mercadopagoBrasil").css('display', 'block');
+            $("#ebanx").css('display', 'block');
+        }
+    });
     $("#reales").click(function () {
         $("#paypal").css('display', 'none');
         $("#mercadopago").css('display', 'none');
@@ -1954,6 +2042,9 @@ array(9) {
         $("#pesos").css('color', ' #929292 '); //despinta
         $("#dolar").css('background', ' #fff'); //despinta
         $("#dolar").css('color', ' #929292 '); //despinta
+        
+        // Mostrar métodos de BRL
+        mostrarMetodosPorMoneda('BRL');
     });
     $("#dolar").click(function () {
         $("#paypal").css('display', 'block');
@@ -1967,6 +2058,9 @@ array(9) {
         $("#pesos").css('color', ' #929292 '); //despinta
         $("#reales").css('background', ' #fff'); //despinta
         $("#reales").css('color', ' #929292 '); //despinta
+        
+        // Mostrar métodos de USD
+        mostrarMetodosPorMoneda('USD');
     });
 
 
@@ -1985,6 +2079,9 @@ array(9) {
         $("#dolar").css('color', ' #929292 '); //despinta
         $("#reales").css('background', ' #fff'); //despinta
         $("#reales").css('color', ' #929292 '); //despinta
+        
+        // Mostrar métodos de ARS
+        mostrarMetodosPorMoneda('ARS');
     });
 
 

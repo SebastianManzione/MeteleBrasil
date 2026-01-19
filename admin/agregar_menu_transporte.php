@@ -30,9 +30,10 @@ try {
 // 2. Insertar submenús
 $submenus = [
     ['nombre' => 'Terminales', 'url' => 'terminalesLista.php', 'icon' => 'fas fa-map-marker-alt', 'orden' => 1],
-    ['nombre' => 'Rutas', 'url' => 'rutasTransporteLista.php', 'icon' => 'fas fa-route', 'orden' => 2],
-    ['nombre' => 'Viajes', 'url' => 'viajesTransporteLista.php', 'icon' => 'fas fa-calendar-alt', 'orden' => 3],
-    ['nombre' => 'Empresas', 'url' => 'empresasTransporteLista.php', 'icon' => 'fas fa-building', 'orden' => 4]
+    ['nombre' => 'Hoteles', 'url' => 'hotelLista.php', 'icon' => 'fas fa-hotel', 'orden' => 2],
+    ['nombre' => 'Rutas', 'url' => 'rutasTransporteLista.php', 'icon' => 'fas fa-route', 'orden' => 3],
+    ['nombre' => 'Viajes', 'url' => 'viajesTransporteLista.php', 'icon' => 'fas fa-calendar-alt', 'orden' => 4],
+    ['nombre' => 'Empresas', 'url' => 'empresasTransporteLista.php', 'icon' => 'fas fa-building', 'orden' => 5]
 ];
 
 $menuIds = [$transporteId]; // Para asignar permisos después

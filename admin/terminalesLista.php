@@ -11,8 +11,29 @@ include("includes/sidebar.php");
 
 require_once("classes/transporte.php");
 
-$terminales = getAllTerminales();
-$tipos = getAllTiposTransporte();
+// Conectar a BD experimental si no está disponible
+if (!isset($GLOBALS['pdo_experimental'])) {
+    $GLOBALS['pdo_experimental'] = new PDO(
+        'mysql:host=localhost;dbname=metelebrasil_experimental;charset=utf8mb4',
+        'root',
+        ''
+    );
+    $GLOBALS['pdo_experimental']->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
+
+// Obtener todas las terminales desde terminal_transporte (experimental)
+$stmt = $GLOBALS['pdo_experimental']->prepare(
+    "SELECT tt.*, tp.nombre AS tipo_nombre
+     FROM terminal_transporte tt
+     LEFT JOIN tipo_transporte tp ON tt.idTipoTransporte = tp.idTipoTransporte
+     ORDER BY tt.ciudad, tt.nombre"
+);
+$stmt->execute();
+$terminales = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Tipos de transporte (para filtro)
+$tiposStmt = $GLOBALS['pdo_experimental']->query("SELECT * FROM tipo_transporte WHERE habilitado=1 ORDER BY nombre");
+$tipos = $tiposStmt->fetchAll(PDO::FETCH_ASSOC);
 
 $success = isset($_GET['success']) ? $_GET['success'] : '';
 ?>
@@ -102,24 +123,14 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($terminales as $terminal) { 
-                                        // Determinar clase de badge según tipo
-                                        $badgeClass = 'badge-secondary';
-                                        $icono = 'fa-bus';
-                                        switch($terminal['idTipoTransporte']) {
-                                            case 1: $badgeClass = 'badge-bus'; $icono = 'fa-bus'; break;
-                                            case 2: $badgeClass = 'badge-plane'; $icono = 'fa-plane'; break;
-                                            case 3: $badgeClass = 'badge-train'; $icono = 'fa-train'; break;
-                                            case 4: $badgeClass = 'badge-ship'; $icono = 'fa-ship'; break;
-                                        }
-                                    ?>
-                                        <tr data-tipo="<?=$terminal['idTipoTransporte']?>" data-ciudad="<?=strtolower($terminal['ciudad'])?>">
+                                    <?php foreach ($terminales as $terminal) { ?>
+                                        <tr data-tipo="terminal" data-ciudad="<?=strtolower($terminal['ciudad'])?>">
                                             <td><?=$terminal['idTerminal']?></td>
-                                            <td><strong><?=$terminal['nombre']?></strong></td>
+                                            <td data-order="<?=htmlspecialchars($terminal['nombre'])?>"><strong><?=$terminal['nombre']?></strong></td>
                                             <td><?=$terminal['ciudad']?></td>
                                             <td>
-                                                <span class="badge <?=$badgeClass?>">
-                                                    <i class="fas <?=$icono?>"></i> <?=$terminal['tipo_transporte_nombre']?>
+                                                <span class="badge badge-warning">
+                                                    <i class="fas fa-map-marker-alt"></i> <?= htmlspecialchars($terminal['tipo_nombre'] ?? 'Terminal')?>
                                                 </span>
                                             </td>
                                             <td>
@@ -131,7 +142,7 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                             </td>
                                             <td>
                                                 <small class="text-muted">
-                                                    <?=!empty($terminal['direccion']) ? $terminal['direccion'] : '-'?>
+                                                    <?=!empty($terminal['direccion']) ? htmlspecialchars($terminal['direccion']) : '-'?>
                                                 </small>
                                             </td>
                                             <td>
@@ -152,11 +163,11 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
                                                 <?php } ?>
                                             </td>
                                             <td>
-                                                <a href="terminalEditar.php?id=<?=$terminal['idTerminal']?>" 
+                                                <a href="terminalAlta.php?id=<?=$terminal['idTerminal']?>" 
                                                    class="btn btn-sm btn-warning" title="Editar">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <button onclick="eliminarTerminal(<?=$terminal['idTerminal']?>, '<?=$terminal['nombre']?>')" 
+                                                <button onclick="eliminarTerminal(<?=$terminal['idTerminal']?>, '<?=htmlspecialchars($terminal['nombre'], ENT_QUOTES)?>')" 
                                                         class="btn btn-sm btn-danger" title="Eliminar">
                                                     <i class="fas fa-trash"></i>
                                                 </button>
@@ -186,16 +197,26 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
 <?php include("includes/footer.php"); ?>
 
 <script>
+    // Plugin para usar data-order en columnas con HTML
+    jQuery.extend(jQuery.fn.dataTable.ext.order, {
+        "dom-data-order": function ( settings, col ) {
+            return this.api().column( col, {order:'index'} ).nodes().map( function (td, i) {
+                return td.getAttribute('data-order') || td.innerText;
+            } );
+        }
+    });
+
     // Filtro por tipo
     // Inicializar DataTables
     var table = $('#tablaTerminales').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json"
         },
-        "pageLength": 25,
-        "order": [[1, 'asc']], // Ordenar por nombre
-        "columnDefs": [
-            { "orderable": false, "targets": [8] } // Columna de acciones no ordenable
+        pageLength: 25,
+        order: [[2, 'asc'], [1, 'asc']], // Primero ciudad, luego nombre
+        columnDefs: [
+            { orderable: false, targets: [8] }, // Acciones no ordenable
+            { targets: 1, orderDataType: 'dom-data-order' } // usar data-order en nombre
         ]
     });
     
@@ -215,8 +236,49 @@ $success = isset($_GET['success']) ? $_GET['success'] : '';
     
     // Eliminar terminal
     function eliminarTerminal(id, nombre) {
-        if (confirm('¿Estás seguro de eliminar la terminal "' + nombre + '"?\n\nEsto puede afectar rutas y viajes asociados.')) {
-            window.location.href = 'ctrl/ctrlTerminales.php?action=delete&id=' + id;
+        if (!window.Swal) {
+            if (confirm('¿Eliminar la terminal "' + nombre + '"?')) {
+                fetch('ctrl/ctrlTerminalesNuevo.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({ action: 'delete', idTerminal: id })
+                }).then(r => r.json()).then(data => {
+                    if (data && data.success) {
+                        table.rows(function(idx, data, node) {
+                            return $(node).find('td:first').text() == id;
+                        }).remove().draw();
+                        alert('Terminal eliminada');
+                    } else {
+                        alert(data.message || 'No se pudo eliminar');
+                    }
+                });
+            }
+            return;
         }
+        Swal.fire({
+            title: '¿Eliminar terminal?',
+            text: nombre,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then(function(result) {
+            if (result.isConfirmed) {
+                fetch('ctrl/ctrlTerminalesNuevo.php', {
+                    method: 'POST',
+                    body: new URLSearchParams({ action: 'delete', idTerminal: id })
+                }).then(r => r.json()).then(data => {
+                    if (data && data.success) {
+                        table.rows(function(idx, data, node) {
+                            return $(node).find('td:first').text() == id;
+                        }).remove().draw();
+                        Swal.fire({ icon: 'success', title: 'Eliminada', timer: 1200, showConfirmButton: false });
+                    } else {
+                        Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'No se pudo eliminar' });
+                    }
+                }).catch(err => {
+                    Swal.fire({ icon: 'error', title: 'Error', text: err.message });
+                });
+            }
+        });
     }
     </script>

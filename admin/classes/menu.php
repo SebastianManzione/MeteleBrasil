@@ -49,6 +49,11 @@ class AdminMenu {
             $roles = [(int)$roleId];
         }
 
+        // Si después de todo no hay roles, retornar vacío
+        if (empty($roles)) {
+            return [];
+        }
+
         // Verificar si hay permisos para ALGUNO de los roles
         $placeholders = implode(',', array_fill(0, count($roles), '?'));
         $stmt = $this->pdo->prepare("SELECT COUNT(*) as total FROM admin_menu_roles WHERE role_id IN ($placeholders)");

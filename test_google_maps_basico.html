@@ -1,0 +1,50 @@
+// Test simple para verificar si el mapa funciona en HTML plano
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Test Mapa Básico</title>
+    <style>
+        #map { height: 500px; width: 100%; border: 2px solid blue; }
+    </style>
+</head>
+<body>
+    <h1>Test Google Maps</h1>
+    <div id="map"></div>
+    
+    <script>
+    var paradas = [
+        {orden: 1, nombre: "Rio", lat: -22.898333, lng: -43.222222},
+        {orden: 2, nombre: "Buenos Aires", lat: -34.559171, lng: -58.4156},
+        {orden: 3, nombre: "La Matanza", lat: -34.6932247, lng: -58.5173862}
+    ];
+    
+    console.log('Paradas:', paradas);
+    
+    function initMap() {
+        console.log('initMap called');
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 6,
+            center: {lat: paradas[0].lat, lng: paradas[0].lng}
+        });
+        
+        paradas.forEach(function(p) {
+            new google.maps.Marker({
+                position: {lat: p.lat, lng: p.lng},
+                map: map,
+                label: p.orden.toString(),
+                title: p.nombre
+            });
+        });
+        
+        console.log('Mapa creado!');
+    }
+    </script>
+    
+    <script async defer 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdetJDksIXOsWVt7UQx9EF3ulkhYNJsmE&callback=initMap">
+    </script>
+</body>
+</html>

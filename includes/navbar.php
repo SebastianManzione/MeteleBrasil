@@ -144,10 +144,18 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <title>Metele Brasil</title>
 <meta property="fb:app_id" content="964551587611699" />
 
-<?php if(isset($_GET['id'])){
+<?php if(isset($_GET['id']) && strpos($_SERVER['REQUEST_URI'], 'servicio_contransporte') === false){
   $idServicio=$_GET['id'];
-  $servicio=getServicio($idServicio)[0];
-  $fotos=getFotosServicio($idServicio);
+  $servicioResult = getServicio($idServicio);
+  if (!empty($servicioResult) && is_array($servicioResult)) {
+    $servicio = $servicioResult[0];
+    $fotos = getFotosServicio($idServicio);
+  } else {
+    $servicio = null;
+    $fotos = [];
+  }
+  
+  if (!empty($servicio)) {
 ?>
 <meta property="og:url" content="https://www.metelebrasil.com/servicio" />
 <meta property="og:title"  content="<?=$servicio["nombre_servicio"];?> | Metele Brasil" />
@@ -160,7 +168,7 @@ if (!isset($_SESSION['login']['idVendedor'])) {
 <meta property="og:image:height" content="300" />
 <link rel="icon" href="img/favicon.ico" sizes="32x32">
 <meta property="og:image" content="https://metelebrasil.com/admin/classes/imgServicio/<?=($fotos[0]['ruta'] ?? '');?>" />
-<?php } else if(isset($_GET['post'])){
+<?php } } else if(isset($_GET['post'])){
   require("admin/classes/blog.php"); 
   require("admin/classes/fotos_blog.php");
   $idPost=$_GET['post'];
